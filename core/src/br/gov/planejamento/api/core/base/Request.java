@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.core.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -22,5 +23,9 @@ public class Request {
 		current = this;
 	}
 	
+	public ArrayList<Filter> getFilters(){
+		ArrayList<Filter> filters = new ArrayList<Filter>();
+		return filters;
+	}
 	
 }

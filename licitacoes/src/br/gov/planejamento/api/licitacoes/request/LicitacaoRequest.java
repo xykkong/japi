@@ -17,6 +17,6 @@ public class LicitacaoRequest extends Request {
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public String licitacoes() throws SQLException {
-		return controller.licitacoes().toString();
+		return controller.licitacoes(this).toString();
 	}
 }
