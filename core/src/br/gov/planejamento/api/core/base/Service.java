@@ -63,7 +63,7 @@ public abstract class Service {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		for(Filter filter : filtersFromRequest){
 			//TODO validar filtros usando available filterss
-			filtersQuery.append(" AND "+filter.getValue());
+			filtersQuery.append(" AND "+filter.getParameterName());
 			//TODO trocar para like se o Type for string, etc...
 			filtersQuery.append(" = ");
 			//
