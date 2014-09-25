@@ -155,3 +155,7 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# adicionado por Graciano
+core/.classpath
+licitacoes/.classpath
