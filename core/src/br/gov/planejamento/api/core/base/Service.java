@@ -16,12 +16,11 @@ public abstract class Service {
 	protected final String[] available_filters = new String[]{};
 	
 	
-
 	public Response getResponse(Request request) throws SQLException{
 		ArrayList<Filter> filtersFromRequest = request.getFilters();
 		String query = "SELECT "+enumUsingCommas(response_parameters)+
-				" FROM "+table+
-				" WHERE "+filtersQuery(filtersFromRequest);
+				" FROM "+ table +
+				" WHERE "+ filtersQuery(filtersFromRequest);
 		Connection connection = ConnectionManager.getConnection();
 		PreparedStatement pst = connection.prepareStatement(query);
 		int i=0;
@@ -32,11 +31,17 @@ public abstract class Service {
 		//TODO fazer direitos
 		StringBuilder result = new StringBuilder();
 		while(rs.next()){
-			for(i=0; i<response_parameters.length; i++){
+			for(i=1; i<=response_parameters.length; i++){
 				result.append(rs.getString(i));
 			}
 		}
-		connection.close();
+		pst.close();
+		//connection.close();
+		String temp = result.toString();
+		
+		
+		System.out.println("SQL:" + temp);
+		
 		return new Response(result.toString());
 	}
 	
@@ -45,7 +50,7 @@ public abstract class Service {
 		    StringBuilder enumComma = new StringBuilder();
 
 		    for (String n : array) {
-		        enumComma.append(n.trim()+"',");
+		        enumComma.append(n.trim()+",");
 		    }
 		    enumComma.deleteCharAt(enumComma.length() - 1);
 
@@ -66,5 +71,4 @@ public abstract class Service {
 		}
 		return filtersQuery.toString();
 	}
-	
 }
