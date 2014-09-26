@@ -9,7 +9,7 @@ public class Request {
 	/**
 	 * Current request object created by Resteasy
 	 */
-	public static Request current;
+	private static Request currentRequest;
 	
 	/**
 	 * All parameters sent in querystring
@@ -20,12 +20,15 @@ public class Request {
 	 * Constructor that populates the static current variable with the created Request
 	 */
 	protected Request() {
-		current = this;
+		currentRequest = this;
+	}
+	
+	public static Request getCurrentRequest() {
+		return currentRequest;
 	}
 	
 	public ArrayList<Filter> getFilters(){
 		ArrayList<Filter> filters = new ArrayList<Filter>();
 		return filters;
 	}
-	
 }

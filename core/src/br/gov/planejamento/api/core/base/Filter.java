@@ -1,40 +1,28 @@
 package br.gov.planejamento.api.core.base;
-/**
- * 
- * @author matheus
- * Type of filter in a request
- *
- */
-public class Filter {
-	private String value;
-	private String parameterName;
-	private String type;
-	
-	public Filter(String value, String parameterName, String type){
-		this.type = type;
-		this.parameterName = parameterName;
-		this.value = value;
-	}
-	
-	public String getParameterName() {
-		return parameterName;
-	}
-	
-	public void setParameterName(String parameterName) {
-		this.parameterName = parameterName;
-	}
-	
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 
+import java.util.ArrayList;
+
+
+public abstract class Filter {
+	private ArrayList<String> values;
+	protected ArrayList<String> parameters;
+	
+	
+	public ArrayList<String> getValues() {
+		return values;
+	}
+	
+	public void setValues(ArrayList<String> values) {
+		this.values = values;
+	}
+	
+	public ArrayList<String> getParameters() {
+		return parameters;
+	}
+	
+	public void setParameters(ArrayList<String> parameters) {
+		this.parameters = parameters;
+	}
+	
+	public abstract String getStatement();
 }

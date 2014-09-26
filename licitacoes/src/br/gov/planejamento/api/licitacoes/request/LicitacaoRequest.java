@@ -7,16 +7,16 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.core.base.Request;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;
-import br.gov.planejamento.api.licitacoes.controller.LicitacaoController;
+import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 
 @Path("/")
 public class LicitacaoRequest extends Request {
 	
-	private LicitacaoController controller =  new LicitacaoController();
+	private LicitacaoService service =  new LicitacaoService();
 	
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public String licitacoes() throws SQLException {
-		return controller.licitacoes(this).toString();
+		return service.getResponse().toString();
 	}
 }
