@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import br.gov.planejamento.api.core.exceptions.ParametersAndValuesMismatchException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
@@ -17,7 +15,7 @@ public abstract class Service {
 	
 	protected abstract ServiceConfiguration getServiceConfiguration();
 	
-	public DatabaseData getData() throws SQLException {	
+	protected DatabaseData getData() throws SQLException {	
 		
 		//SETUP
 		Connection connection = ConnectionManager.getConnection();
@@ -25,7 +23,7 @@ public abstract class Service {
 		
 		//QUERY
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
-		sbQuery.append(StringUtils.join(",", configs.getResponseParameters()));
+		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
 		sbQuery.append(" FROM ");
 		sbQuery.append(configs.getTable());
 		sbQuery.append(" WHERE ");

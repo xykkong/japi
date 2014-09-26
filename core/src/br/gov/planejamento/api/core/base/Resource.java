@@ -2,11 +2,11 @@ package br.gov.planejamento.api.core.base;
 
 import java.util.ArrayList;
 
-public class Response {
+public class Resource {
 
 	private ArrayList<GenericModel> models;
 
-	public Response(ArrayList<GenericModel> models) {
+	public Resource(ArrayList<GenericModel> models) {
 		this.models = models;
 	}
 

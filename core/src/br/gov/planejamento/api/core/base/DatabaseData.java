@@ -18,7 +18,7 @@ public class DatabaseData implements Iterable<HashMap<String, String>> {
 	public DatabaseData(ResultSet resultSet, ServiceConfiguration configs) throws SQLException {
 		while(resultSet.next()) {
 			HashMap<String, String> row = new HashMap<String, String>();
-			for(String column : configs.getResponseParameters()) {
+			for(String column : configs.getResponseFields()) {
 				row.put(column, resultSet.getString(column));
 			}
 			data.add(row);

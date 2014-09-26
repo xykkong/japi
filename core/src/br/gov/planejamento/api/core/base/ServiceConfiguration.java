@@ -1,11 +1,12 @@
 package br.gov.planejamento.api.core.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ServiceConfiguration {
 	
 	private String table = "";
-	private ArrayList<String> responseParameters = new ArrayList<String>();
+	private ArrayList<String> responseFields = new ArrayList<String>();
 	private ArrayList<String> requiredParameters = new ArrayList<String>();
 	private ArrayList<String> optionalParameters = new ArrayList<String>();
 	private ArrayList<String> availableFilters = new ArrayList<String>();
@@ -15,11 +16,11 @@ public class ServiceConfiguration {
 	public void setTable(String table) {
 		this.table = table;
 	}
-	public ArrayList<String> getResponseParameters() {
-		return responseParameters;
+	public ArrayList<String> getResponseFields() {
+		return responseFields;
 	}
-	public void setResponseParameters(ArrayList<String> responseParameters) {
-		this.responseParameters = responseParameters;
+	public void setResponseFields(String... responseFields) {
+		this.responseFields = (ArrayList<String>) Arrays.asList(responseFields);
 	}
 	public ArrayList<String> getRequiredParameters() {
 		return requiredParameters;
