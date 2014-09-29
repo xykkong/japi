@@ -20,7 +20,7 @@ public class ServiceConfiguration {
 		return responseFields;
 	}
 	public void setResponseFields(String... responseFields) {
-		this.responseFields = (ArrayList<String>) Arrays.asList(responseFields);
+		this.responseFields = new ArrayList<String>(Arrays.asList(responseFields));
 	}
 	public ArrayList<String> getRequiredParameters() {
 		return requiredParameters;
