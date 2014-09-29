@@ -1,8 +1,6 @@
 package br.gov.planejamento.api.licitacoes.service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import br.gov.planejamento.api.core.base.DatabaseData;
