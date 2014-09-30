@@ -9,34 +9,46 @@ import java.util.ArrayList;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
-	
+
 	protected ServiceConfiguration configs = getServiceConfiguration();
-	protected Request request = Request.getCurrentRequest();
-	
+	protected Request currentRequest = Request.getCurrentRequest();
+
 	protected abstract ServiceConfiguration getServiceConfiguration();
-	
-	protected DatabaseData getData() throws SQLException {	
-		
-		//SETUP
+
+	protected DatabaseData getData() throws SQLException {
+
+		// SETUP
 		Connection connection = ConnectionManager.getConnection();
-		ArrayList<Filter> filtersFromRequest = request.getFilters();
-		
-		//QUERY
+		ArrayList<Filter> filtersFromRequest = currentRequest.getFilters();
+
+		// QUERY
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
 		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
 		sbQuery.append(" FROM ");
 		sbQuery.append(configs.getTable());
 		sbQuery.append(" WHERE ");
 		sbQuery.append(getWhereStatement(filtersFromRequest));
-		
+
 		PreparedStatement pst = connection.prepareStatement(sbQuery.toString());
-		
+
 		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
-		for(int i = 0; i < whereValues.size(); i++) {
-			pst.setString(i, whereValues.get(i));
+		for (int i = 0; i < whereValues.size(); i++) {
+			Filter filter = filtersFromRequest.get(i);
+			filter.setPreparedStatementValue(pst, whereValues.get(i), i+1);
 		}
-		
-		//EXECUTE
+
+		// DEBUG
+		System.out.println("Query executada:");
+		System.out.println("\t" + sbQuery.toString());
+		if (whereValues.size() > 0) {
+			System.out.println("\t valores where:");
+			System.out.print("\t");
+			System.out.println(StringUtils.join(",", whereValues));
+		} else
+			System.out.println("\tnenhum valor no where (considerado 1=1)");
+
+		// EXECUTE
+
 		ResultSet rs = pst.executeQuery();
 		DatabaseData data = new DatabaseData(rs, configs);
 		pst.close();
@@ -48,15 +60,17 @@ public abstract class Service {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		for (Filter filter : filtersFromRequest) {
 			// TODO validar filtros usando available filters
+			filtersQuery.append(" AND ");
 			filtersQuery.append(filter.getStatement());
 		}
 		return filtersQuery.toString();
 	}
-	
-	private ArrayList<String> getWhereValues(ArrayList<Filter> filtersFromRequest) {
+
+	private ArrayList<String> getWhereValues(
+			ArrayList<Filter> filtersFromRequest) {
 		ArrayList<String> parameters = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
-			for(String value : filter.getValues()) {
+			for (String value : filter.getValues()) {
 				parameters.add(value);
 			}
 		}

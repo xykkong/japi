@@ -13,12 +13,17 @@ public class EqualFilter extends Filter {
 		this.value = value;
 	}
 	
+	public EqualFilter(String parameter, String value, int type) {
+		this(parameter, value);
+		this.type = type;
+	}
+	
 	@Override
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();
 		statement.append(parameter);
 		statement.append(" = ? ");
-		return "";
+		return statement.toString();
 	}
 
 	@Override

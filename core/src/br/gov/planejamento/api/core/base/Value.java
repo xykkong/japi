@@ -3,7 +3,7 @@ package br.gov.planejamento.api.core.base;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.gov.planejamento.api.core.exceptions.InvalidApiValueType;
+import br.gov.planejamento.api.core.exceptions.InvalidApiValueTypeException;
 
 public class Value {
 	private Date data;
@@ -33,15 +33,15 @@ public class Value {
 		return "Não definido";
 	}
 
-	public void setData(Date data) throws InvalidApiValueType {
+	public void setData(Date data) throws InvalidApiValueTypeException {
 		if (string != null)
-			throw new InvalidApiValueType(this);
+			throw new InvalidApiValueTypeException(this);
 		this.data = data;
 	}
 
-	public void setString(String string) throws InvalidApiValueType {
+	public void setString(String string) throws InvalidApiValueTypeException {
 		if (data != null)
-			throw new InvalidApiValueType(this);
+			throw new InvalidApiValueTypeException(this);
 		this.string = string;
 	}
 
