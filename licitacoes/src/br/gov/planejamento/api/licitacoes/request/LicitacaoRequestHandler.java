@@ -12,16 +12,22 @@ import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 
 @Path("/")
 public class LicitacaoRequestHandler {
-	
-	private LicitacaoService service =  new LicitacaoService();
-	
+
+	private LicitacaoService service = new LicitacaoService();
+	//TODO ver se esta constante vai ficar no requestHandler mesmo
+	public final String URI_INT = "int";
+	public final String DB_INT = "teste_int";
+
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public String licitacoes() throws SQLException {
-		Request current = Request.getCurrentRequest();
-		current.addFilter(new EqualFilter("teste_int", "34", EqualFilter.TYPE_FILTER_INTEGER));
-		//TODO pegar o parametro de uma constante e o valor do GET
-		
+		Request currentRequest = Request.getCurrentRequest();
+		if(currentRequest.hasParameter(URI_INT)){
+			currentRequest.addFilter(new EqualFilter(DB_INT, 
+					currentRequest.getParameter(URI_INT), 
+					EqualFilter.TYPE_FILTER_INTEGER));			
+		}
+
 		return service.licitacoes();
-	}	
+	}
 }
