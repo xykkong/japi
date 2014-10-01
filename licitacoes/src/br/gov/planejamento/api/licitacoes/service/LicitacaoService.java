@@ -12,8 +12,11 @@ public class LicitacaoService extends Service {
 	@Override
 	protected ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
-		configs.setTable("test_table");
-		configs.setResponseFields("teste_string", "teste_int", "teste_numeric", "teste_date", "teste_time");		
+		configs.setSchema("dados_abertos");
+		configs.setTable("licitacao_view");
+		//configs.setResponseFields("teste_string", "teste_int", "teste_numeric", "teste_date", "teste_time");		
+		configs.setResponseFields("uasg", "nome_uasg", "modalidade", "nome_modalidade", "numero_aviso");
+		
 		return configs;
 	}
 	

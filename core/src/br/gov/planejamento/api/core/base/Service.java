@@ -25,7 +25,7 @@ public abstract class Service {
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
 		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
 		sbQuery.append(" FROM ");
-		sbQuery.append(configs.getTable());
+		sbQuery.append(configs.getSchema() + "." + configs.getTable());
 		sbQuery.append(" WHERE ");
 		sbQuery.append(getWhereStatement(filtersFromRequest));
 
