@@ -14,10 +14,13 @@ public abstract class Filter {
 	public static final int TYPE_FILTER_DOUBLE = 5;
 
 	protected int type = TYPE_FILTER_STRING;
+	protected String parameter;
 
 	public abstract String getStatement();
 
 	public abstract ArrayList<String> getValues();
+	
+	public Filter() {}
 
 	public int getType() {
 		return type;
@@ -37,6 +40,11 @@ public abstract class Filter {
 			pst.setString(index, value);
 			break;
 		}
-
 	}
+	
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
+
+	public abstract void setValues(String...values);
 }

@@ -38,19 +38,34 @@ public class Request {
 		return filters;
 	}
 
-	public void addFilter(Filter filter) {
-		filters.add(filter);
+	public void addFilter(Class<? extends Filter> type, String parameter) {
+		if(this.hasParameter(parameter)){
+			try {
+				Filter filter = type.newInstance(); //getConstructors()[0].newInstance(null);
+				filter.setParameter(parameter);
+				filter.setValues(this.getValues(parameter).toArray(new String[0]));
+				filters.add(filter);
+			} catch (InstantiationException | IllegalAccessException e) {
+				//never happens
+				e.printStackTrace();
+				
+			}
+		}
+
+	}
+	public void addFilter(Class<? extends Filter> type, String...parameters){
+		for(String parameter : parameters){
+			addFilter(type, parameter);
+		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
 		parameters = multivaluedMap;
 	}
 
-	public String getParameter(String key) {
+	public List<String> getValues(String key) {
 		if (hasParameter(key))
-			return parameters.get(key).get(0);
-		// TODO descobrir porque isso funciona, como é o esquema da List de
-		// String
+			return parameters.get(key);
 		return null;
 	}
 

@@ -6,12 +6,7 @@ import br.gov.planejamento.api.core.base.Filter;
 
 public class LikeFilter extends Filter {
 
-	private String parameter, value;
-
-	public LikeFilter(String parameter, String value) {
-		this.parameter = parameter;
-		this.value = value;
-	}
+	private String value;
 
 	@Override
 	public String getStatement() {
@@ -26,6 +21,11 @@ public class LikeFilter extends Filter {
 		ArrayList<String> values = new ArrayList<String>();
 		values.add("%" + value + "%");
 		return values;
+	}
+
+	@Override
+	public void setValues(String... values) {
+		this.value = values[0];
 	}
 
 }
