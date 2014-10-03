@@ -10,14 +10,14 @@ public class ConnectionManager {
 	private static Connection connection = null;
 	
 	private static String username = "postgres";
-	private static String password = "123456";
+	private static String password = "DBDAdmin2005";
 	
 	public static Connection getConnection() throws SQLException {
 		if(connection == null) {
 			Properties connectionProps = new Properties();
 			connectionProps.put("user", username);
 			connectionProps.put("password", password);
-			connection = DriverManager.getConnection("jdbc:postgresql://localhost/teste", connectionProps);
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:9090/prd", connectionProps);
 		}
 		
 		return connection;

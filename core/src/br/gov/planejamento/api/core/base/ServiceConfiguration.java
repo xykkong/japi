@@ -5,11 +5,19 @@ import java.util.Arrays;
 
 public class ServiceConfiguration {
 	
+	private String schema = "public";
 	private String table = "";
 	private ArrayList<String> responseFields = new ArrayList<String>();
 	private ArrayList<String> requiredParameters = new ArrayList<String>();
 	private ArrayList<String> optionalParameters = new ArrayList<String>();
 	private ArrayList<String> availableFilters = new ArrayList<String>();
+		
+	public String getSchema(){
+		return schema;
+	}
+	public void setSchema(String schema){
+		this.schema = schema;
+	}
 	public String getTable() {
 		return table;
 	}
