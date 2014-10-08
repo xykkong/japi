@@ -3,18 +3,12 @@ package br.gov.planejamento.api.core.base;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Filter {
 
-	public static final int TYPE_FILTER_STRING = 0;
-	public static final int TYPE_FILTER_INTEGER = 1;
-	public static final int TYPE_FILTER_DATE = 2;
-	public static final int TYPE_FILTER_TIME = 3;
-	public static final int TYPE_FILTER_DATETIME = 4;
-	public static final int TYPE_FILTER_DOUBLE = 5;
-
-	protected int type = TYPE_FILTER_STRING;
-	protected String parameter;
+	protected Class<? extends Object> valueType = String.class;
+	protected List<String> parameters;
 
 	public abstract String getStatement();
 
@@ -22,29 +16,25 @@ public abstract class Filter {
 	
 	public Filter() {}
 
-	public int getType() {
-		return type;
+	public Class<? extends Object> getValueType() {
+		return valueType;
 	}
 
 	public void setPreparedStatementValue(PreparedStatement pst, String value,
 			int index) throws SQLException, NumberFormatException {
 		//TODO filtros de data
-		switch (type) {
-		case TYPE_FILTER_INTEGER:
+		if(valueType.equals(Integer.class)) {
 			pst.setInt(index, Integer.parseInt(value));
-			break;
-		case TYPE_FILTER_DOUBLE:
+		} else if(valueType.equals(Double.class)) {
 			pst.setDouble(index, Double.parseDouble(value));
-			break;
-		default:
+		} else {
 			pst.setString(index, value);
-			break;
 		}
 	}
 	
-	public void setParameter(String parameter) {
-		this.parameter = parameter;
+	public void setParameters(List<String> parameters) {
+		this.parameters = parameters;
 	}
 
-	public abstract void setValues(String...values);
+	public abstract void setValues(List<List<String>> values);
 }

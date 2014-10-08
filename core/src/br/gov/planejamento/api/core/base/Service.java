@@ -11,7 +11,7 @@ import br.gov.planejamento.api.core.utils.StringUtils;
 public abstract class Service {
 
 	protected ServiceConfiguration configs = getServiceConfiguration();
-	protected Request currentRequest = Request.getCurrentRequest();
+	protected Session currentRequest = Session.getCurrentSession();
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
 
@@ -28,6 +28,7 @@ public abstract class Service {
 		sbQuery.append(configs.getSchema() + "." + configs.getTable());
 		sbQuery.append(" WHERE ");
 		sbQuery.append(getWhereStatement(filtersFromRequest));
+		sbQuery.append(" LIMIT 10 ");
 
 		PreparedStatement pst = connection.prepareStatement(sbQuery.toString());
 

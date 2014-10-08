@@ -10,7 +10,7 @@ import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
-import br.gov.planejamento.api.core.base.Request;
+import br.gov.planejamento.api.core.base.Session;
 
 @Provider
 @ServerInterceptor
@@ -18,8 +18,8 @@ public class CurrentRequestInjectorInterceptor implements PreProcessInterceptor 
 
 	@Override
 	public ServerResponse preProcess(HttpRequest httpRequest, ResourceMethod method) throws Failure, WebApplicationException {
-		Request.getCurrentRequest().clear();
-		Request.getCurrentRequest().putValues(httpRequest.getUri().getQueryParameters());
+		Session.getCurrentSession().clear();
+		Session.getCurrentSession().putValues(httpRequest.getUri().getQueryParameters());
 		return null;
 	}
 	

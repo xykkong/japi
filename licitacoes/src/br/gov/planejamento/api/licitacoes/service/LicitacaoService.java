@@ -2,6 +2,7 @@ package br.gov.planejamento.api.licitacoes.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.Service;
@@ -23,12 +24,21 @@ public class LicitacaoService extends Service {
 	public String licitacoes() throws SQLException {
 		DatabaseData data = getData();
 		StringBuilder sb = new StringBuilder();
+		sb.append("{");
 		for(HashMap<String, String> map : data) {
-			for(String value : map.values()) {
-				sb.append(value);
-				sb.append("<br>");
+			sb.append("{");
+			for(Entry<String, String> entry : map.entrySet()) {
+				sb.append("\"");
+				sb.append(entry.getKey());
+				sb.append("\": \"");
+				sb.append(entry.getValue());
+				sb.append("\",");
 			}
+			sb.deleteCharAt(sb.lastIndexOf(","));
+			sb.append("},<br>");
 		}
+		sb.deleteCharAt(sb.lastIndexOf(","));
+		sb.append("}");
 		return sb.toString();
 	}
 	
