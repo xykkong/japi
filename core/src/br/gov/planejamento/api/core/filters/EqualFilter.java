@@ -5,20 +5,16 @@ import java.util.List;
 
 import br.gov.planejamento.api.core.base.Filter;
 
-public abstract class EqualFilter extends Filter {
-	
-	private String value;
-	protected int type;
-	
-	//public abstract String getType();
-	
+public class EqualFilter extends Filter {
+
+
 	@Override
 	public String getStatement() {
 		/*StringBuilder statement = new StringBuilder();
 		statement.append(parameter);
 		statement.append(" = ? ");
 		return statement.toString();*/
-		return "2 = ?";
+		return "'2' = ?";
 	}
 
 	@Override

@@ -1,9 +1,6 @@
 package br.gov.planejamento.api.licitacoes.request;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,9 +26,5 @@ public class LicitacaoRequest {
 		//currentRequest.addFilter(LikeFilter.class, "teste_string");
 
 		return service.licitacoes();
-	}
-	
-	public String teste(List<String>... p) {
-		return p.getClass().toString();
 	}
 }

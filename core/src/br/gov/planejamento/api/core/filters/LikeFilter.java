@@ -1,6 +1,7 @@
 package br.gov.planejamento.api.core.filters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.gov.planejamento.api.core.base.Filter;
 
@@ -11,7 +12,7 @@ public class LikeFilter extends Filter {
 	@Override
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();
-		statement.append(parameter);
+		//statement.append(parameter);
 		statement.append(" like ? ");
 		return statement.toString();
 	}
@@ -24,8 +25,9 @@ public class LikeFilter extends Filter {
 	}
 
 	@Override
-	public void setValues(String... values) {
-		this.value = values[0];
+	public void setValues(List<List<String>> values) {
+		
 	}
+
 
 }
