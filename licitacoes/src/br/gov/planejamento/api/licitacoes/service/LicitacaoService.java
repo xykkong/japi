@@ -15,8 +15,7 @@ public class LicitacaoService extends Service {
 	protected ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("dados_abertos");
-		configs.setTable("licitacao_view");
-		//configs.setResponseFields("teste_string", "teste_int", "teste_numeric", "teste_date", "teste_time");		
+		configs.setTable("licitacao_view");		
 		configs.setResponseFields("uasg", "nome_uasg", "modalidade", "nome_modalidade", "numero_aviso");
 		
 		return configs;

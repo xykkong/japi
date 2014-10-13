@@ -45,7 +45,8 @@ public abstract class Filter {
 						pst.setInt(index++, Integer.parseInt(getProcessedValue(value)));
 					} else if (valueType.equals(Double.class)) {
 						pst.setDouble(index++, Double.parseDouble(getProcessedValue(value)));
-					} else {
+					}
+					else {
 						pst.setString(index++, getProcessedValue(value));
 					}
 				} catch (SQLException | NumberFormatException ex) {

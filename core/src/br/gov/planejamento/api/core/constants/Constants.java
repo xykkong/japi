@@ -3,26 +3,33 @@ package br.gov.planejamento.api.core.constants;
 public abstract class Constants {
 
 	/**
-	 * Versões já lançadas do sistema
+	 * Versï¿½es jï¿½ lanï¿½adas do sistema
 	 */
 	public static final class ApiVersions {
 		public static final String V1 = "/v1";
 	}
 	
 	/**
-	 * Primeira parte da URL de cada módulo
+	 * Primeira parte da URL de cada mï¿½dulo
 	 */
 	public static final class Modules {
 		public static final String LICITACOES = "/licitacoes";
 	}
 	
 	/**
-	 * Uma requisição do tipo MIRROR é uma URL espelho que irá redirecionar para a URL final (DOCUMENT).
-	 * A DOCUMENT é de fato a URI que identifica unicamente o documento em questão. 
+	 * Uma requisiï¿½ï¿½o do tipo MIRROR ï¿½ uma URL espelho que irï¿½ redirecionar para a URL final (DOCUMENT).
+	 * A DOCUMENT ï¿½ de fato a URI que identifica unicamente o documento em questï¿½o. 
 	 */
 	public static final class RequestTypes {
 		public static final String MIRROR = "/id";
 		public static final String DOCUMENT = "/doc";
 	}
 	
+	/**
+	 * Constantes de parÃ¢metros fixos
+	 */
+	public static final class FixedParameters {
+		public static final int VALUES_PER_PAGE = 500;
+		public static final String PAGINATION = "page";
+	}
 }

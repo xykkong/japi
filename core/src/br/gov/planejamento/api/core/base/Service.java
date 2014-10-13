@@ -6,13 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
 
 	protected ServiceConfiguration configs = getServiceConfiguration();
-	protected Session currentRequest = Session.getCurrentSession();
+	protected Session currentSession = Session.getCurrentSession();
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
 
@@ -20,16 +21,25 @@ public abstract class Service {
 
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
-		ArrayList<Filter> filtersFromRequest = currentRequest.getFilters();
+		ArrayList<Filter> filtersFromRequest = currentSession.getFilters();
 
 		// QUERY
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
 		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
+		
 		sbQuery.append(" FROM ");
-		sbQuery.append(configs.getSchema() + "." + configs.getTable());
+		sbQuery.append(configs.getSchema());
+		sbQuery.append(".");
+		sbQuery.append(configs.getTable());
+		
 		sbQuery.append(" WHERE ");
 		sbQuery.append(getWhereStatement(filtersFromRequest));
-		sbQuery.append(" LIMIT 10 ");
+		
+		sbQuery.append(" OFFSET ?");
+		
+		sbQuery.append(" LIMIT ");
+		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
+		sbQuery.append(" ");
 
 		PreparedStatement pst = connection.prepareStatement(sbQuery.toString());
 
@@ -38,10 +48,14 @@ public abstract class Service {
 		for (Filter filter : filtersFromRequest) {
 			index = filter.setPreparedStatementValues(pst, index);
 		}
+		int offsetValue = (currentSession.getPage()-1)*Constants.FixedParameters.VALUES_PER_PAGE;
+		pst.setInt(index++, offsetValue);
 
 		// DEBUG
 		System.out.println("Query executada:");
 		System.out.println("\t" + sbQuery.toString());
+		System.out.print("\tvalor OFFSET: ");
+		System.out.println(offsetValue);
 		if (whereValues.size() > 0) {
 			System.out.println("\t valores where:");
 			System.out.print("\t");

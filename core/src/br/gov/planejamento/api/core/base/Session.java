@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import br.gov.planejamento.api.core.constants.Constants;
+
 public class Session {
 
 	/**
@@ -41,10 +43,10 @@ public class Session {
 	public void addFilter(Class<? extends Filter> filterType,
 			Class<? extends Object> valueType, List<String>... parameters) {
 		for (List<String> parameterList : parameters) {
-			for(String parameter : parameterList){
-				//TODO tratar falta de parâmetros
-				if(hasParameter(parameter)){
-					try{
+			for (String parameter : parameterList) {
+				// TODO tratar falta de parâmetros
+				if (hasParameter(parameter)) {
+					try {
 						Filter filter = filterType.newInstance();
 						filter.addParameter(parameter);
 						filters.add(filter);
@@ -90,6 +92,12 @@ public class Session {
 		if (hasParameter(key))
 			return parameters.get(key);
 		return null;
+	}
+
+	public int getPage() {
+		List<String> pageValues = getValues(Constants.FixedParameters.PAGINATION);
+		return hasParameter(Constants.FixedParameters.PAGINATION) ? 
+				Integer.parseInt(pageValues.get(0)) : 1;
 	}
 
 	public boolean hasParameter(String key) {
