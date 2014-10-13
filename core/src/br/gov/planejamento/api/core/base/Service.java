@@ -73,7 +73,7 @@ public abstract class Service {
 		ArrayList<String> parameters = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
 			for (String value : filter.getValues()) {
-				parameters.add(value);
+				parameters.add(filter.getProcessedValue(value));
 			}
 		}
 		return parameters;

@@ -17,4 +17,16 @@ public class StringUtils {
 		}
 		return "";
 	}
+	
+	public static String removeLeftZero(String number){
+		StringBuilder response = new StringBuilder("");
+		boolean foundNotZeroChar = false;
+		for(int i=0; i<number.length(); i++){
+			char c = number.charAt(i);
+			if(foundNotZeroChar |= (c!='0')){
+				response.append(c);
+			}
+		}
+		return response.toString();
+	}
 }

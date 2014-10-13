@@ -10,6 +10,7 @@ import br.gov.planejamento.api.core.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.filters.LikeFilter;
+import br.gov.planejamento.api.core.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 
 @Path("/")
@@ -24,7 +25,8 @@ public class LicitacaoRequest {
 		
 		Session currentSession = Session.getCurrentSession();
 		
-		currentSession.addFilter(EqualFilter.class, Integer.class, "uasg", "modalidade");
+		currentSession.addFilter(EqualFilter.class, String.class, "uasg");
+		currentSession.addFilter(ZeroFillEqualFilter.class, "modalidade", "numero_aviso");
 		currentSession.addFilter(LikeFilter.class, "nome_uasg");
 
 		return service.licitacoes();
