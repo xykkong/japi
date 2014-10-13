@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 
 public class LicitacaoService extends Service {
 	
@@ -21,7 +22,7 @@ public class LicitacaoService extends Service {
 		return configs;
 	}
 	
-	public String licitacoes() throws SQLException {
+	public String licitacoes() throws SQLException, InvalidFilterValueTypeException {
 		DatabaseData data = getData();
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
@@ -34,10 +35,10 @@ public class LicitacaoService extends Service {
 				sb.append(entry.getValue());
 				sb.append("\",");
 			}
-			sb.deleteCharAt(sb.lastIndexOf(","));
+			//sb.deleteCharAt(sb.lastIndexOf(","));
 			sb.append("},<br>");
 		}
-		sb.deleteCharAt(sb.lastIndexOf(","));
+		//sb.deleteCharAt(sb.lastIndexOf(","));
 		sb.append("}");
 		return sb.toString();
 	}

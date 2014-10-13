@@ -1,33 +1,28 @@
 package br.gov.planejamento.api.core.filters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.gov.planejamento.api.core.base.Filter;
+import br.gov.planejamento.api.core.base.Session;
 
 public class LikeFilter extends Filter {
 
-	private String value;
-
+	
 	@Override
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();
-		//statement.append(parameter);
-		statement.append(" like ? ");
+		Session currentSession = Session.getCurrentSession();
+		for(String parameter : parameters){
+			int numberOfValues = currentSession.getValues(parameter).size();
+			statement.append(parameter);
+			for (int i=0; i<numberOfValues; i++) {
+				statement.append(" like ? ");				
+			}
+		}
 		return statement.toString();
 	}
 
 	@Override
-	public ArrayList<String> getValues() {
-		ArrayList<String> values = new ArrayList<String>();
-		values.add("%" + value + "%");
-		return values;
+	protected String getProcessedValue(String value) {
+		return "%" + value + "%";
 	}
-
-	@Override
-	public void setValues(List<List<String>> values) {
-		
-	}
-
 
 }

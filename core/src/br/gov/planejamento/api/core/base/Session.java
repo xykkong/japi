@@ -38,50 +38,47 @@ public class Session {
 		return filters;
 	}
 
-	public void addFilter(Class<? extends Filter> filterType, Class<? extends Object> valueType, List<String>... parameters) {
-		String p[] = new String[10];
-		for(List<String> parameterList : parameters) {
-			
-			Boolean hasAllParameters = true;
-			List<List<String>> valueList = new ArrayList<List<String>>();
-			for(String parameter : parameterList) {
-				if(hasParameter(parameter)) {
-					valueList.add(getValues(parameter));
-				} else {
-					hasAllParameters = false;
-				}
-			}			
-			
-			//todo: Tratar caso em que nem todos os par‚metros necess·rios foram passados
-			if(hasAllParameters){
-				try {
-					Filter filter = filterType.newInstance();
-					filter.setParameters(parameterList);
-					filter.setValues(valueList);
-					filters.add(filter);
-				} catch (InstantiationException | IllegalAccessException e) {
-					//never happens
-					e.printStackTrace();
+	public void addFilter(Class<? extends Filter> filterType,
+			Class<? extends Object> valueType, List<String>... parameters) {
+		for (List<String> parameterList : parameters) {
+			for(String parameter : parameterList){
+				//TODO tratar falta de par√¢metros
+				if(hasParameter(parameter)){
+					try{
+						Filter filter = filterType.newInstance();
+						filter.addParameter(parameter);
+						filters.add(filter);
+					} catch (InstantiationException | IllegalAccessException e) {
+						// never happens
+						e.printStackTrace();
+					}
 				}
 			}
 		}
 	}
-	
-	public void addFilter(Class<? extends Filter> filterType, List<String>... parameters){
+
+	public void addFilter(Class<? extends Filter> filterType,
+			List<String>... parameters) {
 		addFilter(filterType, String.class, parameters);
 	}
-	
-	public void addFilter(Class<? extends Filter> filterType, Class<? extends Object> valueType, String... parameters) {
+
+	public void addFilter(Class<? extends Filter> filterType,
+			Class<? extends Object> valueType, String... parameters) {
 		ArrayList<List<String>> parametersList = new ArrayList<List<String>>();
-		for(String parameter : parameters) {
+		for (String parameter : parameters) {
 			List<String> parameterList = new ArrayList<String>();
 			parameterList.add(parameter);
 			parametersList.add(parameterList);
 		}
-		addFilter(filterType, valueType, parametersList.toArray((ArrayList<String>[]) new ArrayList[parameters.length]));
+		addFilter(
+				filterType,
+				valueType,
+				parametersList
+						.toArray((ArrayList<String>[]) new ArrayList[parameters.length]));
 	}
-	
-	public void addFilter(Class<? extends Filter> filterType, String... parameters) {
+
+	public void addFilter(Class<? extends Filter> filterType,
+			String... parameters) {
 		addFilter(filterType, String.class, parameters);
 	}
 

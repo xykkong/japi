@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
@@ -15,7 +16,7 @@ public abstract class Service {
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
 
-	protected DatabaseData getData() throws SQLException {
+	protected DatabaseData getData() throws SQLException, InvalidFilterValueTypeException {
 
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
@@ -33,9 +34,9 @@ public abstract class Service {
 		PreparedStatement pst = connection.prepareStatement(sbQuery.toString());
 
 		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
-		for (int i = 0; i < whereValues.size(); i++) {
-			Filter filter = filtersFromRequest.get(i);
-			filter.setPreparedStatementValue(pst, whereValues.get(i), i+1);
+		int index=1;
+		for (Filter filter : filtersFromRequest) {
+			index = filter.setPreparedStatementValues(pst, index);
 		}
 
 		// DEBUG
