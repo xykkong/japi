@@ -31,5 +31,8 @@ public abstract class Constants {
 	public static final class FixedParameters {
 		public static final int VALUES_PER_PAGE = 500;
 		public static final String PAGINATION = "page";
+		public static final String ORDER_BY = "order_by";
+		public static final String ORDER = "order";
+		public static final String[] VALID_ORDERS = new String[]{"ASC", "DESC"};
 	}
 }

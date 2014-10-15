@@ -1,12 +1,14 @@
 package br.gov.planejamento.api.core.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 
 public class Session {
 
@@ -93,11 +95,45 @@ public class Session {
 			return parameters.get(key);
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param key referente ao valor do parâmetro GET
+	 * @return primeiro valor da lista de valores deste parâmetro, se existir
+	 */
+	public String getValue(String key){
+		if(hasParameter(key)){
+			return parameters.get(key).get(0); 
+		}
+		return null;
+	}
 
 	public int getPage() {
 		List<String> pageValues = getValues(Constants.FixedParameters.PAGINATION);
 		return hasParameter(Constants.FixedParameters.PAGINATION) ? 
 				Integer.parseInt(pageValues.get(0)) : 1;
+	}
+	
+	/**
+	 * 
+	 * @return valor de order_by da URI ou "1", se não existir
+	 */
+	public String getOrderByValue(){
+		if(hasParameter(Constants.FixedParameters.ORDER_BY)){
+			return getValue(Constants.FixedParameters.ORDER_BY);
+		}
+		return "1";
+	}
+	
+	public String getOrderValue() throws InvalidOrderSQLParameterException{
+		if(hasParameter(Constants.FixedParameters.ORDER)){
+			String order = getValue(Constants.FixedParameters.ORDER);
+			if(Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(order.toUpperCase()))
+				return order;
+			else
+				throw new InvalidOrderSQLParameterException(order);
+		}
+		return "ASC";
 	}
 
 	public boolean hasParameter(String key) {

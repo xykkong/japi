@@ -1,13 +1,13 @@
 package br.gov.planejamento.api.core.utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class StringUtils {
 
-	public static String join(String separator, ArrayList<String> array) {
-		if (array.size() > 0) {
+	public static String join(String separator, List<String> list) {
+		if (list.size() > 0) {
 			StringBuilder join = new StringBuilder();
-			for (String n : array) {
+			for (String n : list) {
 				join.append(n.trim());
 				join.append(separator);
 			}

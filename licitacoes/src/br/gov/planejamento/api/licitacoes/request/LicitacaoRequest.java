@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.filters.LikeFilter;
 import br.gov.planejamento.api.core.filters.ZeroFillEqualFilter;
@@ -17,16 +18,19 @@ import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 public class LicitacaoRequest {
 
 	private LicitacaoService service = new LicitacaoService();
-	//TODO ver se esta constante vai ficar no requestHandler mesmo
+
+	// TODO ver se esta constante vai ficar no requestHandler mesmo
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	public String licitacoes() throws SQLException, InvalidFilterValueTypeException {	
-		
+	public String licitacoes() throws SQLException,
+			InvalidFilterValueTypeException, InvalidOrderSQLParameterException {
+
 		Session currentSession = Session.getCurrentSession();
-		
+
 		currentSession.addFilter(EqualFilter.class, String.class, "uasg");
-		currentSession.addFilter(ZeroFillEqualFilter.class, "modalidade", "numero_aviso");
+		currentSession.addFilter(ZeroFillEqualFilter.class, "modalidade",
+				"numero_aviso");
 		currentSession.addFilter(LikeFilter.class, "nome_uasg");
 
 		return service.licitacoes();

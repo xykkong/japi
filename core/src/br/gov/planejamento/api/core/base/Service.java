@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
@@ -17,7 +18,8 @@ public abstract class Service {
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
 
-	protected DatabaseData getData() throws SQLException, InvalidFilterValueTypeException {
+	protected DatabaseData getData() throws SQLException,
+			InvalidFilterValueTypeException, InvalidOrderSQLParameterException {
 
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
@@ -26,34 +28,45 @@ public abstract class Service {
 		// QUERY
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
 		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
-		
+
 		sbQuery.append(" FROM ");
 		sbQuery.append(configs.getSchema());
 		sbQuery.append(".");
 		sbQuery.append(configs.getTable());
-		
+
 		sbQuery.append(" WHERE ");
 		sbQuery.append(getWhereStatement(filtersFromRequest));
-		
+
+		sbQuery.append(" ORDER BY ?, ?");
+
 		sbQuery.append(" OFFSET ?");
-		
+
 		sbQuery.append(" LIMIT ");
 		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
-		sbQuery.append(" ");
 
 		PreparedStatement pst = connection.prepareStatement(sbQuery.toString());
 
 		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
-		int index=1;
+		int index = 1;
 		for (Filter filter : filtersFromRequest) {
 			index = filter.setPreparedStatementValues(pst, index);
 		}
-		int offsetValue = (currentSession.getPage()-1)*Constants.FixedParameters.VALUES_PER_PAGE;
+
+		String orderByValue = currentSession.getOrderByValue();
+		pst.setString(index++, orderByValue);
+		String orderValue = currentSession.getOrderValue();
+		pst.setString(index++, orderByValue);
+
+		int offsetValue = (currentSession.getPage() - 1)
+				* Constants.FixedParameters.VALUES_PER_PAGE;
 		pst.setInt(index++, offsetValue);
 
 		// DEBUG
 		System.out.println("Query executada:");
 		System.out.println("\t" + sbQuery.toString());
+		System.out.print("\tvalores ORDER BY: ");
+		System.out.print(orderByValue + " ");
+		System.out.println(orderValue);
 		System.out.print("\tvalor OFFSET: ");
 		System.out.println(offsetValue);
 		if (whereValues.size() > 0) {
