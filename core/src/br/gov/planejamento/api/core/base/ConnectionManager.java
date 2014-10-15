@@ -1,30 +1,35 @@
 package br.gov.planejamento.api.core.base;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 public class ConnectionManager {
-	
+
 	private static Connection connection = null;
-	
-	//private static String username = "postgres";
-	//private static String password = "123456";
-	//private static String connectionString = "jdbc:postgresql://localhost:5432/prd";
-	
-	private static String username = "postgres";
-	private static String password = "DBDAdmin2005";
-	private static String connectionString = "jdbc:postgresql://146.164.34.74:5432/prd";
-	
-	public static Connection getConnection() throws SQLException {
-		if(connection == null) {
+
+
+	public static Connection getConnection() throws SQLException,
+			ParserConfigurationException, SAXException, IOException {
+		if (connection == null) {
+			DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
+					.getInstance("database-local-graciano-properties");
 			Properties connectionProps = new Properties();
-			connectionProps.put("user", username);
-			connectionProps.put("password", password);
-			connection = DriverManager.getConnection(connectionString, connectionProps);
+			connectionProps.put("user", loader.getUser());
+			connectionProps.put("password", loader.getPassword());
+
+			String connectionString = "jdbc:postgresql://" + loader.getUrl()
+					+ ":" + loader.getPort() + "/" + loader.getDatabaseName();
+			connection = DriverManager.getConnection(connectionString,
+					connectionProps);
 		}
-		
+
 		return connection;
 	}
 }

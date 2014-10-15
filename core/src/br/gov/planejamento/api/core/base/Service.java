@@ -1,10 +1,15 @@
 package br.gov.planejamento.api.core.base;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
@@ -19,7 +24,8 @@ public abstract class Service {
 	protected abstract ServiceConfiguration getServiceConfiguration();
 
 	protected DatabaseData getData() throws SQLException,
-			InvalidFilterValueTypeException, InvalidOrderSQLParameterException {
+			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
+			ParserConfigurationException, SAXException, IOException {
 
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();

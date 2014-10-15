@@ -15,22 +15,22 @@ import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 
-public class LicitacaoService extends Service {
+public class TesteService extends Service {
 
 	@Override
 	protected ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
-		configs.setSchema("dados_abertos");
-		configs.setTable("licitacao_view");
-		configs.setResponseFields("uasg", "nome_uasg", "modalidade",
-				"nome_modalidade", "numero_aviso");
+		configs.setSchema("public");
+		configs.setTable("test_table");
+		configs.setResponseFields("id", "teste_string", "teste_date",
+				"teste_int", "teste_numeric", "teste_date", "teste_time");
 
 		return configs;
 	}
 
-	public String licitacoes() throws SQLException,
-			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException {
+	public String teste() throws SQLException, InvalidFilterValueTypeException,
+			InvalidOrderSQLParameterException, ParserConfigurationException,
+			SAXException, IOException {
 		DatabaseData data = getData();
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
