@@ -101,14 +101,11 @@ public abstract class Service {
 		return filtersQuery.toString();
 	}
 
-	private ArrayList<String> getWhereValues(
-			ArrayList<Filter> filtersFromRequest) {
-		ArrayList<String> parameters = new ArrayList<String>();
+	private ArrayList<String> getWhereValues(ArrayList<Filter> filtersFromRequest) {
+		ArrayList<String> wheres = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
-			for (String value : filter.getValues()) {
-				parameters.add(filter.getProcessedValue(value));
-			}
+			wheres.addAll(filter.getValues());
 		}
-		return parameters;
+		return wheres;
 	}
 }

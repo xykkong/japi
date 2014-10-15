@@ -1,5 +1,8 @@
 package br.gov.planejamento.api.core.filters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.gov.planejamento.api.core.base.Filter;
 import br.gov.planejamento.api.core.base.Session;
 
@@ -21,8 +24,11 @@ public class LikeFilter extends Filter {
 	}
 
 	@Override
-	protected String getProcessedValue(String value) {
-		return "%" + value + "%";
+	public List<String> getValues() {
+		List<String> values = new ArrayList<String>();
+		for(String value : this.values)
+			values.add("%" + value + "%");
+		return values;
 	}
 
 }

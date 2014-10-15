@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 
 public class Session {
@@ -43,31 +44,50 @@ public class Session {
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType, List<String>... parameters) {
+			Class<? extends Object> valueType, List<String>... parameters)
+			throws ExpectedParameterNotFoundException {
+		Session currentSession = Session.getCurrentSession();
 		for (List<String> parameterList : parameters) {
-			for (String parameter : parameterList) {
-				// TODO tratar falta de parâmetros
-				if (hasParameter(parameter)) {
-					try {
-						Filter filter = filterType.newInstance();
+			try {
+				Filter filter = filterType.newInstance();
+				List<String> availableParameters = new ArrayList<String>();
+				List<String> missingParameters = new ArrayList<String>();
+				for (String parameter : parameterList) {
+					if (hasParameter(parameter)) {
+						availableParameters.add(parameter);
 						filter.addParameter(parameter);
-						filters.add(filter);
-					} catch (InstantiationException | IllegalAccessException e) {
-						// never happens
-						e.printStackTrace();
+						filter.addValues(currentSession.getValues(parameter));
+						filter.setValueType(valueType);
+					} else {
+						missingParameters.add(parameter);
 					}
 				}
+				if (!availableParameters.isEmpty()) {
+					if (missingParameters.isEmpty()) {
+						filters.add(filter);
+					} else {
+						throw new ExpectedParameterNotFoundException(
+								parameterList, availableParameters,
+								missingParameters);
+					}
+				}
+
+			} catch (InstantiationException | IllegalAccessException e) {
+				// never happens
+				e.printStackTrace();
 			}
 		}
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
-			List<String>... parameters) {
+			List<String>... parameters)
+			throws ExpectedParameterNotFoundException {
 		addFilter(filterType, String.class, parameters);
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType, String... parameters) {
+			Class<? extends Object> valueType, String... parameters)
+			throws ExpectedParameterNotFoundException {
 		ArrayList<List<String>> parametersList = new ArrayList<List<String>>();
 		for (String parameter : parameters) {
 			List<String> parameterList = new ArrayList<String>();
@@ -82,7 +102,7 @@ public class Session {
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
-			String... parameters) {
+			String... parameters) throws ExpectedParameterNotFoundException {
 		addFilter(filterType, String.class, parameters);
 	}
 
@@ -95,40 +115,42 @@ public class Session {
 			return parameters.get(key);
 		return null;
 	}
-	
+
 	/**
 	 * 
-	 * @param key referente ao valor do parâmetro GET
+	 * @param key
+	 *            referente ao valor do parâmetro GET
 	 * @return primeiro valor da lista de valores deste parâmetro, se existir
 	 */
-	public String getValue(String key){
-		if(hasParameter(key)){
-			return parameters.get(key).get(0); 
+	public String getValue(String key) {
+		if (hasParameter(key)) {
+			return parameters.get(key).get(0);
 		}
 		return null;
 	}
 
 	public int getPage() {
 		List<String> pageValues = getValues(Constants.FixedParameters.PAGINATION);
-		return hasParameter(Constants.FixedParameters.PAGINATION) ? 
-				Integer.parseInt(pageValues.get(0)) : 1;
+		return hasParameter(Constants.FixedParameters.PAGINATION) ? Integer
+				.parseInt(pageValues.get(0)) : 1;
 	}
-	
+
 	/**
 	 * 
 	 * @return valor de order_by da URI ou "1", se não existir
 	 */
-	public String getOrderByValue(){
-		if(hasParameter(Constants.FixedParameters.ORDER_BY)){
+	public String getOrderByValue() {
+		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
 			return getValue(Constants.FixedParameters.ORDER_BY);
 		}
 		return "1";
 	}
-	
-	public String getOrderValue() throws InvalidOrderSQLParameterException{
-		if(hasParameter(Constants.FixedParameters.ORDER)){
+
+	public String getOrderValue() throws InvalidOrderSQLParameterException {
+		if (hasParameter(Constants.FixedParameters.ORDER)) {
 			String order = getValue(Constants.FixedParameters.ORDER);
-			if(Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(order.toUpperCase()))
+			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
+					order.toUpperCase()))
 				return order;
 			else
 				throw new InvalidOrderSQLParameterException(order);

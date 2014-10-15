@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;
+import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -30,7 +31,7 @@ public class LicitacaoRequest {
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public String licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException {
+			ParserConfigurationException, SAXException, IOException, ExpectedParameterNotFoundException {
 
 		Session currentSession = Session.getCurrentSession();
 
@@ -46,7 +47,7 @@ public class LicitacaoRequest {
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	public String teste() throws SQLException, InvalidFilterValueTypeException,
 			InvalidOrderSQLParameterException, ParserConfigurationException,
-			SAXException, IOException {
+			SAXException, IOException, ExpectedParameterNotFoundException {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, Integer.class, "id");

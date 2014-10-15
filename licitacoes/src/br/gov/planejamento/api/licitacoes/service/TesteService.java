@@ -22,8 +22,8 @@ public class TesteService extends Service {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("public");
 		configs.setTable("test_table");
-		configs.setResponseFields("id", "teste_string", "teste_date",
-				"teste_int", "teste_numeric", "teste_date", "teste_time");
+		configs.setResponseFields("id", "teste_string", "teste_int",
+				"teste_numeric", "teste_date", "teste_time");
 
 		return configs;
 	}
@@ -43,10 +43,10 @@ public class TesteService extends Service {
 				sb.append(entry.getValue());
 				sb.append("\",");
 			}
-			// sb.deleteCharAt(sb.lastIndexOf(","));
+			sb.deleteCharAt(sb.lastIndexOf(","));
 			sb.append("},<br>");
 		}
-		// sb.deleteCharAt(sb.lastIndexOf(","));
+		sb.deleteCharAt(sb.lastIndexOf(","));
 		sb.append("}");
 		return sb.toString();
 	}

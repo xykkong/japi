@@ -1,5 +1,8 @@
 package br.gov.planejamento.api.core.filters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.gov.planejamento.api.core.base.Filter;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.utils.StringUtils;
@@ -22,10 +25,15 @@ public class ZeroFillEqualFilter extends Filter {
 		return statement.toString();
 	}
 	@Override
-	protected String getProcessedValue(String value) {
-		StringBuilder response = new StringBuilder("0*");
-		response.append(StringUtils.removeLeftZero(value));
-		return response.toString();
+	public List<String> getValues() {
+		List<String> values = new ArrayList<String>();
+		for(String value : this.values){
+			StringBuilder response = new StringBuilder("0*");
+			response.append(StringUtils.removeLeftZero(value));
+			values.add(response.toString());
+		}
+		return values;
+		
 	}
 
 }
