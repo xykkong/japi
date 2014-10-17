@@ -3,52 +3,50 @@ package br.gov.planejamento.api.licitacoes.service;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.DataRow;
 import br.gov.planejamento.api.core.base.DatabaseData;
+import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
+import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
 public class LicitacaoService extends Service {
 
 	@Override
 	protected ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
-		configs.setSchema("dados_abertos");
-		configs.setTable("licitacao_view");
-		configs.setResponseFields("uasg", "nome_uasg", "modalidade",
-				"nome_modalidade", "numero_aviso");
+		configs.setSchema("public");
+		configs.setTable("licitacoes");
+		configs.setResponseFields("nome");
 
 		return configs;
+	}
+	
+	private ResourceList getResourceList (DatabaseData data) {
+		ResourceList resources = new ResourceList();
+		for(DataRow licitacao : data) {
+			LicitacaoResource resource = new LicitacaoResource();
+			resource.setModalidade(licitacao.get("modalidade"));
+			resource.setNomeModalidade(licitacao.get("nome"));
+			resource.setNomeUasg(licitacao.get("nomeUasg"));
+			resource.setNumeroAviso(licitacao.get("numeroAviso"));
+			resource.setUasg(licitacao.get("uasg"));
+			resources.add(resource);
+		}
+		return resources;
 	}
 
 	public String licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException {
-		DatabaseData data = getData();
-		StringBuilder sb = new StringBuilder();
-		sb.append("{");
-		for (HashMap<String, String> map : data) {
-			sb.append("{");
-			for (Entry<String, String> entry : map.entrySet()) {
-				sb.append("\"");
-				sb.append(entry.getKey());
-				sb.append("\": \"");
-				sb.append(entry.getValue());
-				sb.append("\",");
-			}
-			// sb.deleteCharAt(sb.lastIndexOf(","));
-			sb.append("},<br>");
-		}
-		// sb.deleteCharAt(sb.lastIndexOf(","));
-		sb.append("}");
-		return sb.toString();
+		return getResourceList(getData()).build();
 	}
 
 }

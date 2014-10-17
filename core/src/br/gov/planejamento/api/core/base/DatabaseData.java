@@ -6,23 +6,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class DatabaseData implements Iterable<HashMap<String, String>> {
+public class DatabaseData implements Iterable<DataRow> {
 	
-	private ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+	private ArrayList<DataRow> data = new ArrayList<DataRow>();
 
 	@Override
-	public Iterator<HashMap<String, String>> iterator() {
+	public Iterator<DataRow> iterator() {
 		return data.iterator();
 	}
 	
 	public DatabaseData(ResultSet resultSet, ServiceConfiguration configs) throws SQLException {
 		while(resultSet.next()) {
-			HashMap<String, String> row = new HashMap<String, String>();
+			DataRow row = new DataRow();
 			for(String column : configs.getResponseFields()) {
 				row.put(column, resultSet.getString(column));
 			}
 			data.add(row);
 		}
 	}
+	
+	
 	
 }

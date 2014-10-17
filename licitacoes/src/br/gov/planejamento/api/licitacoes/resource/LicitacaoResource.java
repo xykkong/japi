@@ -1,6 +1,8 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-public class LicitacaoResource {
+import br.gov.planejamento.api.core.base.Resource;
+
+public class LicitacaoResource extends Resource {
 
 	private String uasg;
 	private String nomeUasg;
@@ -8,8 +10,15 @@ public class LicitacaoResource {
 	private String nomeModalidade;
 	private String numeroAviso;
 
+	@Override
 	public String build() {
-		return "<strong>Uasg: </strong>" + this.getUasg();
+		StringBuilder sb = new StringBuilder();
+		sb.append("Uasg: " + getUasg() + "<br>");
+		sb.append("Nome Uasg: " + getNomeUasg() + "<br>");
+		sb.append("Modalidade: " + getModalidade() + "<br>");
+		sb.append("Nome Modalidade: " + getNomeModalidade() + "<br>");
+		sb.append("Numero Aviso: " + getNumeroAviso() + "<br>");
+		return sb.toString();
 	}
 
 	public String getUasg() {
