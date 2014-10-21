@@ -60,4 +60,8 @@ public abstract class Filter {
 	public void addValues(List<String> values) {
 		this.values.addAll(values);
 	}
+	
+	public List<String> getParameters() {
+		return parameters;
+	}
 }

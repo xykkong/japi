@@ -14,6 +14,7 @@ import br.gov.planejamento.api.core.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.filters.LikeFilter;
@@ -38,6 +39,12 @@ public class LicitacaoRequest {
 		currentSession.addFilter(ZeroFillEqualFilter.class, "modalidade",
 				"numero_aviso");
 		currentSession.addFilter(CaseInsensitiveLikeFilter.class, "nome_uasg");
+		
+		try{
+			currentSession.validateURIParametersUsingFilters();
+		}catch(URIParameterNotAcceptedException uex){
+			return uex.getMessage();
+		}
 
 		return service.licitacoes();
 	}

@@ -2,6 +2,7 @@ package br.gov.planejamento.api.core.base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 
 public class Session {
 
@@ -166,5 +168,19 @@ public class Session {
 	public void clear() {
 		parameters = null;
 		filters = new ArrayList<Filter>();
+	}
+
+	public void validateURIParametersUsingFilters()
+			throws URIParameterNotAcceptedException {
+		Iterator<String> iterator = parameters.keySet().iterator();
+		while (iterator.hasNext()) {
+			String parameter = iterator.next();
+			boolean foundParameter = false;
+			for (Filter filter : filters) {
+				foundParameter |= filter.getParameters().contains(parameter);
+			}
+			if(foundParameter)
+				throw new URIParameterNotAcceptedException(parameter);
+		}
 	}
 }
