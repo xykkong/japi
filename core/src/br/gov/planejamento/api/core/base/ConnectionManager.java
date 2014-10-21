@@ -19,7 +19,7 @@ public class ConnectionManager {
 			ParserConfigurationException, SAXException, IOException {
 		if (connection == null) {
 			DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
-					.getInstance("database-local-graciano-properties");
+					.getInstance("database-properties");
 			Properties connectionProps = new Properties();
 			connectionProps.put("user", loader.getUser());
 			connectionProps.put("password", loader.getPassword());

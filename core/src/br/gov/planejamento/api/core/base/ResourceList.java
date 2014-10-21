@@ -8,7 +8,7 @@ public class ResourceList extends ArrayList<Resource> {
 		StringBuilder sb = new StringBuilder();
 		for(Resource resource : this) {
 			sb.append(resource.build());
-			sb.append("<hr");
+			sb.append("<hr>");
 		}
 		return sb.toString();
 	}

@@ -2,8 +2,6 @@ package br.gov.planejamento.api.licitacoes.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -22,21 +20,22 @@ public class LicitacaoService extends Service {
 	@Override
 	protected ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
-		configs.setSchema("public");
-		configs.setTable("licitacoes");
-		configs.setResponseFields("nome");
+		configs.setSchema("dados_abertos");
+		configs.setTable("licitacao_view");
+		configs.setResponseFields("modalidade", "nome_modalidade", "nome_uasg",
+				"numero_aviso", "uasg");
 
 		return configs;
 	}
-	
-	private ResourceList getResourceList (DatabaseData data) {
+
+	private ResourceList getResourceList(DatabaseData data) {
 		ResourceList resources = new ResourceList();
-		for(DataRow licitacao : data) {
+		for (DataRow licitacao : data) {
 			LicitacaoResource resource = new LicitacaoResource();
 			resource.setModalidade(licitacao.get("modalidade"));
-			resource.setNomeModalidade(licitacao.get("nome"));
-			resource.setNomeUasg(licitacao.get("nomeUasg"));
-			resource.setNumeroAviso(licitacao.get("numeroAviso"));
+			resource.setNomeModalidade(licitacao.get("nome_modalildade"));
+			resource.setNomeUasg(licitacao.get("nome_uasg"));
+			resource.setNumeroAviso(licitacao.get("numero_aviso"));
 			resource.setUasg(licitacao.get("uasg"));
 			resources.add(resource);
 		}

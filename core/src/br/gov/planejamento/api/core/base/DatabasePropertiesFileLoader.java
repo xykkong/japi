@@ -40,8 +40,7 @@ public class DatabasePropertiesFileLoader {
 	 */
 	private DatabasePropertiesFileLoader(String filename)
 			throws ParserConfigurationException, SAXException, IOException {
-		File fXmlFile = new File(
-				"/home/matheus/workspace/japi/core/META-INF/"+filename+".xml");
+		File fXmlFile = new File(filename + ".xml");
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(fXmlFile);
@@ -90,9 +89,9 @@ public class DatabasePropertiesFileLoader {
 			this.port = eElement.getElementsByTagName("port").item(0)
 					.getTextContent();
 			System.out.println("port : " + port);
-			
-			this.databaseName = eElement.getElementsByTagName("databasename").item(0)
-					.getTextContent();
+
+			this.databaseName = eElement.getElementsByTagName("databasename")
+					.item(0).getTextContent();
 			System.out.println("databaseName : " + databaseName);
 		}
 	}
@@ -112,6 +111,7 @@ public class DatabasePropertiesFileLoader {
 	public String getUser() {
 		return user;
 	}
+
 	public String getDatabaseName() {
 		return databaseName;
 	}
