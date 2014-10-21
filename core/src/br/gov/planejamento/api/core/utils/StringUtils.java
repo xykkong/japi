@@ -11,7 +11,8 @@ public class StringUtils {
 				join.append(n.trim());
 				join.append(separator);
 			}
-			join.deleteCharAt(join.length() - 1);
+			for(int i=0; i<separator.length(); i++)
+				join.deleteCharAt(join.length() - 1);
 
 			return join.toString();
 		}

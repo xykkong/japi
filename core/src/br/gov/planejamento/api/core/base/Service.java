@@ -78,7 +78,7 @@ public abstract class Service {
 		if (whereValues.size() > 0) {
 			System.out.println("\t valores where:");
 			System.out.print("\t");
-			System.out.println(StringUtils.join(",", whereValues));
+			System.out.println(StringUtils.join(", ", whereValues));
 		} else
 			System.out.println("\tnenhum valor no where (considerado 1=1)");
 

@@ -26,8 +26,6 @@ public class LicitacaoRequest {
 
 	private LicitacaoService service = new LicitacaoService();
 
-	// TODO ver se esta constante vai ficar no requestHandler mesmo
-
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public String licitacoes() throws SQLException,
