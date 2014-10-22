@@ -1,7 +1,12 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
+import br.gov.planejamento.api.core.annotations.JSONProperties;
+import br.gov.planejamento.api.core.annotations.Properties;
+import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 
+@Properties({"uasg", "nomeUasg", "modalidade", "nomeModalidade", "numeroAviso"})
+@JSONProperties({"uasg","nomeUasg"})
 public class LicitacaoResource extends Resource {
 
 	private String uasg;
@@ -16,45 +21,40 @@ public class LicitacaoResource extends Resource {
 		sb.append("Uasg: " + getUasg() + "<br>");
 		sb.append("Nome Uasg: " + getNomeUasg() + "<br>");
 		sb.append("Modalidade: " + getModalidade() + "<br>");
-		sb.append("Nome Modalidade: " + getNomeModalidade() + "<br>");
 		sb.append("Numero Aviso: " + getNumeroAviso() + "<br>");
 		return sb.toString();
 	}
 
-	public String getUasg() {
-		return uasg;
+	public Property getUasg() {
+		return new Property("UASG", uasg);
 	}
 
 	public void setUasg(String uasg) {
 		this.uasg = uasg;
 	}
 
-	public String getNomeUasg() {
-		return nomeUasg;
+	public Property getNomeUasg() {
+		return new Property("Nome UASG", nomeUasg);
 	}
 
 	public void setNomeUasg(String nomeUasg) {
 		this.nomeUasg = nomeUasg;
 	}
 
-	public String getModalidade() {
-		return modalidade;
+	public Property getModalidade() {
+		return new Property("Modalidade", this.modalidade+" : "+this.nomeModalidade);
 	}
 
 	public void setModalidade(String modalidade) {
 		this.modalidade = modalidade;
 	}
 
-	public String getNomeModalidade() {
-		return nomeModalidade;
-	}
-
 	public void setNomeModalidade(String nomeModalidade) {
 		this.nomeModalidade = nomeModalidade;
 	}
 
-	public String getNumeroAviso() {
-		return numeroAviso;
+	public Property getNumeroAviso() {
+		return new Property("Número Aviso", numeroAviso);
 	}
 
 	public void setNumeroAviso(String numeroAviso) {
