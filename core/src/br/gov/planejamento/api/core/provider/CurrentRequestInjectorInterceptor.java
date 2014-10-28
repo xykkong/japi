@@ -26,8 +26,8 @@ public class CurrentRequestInjectorInterceptor implements PreProcessInterceptor,
 
 	@Override
 	public void postProcess(ServerResponse response) {
-		response.setGenericType(String.class);
-		response.setEntity("banana");
+/*		response.setGenericType(String.class);
+		response.setEntity("banana");*/
 	}
 	
 }

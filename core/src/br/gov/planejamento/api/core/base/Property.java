@@ -16,4 +16,8 @@ public class Property {
 	public String getValue() {
 		return value;
 	}
+	
+	public String toString(){
+		return value;
+	}
 }

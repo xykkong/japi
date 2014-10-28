@@ -42,7 +42,10 @@ public class LicitacaoResource extends Resource {
 	}
 
 	public Property getModalidade() {
-		return new Property("Modalidade", this.modalidade+" : "+this.nomeModalidade);
+		StringBuilder valueBuilder = new StringBuilder(this.modalidade);
+		valueBuilder.append(" - ");
+		valueBuilder.append(this.nomeModalidade);
+		return new Property("Modalidade", valueBuilder.toString());
 	}
 
 	public void setModalidade(String modalidade) {
