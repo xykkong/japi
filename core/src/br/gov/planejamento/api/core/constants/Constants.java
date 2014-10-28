@@ -34,5 +34,10 @@ public abstract class Constants {
 		public static final String ORDER_BY = "order_by";
 		public static final String ORDER = "order";
 		public static final String[] VALID_ORDERS = new String[]{"ASC", "DESC"};
+		public static final String[] DEFAULT_URI_PARAMETERS = new String[]{
+			"order_by",
+			"order",
+			"offset"
+		};
 	}
 }

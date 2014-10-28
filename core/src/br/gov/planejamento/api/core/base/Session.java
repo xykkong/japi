@@ -178,8 +178,11 @@ public class Session {
 			boolean foundParameter = false;
 			for (Filter filter : filters) {
 				foundParameter |= filter.getParameters().contains(parameter);
+				for (String defaultParameter : Constants.FixedParameters.DEFAULT_URI_PARAMETERS)
+					foundParameter |= filter.getParameters().contains(
+							defaultParameter);
 			}
-			if(foundParameter)
+			if (!foundParameter)
 				throw new URIParameterNotAcceptedException(parameter);
 		}
 	}
