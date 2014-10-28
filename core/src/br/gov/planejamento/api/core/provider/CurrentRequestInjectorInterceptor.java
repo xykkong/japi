@@ -15,7 +15,7 @@ import br.gov.planejamento.api.core.base.Session;
 @Provider
 @ServerInterceptor
 public class CurrentRequestInjectorInterceptor implements PreProcessInterceptor {
-
+	
 	@Override
 	public ServerResponse preProcess(HttpRequest httpRequest, ResourceMethod method) throws Failure, WebApplicationException {
 		Session.getCurrentSession().clear();
