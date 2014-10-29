@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -13,6 +14,7 @@ import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
@@ -22,10 +24,17 @@ public abstract class Service {
 	protected Session currentSession = Session.getCurrentSession();
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
+	
+	public abstract List<String> availableOrderByValues();
 
 	protected DatabaseData getData() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException {
+			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
+		currentSession.addAvailableOrderByValues(availableOrderByValues());
+		
+		String orderByValue = currentSession.getOrderByValue();
+		String orderValue = currentSession.getOrderValue();
+		
 
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
@@ -43,7 +52,10 @@ public abstract class Service {
 		sbQuery.append(" WHERE ");
 		sbQuery.append(getWhereStatement(filtersFromRequest));
 
-		sbQuery.append(" ORDER BY ?, ?");
+		sbQuery.append(" ORDER BY ");
+		sbQuery.append(orderByValue);
+		sbQuery.append(" ");
+		sbQuery.append(orderValue);
 
 		sbQuery.append(" OFFSET ?");
 
@@ -58,10 +70,6 @@ public abstract class Service {
 			index = filter.setPreparedStatementValues(pst, index);
 		}
 
-		String orderByValue = currentSession.getOrderByValue();
-		pst.setString(index++, orderByValue);
-		String orderValue = currentSession.getOrderValue();
-		pst.setString(index++, orderByValue);
 
 		int offsetValue = (currentSession.getPage() - 1)
 				* Constants.FixedParameters.VALUES_PER_PAGE;
@@ -85,6 +93,7 @@ public abstract class Service {
 		// EXECUTE
 
 		ResultSet rs = pst.executeQuery();
+		
 		DatabaseData data = new DatabaseData(rs, configs);
 		pst.close();
 
@@ -94,7 +103,6 @@ public abstract class Service {
 	private String getWhereStatement(ArrayList<Filter> filtersFromRequest) {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		for (Filter filter : filtersFromRequest) {
-			// TODO validar filtros usando available filters
 			filtersQuery.append(" AND ");
 			filtersQuery.append(filter.getStatement());
 		}

@@ -13,6 +13,7 @@ import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
@@ -25,7 +26,8 @@ import br.gov.planejamento.api.licitacoes.service.TesteService;
 @Path("/")
 public class LicitacaoRequest {
 
-	private LicitacaoService service = new LicitacaoService();
+	private LicitacaoService lService = new LicitacaoService();
+	private TesteService tService = new TesteService();
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
@@ -40,13 +42,15 @@ public class LicitacaoRequest {
 				"numero_aviso");
 		currentSession.addFilter(CaseInsensitiveLikeFilter.class, "nome_uasg");
 		
+		String response = "";
 		try{
 			currentSession.validateURIParametersUsingFilters();
-		}catch(URIParameterNotAcceptedException uex){
-			return uex.getMessage();
+			response = lService.licitacoes();
+		}catch(URIParameterNotAcceptedException | InvalidOrderByValueException ex){
+			return ex.getMessage();
 		}
-
-		return service.licitacoes();
+		
+		return response;
 	}
 
 	@GET
@@ -58,7 +62,15 @@ public class LicitacaoRequest {
 
 		currentSession.addFilter(EqualFilter.class, Integer.class, "id");
 		currentSession.addFilter(LikeFilter.class, "teste_string");
-
-		return (new TesteService()).teste();
+		
+		String response = "";
+		try{
+			currentSession.validateURIParametersUsingFilters();
+			response = tService.teste();
+		}catch(URIParameterNotAcceptedException | InvalidOrderByValueException ex){
+			return ex.getMessage();
+		}
+		
+		return response;
 	}
 }

@@ -15,19 +15,23 @@ import br.gov.planejamento.api.core.base.Session;
 
 @Provider
 @ServerInterceptor
-public class CurrentRequestInjectorInterceptor implements PreProcessInterceptor, PostProcessInterceptor {
-	
+public class CurrentRequestInjectorInterceptor implements
+		PreProcessInterceptor, PostProcessInterceptor {
+
 	@Override
-	public ServerResponse preProcess(HttpRequest httpRequest, ResourceMethod method) throws Failure, WebApplicationException {
+	public ServerResponse preProcess(HttpRequest httpRequest,
+			ResourceMethod method) throws Failure, WebApplicationException {
 		Session.getCurrentSession().clear();
-		Session.getCurrentSession().putValues(httpRequest.getUri().getQueryParameters());
+		Session.getCurrentSession().putValues(
+				httpRequest.getUri().getQueryParameters());
 		return null;
 	}
 
 	@Override
 	public void postProcess(ServerResponse response) {
-/*		response.setGenericType(String.class);
-		response.setEntity("banana");*/
+		/*
+		 * response.setGenericType(String.class); response.setEntity("banana");
+		 */
 	}
-	
+
 }

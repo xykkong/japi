@@ -10,6 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 
@@ -26,6 +27,8 @@ public class Session {
 	protected Map<String, List<String>> parameters;
 
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
+	
+	private List<String> availableOrderByValues = new ArrayList<String>();
 
 	/**
 	 * Constructor that populates the static current variable with the created
@@ -140,10 +143,14 @@ public class Session {
 	/**
 	 * 
 	 * @return valor de order_by da URI ou "1", se não existir
+	 * @throws InvalidOrderByValueException 
 	 */
-	public String getOrderByValue() {
+	public String getOrderByValue() throws InvalidOrderByValueException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
-			return getValue(Constants.FixedParameters.ORDER_BY);
+			String value = getValue(Constants.FixedParameters.ORDER_BY);
+			if(!availableOrderByValues.contains(value))
+				throw new InvalidOrderByValueException(value, availableOrderByValues);
+			return value;
 		}
 		return "1";
 	}
@@ -166,8 +173,7 @@ public class Session {
 	}
 
 	public void clear() {
-		parameters = null;
-		filters = new ArrayList<Filter>();
+		currentSession = null;
 	}
 
 	public void validateURIParametersUsingFilters()
@@ -184,5 +190,9 @@ public class Session {
 			if (!foundParameter)
 				throw new URIParameterNotAcceptedException(parameter);
 		}
+	}
+	
+	public void addAvailableOrderByValues(List<String> values) {
+		availableOrderByValues.addAll(values);
 	}
 }

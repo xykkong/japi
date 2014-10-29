@@ -2,7 +2,9 @@ package br.gov.planejamento.api.licitacoes.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,6 +15,7 @@ import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 
 public class TesteService extends Service {
@@ -30,7 +33,7 @@ public class TesteService extends Service {
 
 	public String teste() throws SQLException, InvalidFilterValueTypeException,
 			InvalidOrderSQLParameterException, ParserConfigurationException,
-			SAXException, IOException {
+			SAXException, IOException, InvalidOrderByValueException {
 		DatabaseData data = getData();
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
@@ -49,6 +52,15 @@ public class TesteService extends Service {
 		sb.deleteCharAt(sb.lastIndexOf(","));
 		sb.append("}");
 		return sb.toString();
+	}
+
+	@Override
+	public List<String> availableOrderByValues() {
+		List<String> values = new ArrayList<String>();
+		values.add("id");
+		values.add("teste_string");
+		values.add("teste_date");
+		return values;
 	}
 
 }

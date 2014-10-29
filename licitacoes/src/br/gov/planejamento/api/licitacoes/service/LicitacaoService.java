@@ -2,6 +2,9 @@ package br.gov.planejamento.api.licitacoes.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -12,6 +15,7 @@ import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
@@ -44,8 +48,17 @@ public class LicitacaoService extends Service {
 
 	public String licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException {
+			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
 		return getResourceList(getData()).build();
+	}
+
+	@Override
+	public List<String> availableOrderByValues() {
+		List<String> values = new ArrayList<String>();
+		values.add("uasg");
+		values.add("nome_modalidade");
+		values.add("numero_aviso");
+		return values;
 	}
 
 }
