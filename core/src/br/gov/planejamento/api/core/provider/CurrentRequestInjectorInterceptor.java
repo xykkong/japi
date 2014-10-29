@@ -29,9 +29,20 @@ public class CurrentRequestInjectorInterceptor implements
 
 	@Override
 	public void postProcess(ServerResponse response) {
+		String res;
 		/*
 		 * response.setGenericType(String.class); response.setEntity("banana");
 		 */
+		res = (String) response.getEntity();
+		response.setEntity("<!DOCTYPE html>"
+				+ "<html>"
+					+ "<head>"
+						+ "<meta charset='utf-8'/>"
+					+ "</head>"
+					+ "<body>"
+						+res
+					+ "</body>"
+				+ "</html>");
 	}
 
 }
