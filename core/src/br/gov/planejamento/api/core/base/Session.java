@@ -29,6 +29,8 @@ public class Session {
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
 	private List<String> availableOrderByValues = new ArrayList<String>();
+	
+	private String requestFormat = Constants.RequestFormats.HTML;
 
 	/**
 	 * Constructor that populates the static current variable with the created
@@ -194,5 +196,17 @@ public class Session {
 	
 	public void addAvailableOrderByValues(List<String> values) {
 		availableOrderByValues.addAll(values);
+	}
+	
+	public String getRequestFormat() {
+		return requestFormat;
+	}
+	
+	public void setRequestFormat(String requestFormat) {
+		this.requestFormat = requestFormat;
+	}
+	
+	public static boolean isCurrentFormat(String format) {
+		return Session.getCurrentSession().getRequestFormat().equals(format);
 	}
 }

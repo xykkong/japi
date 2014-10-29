@@ -40,4 +40,16 @@ public abstract class Constants {
 			"offset"
 		};
 	}
+	
+	public static final class RequestFormats {
+		public static final String HTML = "html";
+		public static final String JSON = "json";
+		public static final String XML = "xml";
+		public static final String CSV = "csv";
+	}
+	
+	public static final class DateFormats {
+		public static final String AMERICAN = "yyyy-MM-dd";
+		public static final String BRAZILIAN = "dd/MM/yyyy";
+	}
 }

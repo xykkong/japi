@@ -3,20 +3,22 @@ package br.gov.planejamento.api.licitacoes.service;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.DataRow;
 import br.gov.planejamento.api.core.base.DatabaseData;
+import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
+import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 
 public class TesteService extends Service {
 
@@ -30,28 +32,29 @@ public class TesteService extends Service {
 
 		return configs;
 	}
+	
+	private Resource getResource(DataRow dataRow) {
+		TesteResource resource = new TesteResource();
+		resource.setTesteDate(dataRow.get("teste_date"));
+		resource.setTesteInt(dataRow.get("teste_int"));
+		resource.setTesteNumeric(dataRow.get("teste_numeric"));
+		resource.setTesteString(dataRow.get("teste_string"));
+		resource.setTesteTime(dataRow.get("teste_time"));
+		return resource;
+	}
 
-	public String teste() throws SQLException, InvalidFilterValueTypeException,
-			InvalidOrderSQLParameterException, ParserConfigurationException,
-			SAXException, IOException, InvalidOrderByValueException {
-		DatabaseData data = getData();
-		StringBuilder sb = new StringBuilder();
-		sb.append("{");
-		for (HashMap<String, String> map : data) {
-			sb.append("{");
-			for (Entry<String, String> entry : map.entrySet()) {
-				sb.append("\"");
-				sb.append(entry.getKey());
-				sb.append("\": \"");
-				sb.append(entry.getValue());
-				sb.append("\",");
-			}
-			sb.deleteCharAt(sb.lastIndexOf(","));
-			sb.append("},<br>");
+	private ResourceList getResourceList(DatabaseData data) {
+		ResourceList resources = new ResourceList();
+		for (DataRow teste : data) {
+			resources.add(getResource(teste));
 		}
-		sb.deleteCharAt(sb.lastIndexOf(","));
-		sb.append("}");
-		return sb.toString();
+		return resources;
+	}
+
+	public ResourceList teste() throws SQLException,
+			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
+			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
+		return getResourceList(getData());
 	}
 
 	@Override

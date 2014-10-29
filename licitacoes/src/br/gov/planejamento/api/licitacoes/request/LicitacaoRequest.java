@@ -9,6 +9,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
@@ -55,7 +57,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	public String teste() throws SQLException, InvalidFilterValueTypeException,
+	public ResourceList teste() throws SQLException, InvalidFilterValueTypeException,
 			InvalidOrderSQLParameterException, ParserConfigurationException,
 			SAXException, IOException, ExpectedParameterNotFoundException {
 		Session currentSession = Session.getCurrentSession();
@@ -63,14 +65,13 @@ public class LicitacaoRequest {
 		currentSession.addFilter(EqualFilter.class, Integer.class, "id");
 		currentSession.addFilter(LikeFilter.class, "teste_string");
 		
-		String response = "";
 		try{
 			currentSession.validateURIParametersUsingFilters();
-			response = tService.teste();
+			return tService.teste();
 		}catch(URIParameterNotAcceptedException | InvalidOrderByValueException ex){
-			return ex.getMessage();
+			//return ex.getMessage();
 		}
 		
-		return response;
+		return null;
 	}
 }

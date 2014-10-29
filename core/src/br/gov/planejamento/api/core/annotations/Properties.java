@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface Properties {
 	
 	public String[] value() default { };
+	
+	public String extension() default "";
 }

@@ -21,7 +21,6 @@ import br.gov.planejamento.api.core.utils.StringUtils;
 public abstract class Service {
 
 	protected ServiceConfiguration configs = getServiceConfiguration();
-	protected Session currentSession = Session.getCurrentSession();
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
 	
@@ -30,6 +29,8 @@ public abstract class Service {
 	protected DatabaseData getData() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
+		
+		Session currentSession = Session.getCurrentSession();
 		currentSession.addAvailableOrderByValues(availableOrderByValues());
 		
 		String orderByValue = currentSession.getOrderByValue();
