@@ -13,23 +13,43 @@ import org.xml.sax.SAXException;
 public class ConnectionManager {
 
 	private static Connection connection = null;
+	
+	/**
+	 * Este método deve ser private, está como public para podermos fazer testes,
+	 * veja mais nas classes de service do módulo de licitações 
+	 * 
+	 * @param filename
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public static void loadConfiguration(String filename)
+			throws ParserConfigurationException, SAXException, IOException,
+			SQLException {
+		DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
+				.getInstance(filename);
+		Properties connectionProps = new Properties();
+		connectionProps.put("user", loader.getUser());
+		connectionProps.put("password", loader.getPassword());
 
+		String connectionString = "jdbc:postgresql://" + loader.getUrl() + ":"
+				+ loader.getPort() + "/" + loader.getDatabaseName();
+		connection = DriverManager.getConnection(connectionString,
+				connectionProps);
+	}
+	
+	/**
+	 * Este método não deveria existir, da mesma maneira que o método acima deveria ser private 
+	 */
+	public static void removeConfiguration(){
+		connection = null;
+	}
 
 	public static Connection getConnection() throws SQLException,
 			ParserConfigurationException, SAXException, IOException {
-		if (connection == null) {
-			DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
-					.getInstance("database-properties");
-			Properties connectionProps = new Properties();
-			connectionProps.put("user", loader.getUser());
-			connectionProps.put("password", loader.getPassword());
-
-			String connectionString = "jdbc:postgresql://" + loader.getUrl()
-					+ ":" + loader.getPort() + "/" + loader.getDatabaseName();
-			connection = DriverManager.getConnection(connectionString,
-					connectionProps);
-		}
-
+		if (connection == null)
+			loadConfiguration("database-properties");
 		return connection;
 	}
 }

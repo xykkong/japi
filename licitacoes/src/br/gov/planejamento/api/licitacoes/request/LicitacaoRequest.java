@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.ConnectionManager;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
@@ -36,7 +37,6 @@ public class LicitacaoRequest {
 	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException, ExpectedParameterNotFoundException {
-
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, String.class, "uasg");

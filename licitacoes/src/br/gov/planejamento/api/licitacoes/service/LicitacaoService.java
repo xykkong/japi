@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.ConnectionManager;
 import br.gov.planejamento.api.core.base.DataRow;
 import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.ResourceList;
@@ -49,6 +50,8 @@ public class LicitacaoService extends Service {
 	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
+		ConnectionManager.removeConfiguration();
+		ConnectionManager.loadConfiguration("database-properties");
 		return getResourceList(getData());
 	}
 

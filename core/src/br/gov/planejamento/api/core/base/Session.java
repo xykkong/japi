@@ -206,7 +206,7 @@ public class Session {
 		this.requestFormat = requestFormat;
 	}
 	
-	public static boolean isCurrentFormat(String format) {
+	public boolean isCurrentFormat(String format) {
 		return Session.getCurrentSession().getRequestFormat().equals(format);
 	}
 }

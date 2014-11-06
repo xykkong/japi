@@ -56,7 +56,7 @@ public class TesteResource extends Resource {
 		String name = "Nascimento";
 		String value = testeDate;
 		
-		if(Session.isCurrentFormat(RequestFormats.HTML)) {
+		if(Session.getCurrentSession().isCurrentFormat(RequestFormats.HTML)) {
 			SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
 			Date dt = formatter.parse(value);
 			value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
