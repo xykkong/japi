@@ -33,7 +33,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	public String licitacoes() throws SQLException,
+	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException, ExpectedParameterNotFoundException {
 
@@ -43,13 +43,13 @@ public class LicitacaoRequest {
 		currentSession.addFilter(ZeroFillEqualFilter.class, "modalidade",
 				"numero_aviso");
 		currentSession.addFilter(CaseInsensitiveLikeFilter.class, "nome_uasg");
+		ResourceList response = null;
 		
-		String response = "";
 		try{
 			currentSession.validateURIParametersUsingFilters();
 			response = lService.licitacoes();
 		}catch(URIParameterNotAcceptedException | InvalidOrderByValueException ex){
-			return ex.getMessage();
+			ex.printStackTrace();
 		}
 		
 		return response;

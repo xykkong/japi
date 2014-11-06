@@ -46,10 +46,10 @@ public class LicitacaoService extends Service {
 		return resources;
 	}
 
-	public String licitacoes() throws SQLException,
+	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
-		return getResourceList(getData()).build();
+		return getResourceList(getData());
 	}
 
 	@Override
