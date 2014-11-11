@@ -9,8 +9,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import br.gov.planejamento.api.core.base.ConnectionManager;
-import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;

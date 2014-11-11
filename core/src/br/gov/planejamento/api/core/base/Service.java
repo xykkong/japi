@@ -42,38 +42,46 @@ public abstract class Service {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<Filter> filtersFromRequest = currentSession.getFilters();
 
-		// QUERY
+		// QUERYS
+		
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
 		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
+		
+		StringBuilder sbCountQuery = new StringBuilder("SELECT COUNT(*) AS quantity ");
 
-		sbQuery.append(" FROM ");
-		sbQuery.append(configs.getSchema());
-		sbQuery.append(".");
-		sbQuery.append(configs.getTable());
+		StringBuilder sbQueryGeneric = new StringBuilder(" FROM ");
+		sbQueryGeneric.append(configs.getSchema());
+		sbQueryGeneric.append(".");
+		sbQueryGeneric.append(configs.getTable());
 
-		sbQuery.append(" WHERE ");
-		sbQuery.append(getWhereStatement(filtersFromRequest));
+		sbQueryGeneric.append(" WHERE ");
+		sbQueryGeneric.append(getWhereStatement(filtersFromRequest));
 
+		sbQuery.append(sbQueryGeneric);
+		sbCountQuery.append(sbQueryGeneric);
+		
 		sbQuery.append(" ORDER BY ");
 		sbQuery.append(orderByValue);
 		sbQuery.append(" ");
 		sbQuery.append(orderValue);
-
+		
 		sbQuery.append(" OFFSET ?");
 
 		sbQuery.append(" LIMIT ");
 		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
 
-		PreparedStatement pst = connection.prepareStatement(sbQuery.toString());
+		PreparedStatement pstQuery = connection.prepareStatement(sbQuery.toString());
+		PreparedStatement pstCount = connection.prepareStatement(sbCountQuery.toString());
 
 		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
 		int index = 1;
 		for (Filter filter : filtersFromRequest) {
-			index = filter.setPreparedStatementValues(pst, index);
+			index = filter.setPreparedStatementValues(pstQuery, index);
+			index = filter.setPreparedStatementValues(pstCount, 1);
 		}
 
 		int offsetValue = currentSession.getOffsetValue();
-		pst.setInt(index++, offsetValue);
+		pstQuery.setInt(index++, offsetValue);
 
 		// DEBUG
 		System.out.println("Query executada:");
@@ -92,11 +100,22 @@ public abstract class Service {
 
 		// EXECUTE
 
-		ResultSet rs = pst.executeQuery();
+		ResultSet rs = pstQuery.executeQuery();
 
 		DatabaseData data = new DatabaseData(rs, configs);
-		pst.close();
-
+		pstQuery.close();
+		
+		rs = pstCount.executeQuery();
+		
+		int count = 0;
+		if(rs.next()){
+			count = rs.getInt("quantity");
+			//DEBUG count
+			System.out.println("quantity " + count);
+		}
+		data.setCount(count);
+		pstCount.close();
+		
 		return data;
 	}
 
