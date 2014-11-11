@@ -10,6 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
@@ -24,7 +25,7 @@ public class Session {
 	/**
 	 * All parameters sent in querystring
 	 */
-	protected Map<String, List<String>> parameters;
+	private Map<String, List<String>> parameters;
 
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
@@ -136,12 +137,6 @@ public class Session {
 		return null;
 	}
 
-	public int getPage() {
-		List<String> pageValues = getValues(Constants.FixedParameters.PAGINATION);
-		return hasParameter(Constants.FixedParameters.PAGINATION) ? Integer
-				.parseInt(pageValues.get(0)) : 1;
-	}
-
 	/**
 	 * 
 	 * @return valor de order_by da URI ou "1", se não existir
@@ -167,6 +162,20 @@ public class Session {
 				throw new InvalidOrderSQLParameterException(order);
 		}
 		return "ASC";
+	}
+	
+	public int getOffsetValue() throws InvalidOffsetValueException {
+		if(hasParameter(Constants.FixedParameters.OFFSET)){
+			String sOffset = "";
+			try{
+				sOffset = getValue(Constants.FixedParameters.OFFSET); 
+				int offset = Integer.parseInt(sOffset);
+				return offset;
+			}catch(NumberFormatException ex){
+				throw new InvalidOffsetValueException(sOffset);
+			}
+		}
+		return 0;
 	}
 
 	public boolean hasParameter(String key) {

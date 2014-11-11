@@ -16,6 +16,7 @@ import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
@@ -49,7 +50,8 @@ public class LicitacaoService extends Service {
 
 	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
+			ParserConfigurationException, SAXException, IOException,
+			InvalidOrderByValueException, InvalidOffsetValueException {
 		ConnectionManager.removeConfiguration();
 		ConnectionManager.loadConfiguration("database-properties");
 		return getResourceList(getData());

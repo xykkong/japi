@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.utils.StringUtils;
@@ -23,19 +24,19 @@ public abstract class Service {
 	protected ServiceConfiguration configs = getServiceConfiguration();
 
 	protected abstract ServiceConfiguration getServiceConfiguration();
-	
+
 	public abstract List<String> availableOrderByValues();
 
 	protected DatabaseData getData() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
-		
+			ParserConfigurationException, SAXException, IOException,
+			InvalidOrderByValueException, InvalidOffsetValueException {
+
 		Session currentSession = Session.getCurrentSession();
 		currentSession.addAvailableOrderByValues(availableOrderByValues());
-		
+
 		String orderByValue = currentSession.getOrderByValue();
 		String orderValue = currentSession.getOrderValue();
-		
 
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
@@ -71,9 +72,7 @@ public abstract class Service {
 			index = filter.setPreparedStatementValues(pst, index);
 		}
 
-
-		int offsetValue = (currentSession.getPage() - 1)
-				* Constants.FixedParameters.VALUES_PER_PAGE;
+		int offsetValue = currentSession.getOffsetValue();
 		pst.setInt(index++, offsetValue);
 
 		// DEBUG
@@ -94,7 +93,7 @@ public abstract class Service {
 		// EXECUTE
 
 		ResultSet rs = pst.executeQuery();
-		
+
 		DatabaseData data = new DatabaseData(rs, configs);
 		pst.close();
 
@@ -110,7 +109,8 @@ public abstract class Service {
 		return filtersQuery.toString();
 	}
 
-	private ArrayList<String> getWhereValues(ArrayList<Filter> filtersFromRequest) {
+	private ArrayList<String> getWhereValues(
+			ArrayList<Filter> filtersFromRequest) {
 		ArrayList<String> wheres = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
 			wheres.addAll(filter.getValues());

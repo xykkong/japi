@@ -17,6 +17,7 @@ import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.licitacoes.resource.TesteResource;
@@ -33,7 +34,7 @@ public class TesteService extends Service {
 
 		return configs;
 	}
-	
+
 	private Resource getResource(DataRow dataRow) {
 		TesteResource resource = new TesteResource();
 		resource.setTesteDate(dataRow.get("teste_date"));
@@ -54,9 +55,11 @@ public class TesteService extends Service {
 
 	public ResourceList teste() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
+			ParserConfigurationException, SAXException, IOException,
+			InvalidOrderByValueException, InvalidOffsetValueException {
 		ConnectionManager.removeConfiguration();
-		ConnectionManager.loadConfiguration("database-local-graciano-properties");
+		ConnectionManager
+				.loadConfiguration("database-local-graciano-properties");
 		return getResourceList(getData());
 	}
 
