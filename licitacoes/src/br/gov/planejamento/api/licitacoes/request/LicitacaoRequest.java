@@ -54,7 +54,7 @@ public class LicitacaoRequest {
 		
 		return response;
 	}
-
+	
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	public ResourceList teste() throws SQLException, InvalidFilterValueTypeException,
@@ -62,7 +62,7 @@ public class LicitacaoRequest {
 			SAXException, IOException, ExpectedParameterNotFoundException {
 		Session currentSession = Session.getCurrentSession();
 
-		currentSession.addFilter(EqualFilter.class, Integer.class, "id");
+		currentSession.addFilter(EqualFilter.class, Integer.class, "teste_int");
 		currentSession.addFilter(LikeFilter.class, "teste_string");
 		
 		try{
