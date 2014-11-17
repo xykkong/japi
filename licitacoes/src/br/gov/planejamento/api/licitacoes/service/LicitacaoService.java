@@ -9,12 +9,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.ConnectionManager;
 import br.gov.planejamento.api.core.base.DataRow;
 import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
@@ -46,10 +48,13 @@ public class LicitacaoService extends Service {
 		return resources;
 	}
 
-	public String licitacoes() throws SQLException,
+	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException, InvalidOrderByValueException {
-		return getResourceList(getData()).build();
+			ParserConfigurationException, SAXException, IOException,
+			InvalidOrderByValueException, InvalidOffsetValueException {
+		ConnectionManager.removeConfiguration();
+		ConnectionManager.loadConfiguration("database-properties");
+		return getResourceList(getData());
 	}
 
 	@Override

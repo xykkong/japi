@@ -83,15 +83,16 @@ public class ServerProcessInterceptor implements
 			Class<? extends Resource> resourceClass = resource.getClass();
 			String[] propertiesNames;
 			
-			List<Annotation> annotations = Arrays.asList(resourceClass.getAnnotations());	
+			List<Annotation> annotations = Arrays.asList(resourceClass.getAnnotations());
+			Session currentSession = Session.getCurrentSession();
 			
-			if(annotations.contains(HTMLProperties.class) && Session.isCurrentFormat(RequestFormats.HTML)) {
+			if(annotations.contains(HTMLProperties.class) && currentSession.isCurrentFormat(RequestFormats.HTML)) {
 				propertiesNames = resourceClass.getAnnotation(HTMLProperties.class).value();
-			} else if(annotations.contains(JSONProperties.class) && Session.isCurrentFormat(RequestFormats.JSON)) {
+			} else if(annotations.contains(JSONProperties.class) && currentSession.isCurrentFormat(RequestFormats.JSON)) {
 				propertiesNames = resourceClass.getAnnotation(JSONProperties.class).value();
-			} else if(annotations.contains(XMLProperties.class) && Session.isCurrentFormat(RequestFormats.XML)) {
+			} else if(annotations.contains(XMLProperties.class) && currentSession.isCurrentFormat(RequestFormats.XML)) {
 				propertiesNames = resourceClass.getAnnotation(XMLProperties.class).value();
-			} else if(annotations.contains(CSVProperties.class) && Session.isCurrentFormat(RequestFormats.CSV)) {
+			} else if(annotations.contains(CSVProperties.class) && currentSession.isCurrentFormat(RequestFormats.CSV)) {
 				propertiesNames = resourceClass.getAnnotation(CSVProperties.class).value();
 			} else {
 				propertiesNames = resourceClass.getAnnotation(Properties.class).value();
