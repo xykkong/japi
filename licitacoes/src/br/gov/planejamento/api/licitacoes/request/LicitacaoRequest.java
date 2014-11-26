@@ -9,6 +9,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.annotations.DocDescription;
+import br.gov.planejamento.api.core.annotations.DocParameterField;
 import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.LicitacaoConstants;
@@ -55,13 +57,18 @@ public class LicitacaoRequest {
 
 		return response;
 	}
-	
+
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	public ResourceList teste() throws SQLException,
-			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
-			ParserConfigurationException, SAXException, IOException,
-			ExpectedParameterNotFoundException, InvalidOffsetValueException {
+	@DocDescription("Lista de pessoas da tabela de testes")
+	public ResourceList teste(
+			@DocParameterField(name = "idade", required = false, description = "Idade da pessoa") String testeInt,
+			@DocParameterField(name = "nome", required = false, description = "Nome da pessoa") String testeString
+			)
+			throws SQLException, InvalidFilterValueTypeException,
+			InvalidOrderSQLParameterException, ParserConfigurationException,
+			SAXException, IOException, ExpectedParameterNotFoundException,
+			InvalidOffsetValueException {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, Integer.class, "teste_int");

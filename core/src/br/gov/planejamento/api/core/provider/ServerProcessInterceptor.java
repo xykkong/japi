@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.provider;
 
-import java.io.BufferedWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
@@ -23,7 +22,6 @@ import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
-import au.com.bytecode.opencsv.CSVWriter;
 import br.gov.planejamento.api.core.annotations.CSVProperties;
 import br.gov.planejamento.api.core.annotations.HTMLProperties;
 import br.gov.planejamento.api.core.annotations.JSONProperties;
@@ -66,6 +64,7 @@ public class ServerProcessInterceptor implements
 		}
 		
 		Session.getCurrentSession().setRequestFormat(requestFormat);
+		Session.getCurrentSession().setRelativePath(StringUtils.getRelativePath(pathSegments));
 		
 		return null;
 	}

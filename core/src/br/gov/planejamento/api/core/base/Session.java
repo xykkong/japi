@@ -33,6 +33,8 @@ public class Session {
 	
 	private String requestFormat = Constants.RequestFormats.HTML;
 
+	private String relativePath;
+
 	/**
 	 * Constructor that populates the static current variable with the created
 	 * Request
@@ -217,5 +219,13 @@ public class Session {
 	
 	public boolean isCurrentFormat(String format) {
 		return Session.getCurrentSession().getRequestFormat().equals(format);
+	}
+
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
+	}
+	
+	public String getRelativePath() {
+		return relativePath;
 	}
 }
