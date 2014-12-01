@@ -3,6 +3,7 @@
 	<name>docs</name>
 	<comment></comment>
 	<projects>
+		<project>licitacoes</project>
 		<project>core</project>
 	</projects>
 	<buildSpec>

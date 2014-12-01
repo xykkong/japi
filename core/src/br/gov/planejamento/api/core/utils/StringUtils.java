@@ -44,31 +44,4 @@ public class StringUtils {
 	public static String capitalize(String word) {
 		return Character.toUpperCase(word.charAt(0)) + word.substring(1);
 	}
-
-	/**
-	 * 
-	 * @param pathSegments
-	 * @return uma string concatenada de todos os segmentos menos o primeiro
-	 */	
-	public static String getRelativePath(List<PathSegment> pathSegments) {
-		StringBuilder returnStringBuilder = new StringBuilder();
-		for (int i = 1; i < pathSegments.size() - 1; i++) {
-			returnStringBuilder.append(pathSegments.get(i).getPath());
-		}
-		returnStringBuilder.append(allButLastSplitOf(
-				pathSegments.get(pathSegments.size() - 1).getPath(), "."));
-		return returnStringBuilder.toString();
-	}
-
-	public static String allButLastSplitOf(String text, String regex) {
-		String[] segments = text.split(regex);
-		if (segments.length <= 1) {
-			return "";
-		}
-		StringBuilder returnStringBuilder = new StringBuilder();
-		for (int i = 0; i < segments.length - 1; i++) {
-			returnStringBuilder.append(segments[i]);
-		}
-		return returnStringBuilder.toString();
-	}
 }

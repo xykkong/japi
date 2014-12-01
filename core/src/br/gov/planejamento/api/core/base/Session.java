@@ -33,7 +33,7 @@ public class Session {
 	
 	private String requestFormat = Constants.RequestFormats.HTML;
 
-	private String relativePath;
+	private String path;
 
 	/**
 	 * Constructor that populates the static current variable with the created
@@ -221,11 +221,11 @@ public class Session {
 		return Session.getCurrentSession().getRequestFormat().equals(format);
 	}
 
-	public void setRelativePath(String relativePath) {
-		this.relativePath = relativePath;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
-	public String getRelativePath() {
-		return relativePath;
+	public String getPath() {
+		return path;
 	}
 }

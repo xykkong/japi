@@ -64,13 +64,21 @@ public class ServerProcessInterceptor implements
 		}
 		
 		Session.getCurrentSession().setRequestFormat(requestFormat);
-		Session.getCurrentSession().setRelativePath(StringUtils.getRelativePath(pathSegments));
-		
+		Session.getCurrentSession().setPath(httpRequest.getUri().getAbsolutePath().getPath());
+		System.out.println(Session.getCurrentSession().getPath());
 		return null;
 	}
 
 	@Override
 	public void postProcess(ServerResponse response) {
+		String firstPathSegment = Session.getCurrentSession().getPath().split("/")[1];
+		//TODO usar constantes
+		if(!firstPathSegment.equals("docs"))
+			interceptJapiResource(response);
+		
+	}
+	
+	private void interceptJapiResource(ServerResponse response){
 		ResourceList resourceList = (ResourceList) response.getEntity();
 		response.setGenericType(String.class);
 		
@@ -125,7 +133,6 @@ public class ServerProcessInterceptor implements
 				response.setEntity(getCSV(resourceMapList));
 				break;
 		}
-		
 	}
 	
 	private String getHTML(ArrayList<HashMap<String, Property>> resourceList) {
