@@ -10,4 +10,13 @@
     <servlet-name>JAX-RS Servlet</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
 </web-app>
