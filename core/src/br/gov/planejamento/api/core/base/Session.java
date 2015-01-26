@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;

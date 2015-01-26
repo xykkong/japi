@@ -9,12 +9,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import br.gov.planejamento.api.core.base.ConnectionManager;
-import br.gov.planejamento.api.core.base.DataRow;
-import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.ResourceList;
-import br.gov.planejamento.api.core.base.Service;
-import br.gov.planejamento.api.core.base.ServiceConfiguration;
+import br.gov.planejamento.api.core.database.ConnectionManager;
+import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.database.DatabaseData;
+import br.gov.planejamento.api.core.database.Service;
+import br.gov.planejamento.api.core.database.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;

@@ -2,8 +2,8 @@ package br.gov.planejamento.api.core.filters;
 
 import java.util.List;
 
-import br.gov.planejamento.api.core.base.Filter;
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.database.Filter;
 
 public class EqualFilter extends Filter {
 

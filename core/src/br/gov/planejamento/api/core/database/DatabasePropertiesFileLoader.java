@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.core.base;
+package br.gov.planejamento.api.core.database;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;

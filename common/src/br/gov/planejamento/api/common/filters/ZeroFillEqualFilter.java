@@ -1,10 +1,10 @@
-package br.gov.planejamento.api.core.filters;
+package br.gov.planejamento.api.common.filters;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.planejamento.api.core.base.Filter;
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class ZeroFillEqualFilter extends Filter {

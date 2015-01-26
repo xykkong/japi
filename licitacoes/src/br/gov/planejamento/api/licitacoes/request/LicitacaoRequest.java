@@ -9,11 +9,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.common.constants.LicitacaoConstants;
+import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.core.annotations.DocDescription;
 import br.gov.planejamento.api.core.annotations.DocParameterField;
 import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
-import br.gov.planejamento.api.core.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
@@ -23,7 +24,6 @@ import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.filters.LikeFilter;
-import br.gov.planejamento.api.core.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 import br.gov.planejamento.api.licitacoes.service.TesteService;
 
@@ -33,7 +33,7 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 	private TesteService tService = new TesteService();
 
-	@GET
+	@GET	
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,

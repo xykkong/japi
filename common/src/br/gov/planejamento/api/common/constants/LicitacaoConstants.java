@@ -1,4 +1,6 @@
-package br.gov.planejamento.api.core.constants;
+package br.gov.planejamento.api.common.constants;
+
+import br.gov.planejamento.api.core.constants.Constants;
 
 public abstract class LicitacaoConstants {
 
@@ -26,7 +28,7 @@ public abstract class LicitacaoConstants {
 	}
 	
 	public static String getURI(String mirror) {
-		return Constants.Modules.LICITACOES + mirror;
+		return CommonConstants.Modules.LICITACOES + mirror;
 	}
 	
 }
