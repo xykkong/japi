@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 
 public class CaseInsensitiveLikeFilter extends Filter {
@@ -13,10 +14,10 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();
 		Session currentSession = Session.getCurrentSession();
-		for(String parameter : parameters){
-			int numberOfValues = currentSession.getValues(parameter).size();
+		for(DatabaseAlias parameter : parametersAliases){
+			int numberOfValues = currentSession.getValues(parameter.getUriName()).size();
 			statement.append("LOWER( ");
-			statement.append(parameter);
+			statement.append(parameter.getDbName());
 			statement.append(" )");
 			for (int i=0; i<numberOfValues; i++) {
 				statement.append(" like ? ");				

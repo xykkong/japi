@@ -15,7 +15,9 @@ import br.gov.planejamento.api.core.annotations.DocDescription;
 import br.gov.planejamento.api.core.annotations.DocParameterField;
 import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
+import br.gov.planejamento.api.core.exceptions.InvalidArgToAddFilter;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
@@ -38,7 +40,7 @@ public class LicitacaoRequest {
 	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException,
-			ExpectedParameterNotFoundException, InvalidOffsetValueException {
+			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, String.class, "uasg");
@@ -68,7 +70,7 @@ public class LicitacaoRequest {
 			throws SQLException, InvalidFilterValueTypeException,
 			InvalidOrderSQLParameterException, ParserConfigurationException,
 			SAXException, IOException, ExpectedParameterNotFoundException,
-			InvalidOffsetValueException {
+			InvalidOffsetValueException, InvalidArgToAddFilter {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, Integer.class, "teste_int");
