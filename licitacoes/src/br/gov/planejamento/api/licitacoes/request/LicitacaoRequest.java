@@ -74,7 +74,7 @@ public class LicitacaoRequest {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, Integer.class, "teste_int");
-		currentSession.addFilter(LikeFilter.class, "teste_string");
+		currentSession.addFilter(CaseInsensitiveLikeFilter.class, "teste_string");
 
 		try {
 			currentSession.validateURIParametersUsingFilters();

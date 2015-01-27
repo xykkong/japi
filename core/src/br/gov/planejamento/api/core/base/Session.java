@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
@@ -66,7 +67,7 @@ public class Session {
 				for (String parameter : parameterList) {
 					if (hasParameter(parameter)) {
 						availableParameters.add(parameter);
-						filter.addParameter(parameter);
+						filter.addParameterAlias(new DatabaseAlias(parameter));
 						filter.addValues(currentSession.getValues(parameter));
 						filter.setValueType(valueType);
 					} else {
@@ -197,7 +198,7 @@ public class Session {
 			String parameter = iterator.next();
 			boolean foundParameter = false;
 			for (Filter filter : filters) {
-				foundParameter |= filter.getParameters().contains(parameter);
+				foundParameter |= filter.getUriParameters().contains(parameter);
 			}
 			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
 						parameter);
