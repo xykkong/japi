@@ -43,10 +43,11 @@ public class LicitacaoRequest {
 			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter {
 		Session currentSession = Session.getCurrentSession();
 
-		currentSession.addFilter(EqualFilter.class, String.class, "uasg");
-		currentSession.addFilter(ZeroFillEqualFilter.class, "modalidade",
-				"numero_aviso");
-		currentSession.addFilter(CaseInsensitiveLikeFilter.class, "nome_uasg");
+		currentSession.addFilter(EqualFilter.class, String.class, new DatabaseAlias("uasg"));
+		currentSession.addFilter(ZeroFillEqualFilter.class,
+				new DatabaseAlias("modalidade"),
+				new DatabaseAlias("numero_aviso"));
+		currentSession.addFilter(CaseInsensitiveLikeFilter.class, new DatabaseAlias("nome_uasg"));
 		ResourceList response = null;
 
 		try {
@@ -73,15 +74,15 @@ public class LicitacaoRequest {
 			InvalidOffsetValueException, InvalidArgToAddFilter {
 		Session currentSession = Session.getCurrentSession();
 
-		currentSession.addFilter(EqualFilter.class, Integer.class, "teste_int");
-		currentSession.addFilter(CaseInsensitiveLikeFilter.class, "teste_string");
+		currentSession.addFilter(EqualFilter.class, Integer.class, new DatabaseAlias("teste_int"));
+		currentSession.addFilter(LikeFilter.class, new DatabaseAlias("teste_string", "nome"));
 
 		try {
 			currentSession.validateURIParametersUsingFilters();
 			return tService.teste();
 		} catch (URIParameterNotAcceptedException
 				| InvalidOrderByValueException ex) {
-			// return ex.getMessage();
+			ex.printStackTrace();
 		}
 
 		return null;

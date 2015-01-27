@@ -16,7 +16,7 @@ public class LikeFilter extends Filter {
 		Session currentSession = Session.getCurrentSession();
 		for(DatabaseAlias parameterAlias : parametersAliases){
 			int numberOfValues = currentSession.getValues(parameterAlias.getUriName()).size();
-			statement.append(parameterAlias.getUriName());
+			statement.append(parameterAlias.getDbName());
 			for (int i=0; i<numberOfValues; i++) {
 				statement.append(" like ? ");				
 			}

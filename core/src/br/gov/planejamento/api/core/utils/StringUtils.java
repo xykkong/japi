@@ -25,7 +25,7 @@ public class StringUtils {
 		if (list.size() > 0) {
 			StringBuilder join = new StringBuilder();
 			for (DatabaseAlias n : list) {
-				join.append("{ URI name: ");
+				join.append("\t{ URI name: ");
 				join.append(n.getUriName());
 				join.append(", DB name: ");
 				join.append(n.getUriName());
