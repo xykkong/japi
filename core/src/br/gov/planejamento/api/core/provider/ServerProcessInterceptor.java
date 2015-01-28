@@ -33,6 +33,7 @@ import br.gov.planejamento.api.core.base.ResourceList;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 import com.google.gson.Gson;
@@ -71,7 +72,14 @@ public class ServerProcessInterceptor implements
 
 	@Override
 	public void postProcess(ServerResponse response) {
-		String firstPathSegment = Session.getCurrentSession().getPath().split("/")[1];
+		Session currentSession = Session.getCurrentSession();
+		String firstPathSegment = currentSession.getPath().split("/")[1];
+		try {
+			currentSession.validateURIParametersUsingFilters();
+		} catch (URIParameterNotAcceptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//TODO usar constantes
 		if(!firstPathSegment.equals("docs"))
 			interceptJapiResource(response);

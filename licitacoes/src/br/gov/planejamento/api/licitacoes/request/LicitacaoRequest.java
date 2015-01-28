@@ -40,7 +40,7 @@ public class LicitacaoRequest {
 	public ResourceList licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException,
-			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter {
+			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter, InvalidOrderByValueException {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, String.class, new DatabaseAlias("uasg"));
@@ -49,14 +49,7 @@ public class LicitacaoRequest {
 				new DatabaseAlias("numero_aviso"));
 		currentSession.addFilter(CaseInsensitiveLikeFilter.class, new DatabaseAlias("nome_uasg"));
 		ResourceList response = null;
-
-		try {
-			currentSession.validateURIParametersUsingFilters();
-			response = lService.licitacoes();
-		} catch (URIParameterNotAcceptedException
-				| InvalidOrderByValueException ex) {
-			ex.printStackTrace();
-		}
+		response = lService.licitacoes();
 
 		return response;
 	}
@@ -71,20 +64,13 @@ public class LicitacaoRequest {
 			throws SQLException, InvalidFilterValueTypeException,
 			InvalidOrderSQLParameterException, ParserConfigurationException,
 			SAXException, IOException, ExpectedParameterNotFoundException,
-			InvalidOffsetValueException, InvalidArgToAddFilter {
+			InvalidOffsetValueException, InvalidArgToAddFilter,
+			InvalidOrderByValueException {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(EqualFilter.class, Integer.class, new DatabaseAlias("teste_int"));
 		currentSession.addFilter(LikeFilter.class, new DatabaseAlias("teste_string", "nome"));
 
-		try {
-			currentSession.validateURIParametersUsingFilters();
-			return tService.teste();
-		} catch (URIParameterNotAcceptedException
-				| InvalidOrderByValueException ex) {
-			ex.printStackTrace();
-		}
-
-		return null;
+		return tService.teste();
 	}
 }
