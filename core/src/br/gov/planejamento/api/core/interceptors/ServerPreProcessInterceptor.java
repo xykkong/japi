@@ -16,6 +16,7 @@ import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 @Provider
@@ -41,6 +42,14 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		path = FilenameUtils.removeExtension(path);
 		Session.getCurrentSession().setPath(path);
 		System.out.println(Session.getCurrentSession().getPath());
+		
+		try {
+			Session.getCurrentSession().validateURIParametersUsingFilters();
+		} catch (URIParameterNotAcceptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 

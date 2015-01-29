@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import br.gov.planejamento.api.core.base.ResourceList;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.ConnectionManager;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
@@ -34,8 +34,8 @@ public class LicitacaoService extends Service {
 		return configs;
 	}
 
-	private ResourceList getResourceList(DatabaseData data) {
-		ResourceList resources = new ResourceList();
+	private Response getResourceList(DatabaseData data) {
+		Response resources = new Response();
 		for (DataRow licitacao : data) {
 			LicitacaoResource resource = new LicitacaoResource();
 			resource.setModalidade(licitacao.get("modalidade"));
@@ -48,7 +48,7 @@ public class LicitacaoService extends Service {
 		return resources;
 	}
 
-	public ResourceList licitacoes() throws SQLException,
+	public Response licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException,
 			InvalidOrderByValueException, InvalidOffsetValueException {

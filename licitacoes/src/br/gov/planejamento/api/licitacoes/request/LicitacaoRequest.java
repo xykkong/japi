@@ -23,18 +23,21 @@ import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
+import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.filters.LikeFilter;
+import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 import br.gov.planejamento.api.licitacoes.service.TesteService;
 
 @Path("/")
 public class LicitacaoRequest {
 
 	private TesteService tService = new TesteService();
+	private LicitacaoService lService = new LicitacaoService();
 
 	@GET	
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	public ResourceList licitacoes() throws SQLException,
+	public Response licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException,
 			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter, InvalidOrderByValueException {
@@ -45,7 +48,7 @@ public class LicitacaoRequest {
 				new DatabaseAlias("modalidade"),
 				new DatabaseAlias("numero_aviso"));
 		currentSession.addFilter(CaseInsensitiveLikeFilter.class, new DatabaseAlias("nome_uasg"));
-		ResourceList response = null;
+		Response response = null;
 		response = lService.licitacoes();
 
 		return response;
