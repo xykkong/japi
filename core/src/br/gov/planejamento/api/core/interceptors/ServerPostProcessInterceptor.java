@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.core.interceptors;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -8,25 +10,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.commons.io.FilenameUtils;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
-import org.jboss.resteasy.core.ResourceMethod;
+import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
-import org.jboss.resteasy.spi.Failure;
-import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
-import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
-import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.utils.StringUtils;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
@@ -61,6 +56,10 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 						serverResponse.setEntity(getXML(resourceMapList));
 						break;
 					case RequestFormats.CSV:
+						Headers headers = new Headers();
+						headers.add("Content-Type","text/csv");
+						headers.add("Content-Disposition",  "attachment; filename=\"result.csv\"");
+						serverResponse.setMetadata(headers);
 						serverResponse.setEntity(getCSV(resourceMapList));
 						break;
 				}
@@ -71,6 +70,9 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -113,19 +115,26 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 		return xml;
 	}
 	
-	private String getCSV(ArrayList<HashMap<String, Property>> resourceList) {
-		StringBuilder sb = new StringBuilder();
+	private String getCSV(ArrayList<HashMap<String, Property>> resourceList) throws IOException {
+		StringWriter sw = new StringWriter();
+		CSVWriter writer = new CSVWriter(sw);
+		int numeroColunas = resourceList.get(0).size();
+		String[] linha = new String[numeroColunas];
+		
 		
 		for(HashMap<String, Property> resource : resourceList) {
+			int counter = 0;
+			
 			for(Entry<String, Property> entry : resource.entrySet()) {
-				sb.append(entry.getValue().getValue());
-				sb.append(",");
+				
+				linha[counter] = entry.getValue().getValue();
+				counter++;
 			}
-			sb.append("\r\n");
+			writer.writeNext(linha);
+			
 		}
-		
-		return sb.toString();
-		
+		writer.close();
+		return sw.toString();
 	}
 	
 	
