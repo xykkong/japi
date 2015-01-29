@@ -44,4 +44,6 @@ dependencies {
     compile 'org.postgresql:postgresql:9.3-1100-jdbc41'
     compile 'xstream:xstream:1.2.2'
     compile 'com.theoryinpractise:halbuilder:1.0.5'
+    compile 'net.sf.opencsv:opencsv:2.3'
+    
 }

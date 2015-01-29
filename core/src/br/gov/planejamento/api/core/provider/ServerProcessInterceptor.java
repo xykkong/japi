@@ -1,5 +1,9 @@
 package br.gov.planejamento.api.core.provider;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
@@ -10,18 +14,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
+import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
+import org.jboss.resteasy.spi.interception.MessageBodyWriterInterceptor;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import br.gov.planejamento.api.core.annotations.CSVProperties;
 import br.gov.planejamento.api.core.annotations.HTMLProperties;
 import br.gov.planejamento.api.core.annotations.JSONProperties;
@@ -82,11 +92,16 @@ public class ServerProcessInterceptor implements
 		}
 		//TODO usar constantes
 		if(!firstPathSegment.equals("docs"))
-			interceptJapiResource(response);
+			try {
+				interceptJapiResource(response);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 	}
 	
-	private void interceptJapiResource(ServerResponse response){
+	private void interceptJapiResource(ServerResponse response) throws IOException{
 		ResourceList resourceList = (ResourceList) response.getEntity();
 		response.setGenericType(String.class);
 		
@@ -138,6 +153,10 @@ public class ServerProcessInterceptor implements
 				response.setEntity(getXML(resourceMapList));
 				break;
 			case RequestFormats.CSV:
+				Headers headers = new Headers();
+				headers.add("Content-Type","text/csv");
+				headers.add("Content-Disposition",  "attachment; filename=\"result.csv\"");
+				response.setMetadata(headers);
 				response.setEntity(getCSV(resourceMapList));
 				break;
 		}
@@ -200,19 +219,26 @@ public class ServerProcessInterceptor implements
 		return xml;
 	}
 	
-	private String getCSV(ArrayList<HashMap<String, Property>> resourceList) {
-		StringBuilder sb = new StringBuilder();
+	private String getCSV(ArrayList<HashMap<String, Property>> resourceList) throws IOException {
+		StringWriter sw = new StringWriter();
+		CSVWriter writer = new CSVWriter(sw);
+		int numeroColunas = resourceList.get(0).size();
+		String[] linha = new String[numeroColunas];
+		
 		
 		for(HashMap<String, Property> resource : resourceList) {
+			int counter = 0;
+			
 			for(Entry<String, Property> entry : resource.entrySet()) {
-				sb.append(entry.getValue().getValue());
-				sb.append(",");
+				
+				linha[counter] = entry.getValue().getValue();
+				counter++;
 			}
-			sb.append("\r\n");
+			writer.writeNext(linha);
+			
 		}
-		
-		return sb.toString();
-		
+		writer.close();
+		return sw.toString();
 	}
 	
 	
