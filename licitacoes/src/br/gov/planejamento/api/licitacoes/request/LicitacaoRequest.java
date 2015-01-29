@@ -13,7 +13,7 @@ import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.core.annotations.DocDescription;
 import br.gov.planejamento.api.core.annotations.DocParameterField;
-import br.gov.planejamento.api.core.base.ResourceList;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
@@ -32,12 +32,12 @@ import br.gov.planejamento.api.licitacoes.service.TesteService;
 @Path("/")
 public class LicitacaoRequest {
 
-	private LicitacaoService lService = new LicitacaoService();
 	private TesteService tService = new TesteService();
+	private LicitacaoService lService = new LicitacaoService();
 
 	@GET	
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	public ResourceList licitacoes() throws SQLException,
+	public Response licitacoes() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException,
 			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter, InvalidOrderByValueException {
@@ -48,7 +48,7 @@ public class LicitacaoRequest {
 				new DatabaseAlias("modalidade"),
 				new DatabaseAlias("numero_aviso"));
 		currentSession.addFilter(CaseInsensitiveLikeFilter.class, new DatabaseAlias("nome_uasg"));
-		ResourceList response = null;
+		Response response = null;
 		response = lService.licitacoes();
 
 		return response;
@@ -56,8 +56,8 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@DocDescription("Lista de pessoas da tabela de testes")
-	public ResourceList teste(
+	@DocDescription("Lista de pessoas da tabela de testes")	
+	public Response teste(
 			@DocParameterField(name = "idade", required = false, description = "Idade da pessoa") String testeInt,
 			@DocParameterField(name = "nome", required = false, description = "Nome da pessoa") String testeString
 			)

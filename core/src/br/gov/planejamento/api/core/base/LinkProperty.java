@@ -1,41 +1,27 @@
 package br.gov.planejamento.api.core.base;
 
+
 public class LinkProperty extends Property {
 	
-	protected String href;
-	protected String title;
+	protected Link link = new Link();
 	
-	public LinkProperty(String name, String text, String href) {
+	public LinkProperty(String name, String text, String href, String rel) {
 		super(name, text);
-		this.href = href;
+		this.link.setHref(href);
+		this.link.setRel(rel);
 	}
 	
-	public LinkProperty(String name, String text, String href, String title) {
-		this(name, text, href);
-		this.title = title;
+	public LinkProperty(String name, String text, String href, String rel, String title) {
+		this(name, text, rel, href);
+		this.link.setTitle(title);
+	}	
+	
+	public void setLink(Link link) {
+		this.link = link;
 	}
 	
-	public String getText() {
-		return this.value;
+	public Link getLink() {
+		return link;
 	}
 	
-	public void setText(String text) {
-		this.value = text;
-	}
-	
-	public void setHref(String href) {
-		this.href = href;
-	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public String getHref() {
-		return href;
-	}
-	
-	public String getTitle() {
-		return title;
-	}
 }

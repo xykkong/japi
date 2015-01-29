@@ -5,13 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import br.gov.planejamento.api.core.constants.Constants;
-
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JSONProperties {
+public @interface HTMLIgnore {
 	
-	public String[] value() default { };
-	
-	public String extension() default Constants.RequestFormats.JSON;
 }
