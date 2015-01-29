@@ -1,8 +1,10 @@
 package br.gov.planejamento.api.core.base;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import br.gov.planejamento.api.core.serializers.CSVSerializer;
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
@@ -17,11 +19,11 @@ public class Response extends ArrayList<Resource> {
 	private String description = "";
 	
 	/**
-	 * Retorna true se a Response em questão é uma listagem de Resources.
-	 * Caso a Response seja de um item único (página de detalhamento), retorna false.
+	 * Retorna true se a Response em questï¿½o ï¿½ uma listagem de Resources.
+	 * Caso a Response seja de um item ï¿½nico (pï¿½gina de detalhamento), retorna false.
 	 * 
-	 * Observe que pode haver uma listagem que contém somente um elemento, onde a Response 
-	 * não é uma página de detalhamento e portanto isList() retorna true.
+	 * Observe que pode haver uma listagem que contï¿½m somente um elemento, onde a Response 
+	 * nï¿½o ï¿½ uma pï¿½gina de detalhamento e portanto isList() retorna true.
 	 * @return
 	 */
 	public Boolean isList() {
@@ -29,8 +31,8 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Define se a Response em questão é uma listagem de Resources (true) ou uma página de detalhamento
-	 * de um único Resource (false).
+	 * Define se a Response em questï¿½o ï¿½ uma listagem de Resources (true) ou uma pï¿½gina de detalhamento
+	 * de um ï¿½nico Resource (false).
 	 * @param isList
 	 */
 	public void isList(Boolean isList) {
@@ -54,7 +56,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Getter da descrição da Response
+	 * Getter da descriï¿½ï¿½o da Response
 	 * @return
 	 */
 	public String getDescription() {
@@ -62,7 +64,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Setter da descrição da Response
+	 * Setter da descriï¿½ï¿½o da Response
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -86,11 +88,15 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Serializa a Response no formato JSON, seguindo o padrão HAL.
+	 * Serializa a Response no formato JSON, seguindo o padrï¿½o HAL.
 	 * @return
 	 */
 	public String toJSON() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return JSONSerializer.fromResponse(this);		
+	}
+
+	public String toCSV() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		return CSVSerializer.fromResponse(this);
 	}
 	
 }

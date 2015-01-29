@@ -60,7 +60,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 						headers.add("Content-Type","text/csv");
 						headers.add("Content-Disposition",  "attachment; filename=\"result.csv\"");
 						serverResponse.setMetadata(headers);
-						serverResponse.setEntity(getCSV(resourceMapList));
+						serverResponse.setEntity(response.toCSV());
 						break;
 				}
 			} catch (IllegalAccessException e) {
