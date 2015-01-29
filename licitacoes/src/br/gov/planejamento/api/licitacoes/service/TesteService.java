@@ -13,7 +13,7 @@ import br.gov.planejamento.api.core.base.ConnectionManager;
 import br.gov.planejamento.api.core.base.DataRow;
 import br.gov.planejamento.api.core.base.DatabaseData;
 import br.gov.planejamento.api.core.base.Resource;
-import br.gov.planejamento.api.core.base.ResourceList;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Service;
 import br.gov.planejamento.api.core.base.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
@@ -45,15 +45,15 @@ public class TesteService extends Service {
 		return resource;
 	}
 
-	private ResourceList getResourceList(DatabaseData data) {
-		ResourceList resources = new ResourceList();
+	private Response getResourceList(DatabaseData data) {
+		Response resources = new Response();
 		for (DataRow teste : data) {
 			resources.add(getResource(teste));
 		}
 		return resources;
 	}
 
-	public ResourceList teste() throws SQLException,
+	public Response teste() throws SQLException,
 			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
 			ParserConfigurationException, SAXException, IOException,
 			InvalidOrderByValueException, InvalidOffsetValueException {

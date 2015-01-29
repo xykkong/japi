@@ -43,5 +43,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.postgresql:postgresql:9.3-1100-jdbc41'
     compile 'xstream:xstream:1.2.2'
-    compile 'com.theoryinpractise:halbuilder:1.0.5'
+    compile 'com.theoryinpractise:halbuilder-standard:4.0.1'
+    compile 'commons-io:commons-io:2.4'
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
@@ -227,5 +228,21 @@ public class Session {
 	
 	public String getPath() {
 		return path;
+	}
+	
+	public Boolean isHTML() {
+		return isCurrentFormat(RequestFormats.HTML);
+	}
+
+	public Boolean isJSON() {
+		return isCurrentFormat(RequestFormats.JSON);
+	}
+	
+	public Boolean isXML() {
+		return isCurrentFormat(RequestFormats.XML);
+	}
+	
+	public Boolean isCSV() {
+		return isCurrentFormat(RequestFormats.CSV);
 	}
 }
