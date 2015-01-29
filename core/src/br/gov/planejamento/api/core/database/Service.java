@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.core.base;
+package br.gov.planejamento.api.core.database;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;

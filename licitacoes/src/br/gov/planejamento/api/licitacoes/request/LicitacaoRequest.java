@@ -9,12 +9,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.common.constants.LicitacaoConstants;
+import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.core.annotations.DocDescription;
 import br.gov.planejamento.api.core.annotations.DocParameterField;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
-import br.gov.planejamento.api.core.constants.LicitacaoConstants;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
+import br.gov.planejamento.api.core.exceptions.InvalidArgToAddFilter;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
@@ -29,6 +32,25 @@ public class LicitacaoRequest {
 
 	private TesteService tService = new TesteService();
 
+	@GET	
+	@Path(LicitacaoConstants.Requests.List.LICITACOES)
+	public ResourceList licitacoes() throws SQLException,
+			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
+			ParserConfigurationException, SAXException, IOException,
+			ExpectedParameterNotFoundException, InvalidOffsetValueException, InvalidArgToAddFilter, InvalidOrderByValueException {
+		Session currentSession = Session.getCurrentSession();
+
+		currentSession.addFilter(EqualFilter.class, String.class, new DatabaseAlias("uasg"));
+		currentSession.addFilter(ZeroFillEqualFilter.class,
+				new DatabaseAlias("modalidade"),
+				new DatabaseAlias("numero_aviso"));
+		currentSession.addFilter(CaseInsensitiveLikeFilter.class, new DatabaseAlias("nome_uasg"));
+		ResourceList response = null;
+		response = lService.licitacoes();
+
+		return response;
+	}
+
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	@DocDescription("Lista de pessoas da tabela de testes")	
@@ -39,23 +61,13 @@ public class LicitacaoRequest {
 			throws SQLException, InvalidFilterValueTypeException,
 			InvalidOrderSQLParameterException, ParserConfigurationException,
 			SAXException, IOException, ExpectedParameterNotFoundException,
-			InvalidOffsetValueException {
+			InvalidOffsetValueException, InvalidArgToAddFilter,
+			InvalidOrderByValueException {
 		Session currentSession = Session.getCurrentSession();
 
-		currentSession.addFilter(EqualFilter.class, Integer.class, "teste_int");
-		currentSession.addFilter(LikeFilter.class, "teste_string");
+		currentSession.addFilter(EqualFilter.class, Integer.class, new DatabaseAlias("teste_int"));
+		currentSession.addFilter(LikeFilter.class, new DatabaseAlias("teste_string", "nome"));
 
-		try {
-			currentSession.validateURIParametersUsingFilters();
-			Response resourceList =  tService.teste();
-			resourceList.setName("Listagem de licitações teste");
-			
-			return resourceList;
-		} catch (URIParameterNotAcceptedException
-				| InvalidOrderByValueException ex) {
-			// return ex.getMessage();
-		}
-
-		return null;
+		return tService.teste();
 	}
 }

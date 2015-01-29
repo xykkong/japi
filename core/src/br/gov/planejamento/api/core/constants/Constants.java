@@ -10,13 +10,6 @@ public abstract class Constants {
 	}
 	
 	/**
-	 * Primeira parte da URL de cada m�dulo
-	 */
-	public static final class Modules {
-		public static final String LICITACOES = "/licitacoes";
-	}
-	
-	/**
 	 * Uma requisi��o do tipo MIRROR � uma URL espelho que ir� redirecionar para a URL final (DOCUMENT).
 	 * A DOCUMENT � de fato a URI que identifica unicamente o documento em quest�o. 
 	 */

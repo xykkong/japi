@@ -10,6 +10,8 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
+import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
@@ -55,22 +57,50 @@ public class Session {
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType, List<String>... parameters)
+			List<DatabaseAlias>... parameters)
+			throws ExpectedParameterNotFoundException {
+		addFilter(filterType, String.class, parameters);
+	}
+
+	public void addFilter(Class<? extends Filter> filterType,
+			Class<? extends Object> valueType, DatabaseAlias... parameters)
+			throws ExpectedParameterNotFoundException {
+		ArrayList<List<DatabaseAlias>> parametersList = new ArrayList<List<DatabaseAlias>>();
+		for (DatabaseAlias parameter : parameters) {
+			List<DatabaseAlias> parameterList = new ArrayList<DatabaseAlias>();
+			parameterList.add(parameter);
+			parametersList.add(parameterList);
+		}
+		addFilter(
+				filterType,
+				valueType,
+				parametersList
+						.toArray((ArrayList<DatabaseAlias>[]) new ArrayList[parameters.length]));
+	}
+
+	public void addFilter(Class<? extends Filter> filterType,
+			DatabaseAlias... parameters) throws ExpectedParameterNotFoundException {
+		addFilter(filterType, String.class, parameters);
+	}
+	
+	public void addFilter(Class<? extends Filter> filterType,
+			Class<? extends Object> valueType,
+			List<DatabaseAlias>... databaseAliasesParameters)
 			throws ExpectedParameterNotFoundException {
 		Session currentSession = Session.getCurrentSession();
-		for (List<String> parameterList : parameters) {
+		for (List<DatabaseAlias> parameterList : databaseAliasesParameters) {
 			try {
 				Filter filter = filterType.newInstance();
 				List<String> availableParameters = new ArrayList<String>();
 				List<String> missingParameters = new ArrayList<String>();
-				for (String parameter : parameterList) {
-					if (hasParameter(parameter)) {
-						availableParameters.add(parameter);
-						filter.addParameter(parameter);
-						filter.addValues(currentSession.getValues(parameter));
+				for (DatabaseAlias parameter : parameterList) {
+					if (hasParameter(parameter.getUriName())) {
+						availableParameters.add(parameter.getUriName());
+						filter.addParameterAlias(parameter);
+						filter.addValues(currentSession.getValues(parameter.getUriName()));
 						filter.setValueType(valueType);
 					} else {
-						missingParameters.add(parameter);
+						missingParameters.add(parameter.getUriName());
 					}
 				}
 				if (!availableParameters.isEmpty()) {
@@ -88,33 +118,6 @@ public class Session {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			List<String>... parameters)
-			throws ExpectedParameterNotFoundException {
-		addFilter(filterType, String.class, parameters);
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType, String... parameters)
-			throws ExpectedParameterNotFoundException {
-		ArrayList<List<String>> parametersList = new ArrayList<List<String>>();
-		for (String parameter : parameters) {
-			List<String> parameterList = new ArrayList<String>();
-			parameterList.add(parameter);
-			parametersList.add(parameterList);
-		}
-		addFilter(
-				filterType,
-				valueType,
-				parametersList
-						.toArray((ArrayList<String>[]) new ArrayList[parameters.length]));
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			String... parameters) throws ExpectedParameterNotFoundException {
-		addFilter(filterType, String.class, parameters);
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
@@ -197,7 +200,7 @@ public class Session {
 			String parameter = iterator.next();
 			boolean foundParameter = false;
 			for (Filter filter : filters) {
-				foundParameter |= filter.getParameters().contains(parameter);
+				foundParameter |= filter.getUriParameters().contains(parameter);
 			}
 			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
 						parameter);

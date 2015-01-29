@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.core.base;
+package br.gov.planejamento.api.core.database;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
 public abstract class Filter {
 
 	protected Class<? extends Object> valueType = String.class;
-	protected List<String> parameters = new ArrayList<String>();
+	protected List<DatabaseAlias> parametersAliases = new ArrayList<DatabaseAlias>();
 	protected List<String> values = new ArrayList<String>();
 
 	public abstract String getStatement();
@@ -26,7 +26,7 @@ public abstract class Filter {
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
 			throws InvalidFilterValueTypeException {
-		for (String parameter : parameters) {
+		for (DatabaseAlias parameter : parametersAliases) {
 			for (String value : getValues()) {
 
 				// TODO filtros de data
@@ -49,8 +49,8 @@ public abstract class Filter {
 
 	}
 
-	public void addParameter(String parameter) {
-		parameters.add(parameter);
+	public void addParameterAlias(DatabaseAlias parameterDatabaseAlias) {
+		parametersAliases.add(parameterDatabaseAlias);
 	}
 
 	public void setValueType(Class<? extends Object> valueType) {
@@ -61,7 +61,18 @@ public abstract class Filter {
 		this.values.addAll(values);
 	}
 	
-	public List<String> getParameters() {
+	public List<String> getDbParameters() {
+		List<String> parameters = new ArrayList<String>();
+		for(DatabaseAlias p : this.parametersAliases){
+			parameters.add(p.getDbName());
+		}
+		return parameters;
+	}
+	public List<String> getUriParameters(){
+		List<String> parameters = new ArrayList<String>();
+		for(DatabaseAlias p : this.parametersAliases){
+			parameters.add(p.getUriName());
+		}
 		return parameters;
 	}
 }

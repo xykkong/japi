@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.core.base;
+package br.gov.planejamento.api.core.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;

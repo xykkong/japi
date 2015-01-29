@@ -1,10 +1,11 @@
-package br.gov.planejamento.api.core.filters;
+package br.gov.planejamento.api.common.filters;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.planejamento.api.core.base.Filter;
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
+import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class ZeroFillEqualFilter extends Filter {
@@ -14,9 +15,9 @@ public class ZeroFillEqualFilter extends Filter {
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();
 		Session currentSession = Session.getCurrentSession();
-		for(String parameter : parameters){
-			int numberOfValues = currentSession.getValues(parameter).size();
-			statement.append(parameter);
+		for(DatabaseAlias parameterAlias : parametersAliases){
+			int numberOfValues = currentSession.getValues(parameterAlias.getUriName()).size();
+			statement.append(parameterAlias.getDbName());
 			statement.append(" SIMILAR TO ");
 			for (int i=0; i<numberOfValues; i++) {
 				statement.append("?");

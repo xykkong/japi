@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.core.base;
+package br.gov.planejamento.api.core.database;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,8 +15,8 @@ public class ConnectionManager {
 	private static Connection connection = null;
 	
 	/**
-	 * Este método deve ser private, está como public para podermos fazer testes,
-	 * veja mais nas classes de service do módulo de licitações 
+	 * Este mï¿½todo deve ser private, estï¿½ como public para podermos fazer testes,
+	 * veja mais nas classes de service do mï¿½dulo de licitaï¿½ï¿½es 
 	 * 
 	 * @param filename
 	 * @throws ParserConfigurationException
@@ -40,7 +40,7 @@ public class ConnectionManager {
 	}
 	
 	/**
-	 * Este método não deveria existir, da mesma maneira que o método acima deveria ser private 
+	 * Este mï¿½todo nï¿½o deveria existir, da mesma maneira que o mï¿½todo acima deveria ser private 
 	 */
 	public static void removeConfiguration(){
 		connection = null;
