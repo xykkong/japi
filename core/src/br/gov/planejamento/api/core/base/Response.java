@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import br.gov.planejamento.api.core.serializers.CSVSerializer;
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
-import br.gov.planejamento.api.core.utils.SerializeUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class Response extends ArrayList<Resource> {
 

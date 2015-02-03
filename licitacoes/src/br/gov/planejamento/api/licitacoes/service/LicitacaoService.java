@@ -37,13 +37,7 @@ public class LicitacaoService extends Service {
 	private Response getResourceList(DatabaseData data) {
 		Response resources = new Response();
 		for (DataRow licitacao : data) {
-			LicitacaoResource resource = new LicitacaoResource();
-			resource.setModalidade(licitacao.get("modalidade"));
-			resource.setNomeModalidade(licitacao.get("nome_modalildade"));
-			resource.setNomeUasg(licitacao.get("nome_uasg"));
-			resource.setNumeroAviso(licitacao.get("numero_aviso"));
-			resource.setUasg(licitacao.get("uasg"));
-			resources.add(resource);
+			resources.add(new LicitacaoResource(licitacao));
 		}
 		return resources;
 	}
