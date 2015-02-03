@@ -248,4 +248,9 @@ public class Session {
 	public Boolean isCSV() {
 		return isCurrentFormat(RequestFormats.CSV);
 	}
+
+	public String getHTMLTemplate() {
+		// TODO realmente fazer este método
+		return "br/gov/planejamento/api/core/template/teste.vm";
+	}
 }

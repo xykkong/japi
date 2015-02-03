@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+
 import br.gov.planejamento.api.core.serializers.CSVSerializer;
+import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
@@ -93,6 +98,10 @@ public class Response extends ArrayList<Resource> {
 
 	public String toCSV() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		return CSVSerializer.fromResponse(this);
+	}
+
+	public Object toHTML() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, Exception {
+		return HTMLSerializer.fromResponse(this);
 	}
 	
 }

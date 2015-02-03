@@ -2,7 +2,6 @@ package br.gov.planejamento.api.core.interceptors;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				
 				switch(Session.getCurrentSession().getRequestFormat()) {
 					case RequestFormats.HTML:
-						serverResponse.setEntity(getHTML(resourceMapList));
+						serverResponse.setEntity(response.toHTML());
 						break;
 					case RequestFormats.JSON:
 						String json = response.toJSON();
@@ -63,17 +62,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 						serverResponse.setEntity(response.toCSV());
 						break;
 				}
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		

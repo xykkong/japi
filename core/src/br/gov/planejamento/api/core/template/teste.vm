@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head><title>JAPIGOV</title><meta charset='utf-8'/></head>
+	<body>
+		<table border='1'>
+			<tr>
+				<td><strong>Modalidade</strong></td>
+				<td><strong>UASG</strong></td>
+				<td><strong>Número aviso</strong></td>
+			</tr>
+			## foreach( $licitacao in $licitacaoList )
+				<tr>
+					###foreach($property in $licitacao.getProperties()) {
+				##		<td>$property.getValue()</td>
+					## #end
+					bla
+				</tr>
+	    	## end
+		</table>
+	</body>
+</html>
