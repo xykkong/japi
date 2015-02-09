@@ -250,7 +250,7 @@ public class Session {
 	}
 
 	public String getHTMLTemplate() {
-		// TODO realmente fazer este método
+		// TODO realmente fazer este mï¿½todo
 		return "br/gov/planejamento/api/core/template/teste.vm";
 	}
 }
