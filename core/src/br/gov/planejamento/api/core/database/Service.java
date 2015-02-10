@@ -111,6 +111,7 @@ public abstract class Service {
 		int count = 0;
 		if(rs.next()){
 			count = rs.getInt("quantity");
+			data.setCount(count);
 			//DEBUG count
 			System.out.println("quantity " + count);
 		}

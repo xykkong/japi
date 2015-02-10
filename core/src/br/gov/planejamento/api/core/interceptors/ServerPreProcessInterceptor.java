@@ -39,6 +39,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		
 		Session.getCurrentSession().setRequestFormat(requestFormat);
 		String path = httpRequest.getUri().getAbsolutePath().getPath();
+		System.out.println(httpRequest.getUri().getBaseUri().getPath());
 		path = FilenameUtils.removeExtension(path);
 		Session.getCurrentSession().setPath(path);
 		System.out.println(Session.getCurrentSession().getPath());

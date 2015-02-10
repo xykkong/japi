@@ -18,6 +18,15 @@ public class Response extends ArrayList<Resource> {
 	private Boolean isList = true;
 	private String name = "resources";
 	private String description = "";
+	private int count = 0;
+
+	public int getCount() {
+		return count;
+	}
+	
+	public Response (int count){
+		this.count = count;
+	}
 	
 	/**
 	 * Retorna true se a Response em quest�o � uma listagem de Resources.

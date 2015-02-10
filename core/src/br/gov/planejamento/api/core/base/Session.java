@@ -17,6 +17,7 @@ import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
+import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class Session {
 
@@ -253,4 +254,14 @@ public class Session {
 		// TODO realmente fazer este m�todo
 		return "br/gov/planejamento/api/core/template/teste.vm";
 	}
+	
+	public String getRootURL(){
+		//TODO pegar do japiConfig.json
+		return "localhost:8080/";
+	}
+	public String asset(String...asset){
+		//TODO pegar do japiConfig.json
+		return getRootURL()+"common/assets/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+	}
+	
 }

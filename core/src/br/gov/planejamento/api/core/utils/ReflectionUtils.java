@@ -4,8 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import com.google.common.base.CaseFormat;
-
 import br.gov.planejamento.api.core.annotations.CSVIgnore;
 import br.gov.planejamento.api.core.annotations.HTMLIgnore;
 import br.gov.planejamento.api.core.annotations.Ignore;
@@ -13,8 +11,9 @@ import br.gov.planejamento.api.core.annotations.JSONIgnore;
 import br.gov.planejamento.api.core.annotations.XMLIgnore;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
+
+import com.google.common.base.CaseFormat;
 
 public abstract class ReflectionUtils {
 

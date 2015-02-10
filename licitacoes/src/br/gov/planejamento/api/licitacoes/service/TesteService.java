@@ -46,7 +46,7 @@ public class TesteService extends Service {
 	}
 
 	private Response getResourceList(DatabaseData data) {
-		Response resources = new Response();
+		Response resources = new Response(data.getCount());
 		for (DataRow teste : data) {
 			resources.add(getResource(teste));
 		}

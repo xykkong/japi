@@ -42,7 +42,7 @@ public abstract class HTMLSerializer {
 			Template template = Velocity.getTemplate(Session
 					.getCurrentSession().getHTMLTemplate(), "UTF-8");
 			VelocityContext context = new VelocityContext();
-			
+			context.put("session", Session.getCurrentSession());
 			context.put("response", response);
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);
