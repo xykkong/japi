@@ -7,7 +7,15 @@ import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 
 public class EqualFilter extends Filter {
-
+	
+	//TODO TODAS ASS FILHAS DE Filter DEVEM ter os construtores dessa maneira:
+	public EqualFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+		super(type, databaseAliases);
+	}
+	public EqualFilter(DatabaseAlias...databaseAliases) {
+		super(databaseAliases);
+	}
+	
 	@Override
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();

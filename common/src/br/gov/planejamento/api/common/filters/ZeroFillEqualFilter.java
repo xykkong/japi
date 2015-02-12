@@ -9,6 +9,14 @@ import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class ZeroFillEqualFilter extends Filter {
+	
+	public ZeroFillEqualFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+		super(type, databaseAliases);
+	}
+	
+	public ZeroFillEqualFilter(DatabaseAlias...databaseAliases) {
+		super(databaseAliases);
+	}
 
 
 	@Override

@@ -12,14 +12,11 @@ public class ExpectedParameterNotFoundJapiException extends JapiException {
 	 */
 	private static final long serialVersionUID = -6809942194987514392L;
 
-	public ExpectedParameterNotFoundJapiException(List<DatabaseAlias> expectedParameters,
-			List<String> availableParameters, List<String> missingParameters) {
+	public ExpectedParameterNotFoundJapiException(List<String> expectedParameters, List<String> foundParameters) {
 		super(
 				"Um ou mais parâmetros necessários não foram encontrados.\nParâmetros esperados: "
-						+ StringUtils.joinDatabaseAliases(",\n", expectedParameters)
+						+ StringUtils.join(",\n", expectedParameters)
 						+ ".\n\nParâmetros enviados pelo usuário: "
-						+ StringUtils.join(",", availableParameters)
-						+ "\n\nParâmetros que faltaram: "
-						+ StringUtils.join(",", missingParameters));
+						+ StringUtils.join(",", foundParameters));
 	}
 }

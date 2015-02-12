@@ -18,5 +18,6 @@ public class InvalidOrderSQLParameterJapiException extends JapiException {
 				+ " não é válida.\n As ordens válidas são: "
 				+ StringUtils.join(",",
 						Arrays.asList(Constants.FixedParameters.VALID_ORDERS)));
+		setUserShowable(true);
 	}
 }

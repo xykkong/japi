@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.core.interceptors;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
@@ -17,6 +18,7 @@ import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
@@ -46,12 +48,25 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		System.out.println(Session.getCurrentSession().getPath());
 		
 		try {	
-			Session.getCurrentSession().validateURIParametersUsingFilters();
+			validateURIParametersUsingAnotations();
 		} catch (URIParameterNotAcceptedJAPIException e) {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		
 		return null;
+	}
+	
+	private static void validateURIParametersUsingAnotations() throws URIParameterNotAcceptedJAPIException{
+//		for(String parameter : parameters.keySet()){
+//			boolean foundParameter = false;
+//			for (Filter filter : filters) {
+//				foundParameter |= filter.getUriParameters().contains(parameter);
+//			}
+//			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
+//						parameter);
+//			if (!foundParameter)
+//				throw new URIParameterNotAcceptedJAPIException(parameter);
+//		}
 	}
 
 }

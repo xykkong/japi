@@ -17,7 +17,14 @@ public abstract class Filter {
 
 	public abstract List<String> getValues();
 
-	public Filter() {
+	public Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
+		for(DatabaseAlias databaseAlias : databaseAliases ){
+			parametersAliases.add(databaseAlias);
+		}
+		this.valueType = valueType;
+	}
+	public Filter(DatabaseAlias...databaseAliases){
+		this(String.class, databaseAliases);
 	}
 
 	public Class<? extends Object> getValueType() {
@@ -26,7 +33,7 @@ public abstract class Filter {
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
 			throws InvalidFilterValueTypeJapiException {
-		for (DatabaseAlias parameter : parametersAliases) {
+		for (int i = 0; i < parametersAliases.size(); i++) {
 			for (String value : getValues()) {
 
 				// TODO filtros de data
@@ -35,11 +42,13 @@ public abstract class Filter {
 						pst.setInt(index++, Integer.parseInt(value));
 					} else if (valueType.equals(Double.class)) {
 						pst.setDouble(index++, Double.parseDouble(value));
-					} else {
+					} else if (valueType.equals(Float.class)) {
+						pst.setFloat(index++, Float.parseFloat(value));
+					}
+					else {
 						pst.setString(index++, value);
 					}
 				} catch (SQLException | NumberFormatException ex) {
-					ex.printStackTrace();
 					throw new InvalidFilterValueTypeJapiException(value, index,
 							pst, valueType);
 				}
@@ -47,14 +56,6 @@ public abstract class Filter {
 		}
 		return index;
 
-	}
-
-	public void addParameterAlias(DatabaseAlias parameterDatabaseAlias) {
-		parametersAliases.add(parameterDatabaseAlias);
-	}
-
-	public void setValueType(Class<? extends Object> valueType) {
-		this.valueType = valueType;
 	}
 
 	public void addValues(List<String> values) {
@@ -68,6 +69,7 @@ public abstract class Filter {
 		}
 		return parameters;
 	}
+	
 	public List<String> getUriParameters(){
 		List<String> parameters = new ArrayList<String>();
 		for(DatabaseAlias p : this.parametersAliases){

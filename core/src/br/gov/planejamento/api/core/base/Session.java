@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -57,68 +58,22 @@ public class Session {
 		return filters;
 	}
 
-	public void addFilter(Class<? extends Filter> filterType,
-			List<DatabaseAlias>... parameters)
+	public void addFilter(Filter...filters)
 			throws ExpectedParameterNotFoundJapiException {
-		addFilter(filterType, String.class, parameters);
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType, DatabaseAlias... parameters)
-			throws ExpectedParameterNotFoundJapiException {
-		ArrayList<List<DatabaseAlias>> parametersList = new ArrayList<List<DatabaseAlias>>();
-		for (DatabaseAlias parameter : parameters) {
-			List<DatabaseAlias> parameterList = new ArrayList<DatabaseAlias>();
-			parameterList.add(parameter);
-			parametersList.add(parameterList);
-		}
-		addFilter(
-				filterType,
-				valueType,
-				parametersList
-						.toArray((ArrayList<DatabaseAlias>[]) new ArrayList[parameters.length]));
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			DatabaseAlias... parameters) throws ExpectedParameterNotFoundJapiException {
-		addFilter(filterType, String.class, parameters);
-	}
-	
-	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType,
-			List<DatabaseAlias>... databaseAliasesParameters)
-			throws ExpectedParameterNotFoundJapiException {
-		Session currentSession = Session.getCurrentSession();
-		for (List<DatabaseAlias> parameterList : databaseAliasesParameters) {
-			try {
-				Filter filter = filterType.newInstance();
-				List<String> availableParameters = new ArrayList<String>();
-				List<String> missingParameters = new ArrayList<String>();
-				for (DatabaseAlias parameter : parameterList) {
-					if (hasParameter(parameter.getUriName())) {
-						availableParameters.add(parameter.getUriName());
-						filter.addParameterAlias(parameter);
-						filter.addValues(currentSession.getValues(parameter.getUriName()));
-						filter.setValueType(valueType);
-					} else {
-						missingParameters.add(parameter.getUriName());
-					}
+		Set<String> expectedParameters = parameters.keySet();
+		List<String> foundParameters = new ArrayList<>();
+		for(Filter filter : filters){
+			for(String parameter : filter.getUriParameters()){
+				if (hasParameter(parameter)) {
+					filter.addValues(currentSession.getValues(parameter));
+					foundParameters.add(parameter);
+					this.filters.add(filter);
 				}
-				if (!availableParameters.isEmpty()) {
-					if (missingParameters.isEmpty()) {
-						filters.add(filter);
-					} else {
-						throw new ExpectedParameterNotFoundJapiException(
-								parameterList, availableParameters,
-								missingParameters);
-					}
-				}
-
-			} catch (InstantiationException | IllegalAccessException e) {
-				// never happens
-				e.printStackTrace();
 			}
 		}
+//		if(!foundParameters.contains(expectedParameters)){
+//			throw new ExpectedParameterNotFoundJapiException(new ArrayList<String>(expectedParameters), foundParameters);
+//		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
@@ -193,22 +148,6 @@ public class Session {
 	public void clear() {
 		currentSession = null;
 	}
-
-	public void validateURIParametersUsingFilters()
-			throws URIParameterNotAcceptedJAPIException {
-		Iterator<String> iterator = parameters.keySet().iterator();
-		while (iterator.hasNext()) {
-			String parameter = iterator.next();
-			boolean foundParameter = false;
-			for (Filter filter : filters) {
-				foundParameter |= filter.getUriParameters().contains(parameter);
-			}
-			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
-						parameter);
-			if (!foundParameter)
-				throw new URIParameterNotAcceptedJAPIException(parameter);
-		}
-	}
 	
 	public void addAvailableOrderByValues(List<String> values) {
 		availableOrderByValues.addAll(values);
@@ -251,7 +190,7 @@ public class Session {
 	}
 
 	public String getHTMLTemplate() {
-		// TODO realmente fazer este m�todo
+		// TODO realmente fazer este método
 		return "br/gov/planejamento/api/core/template/teste.vm";
 	}
 	

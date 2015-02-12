@@ -22,7 +22,6 @@ import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiExcepti
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.filters.LikeFilter;
@@ -42,12 +41,13 @@ public class LicitacaoRequest {
 			ParserConfigurationException, SAXException, IOException,
 			ExpectedParameterNotFoundJapiException, InvalidOffsetValueJapiException, InvalidArgToAddFilterJapiException, InvalidOrderByValueJapiException {
 		Session currentSession = Session.getCurrentSession();
+		
+		currentSession.addFilter(
+				new EqualFilter(Integer.class, new DatabaseAlias("uasg")),
+				new ZeroFillEqualFilter(new DatabaseAlias("modalidade"),
+						new DatabaseAlias("numero_aviso")),
+				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg")));
 
-		currentSession.addFilter(EqualFilter.class, String.class, new DatabaseAlias("uasg"));
-		currentSession.addFilter(ZeroFillEqualFilter.class,
-				new DatabaseAlias("modalidade"),
-				new DatabaseAlias("numero_aviso"));
-		currentSession.addFilter(CaseInsensitiveLikeFilter.class, new DatabaseAlias("nome_uasg"));
 		Response response = null;
 		response = lService.licitacoes();
 
@@ -68,8 +68,8 @@ public class LicitacaoRequest {
 			InvalidOrderByValueJapiException {
 		Session currentSession = Session.getCurrentSession();
 
-		currentSession.addFilter(EqualFilter.class, Integer.class, new DatabaseAlias("teste_int"));
-		currentSession.addFilter(LikeFilter.class, new DatabaseAlias("teste_string", "nome"));
+//		currentSession.addFilter(EqualFilter.class, Integer.class, new DatabaseAlias("teste_int"));
+//		currentSession.addFilter(LikeFilter.class, new DatabaseAlias("teste_string", "nome"));
 
 		return tService.teste();
 	}
