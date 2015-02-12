@@ -1,12 +1,12 @@
 package br.gov.planejamento.api.core.exceptions;
 
-public class InvalidArgToAddFilter extends Exception {
+public class InvalidArgToAddFilterJapiException extends JapiException {
 
-	public InvalidArgToAddFilter(Class type) {
+	public InvalidArgToAddFilterJapiException(Class type) {
 		super("Ao tentar adicionar um filtro, foi passada uma List<"+type.getName()+">.\n"
 				+ "Para que este erro não ocorra, a Lista deve ser ou de String ou de DatabaseAlias");
 	}
-	public InvalidArgToAddFilter() {
+	public InvalidArgToAddFilterJapiException() {
 		super("Ao tentar adicionar um filtro, foi passada tanto List de DatabaseAlias quanto de String, o que é ilegal.");
 	}
 

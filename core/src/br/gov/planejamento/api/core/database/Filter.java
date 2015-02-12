@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
 
 public abstract class Filter {
 
@@ -25,7 +25,7 @@ public abstract class Filter {
 	}
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
-			throws InvalidFilterValueTypeException {
+			throws InvalidFilterValueTypeJapiException {
 		for (DatabaseAlias parameter : parametersAliases) {
 			for (String value : getValues()) {
 
@@ -40,7 +40,7 @@ public abstract class Filter {
 					}
 				} catch (SQLException | NumberFormatException ex) {
 					ex.printStackTrace();
-					throw new InvalidFilterValueTypeException(value, index,
+					throw new InvalidFilterValueTypeJapiException(value, index,
 							pst, valueType);
 				}
 			}

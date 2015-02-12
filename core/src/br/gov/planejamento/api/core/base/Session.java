@@ -12,11 +12,11 @@ import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
-import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
+import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class Session {
@@ -59,13 +59,13 @@ public class Session {
 
 	public void addFilter(Class<? extends Filter> filterType,
 			List<DatabaseAlias>... parameters)
-			throws ExpectedParameterNotFoundException {
+			throws ExpectedParameterNotFoundJapiException {
 		addFilter(filterType, String.class, parameters);
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
 			Class<? extends Object> valueType, DatabaseAlias... parameters)
-			throws ExpectedParameterNotFoundException {
+			throws ExpectedParameterNotFoundJapiException {
 		ArrayList<List<DatabaseAlias>> parametersList = new ArrayList<List<DatabaseAlias>>();
 		for (DatabaseAlias parameter : parameters) {
 			List<DatabaseAlias> parameterList = new ArrayList<DatabaseAlias>();
@@ -80,14 +80,14 @@ public class Session {
 	}
 
 	public void addFilter(Class<? extends Filter> filterType,
-			DatabaseAlias... parameters) throws ExpectedParameterNotFoundException {
+			DatabaseAlias... parameters) throws ExpectedParameterNotFoundJapiException {
 		addFilter(filterType, String.class, parameters);
 	}
 	
 	public void addFilter(Class<? extends Filter> filterType,
 			Class<? extends Object> valueType,
 			List<DatabaseAlias>... databaseAliasesParameters)
-			throws ExpectedParameterNotFoundException {
+			throws ExpectedParameterNotFoundJapiException {
 		Session currentSession = Session.getCurrentSession();
 		for (List<DatabaseAlias> parameterList : databaseAliasesParameters) {
 			try {
@@ -108,7 +108,7 @@ public class Session {
 					if (missingParameters.isEmpty()) {
 						filters.add(filter);
 					} else {
-						throw new ExpectedParameterNotFoundException(
+						throw new ExpectedParameterNotFoundJapiException(
 								parameterList, availableParameters,
 								missingParameters);
 					}
@@ -147,31 +147,31 @@ public class Session {
 	/**
 	 * 
 	 * @return valor de order_by da URI ou "1", se não existir
-	 * @throws InvalidOrderByValueException 
+	 * @throws InvalidOrderByValueJapiException 
 	 */
-	public String getOrderByValue() throws InvalidOrderByValueException {
+	public String getOrderByValue() throws InvalidOrderByValueJapiException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
 			String value = getValue(Constants.FixedParameters.ORDER_BY);
 			if(!availableOrderByValues.contains(value))
-				throw new InvalidOrderByValueException(value, availableOrderByValues);
+				throw new InvalidOrderByValueJapiException(value, availableOrderByValues);
 			return value;
 		}
 		return "1";
 	}
 
-	public String getOrderValue() throws InvalidOrderSQLParameterException {
+	public String getOrderValue() throws InvalidOrderSQLParameterJapiException {
 		if (hasParameter(Constants.FixedParameters.ORDER)) {
 			String order = getValue(Constants.FixedParameters.ORDER);
 			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
 					order.toUpperCase()))
 				return order;
 			else
-				throw new InvalidOrderSQLParameterException(order);
+				throw new InvalidOrderSQLParameterJapiException(order);
 		}
 		return "ASC";
 	}
 	
-	public int getOffsetValue() throws InvalidOffsetValueException {
+	public int getOffsetValue() throws InvalidOffsetValueJapiException {
 		if(hasParameter(Constants.FixedParameters.OFFSET)){
 			String sOffset = "";
 			try{
@@ -179,7 +179,7 @@ public class Session {
 				int offset = Integer.parseInt(sOffset);
 				return offset;
 			}catch(NumberFormatException ex){
-				throw new InvalidOffsetValueException(sOffset);
+				throw new InvalidOffsetValueJapiException(sOffset);
 			}
 		}
 		return 0;
@@ -195,7 +195,7 @@ public class Session {
 	}
 
 	public void validateURIParametersUsingFilters()
-			throws URIParameterNotAcceptedException {
+			throws URIParameterNotAcceptedJAPIException {
 		Iterator<String> iterator = parameters.keySet().iterator();
 		while (iterator.hasNext()) {
 			String parameter = iterator.next();
@@ -206,7 +206,7 @@ public class Session {
 			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
 						parameter);
 			if (!foundParameter)
-				throw new URIParameterNotAcceptedException(parameter);
+				throw new URIParameterNotAcceptedJAPIException(parameter);
 		}
 	}
 	

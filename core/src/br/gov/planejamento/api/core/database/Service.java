@@ -14,10 +14,10 @@ import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
@@ -29,9 +29,9 @@ public abstract class Service {
 	public abstract List<String> availableOrderByValues();
 
 	protected DatabaseData getData() throws SQLException,
-			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
+			InvalidFilterValueTypeJapiException, InvalidOrderSQLParameterJapiException,
 			ParserConfigurationException, SAXException, IOException,
-			InvalidOrderByValueException, InvalidOffsetValueException {
+			InvalidOrderByValueJapiException, InvalidOffsetValueJapiException {
 
 		Session currentSession = Session.getCurrentSession();
 		currentSession.addAvailableOrderByValues(availableOrderByValues());
