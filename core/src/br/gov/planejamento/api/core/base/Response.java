@@ -3,7 +3,11 @@ package br.gov.planejamento.api.core.base;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
+import br.gov.planejamento.api.core.serializers.XMLSerializer;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
 
@@ -93,4 +97,12 @@ public class Response extends ArrayList<Resource> {
 		return JSONSerializer.fromResponse(this);		
 	}
 	
+	/**
+	 * Serializa a Response no formato XML, seguindo o padrão HAL.
+	 * @return
+	 * @throws TransformerException 
+	 */
+	public String toXML() throws ParserConfigurationException, TransformerException {
+		return XMLSerializer.fromResponse(this);
+	}
 }

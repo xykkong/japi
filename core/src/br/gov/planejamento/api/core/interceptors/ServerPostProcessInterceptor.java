@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.ext.Provider;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
@@ -54,11 +56,10 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 						serverResponse.setEntity(getHTML(resourceMapList));
 						break;
 					case RequestFormats.JSON:
-						String json = response.toJSON();
-						serverResponse.setEntity(json);
+						serverResponse.setEntity(response.toJSON());
 						break;
 					case RequestFormats.XML:
-						serverResponse.setEntity(getXML(resourceMapList));
+						serverResponse.setEntity(response.toXML());
 						break;
 					case RequestFormats.CSV:
 						serverResponse.setEntity(getCSV(resourceMapList));
@@ -71,6 +72,12 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TransformerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
