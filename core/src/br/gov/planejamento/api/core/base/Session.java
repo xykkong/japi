@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -12,11 +13,12 @@ import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
-import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedException;
+import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
+import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class Session {
 
@@ -56,68 +58,22 @@ public class Session {
 		return filters;
 	}
 
-	public void addFilter(Class<? extends Filter> filterType,
-			List<DatabaseAlias>... parameters)
-			throws ExpectedParameterNotFoundException {
-		addFilter(filterType, String.class, parameters);
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType, DatabaseAlias... parameters)
-			throws ExpectedParameterNotFoundException {
-		ArrayList<List<DatabaseAlias>> parametersList = new ArrayList<List<DatabaseAlias>>();
-		for (DatabaseAlias parameter : parameters) {
-			List<DatabaseAlias> parameterList = new ArrayList<DatabaseAlias>();
-			parameterList.add(parameter);
-			parametersList.add(parameterList);
-		}
-		addFilter(
-				filterType,
-				valueType,
-				parametersList
-						.toArray((ArrayList<DatabaseAlias>[]) new ArrayList[parameters.length]));
-	}
-
-	public void addFilter(Class<? extends Filter> filterType,
-			DatabaseAlias... parameters) throws ExpectedParameterNotFoundException {
-		addFilter(filterType, String.class, parameters);
-	}
-	
-	public void addFilter(Class<? extends Filter> filterType,
-			Class<? extends Object> valueType,
-			List<DatabaseAlias>... databaseAliasesParameters)
-			throws ExpectedParameterNotFoundException {
-		Session currentSession = Session.getCurrentSession();
-		for (List<DatabaseAlias> parameterList : databaseAliasesParameters) {
-			try {
-				Filter filter = filterType.newInstance();
-				List<String> availableParameters = new ArrayList<String>();
-				List<String> missingParameters = new ArrayList<String>();
-				for (DatabaseAlias parameter : parameterList) {
-					if (hasParameter(parameter.getUriName())) {
-						availableParameters.add(parameter.getUriName());
-						filter.addParameterAlias(parameter);
-						filter.addValues(currentSession.getValues(parameter.getUriName()));
-						filter.setValueType(valueType);
-					} else {
-						missingParameters.add(parameter.getUriName());
-					}
+	public void addFilter(Filter...filters)
+			throws ExpectedParameterNotFoundJapiException {
+		Set<String> expectedParameters = parameters.keySet();
+		List<String> foundParameters = new ArrayList<>();
+		for(Filter filter : filters){
+			for(String parameter : filter.getUriParameters()){
+				if (hasParameter(parameter)) {
+					filter.addValues(currentSession.getValues(parameter));
+					foundParameters.add(parameter);
+					this.filters.add(filter);
 				}
-				if (!availableParameters.isEmpty()) {
-					if (missingParameters.isEmpty()) {
-						filters.add(filter);
-					} else {
-						throw new ExpectedParameterNotFoundException(
-								parameterList, availableParameters,
-								missingParameters);
-					}
-				}
-
-			} catch (InstantiationException | IllegalAccessException e) {
-				// never happens
-				e.printStackTrace();
 			}
 		}
+//		if(!foundParameters.contains(expectedParameters)){
+//			throw new ExpectedParameterNotFoundJapiException(new ArrayList<String>(expectedParameters), foundParameters);
+//		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
@@ -146,31 +102,31 @@ public class Session {
 	/**
 	 * 
 	 * @return valor de order_by da URI ou "1", se não existir
-	 * @throws InvalidOrderByValueException 
+	 * @throws InvalidOrderByValueJapiException 
 	 */
-	public String getOrderByValue() throws InvalidOrderByValueException {
+	public String getOrderByValue() throws InvalidOrderByValueJapiException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
 			String value = getValue(Constants.FixedParameters.ORDER_BY);
 			if(!availableOrderByValues.contains(value))
-				throw new InvalidOrderByValueException(value, availableOrderByValues);
+				throw new InvalidOrderByValueJapiException(value, availableOrderByValues);
 			return value;
 		}
 		return "1";
 	}
 
-	public String getOrderValue() throws InvalidOrderSQLParameterException {
+	public String getOrderValue() throws InvalidOrderSQLParameterJapiException {
 		if (hasParameter(Constants.FixedParameters.ORDER)) {
 			String order = getValue(Constants.FixedParameters.ORDER);
 			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
 					order.toUpperCase()))
 				return order;
 			else
-				throw new InvalidOrderSQLParameterException(order);
+				throw new InvalidOrderSQLParameterJapiException(order);
 		}
 		return "ASC";
 	}
 	
-	public int getOffsetValue() throws InvalidOffsetValueException {
+	public int getOffsetValue() throws InvalidOffsetValueJapiException {
 		if(hasParameter(Constants.FixedParameters.OFFSET)){
 			String sOffset = "";
 			try{
@@ -178,7 +134,7 @@ public class Session {
 				int offset = Integer.parseInt(sOffset);
 				return offset;
 			}catch(NumberFormatException ex){
-				throw new InvalidOffsetValueException(sOffset);
+				throw new InvalidOffsetValueJapiException(sOffset);
 			}
 		}
 		return 0;
@@ -191,22 +147,6 @@ public class Session {
 
 	public void clear() {
 		currentSession = null;
-	}
-
-	public void validateURIParametersUsingFilters()
-			throws URIParameterNotAcceptedException {
-		Iterator<String> iterator = parameters.keySet().iterator();
-		while (iterator.hasNext()) {
-			String parameter = iterator.next();
-			boolean foundParameter = false;
-			for (Filter filter : filters) {
-				foundParameter |= filter.getUriParameters().contains(parameter);
-			}
-			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
-						parameter);
-			if (!foundParameter)
-				throw new URIParameterNotAcceptedException(parameter);
-		}
 	}
 	
 	public void addAvailableOrderByValues(List<String> values) {
@@ -248,4 +188,19 @@ public class Session {
 	public Boolean isCSV() {
 		return isCurrentFormat(RequestFormats.CSV);
 	}
+
+	public String getHTMLTemplate() {
+		// TODO realmente fazer este método
+		return "br/gov/planejamento/api/core/template/teste.vm";
+	}
+	
+	public String getRootURL(){
+		//TODO pegar do japiConfig.json
+		return "localhost:8080/";
+	}
+	public String asset(String...asset){
+		//TODO pegar do japiConfig.json
+		return getRootURL()+"common/assets/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+	}
+	
 }

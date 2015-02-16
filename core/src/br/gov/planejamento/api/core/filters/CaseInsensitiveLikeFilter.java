@@ -9,6 +9,12 @@ import br.gov.planejamento.api.core.database.Filter;
 
 public class CaseInsensitiveLikeFilter extends Filter {
 
+	public CaseInsensitiveLikeFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+		super(type, databaseAliases);
+	}
+	public CaseInsensitiveLikeFilter(DatabaseAlias...databaseAliases) {
+		super(databaseAliases);
+	}
 	
 	@Override
 	public String getStatement() {

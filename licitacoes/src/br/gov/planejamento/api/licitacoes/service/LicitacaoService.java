@@ -15,10 +15,10 @@ import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.database.Service;
 import br.gov.planejamento.api.core.database.ServiceConfiguration;
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterException;
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
 public class LicitacaoService extends Service {
@@ -35,23 +35,17 @@ public class LicitacaoService extends Service {
 	}
 
 	private Response getResourceList(DatabaseData data) {
-		Response resources = new Response();
+		Response resources = new Response(data.getCount());
 		for (DataRow licitacao : data) {
-			LicitacaoResource resource = new LicitacaoResource();
-			resource.setModalidade(licitacao.get("modalidade"));
-			resource.setNomeModalidade(licitacao.get("nome_modalildade"));
-			resource.setNomeUasg(licitacao.get("nome_uasg"));
-			resource.setNumeroAviso(licitacao.get("numero_aviso"));
-			resource.setUasg(licitacao.get("uasg"));
-			resources.add(resource);
+			resources.add(new LicitacaoResource(licitacao));
 		}
 		return resources;
 	}
 
 	public Response licitacoes() throws SQLException,
-			InvalidFilterValueTypeException, InvalidOrderSQLParameterException,
+			InvalidFilterValueTypeJapiException, InvalidOrderSQLParameterJapiException,
 			ParserConfigurationException, SAXException, IOException,
-			InvalidOrderByValueException, InvalidOffsetValueException {
+			InvalidOrderByValueJapiException, InvalidOffsetValueJapiException {
 		ConnectionManager.removeConfiguration();
 		ConnectionManager.loadConfiguration("database-properties");
 		return getResourceList(getData());

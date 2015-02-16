@@ -1,31 +1,38 @@
 package br.gov.planejamento.api.core.base;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
+import br.gov.planejamento.api.core.serializers.CSVSerializer;
+import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
 import br.gov.planejamento.api.core.serializers.XMLSerializer;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
-import br.gov.planejamento.api.core.utils.SerializeUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class Response extends ArrayList<Resource> {
 
 	private Boolean isList = true;
 	private String name = "resources";
 	private String description = "";
+	private int count = 0;
+
+	public int getCount() {
+		return count;
+	}
+	
+	public Response (int count){
+		this.count = count;
+	}
 	
 	/**
-	 * Retorna true se a Response em questão é uma listagem de Resources.
-	 * Caso a Response seja de um item único (página de detalhamento), retorna false.
+	 * Caso a Response seja de um item Ãºnico (pÃ¡gina de detalhamento), retorna false.
 	 * 
-	 * Observe que pode haver uma listagem que contém somente um elemento, onde a Response 
-	 * não é uma página de detalhamento e portanto isList() retorna true.
+	 * nÃ£o Ã© uma pÃ¡gina de detalhamento e portanto isList() retorna true.
 	 * @return
 	 */
 	public Boolean isList() {
@@ -33,8 +40,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Define se a Response em questão é uma listagem de Resources (true) ou uma página de detalhamento
-	 * de um único Resource (false).
+	 * de um Ãºnico Resource (false).
 	 * @param isList
 	 */
 	public void isList(Boolean isList) {
@@ -58,7 +64,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Getter da descrição da Response
+	 * Getter da descriÃ§Ã£o da Response
 	 * @return
 	 */
 	public String getDescription() {
@@ -66,7 +72,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Setter da descrição da Response
+	 * Setter da descriÃ§Ã£o da Response
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -90,15 +96,23 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Serializa a Response no formato JSON, seguindo o padrão HAL.
+	 * Serializa a Response no formato JSON, seguindo o padrÃ£o HAL.
 	 * @return
 	 */
 	public String toJSON() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return JSONSerializer.fromResponse(this);		
 	}
+
+	public String toCSV() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		return CSVSerializer.fromResponse(this);
+	}
+
+	public Object toHTML() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, Exception {
+		return HTMLSerializer.fromResponse(this);
+	}
 	
 	/**
-	 * Serializa a Response no formato XML, seguindo o padrão HAL.
+	 * Serializa a Response no formato XML, seguindo o padrÃ£o HAL.
 	 * @return
 	 * @throws TransformerException 
 	 */

@@ -4,6 +4,7 @@ import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
+import br.gov.planejamento.api.core.database.DataRow;
 
 public class LicitacaoResource extends Resource {
 
@@ -12,6 +13,25 @@ public class LicitacaoResource extends Resource {
 	private String modalidade;
 	private String nomeModalidade;
 	private String numeroAviso;
+	
+	public LicitacaoResource() {
+		super();
+	}
+	
+	
+	/*
+	 * Construtor utilizado para gerar um objeto do Resource a partir de uma linha do banco de dados. Automatiza o mapeamento
+	 * dos parâmetros e facilita a adaptação dos campos pelo desenvolvedor, uma vez que ele não precisa modificar o service
+	 * sempre que houver uma mudança no resource, precisando apenas modificar esse construtor.
+	 */
+	public LicitacaoResource(DataRow licitacao) {
+		super();
+		this.modalidade = licitacao.get("modalidade");
+		this.nomeModalidade = licitacao.get("nome_modalildade");
+		this.nomeUasg = licitacao.get("nome_uasg");
+		this.numeroAviso = licitacao.get("numero_aviso");
+		this.uasg = licitacao.get("uasg");
+	}
 
 	public Property getUasg() {
 		return new Property("UASG", uasg);
@@ -51,6 +71,7 @@ public class LicitacaoResource extends Resource {
 	public void setNumeroAviso(String numeroAviso) {
 		this.numeroAviso = numeroAviso;
 	}
+
 
 	@Override
 	public Link getSelfLink() {

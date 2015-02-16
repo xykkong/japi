@@ -9,6 +9,12 @@ import br.gov.planejamento.api.core.database.Filter;
 
 public class LikeFilter extends Filter {
 
+	public LikeFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+		super(type, databaseAliases);
+	}
+	public LikeFilter(DatabaseAlias...databaseAliases) {
+		super(databaseAliases);
+	}
 	
 	@Override
 	public String getStatement() {
