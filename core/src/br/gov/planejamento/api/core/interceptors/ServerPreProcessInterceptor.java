@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.ext.Provider;
 
@@ -17,6 +18,8 @@ import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
+
+import com.google.common.collect.Multiset.Entry;
 
 import br.gov.planejamento.api.core.annotations.DocParameterField;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
@@ -45,6 +48,20 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		Session.getCurrentSession().clear();
 		Session.getCurrentSession().putValues(httpRequest.getUri().getQueryParameters());
 		
+		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
+		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();
+		boolean first = true;
+		for (java.util.Map.Entry<String, List<String>> parameter : parameters.entrySet()){
+			if(first) {
+				fullPath = fullPath+"?"+parameter.getKey()+"="+parameter.getValue().get(0);
+				first = false;
+			}
+			else{ 
+				fullPath = fullPath+"&"+parameter.getKey()+"="+parameter.getValue().get(0);
+			}
+		}
+		fullPath = FilenameUtils.removeExtension(fullPath);
+		
 		List<PathSegment> pathSegments = httpRequest.getUri().getPathSegments();
 		String requestFormat = StringUtils.lastSplitOf(pathSegments.get(pathSegments.size()-1).getPath(), "\\.").toLowerCase();
 		
@@ -57,6 +74,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		System.out.println(httpRequest.getUri().getBaseUri().getPath());
 		path = FilenameUtils.removeExtension(path);
 		Session.getCurrentSession().setPath(path);
+		Session.getCurrentSession().setFullPath(fullPath);
 		System.out.println(Session.getCurrentSession().getPath());
 		
 		try {	

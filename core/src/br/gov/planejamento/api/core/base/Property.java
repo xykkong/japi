@@ -27,8 +27,9 @@ public class Property {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getValue() {
+		if(value == null) return "-";
 		return value;
 	}
 

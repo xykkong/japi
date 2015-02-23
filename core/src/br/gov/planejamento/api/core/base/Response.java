@@ -94,7 +94,7 @@ public class Response extends ArrayList<Resource> {
 	 * @return
 	 */
 	public Link getSelfLink() {
-		return new SelfLink();
+		return new SelfLink(Session.getCurrentSession().getFullPath());
 	}
 	
 	/**
