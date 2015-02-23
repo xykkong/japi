@@ -34,6 +34,8 @@ public class Session {
 	private String requestFormat = Constants.RequestFormats.HTML;
 
 	private String path;
+	
+	private String fullPath;
 
 	/**
 	 * Constructor that populates the static current variable with the created
@@ -163,6 +165,14 @@ public class Session {
 		return path;
 	}
 	
+	public String getFullPath() {
+		return fullPath;
+	}
+
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
+	}
+
 	public Boolean isHTML() {
 		return isCurrentFormat(RequestFormats.HTML);
 	}
