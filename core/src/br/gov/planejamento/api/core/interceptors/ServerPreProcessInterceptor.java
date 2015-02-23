@@ -1,7 +1,7 @@
 package br.gov.planejamento.api.core.interceptors;
 
+import java.io.FileNotFoundException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,10 +19,14 @@ import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 import br.gov.planejamento.api.core.annotations.DocParameterField;
+import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 @Provider
 @ServerInterceptor
@@ -32,6 +36,12 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 	public ServerResponse preProcess(HttpRequest httpRequest,
 			ResourceMethod method) throws Failure, WebApplicationException {	
 		
+		try {
+			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlFolder());
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			System.out.println("Houve um erro ao carregar o arquivo japi_config.json");
+			e.printStackTrace();
+		}
 		Session.getCurrentSession().clear();
 		Session.getCurrentSession().putValues(httpRequest.getUri().getQueryParameters());
 		

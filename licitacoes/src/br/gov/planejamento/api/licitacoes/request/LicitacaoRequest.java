@@ -13,7 +13,6 @@ import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.core.annotations.DocDescription;
 import br.gov.planejamento.api.core.annotations.DocParameterField;
-import br.gov.planejamento.api.core.annotations.JSONIgnore;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
@@ -46,11 +45,11 @@ public class LicitacaoRequest {
 			SQLException {
 		Session currentSession = Session.getCurrentSession();
 
-		currentSession.addFilter(new EqualFilter(Integer.class,
-				new DatabaseAlias("uasg")), new ZeroFillEqualFilter(
-				new DatabaseAlias("modalidade"), new DatabaseAlias(
-						"numero_aviso")), new CaseInsensitiveLikeFilter(
-				new DatabaseAlias("nome_uasg")));
+		currentSession.addFilter(
+				new EqualFilter(Integer.class, new DatabaseAlias("uasg")),
+				new ZeroFillEqualFilter(new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
+				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
+		);
 
 		Response response = null;
 		response = lService.licitacoes();
