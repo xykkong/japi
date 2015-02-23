@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.core.interceptors;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,9 +18,9 @@ import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import br.gov.planejamento.api.core.annotations.DocParameterField;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
@@ -48,7 +50,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		System.out.println(Session.getCurrentSession().getPath());
 		
 		try {	
-			validateURIParametersUsingAnotations();
+			validateURIParametersUsingAnotations(httpRequest, method);
 		} catch (URIParameterNotAcceptedJAPIException e) {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
@@ -56,17 +58,25 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		return null;
 	}
 	
-	private static void validateURIParametersUsingAnotations() throws URIParameterNotAcceptedJAPIException{
-//		for(String parameter : parameters.keySet()){
-//			boolean foundParameter = false;
-//			for (Filter filter : filters) {
-//				foundParameter |= filter.getUriParameters().contains(parameter);
-//			}
-//			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(
-//						parameter);
-//			if (!foundParameter)
-//				throw new URIParameterNotAcceptedJAPIException(parameter);
-//		}
+	private static void validateURIParametersUsingAnotations(HttpRequest httpRequest, ResourceMethod method)
+			throws URIParameterNotAcceptedJAPIException{
+		
+		for(String parameter : httpRequest.getUri().getQueryParameters().keySet()){
+			boolean foundParameter = false;
+			foundParameter |= Arrays.asList(Constants.FixedParameters.DEFAULT_URI_PARAMETERS).contains(parameter);
+			if(!foundParameter) {
+				for(Annotation[] argAnnotations : method.getMethod().getParameterAnnotations()){
+					for(Annotation annotation : argAnnotations){
+						if(annotation.annotationType() == DocParameterField.class){
+							DocParameterField doc = (DocParameterField) annotation;
+							foundParameter |= doc.name().toLowerCase().equals(parameter.toLowerCase());
+						}
+					}
+				}
+			}
+			if (!foundParameter)
+				throw new URIParameterNotAcceptedJAPIException(parameter);
+		}
 	}
 
 }

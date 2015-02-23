@@ -2,22 +2,17 @@ package br.gov.planejamento.api.core.base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
-import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class Session {
@@ -58,9 +53,7 @@ public class Session {
 		return filters;
 	}
 
-	public void addFilter(Filter...filters)
-			throws ExpectedParameterNotFoundJapiException {
-		Set<String> expectedParameters = parameters.keySet();
+	public void addFilter(Filter...filters) {
 		List<String> foundParameters = new ArrayList<>();
 		for(Filter filter : filters){
 			for(String parameter : filter.getUriParameters()){
@@ -71,9 +64,6 @@ public class Session {
 				}
 			}
 		}
-//		if(!foundParameters.contains(expectedParameters)){
-//			throw new ExpectedParameterNotFoundJapiException(new ArrayList<String>(expectedParameters), foundParameters);
-//		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
