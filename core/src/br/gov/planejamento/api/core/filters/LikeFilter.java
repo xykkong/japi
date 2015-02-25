@@ -15,25 +15,25 @@ public class LikeFilter extends Filter {
 	public LikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
+
 	
 	@Override
-	public String getStatement() {
+	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
 		StringBuilder statement = new StringBuilder();
-		Session currentSession = Session.getCurrentSession();
-		for(DatabaseAlias parameterAlias : parametersAliases){
-			int numberOfValues = currentSession.getValues(parameterAlias.getUriName()).size();
+		int numberOfValues = getValues(parameterAlias).size();
+		statement.append(parameterAlias.getDbName());
+		statement.append(" like ? ");
+		for (int i=1; i<numberOfValues; i++) {
+			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			for (int i=0; i<numberOfValues; i++) {
-				statement.append(" like ? ");				
-			}
+			statement.append(" like ? ");				
 		}
-		return statement.toString();
+		return statement;
 	}
-
 	@Override
-	public List<String> getValues() {
+	public List<String> getValues(DatabaseAlias parameterAlias) {
 		List<String> values = new ArrayList<String>();
-		for(String value : this.values)
+		for(String value : this.values.get(parameterAlias.getUriName()))
 			values.add("%" + value + "%");
 		return values;
 	}

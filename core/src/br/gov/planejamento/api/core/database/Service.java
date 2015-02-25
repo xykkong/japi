@@ -77,8 +77,9 @@ public abstract class Service {
 		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
 		int index = 1;
 		for (Filter filter : filtersFromRequest) {
+			int previousIndex = index;
 			index = filter.setPreparedStatementValues(pstQuery, index);
-			index = filter.setPreparedStatementValues(pstCount, 1);
+			filter.setPreparedStatementValues(pstCount, previousIndex);
 		}
 
 		int offsetValue = currentSession.getOffsetValue();
@@ -134,7 +135,10 @@ public abstract class Service {
 			ArrayList<Filter> filtersFromRequest) {
 		ArrayList<String> wheres = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
-			wheres.addAll(filter.getValues());
+			for(DatabaseAlias dbAlias : filter.getParametersAliases()){
+				if(Session.getCurrentSession().hasParameter(dbAlias.getUriName()))
+					wheres.addAll(filter.getValues(dbAlias));
+			}
 		}
 		return wheres;
 	}

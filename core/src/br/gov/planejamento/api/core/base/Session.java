@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -25,7 +26,7 @@ public class Session {
 	/**
 	 * All parameters sent in querystring
 	 */
-	private Map<String, List<String>> parameters;
+	private Map<String, List<String>> parameters = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
 
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
@@ -56,20 +57,23 @@ public class Session {
 	}
 
 	public void addFilter(Filter...filters) {
-		List<String> foundParameters = new ArrayList<>();
 		for(Filter filter : filters){
+			Boolean addThisFilter = false;
 			for(String parameter : filter.getUriParameters()){
 				if (hasParameter(parameter)) {
-					filter.addValues(currentSession.getValues(parameter));
-					foundParameters.add(parameter);
-					this.filters.add(filter);
+					addThisFilter = true;
+					filter.putValues(parameter, currentSession.getValues(parameter));
+					System.out.println("\n\tfilter added: "+ parameter+" with "+
+							currentSession.getValues(parameter).size()+" values.");
 				}
 			}
+			if(addThisFilter)
+				this.filters.add(filter);
 		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
-		parameters = multivaluedMap;
+		parameters.putAll(multivaluedMap);
 	}
 
 	public List<String> getValues(String key) {

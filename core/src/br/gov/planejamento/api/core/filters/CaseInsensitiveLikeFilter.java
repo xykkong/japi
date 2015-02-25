@@ -15,29 +15,29 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	public CaseInsensitiveLikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
-	
-	@Override
-	public String getStatement() {
-		StringBuilder statement = new StringBuilder();
-		Session currentSession = Session.getCurrentSession();
-		for(DatabaseAlias parameter : parametersAliases){
-			int numberOfValues = currentSession.getValues(parameter.getUriName()).size();
-			statement.append("LOWER( ");
-			statement.append(parameter.getDbName());
-			statement.append(" )");
-			for (int i=0; i<numberOfValues; i++) {
-				statement.append(" like ? ");				
-			}
-		}
-		return statement.toString();
-	}
 
 	@Override
-	public List<String> getValues() {
+	public List<String> getValues(DatabaseAlias parameterAlias) {
 		List<String> values = new ArrayList<String>();
-		for(String value : this.values)
+		for(String value : this.values.get(parameterAlias.getUriName()))
 			values.add("%" + value.toLowerCase().trim() + "%");
 		return values;
+	}
+	
+	@Override
+	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
+		StringBuilder statement = new StringBuilder();
+		int numberOfValues = getValues(parameterAlias).size();
+		statement.append("LOWER( ");
+		statement.append(parameterAlias.getDbName());
+		statement.append(" )");
+		statement.append(" like ? ");
+		for (int i=1; i<numberOfValues; i++) {
+			statement.append(" AND LOWER( ");
+			statement.append(parameterAlias.getDbName());
+			statement.append(" ) like ? ");
+		}
+		return statement;
 	}
 
 }
