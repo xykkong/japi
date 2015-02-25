@@ -30,8 +30,8 @@ public class OrgaoRequest {
 	@GET
 	@Path(LicitacaoConstants.Requests.List.ORGAOS)
 	public Response orgaos(
-				@DocParameterField(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
-				@DocParameterField(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
+				@DocParameterField(name = "tipo_adm", required = false, description ="Cï¿½digo do tipo da administraï¿½ï¿½o do ï¿½rgï¿½o") String tipo_adm,
+				@DocParameterField(name = "ativo", required = false, description ="Se o ï¿½rgï¿½o estï¿½ ativo.") String ativo
 			) throws InvalidFilterValueTypeJapiException,
 			InvalidOrderSQLParameterJapiException, InvalidOrderByValueJapiException,
 			InvalidOffsetValueJapiException, SQLException, ParserConfigurationException,
@@ -39,8 +39,8 @@ public class OrgaoRequest {
 		Session currentSession = Session.getCurrentSession();
 		
 		currentSession.addFilter(
-				new EqualFilter(Integer.class, new DatabaseAlias("tipo_adm"))
-				// new BooleanFilter()
+				new EqualFilter(Integer.class, new DatabaseAlias("codigo_tipo_adm", "tipo_adm")),
+				new EqualFilter(Boolean.class, new DatabaseAlias("ativo"))
 				);
 
 		Response response = null;

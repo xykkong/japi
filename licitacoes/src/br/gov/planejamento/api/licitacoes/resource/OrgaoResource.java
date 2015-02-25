@@ -30,7 +30,7 @@ public class OrgaoResource extends Resource {
 		this.tipoAdm = tipoAdm;
 	}
 	
-	public Property getAtivo(DataRow orgao){		
+	public Property getAtivo(){		
 		return new Property("Ativo", ativo);
 	}
 	
