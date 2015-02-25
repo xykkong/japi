@@ -48,6 +48,6 @@ public abstract class HTMLSerializer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "dey ruim";
+		return "deu ruim na renderização do velocity";
 	}
 }

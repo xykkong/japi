@@ -22,6 +22,14 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Resteasy</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/v1/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Resteasy</servlet-name>
+    <url-pattern>/doc/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Resteasy</servlet-name>
+    <url-pattern>/id/*</url-pattern>
   </servlet-mapping>
 </web-app>

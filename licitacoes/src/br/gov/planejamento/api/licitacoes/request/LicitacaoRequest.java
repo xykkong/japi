@@ -52,7 +52,6 @@ public class LicitacaoRequest {
 
 		Response response = null;
 		response = lService.licitacoes();
-
 		return response;
 	}
 

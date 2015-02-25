@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<body>
+	<composite:interface>
+
+		<composite:attribute name="value" required="true" />
+
+	</composite:interface>
+
+
+	<composite:implementation>
+		<div class="container">
+			<table class="table">
+						<caption>
+							<strong>Parâmetros da Solicitação</strong>
+						</caption>
+						<thead>
+							<tr>
+								<th>Campo</th>
+								<th>Tipo</th>
+								<th>Obrigatório</th>
+								<th>Descrição</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="item" value="#{cc.attrs.value}">
+								<tr>
+									<td>#{item.name}</td>
+									<td>#{item.type}</td>
+									<td>#{item.required}</td>
+									<td>#{item.description}</td>
+								</tr>
+							</ui:repeat>
+						</tbody>
+			</table>
+		</div>
+
+	</composite:implementation>
+
+</body>
+
+</html>

@@ -3,15 +3,15 @@ package br.gov.planejamento.api.core.constants;
 public abstract class Constants {
 
 	/**
-	 * Vers�es j� lan�adas do sistema
+	 * Versões já lançadas do sistema
 	 */
 	public static final class ApiVersions {
 		public static final String V1 = "/v1";
 	}
 	
 	/**
-	 * Uma requisi��o do tipo MIRROR � uma URL espelho que ir� redirecionar para a URL final (DOCUMENT).
-	 * A DOCUMENT � de fato a URI que identifica unicamente o documento em quest�o. 
+	 * Uma requisição do tipo MIRROR é uma URL espelho que irá redirecionar para a URL final (DOCUMENT).
+	 * A DOCUMENT é de fato a URI que identifica unicamente o documento em questão. 
 	 */
 	public static final class RequestTypes {
 		public static final String MIRROR = "/id";

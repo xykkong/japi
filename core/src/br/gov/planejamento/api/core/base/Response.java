@@ -29,11 +29,11 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Retorna true se a Response em quest�o � uma listagem de Resources.
-	 * Caso a Response seja de um item �nico (p�gina de detalhamento), retorna false.
+	 * Retorna true se a Response em questão é uma listagem de Resources.
+	 * Caso a Response seja de um item único (página de detalhamento), retorna false.
 	 * 
-	 * Observe que pode haver uma listagem que cont�m somente um elemento, onde a Response 
-	 * n�o � uma p�gina de detalhamento e portanto isList() retorna true.
+	 * Observe que pode haver uma listagem que contém somente um elemento, onde a Response 
+	 * não é uma página de detalhamento e portanto isList() retorna true.
 	 * @return
 	 */
 	public Boolean isList() {
@@ -41,8 +41,8 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Define se a Response em quest�o � uma listagem de Resources (true) ou uma p�gina de detalhamento
-	 * de um �nico Resource (false).
+	 * Define se a Response em questão é uma listagem de Resources (true) ou uma página de detalhamento
+	 * de um único Resource (false).
 	 * @param isList
 	 */
 	public void isList(Boolean isList) {
@@ -66,7 +66,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Getter da descri��o da Response
+	 * Getter da descrição da Response
 	 * @return
 	 */
 	public String getDescription() {
@@ -74,7 +74,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Setter da descri��o da Response
+	 * Setter da descrição da Response
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -98,7 +98,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
-	 * Serializa a Response no formato JSON, seguindo o padr�o HAL.
+	 * Serializa a Response no formato JSON, seguindo o padrão HAL.
 	 * @return
 	 */
 	public String toJSON() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {

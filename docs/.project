@@ -5,6 +5,7 @@
 	<projects>
 		<project>licitacoes</project>
 		<project>core</project>
+		<project>common</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

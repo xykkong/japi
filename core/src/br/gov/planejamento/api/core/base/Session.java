@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.enterprise.context.spi.Context;
 import javax.ws.rs.core.MultivaluedMap;
+
+import org.hibernate.validator.internal.util.privilegedactions.GetAnnotationParameter;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
@@ -204,7 +207,7 @@ public class Session {
 	}
 	public String asset(String...asset){
 		//TODO pegar do japiConfig.json
-		return getRootURL()+"common/assets/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+		return "http://"+getRootURL()+"licitacoes/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
 }

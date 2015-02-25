@@ -15,7 +15,7 @@ public abstract class SerializeUtils {
 			JsonObject linkObject = new JsonObject();
 			linkObject.addProperty("href", link.getHref());
 			linkObject.addProperty("title", link.getTitle());
-			json.add(link.getRel(), linkObject); //TODO: Lançar exception caso getRel retorne vazio/null
+			json.add(link.getRel(), linkObject); //TODO: LanÃ§ar exception caso getRel retorne vazio/null
 		}
 		return json;		
 	}

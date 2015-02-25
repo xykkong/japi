@@ -61,6 +61,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			}
 		}
 		fullPath = FilenameUtils.removeExtension(fullPath);
+		System.out.println("Full path: "+ fullPath);
 		
 		List<PathSegment> pathSegments = httpRequest.getUri().getPathSegments();
 		String requestFormat = StringUtils.lastSplitOf(pathSegments.get(pathSegments.size()-1).getPath(), "\\.").toLowerCase();

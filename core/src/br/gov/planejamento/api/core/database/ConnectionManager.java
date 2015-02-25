@@ -15,8 +15,8 @@ public class ConnectionManager {
 	private static Connection connection = null;
 	
 	/**
-	 * Este m�todo deve ser private, est� como public para podermos fazer testes,
-	 * veja mais nas classes de service do m�dulo de licita��es 
+	 * Este método deve ser private, está como public para podermos fazer testes,
+	 * veja mais nas classes de service do módulo de licitações 
 	 * 
 	 * @param filename
 	 * @throws ParserConfigurationException
@@ -40,7 +40,7 @@ public class ConnectionManager {
 	}
 	
 	/**
-	 * Este m�todo n�o deveria existir, da mesma maneira que o m�todo acima deveria ser private 
+	 * Este método n�o deveria existir, da mesma maneira que o m�todo acima deveria ser private 
 	 */
 	public static void removeConfiguration(){
 		connection = null;

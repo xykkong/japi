@@ -36,7 +36,7 @@ public abstract class JSONSerializer {
 			if(resources.size() == 1) {
 				json = (JsonObject) resources.get(0);
 			} else {
-				//TODO: Lan�ar exception quando uma p�gina de detalhamento � chamada havendo mais de um registro
+				//TODO: Lançar exception quando uma página de detalhamento é chamada havendo mais de um registro
 			}
 		}
 		

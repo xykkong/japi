@@ -1,0 +1,38 @@
+body,
+html {
+  overflow-x: hidden;
+}
+.rcrumbs {
+  font-family: 'Open Sans', sans-serif, Arial;
+  font-size: 14px;
+  white-space: nowrap;
+  display: inline-block;
+}
+.rcrumbs > ul {
+  padding: 0;
+  list-style: none;
+}
+.rcrumbs > ul > li {
+  overflow: hidden;
+  display: inline-block;
+  color: #3867b7;
+}
+.rcrumbs > ul > li.show {
+  display: inline-block;
+}
+.rcrumbs > ul > li.ellipsis {
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  overflow: hidden;
+}
+.rcrumbs a {
+  color: #3867b7;
+  text-decoration: none;
+}
+.rcrumbs a:hover {
+  text-decoration: underline;
+}
+.rcrumbs .divider {
+  color: #3867b7;
+  padding: 0 5px;
+}
