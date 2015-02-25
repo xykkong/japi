@@ -46,8 +46,7 @@ public class LicitacaoRequest {
 		Session currentSession = Session.getCurrentSession();
 
 		currentSession.addFilter(
-				new EqualFilter(Integer.class, new DatabaseAlias("uasg")),
-				new ZeroFillEqualFilter(new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
+				new EqualFilter(Integer.class, new DatabaseAlias("uasg"), new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
 				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
 		);
 

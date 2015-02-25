@@ -17,22 +17,22 @@ public class EqualFilter extends Filter {
 	}
 	
 	@Override
-	public String getStatement() {
+	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
 		StringBuilder statement = new StringBuilder();
-		Session currentSession = Session.getCurrentSession();
-		for (DatabaseAlias parameterAlias : parametersAliases) {
-			int numberOfValues = currentSession.getValues(parameterAlias.getUriName()).size();
+		int numberOfValues = getValues(parameterAlias).size();
+		statement.append(parameterAlias.getDbName());
+		statement.append(" = ?");
+		for (int i = 1; i < numberOfValues; i++) {
+			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			for (int i = 0; i < numberOfValues; i++) {
-				statement.append(" = ? ");
-			}
+			statement.append(" = ?");
 		}
-		return statement.toString();
+		return statement;
 	}
 
 	@Override
-	public List<String> getValues() {
-		return values;
+	public List<String> getValues(DatabaseAlias parameterAlias) {
+		return this.values.get(parameterAlias.getUriName());
 	}
 
 }
