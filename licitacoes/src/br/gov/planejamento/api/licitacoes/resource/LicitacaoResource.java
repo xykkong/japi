@@ -13,6 +13,7 @@ public class LicitacaoResource extends Resource {
 	private String modalidade;
 	private String nomeModalidade;
 	private String numeroAviso;
+	private String dataAberturaProposta;
 	
 	public LicitacaoResource() {
 		super();
@@ -31,6 +32,15 @@ public class LicitacaoResource extends Resource {
 		this.nomeUasg = licitacao.get("nome_uasg");
 		this.numeroAviso = licitacao.get("numero_aviso");
 		this.uasg = licitacao.get("uasg");
+		this.dataAberturaProposta = licitacao.get("data_abertura_proposta");
+	}
+	
+	public Property getDataAberturaProposta(){
+		return new Property("Data de Abertura da Proposta", dataAberturaProposta);
+	}
+	
+	public void setDataAberturaProposta(String dtAbertura){
+		this.dataAberturaProposta = dtAbertura;
 	}
 
 	public Property getUasg() {

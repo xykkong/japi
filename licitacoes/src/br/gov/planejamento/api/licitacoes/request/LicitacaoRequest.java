@@ -39,7 +39,7 @@ public class LicitacaoRequest {
 				@DocParameterField(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
 				@DocParameterField(name = "modalidade", required = false, description = "Modalidade") String modalidade,
 				@DocParameterField(name = "numero_aviso", required = false, description = "Número aviso") String numeroAviso,
-				@DocParameterField(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg
+				@DocParameterField(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg				
 			) throws JapiException,
 			ParserConfigurationException, SAXException, IOException,
 			SQLException {

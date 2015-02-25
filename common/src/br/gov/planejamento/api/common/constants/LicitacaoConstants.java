@@ -16,6 +16,7 @@ public abstract class LicitacaoConstants {
 		
 		public static final class List {
 			public static final String LICITACOES = Prefixes.LIST + "/licitacoes";
+			public static final String ORGAOS = Prefixes.LIST + "/orgaos";
 		}
 		
 		public static final class Document {

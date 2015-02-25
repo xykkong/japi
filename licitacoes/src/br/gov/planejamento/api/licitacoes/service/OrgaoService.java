@@ -19,30 +19,30 @@ import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiExcepti
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
-import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
-public class LicitacaoService extends Service {
+import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
+
+public class OrgaoService extends Service{
 
 	@Override
 	protected ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("dados_abertos");
-		configs.setTable("vw_licitacao");
-		configs.setResponseFields("modalidade", "nome_modalidade", "nome_uasg",
-				"numero_aviso", "uasg","data_abertura_proposta");
+		configs.setTable("vw_orgao");
+		configs.setResponseFields("codigo_tipo_adm","ativo");
 
-		return configs;
+		return configs;		
 	}
-
+	
 	private Response getResourceList(DatabaseData data) {
 		Response resources = new Response(data.getCount());
-		for (DataRow licitacao : data) {
-			resources.add(new LicitacaoResource(licitacao));
+		for (DataRow orgao : data) {
+			resources.add(new OrgaoResource(orgao));
 		}
 		return resources;
 	}
 
-	public Response licitacoes() throws SQLException,
+	public Response orgaos() throws SQLException,
 			InvalidFilterValueTypeJapiException, InvalidOrderSQLParameterJapiException,
 			ParserConfigurationException, SAXException, IOException,
 			InvalidOrderByValueJapiException, InvalidOffsetValueJapiException {
@@ -54,10 +54,8 @@ public class LicitacaoService extends Service {
 	@Override
 	public List<String> availableOrderByValues() {
 		List<String> values = new ArrayList<String>();
-		values.add("uasg");
-		values.add("nome_modalidade");
-		values.add("numero_aviso");
-		values.add("data_abertura_proposta");
+		values.add("codigo_tipo_adm");
+		values.add("ativo");
 		return values;
 	}
 
