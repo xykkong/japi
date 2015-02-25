@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>JAPI - API de dados abertos</title>
+	<title>JAPI - Framework para API's Governamentais</title>
 	<!-- Bootstrap -->
 	<link rel="stylesheet" type="text/css" href='$session.asset("template.css")'/>
 	<style type="text/css">
@@ -55,6 +55,7 @@
 	
 </head>
 	<body>
+		##Barra do Governo Federal, obrigatória para sites governamentais
 		<div id="barra-brasil" style="background:#7F7F7F; height: 20px; padding:0 0 0 10px;display:block;"> 
 			<ul id="menu-barra-temp" style="list-style:none;">
 				<li style="display:inline; float:left;padding-right:10px; margin-right:10px; border-right:1px solid #EDEDED"><a href="http://brasil.gov.br" style="font-family:sans,sans-serif; text-decoration:none; color:white;">Portal do Governo Brasileiro</a></li> 
@@ -63,7 +64,100 @@
 		</div>
 
 		<div id="container">
-		
+			##Cabeçalho do site, onde teremos o menu e as informações da API
+			<div id="p_header">
+				<div id="p_h_interno" class="p_container">
+					<ul id="p_h_sitactions">
+						<li><a href="acessibilidade.html" accesskey="4">Acessibilidade</a></li>
+						<li id="siteaction-contraste" class="contrasteIcone"><a accesskey="5" title="Alto contraste">Alto Contraste</a></li>
+						<li id="siteaction-contraste2" class="contrasteIcone" style="display: none;"><a accesskey="6" title="Alto Contraste" class="contrasteIconeNegativo">Alto Contraste</a></li>
+						<li><a href="mapa-site.html" accesskey="7">Mapa do site</a></li>
+					</ul>
+				
+					<ul id="p_h_aces">
+						<li>
+							<a href="#conteudo" accesskey="1">
+								Ir para o conteúdo
+								<span>1</span>
+							</a>
+						 </li>
+						 <li>
+							 <a href="#menu_nav" accesskey="2">
+								  Ir para a navegação
+								  <span>2</span>
+							  </a>
+						 </li>
+						 <li>
+							<a href="#p_footer" accesskey="3">
+								Ir para o rodapé
+								<span>3</span>
+							</a>
+						 </li>
+					</ul>
+								
+					<div id="p_h_titulo">
+						<a href="$session.path" title="JAPI - Framework para API's governamentais">
+							<img alt="Brasil - Governo Federal" src="resources/imagens/logo_vetorizado.png" id="logo-dados-abertos">
+							<span id="p_h_tit_den"></span>
+							<h1 id="p_h_tit_nome">JAPI - Framework para API's governamentais</h1>
+							<span id="p_h_tit_sub">Beta</span>
+						</a>
+					</div>   
+								
+				</div>
+						
+				<div id="p_h_menu">
+					<div id="p_h_menu_interno" class="p_container">	
+						<ul>
+							<li id="faq">
+								<a href="perguntas-frequentes.html">
+								Perguntas frequentes
+								</a>  
+							</li>
+							<li id="contato">
+								<a href="contato">
+								Contato
+								</a>  
+							</li>
+							<li id="sobre">
+								<a href="http://kit.dados.gov.br/Gloss%C3%A1rio/#api">
+								O que são API's
+								</a>  
+							</li>
+							<li id="documentacao">
+								<a href="swagger.html">
+								Documentação Automática
+								</a>
+							</li>	
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			##Manus de navegação interna e resposta do servidor
+			<div class="p_container">
+				##Breadcrumbs
+				<div class="bread-crumb-container">
+					<div>VOCÊ ESTÁ AQUI: </div>
+					<div class="rcrumbs" id="breadcrumbs">
+						<ul>
+						</ul>
+					</div>
+				</div>
+				##Menu lateral para navegação de documentações
+				<div class="p_m_dir m_lateral" id="link-navegacao">
+					<div class="m_lateral_ti">
+						<span>Módulos</span>
+					</div>
+
+					<ul>
+						<li><a href="docs/lista-metodos-licitacao.html">Módulo de Teste</a></li>
+						<li><a href="">Módulo 2</a></li>
+						<li><a href="">Módulo 3</a></li>
+					</ul>
+				</div>
+			
+			##Conteudo da resposta do servidor
 			<div id="conteudo" class="p_c_prin">	
 				<!-- Header Div-->
 				<div id="header">
@@ -75,7 +169,8 @@
 						#else
 							<h2 id="titulo" class="titulo-pagina">$response.name</h2>
 						#end
-		
+						
+						##Lógica de paginação
 						#if( $response.isList() )
 							#set($offset = $session.offsetValue)
 							#set($count = $response.count)
@@ -94,7 +189,7 @@
 							<hr class="barra" style="margin: 0px;"/>
 							<p class="num-resultados"><small>Exibindo resultados $first - $last de $count</small></hp>					
 							
-						
+							##Exibição dos resultados da lógica de paginação
 							<ul class="pager">
 								#if($prev)
 									<li class="previous lista-botao">
@@ -107,6 +202,10 @@
 									</li>
 								#end 
 							</ul>
+							
+							#*Para casos em que a exibição é feita em multiplos formatos
+							(html, xml, json, csv) aqui são linkados todos os demais 
+							formatos de exibição*#
 							<div id="lista-formatos">
 								<div>
 									#if($response.isList())
@@ -141,13 +240,15 @@
 									</div>
 								</div>
 							</div>
+							
+							##Exibição da tabela de resultados
 							<div class="content" >
 								<ul>
 									#if($response.isList())
 										#if ($count > 0)
 											#foreach($resource in $response)
 												<li class="info-holder">
-												<h3 style=""><a href="$resource.self" style="">$resource.name</a></h3>
+												<h3 style=""><a href="$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
 												#foreach($property in $resource.properties)
 														<div class="tabela-lista-valor">
 															<p class="outer tabela-lista-item"> $property.name </p>
@@ -164,16 +265,16 @@
 								</div>
 							</div>
 						</div>
-						
-						<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
+				</div>	
+					<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 				
 					</div>
-					
+				</div>	
 					<div id="p_footer">
 						<div id="p_f_bra">
 							<div id="p_f_bra_interno"  class="p_container">	
 								<a href="http://www.acessoainformacao.gov.br/" target="_blank">
-									<img alt="Acesso a Informação" src="$domain/docs/resources/imagens/acesso-a-infornacao.png" />
+									<img alt="Acesso a Informação" src="web-resources/imagens/acesso-a-infornacao.png" />
 								</a>
 								
 								<a href="http://www.brasil.gov.br/" class="lg_esq" target="_blank">
@@ -189,6 +290,40 @@
     		</div>
 		</body>
 	
+	##Manter os Javascripts aso final da body facilita o carregamento da página
+	<script type="text/javascript" src="resources/js/jquery-1.9.1.js"> </script>
+	<script type="text/javascript" src="resources/js/jquery.rcrumbs.js"> </script>
+	
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$("#breadcrumbs ul").empty();
+			$("#breadcrumbs ul").append('<li><a href="$domain/docs/home.html">Home</a><span class="divider">></span></li>');
+			
+			if($ehLista){			
+				$("#breadcrumbs ul").append('<li>$rootResource.nome</li>');
+				document.title = "$rootResource.nome - Dados Abertos";	
+			}else{
+				$("#breadcrumbs ul").append('<li>$resource.nome</li>');
+				document.title = "$resource.nome - Dados Abertos";	
+			}
+		});
+	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+		  $("#siteaction-contraste2").hide();	
+		  $("#siteaction-contraste a").click(function(){
+		    $("body").addClass("fundoPreto");
+		    $("#siteaction-contraste").hide();
+			$("#siteaction-contraste2").show();
+		  });
+		 $("#siteaction-contraste2 a").click(function(){
+			    $("body").removeClass("fundoPreto");
+			    $("#siteaction-contraste2").hide();
+				$("#siteaction-contraste").show();
+			});
+		});
+	</script>
 	<script src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
 	<script type="text/javascript" src='$session.asset("javascript.js")'></script>
 </html>
