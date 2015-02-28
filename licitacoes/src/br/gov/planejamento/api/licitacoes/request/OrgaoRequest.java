@@ -30,8 +30,8 @@ public class OrgaoRequest {
 	@GET
 	@Path(LicitacaoConstants.Requests.List.ORGAOS)
 	public Response orgaos(
-				@DocParameterField(name = "tipo_adm", required = false, description ="C�digo do tipo da administra��o do �rg�o") String tipo_adm,
-				@DocParameterField(name = "ativo", required = false, description ="Se o �rg�o est� ativo.") String ativo
+				@DocParameterField(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
+				@DocParameterField(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
 			) throws InvalidFilterValueTypeJapiException,
 			InvalidOrderSQLParameterJapiException, InvalidOrderByValueJapiException,
 			InvalidOffsetValueJapiException, SQLException, ParserConfigurationException,

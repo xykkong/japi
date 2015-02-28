@@ -22,8 +22,8 @@ public class LicitacaoResource extends Resource {
 	
 	/*
 	 * Construtor utilizado para gerar um objeto do Resource a partir de uma linha do banco de dados. Automatiza o mapeamento
-	 * dos parâmetros e facilita a adaptação dos campos pelo desenvolvedor, uma vez que ele não precisa modificar o service
-	 * sempre que houver uma mudança no resource, precisando apenas modificar esse construtor.
+	 * dos parÃ¢metros e facilita a adaptaÃ§ao dos campos pelo desenvolvedor, uma vez que ele nï¿½o precisa modificar o service
+	 * sempre que houver uma mudanÃ§a no resource, precisando apenas modificar esse construtor.
 	 */
 	public LicitacaoResource(DataRow licitacao) {
 		super();
@@ -75,7 +75,7 @@ public class LicitacaoResource extends Resource {
 	}
 
 	public Property getNumeroAviso() {
-		return new Property("Nï¿½mero Aviso", numeroAviso);
+		return new Property("NÃºmero Aviso", numeroAviso);
 	}
 
 	public void setNumeroAviso(String numeroAviso) {

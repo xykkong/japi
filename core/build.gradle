@@ -13,6 +13,15 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'idea'
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 task initSourceFolders { // add << before { to prevent executing during configuration phase
    sourceSets*.java.srcDirs*.each { it.mkdirs() }
