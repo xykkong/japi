@@ -35,6 +35,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
+	
 	public Response licitacoes(
 				@DocParameterField(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
 				@DocParameterField(name = "modalidade", required = false, description = "Modalidade") String modalidade,
@@ -50,8 +51,7 @@ public class LicitacaoRequest {
 				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
 		);
 
-		Response response = null;
-		response = lService.licitacoes();
+		Response response = lService.licitacoes();
 		return response;
 	}
 
