@@ -16,6 +16,18 @@ import br.gov.planejamento.api.core.base.Session;
 import com.google.common.base.CaseFormat;
 
 public abstract class ReflectionUtils {
+	
+	/**
+	 * Converte o nome de um getter camel-case de Property (formato getNomePropriedade)
+	 * para o nome correto da propriedade em snake-case (formato nome_propriedade) 
+	 * @param getterName
+	 * @return
+	 */
+	public static String getterToPropertyName(String getterName) {
+		String id = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, getterName);
+		id = id.substring(id.indexOf('_')+1);
+		return id;
+	}
 
 	public static ArrayList<Method> getFilteredMethods(Object object) {
 		Session currentSession = Session.getCurrentSession();
@@ -52,9 +64,7 @@ public abstract class ReflectionUtils {
 				Property property = (Property) method.invoke(object);
 				
 				//Setting id for the properties, based on getter name (getPropertyName => property_name)
-				String methodName = method.getName();				
-				String id = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, methodName);
-				id = id.substring(id.indexOf('_')+1);
+				String id = getterToPropertyName(method.getName());				
 				property.setId(id);
 				
 				properties.add(property);

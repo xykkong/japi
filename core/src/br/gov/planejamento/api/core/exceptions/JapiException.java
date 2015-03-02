@@ -16,8 +16,12 @@ public class JapiException extends Exception {
 		this.userShowable = userShowable;
 	}
 	
-	public JapiException(String msg){
-		super(msg);
+	public JapiException(Exception e){
+		super(e);
+	}
+
+	public JapiException(String message) {
+		super(message);
 	}
 
 }

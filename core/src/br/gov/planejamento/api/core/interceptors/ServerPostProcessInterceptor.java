@@ -33,6 +33,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				.split("/")[1];
 		if (!firstPathSegment.equals("docs")) // TODO: Mudar forma de identificar docs
 			try {
+				if(serverResponse.getEntity() instanceof String) return;
 				Response response = (Response) serverResponse.getEntity();
 				serverResponse.setGenericType(String.class);
 				ArrayList<HashMap<String, Property>> resourceMapList = new ArrayList<HashMap<String, Property>>();
@@ -46,7 +47,8 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 					serverResponse.setEntity(json);
 					break;
 				case RequestFormats.XML:
-					serverResponse.setEntity("banana");
+					String xml = response.toXML();
+					serverResponse.setEntity(xml);
 					break;
 				case RequestFormats.CSV:
 					Headers headers = new Headers();
@@ -60,16 +62,16 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 			} catch (JapiException japiException) {
 				serverResponse.setEntity(japiException);
 				showErrorMessage(serverResponse);
-			} catch (Exception ex) {
-				// TODO tratamento de erro
-				serverResponse.setEntity(ex);
-				showErrorMessage(serverResponse);
 			} catch (ParserConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (TransformerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (Exception ex) {
+				// TODO tratamento de erro
+				serverResponse.setEntity(ex);
+				showErrorMessage(serverResponse);
 			}
 
 	}

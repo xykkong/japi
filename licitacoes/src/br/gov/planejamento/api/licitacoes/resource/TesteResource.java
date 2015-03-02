@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import br.gov.planejamento.api.common.constants.LicitacaoConstants;
+import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Docs;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
@@ -64,22 +66,22 @@ public class TesteResource extends Resource {
 	 * como description.
 	 */
 	
-	@Docs(description = "String que é um nome")
+	@Description("String que é um nome")
 	public Property getTesteString() {
 		return new Property("Nome", testeString);
 	}
 	
-	@Docs(description = "Int que é uma idade")
+	@Description("Int que é uma idade")
 	public Property getTesteInt() {
 		return new Property("Idade Artística", testeInt);
 	}
 	
-	@Docs(description = "Numeric que é uma altura")
+	@Description("Numeric que é uma altura")
 	public Property getTesteNumeric() {
 		return new Property("Altura", testeNumeric);
 	}
 	
-	@Docs(description = "Date que é um nascimento")
+	@Description("Date que é um nascimento")
 	public Property getTesteDate() throws ParseException {
 		String name = "Nascimento";
 		String value = testeDate;
@@ -93,7 +95,7 @@ public class TesteResource extends Resource {
 		return new Property(name, value);
 	}	
 
-	@Docs(description = "Time que é uma hora preferida")
+	@Description("Time que é uma hora preferida")
 	public Property getTesteTime() {
 		return new Property("Hora Preferida", testeTime);
 	}
@@ -119,9 +121,9 @@ public class TesteResource extends Resource {
 	 */
 	
 	@Override
-	@Docs(description = "")
+	@Description("")
 	public Link getSelfLink() {
 		return new SelfLink("Teste feliz");
 	}	
-
+ 
 }

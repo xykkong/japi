@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.w3c.dom.DOMException;
 
 import br.gov.planejamento.api.core.serializers.CSVSerializer;
 import br.gov.planejamento.api.core.serializers.HTMLSerializer;
@@ -115,8 +119,12 @@ public class Response extends ArrayList<Resource> {
 	 * Serializa a Response no formato XML, seguindo o padrão HAL.
 	 * @return
 	 * @throws TransformerException 
+	 * @throws DOMException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public String toXML() throws ParserConfigurationException, TransformerException {
+	public String toXML() throws ParserConfigurationException, TransformerException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DOMException {
 		return XMLSerializer.fromResponse(this);
 	}
 }

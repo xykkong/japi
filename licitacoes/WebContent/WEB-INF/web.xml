@@ -17,7 +17,7 @@
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
-      <param-value>br.gov.planejamento.api.licitacoes.app.ApiLicitacoes</param-value>
+      <param-value>br.gov.planejamento.api.licitacoes.module.LicitacoesModule</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>

@@ -1,30 +1,21 @@
 package br.gov.planejamento.api.licitacoes.request;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
-import br.gov.planejamento.api.core.annotations.DocDescription;
-import br.gov.planejamento.api.core.annotations.DocParameterField;
+import br.gov.planejamento.api.core.annotations.Description;
+import br.gov.planejamento.api.core.annotations.Parameter;
+import br.gov.planejamento.api.core.annotations.ResourceType;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
-import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidArgToAddFilterJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
-import br.gov.planejamento.api.core.filters.LikeFilter;
+import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
+import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 import br.gov.planejamento.api.licitacoes.service.TesteService;
 
@@ -36,41 +27,33 @@ public class LicitacaoRequest {
 
 	@GET	
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	public Response licitacoes() throws SQLException,
-			InvalidFilterValueTypeJapiException, InvalidOrderSQLParameterJapiException,
-			ParserConfigurationException, SAXException, IOException,
-			ExpectedParameterNotFoundJapiException, InvalidOffsetValueJapiException, InvalidArgToAddFilterJapiException, InvalidOrderByValueJapiException {
-		Session currentSession = Session.getCurrentSession();
+	@ResourceType(LicitacaoResource.class)
+	public Response licitacoes() throws JapiException {
 		
-		currentSession.addFilter(
-				new EqualFilter(Integer.class, new DatabaseAlias("uasg")),
-				new ZeroFillEqualFilter(new DatabaseAlias("modalidade"),
-						new DatabaseAlias("numero_aviso")),
-				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg")));
-
-		Response response = null;
-		response = lService.licitacoes();
-
-		return response;
+		try {
+			Session.getCurrentSession().addFilter(
+					new EqualFilter(Integer.class, new DatabaseAlias("uasg")),
+					new ZeroFillEqualFilter(new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
+					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
+			);
+			
+			return lService.licitacoes();
+		} catch(Exception e) {
+			throw new JapiException(e);
+		}
 	}
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@DocDescription("Lista de pessoas da tabela de testes")	
-	public Response teste(
-			@DocParameterField(name = "idade", required = false, description = "Idade da pessoa") String testeInt,
-			@DocParameterField(name = "nome", required = false, description = "Nome da pessoa") String testeString
-			)
-			throws SQLException, InvalidFilterValueTypeJapiException,
-			InvalidOrderSQLParameterJapiException, ParserConfigurationException,
-			SAXException, IOException, ExpectedParameterNotFoundJapiException,
-			InvalidOffsetValueJapiException, InvalidArgToAddFilterJapiException,
-			InvalidOrderByValueJapiException {
-		Session currentSession = Session.getCurrentSession();
-
-//		currentSession.addFilter(EqualFilter.class, Integer.class, new DatabaseAlias("teste_int"));
-//		currentSession.addFilter(LikeFilter.class, new DatabaseAlias("teste_string", "nome"));
-
-		return tService.teste();
+	@ResourceType(TesteResource.class)
+	@Description("Lista de pessoas da tabela de testes")	
+	public Response teste(	@Parameter(name = "idade", description = "Idade da pessoa") String testeInt,
+							@Parameter(name = "nome", description = "Nome da pessoa") String testeString)
+							throws Exception {		
+		try {
+			return tService.teste();
+		} catch (Exception e) {
+			throw new JapiException(e);
+		}
 	}
 }
