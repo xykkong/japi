@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/japidocs.css" rel="stylesheet">
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Documentação JAPI
+                    </a>
+                </li>
+                <li>
+                    <a href="#reqs">Requisitos</a>
+                </li>
+                <li>
+                    <a href="#configurando">Configurando o ambiente</a>
+                </li>
+                <li>
+                    <a href="#modulos">Módulos</a>
+                </li>
+                <li class="submenu">
+                    <a href="#primeiroModulo">Criando o primeiro módulo</a>
+                </li>
+                <li>
+                    <a href="#camadas">As camadas</a>
+                </li>
+                <li class="submenu">
+                    <a href="#request">Request</a>
+                </li>
+                <li class="submenu">
+                    <a href="#resource">Resource</a>
+                </li>
+                <li class="submenu">
+                    <a href="#service">Service</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<div id="home">
+                    		<h1>JAPI- Framework para desenvolvimento de API's do Governo</h1>
+	                        <p>Utilize o menu ao lado para navegar entre os diferentes tutoriais</p>
+	                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toogle Menu</a>    	
+                    	</div>
+                    	<hr>
+                    	<div id="reqs">
+	                    	<h1>Requisitos de instalação:</h1>
+							<ul>
+								<li>Eclipse Luna</li>
+								<li>Java 1.7.71+</li>
+								<li>JBoss EAP 6.1+</li>
+								<li>Gradle - recomendado o gradle IDE pack 3.6+ do eclipse</li>
+								<li>Project Facets do Eclipse:</li>
+								<ul>
+									<li>Java</li>
+									<li>Dynamic Web Module</li>
+									<li>JAX-RS</li>
+									<li>JAXB</li>
+								</ul>
+							</ul>
+                    	</div>
+                    	<hr>
+                    	<div id="configurando">
+                    		<h1>Configurando o ambiente</h1>
+                    		<p>Em conjunto com a API, são baixados dois módulos: O de documentação (docs) e um de testes.</p>
+                    		<p>Para seguirmos com o tutorial, configuraremos o funcionamento do módulo de testes, que será semelhante a qualquer novo módulo criado a partir deste.</p>
+                    		<h3>1: Instalar e iniciar o JBoss no Eclipse</h3>
+                    		<ul>
+                    			<li>Fazer download do JBoss <a href="http://www.jboss.org/download-manager/file/jboss-eap-6.2.0.GA.zip">aqui.</a></li>
+                    			<li>Extraia o JBOSS em alguma pasta de sua preferência.</li>
+                    			<li>No Eclipse, ir em Help -> Eclipse Marketplace e pesquisar pelo JBoss Tools (Luna) 4.2.2.Final e instala-lo.</li>
+                    			<li>Na aba Servers do Eclipse, na perspectiva Java EE, crie um novo servidor, clicando com o botão direito -> New -> Server.</li>
+                    			<li>Na nova janela, escolha "JBoss Enterprise Application Platform 6.1+", que se encontra na pasta "Red Hat JBoss Middleware" e clique em next.</li>
+                    			<li>Na janela seguinte, confirme se a opção marcada no menu dropdown será "Create new Runtime" e siga para a página de configuração.</li>
+                    			<li>No campo "Home Directory", preencha com o caminho onde o jboss foi extraído.</li>
+                    			<li>No campo de seleção da JRE, selecione a 1.7 que você possui instalada. Passe para próxima página e, então, finalize a instalação.</li>
+                    			<li>Dentro da pasta da JAPI, você encontrará um arquivo "japiConfig.json". Copie-o para a pasta "standalone" encontrada no local de instalação do seu JBoss.</li>
+                    			<li>Abra o arquivo que você acabou de copiar e modifique de acordo com as configurações do seu banco de dados.</li>
+                    		</ul>
+                    		<p>Ao fim da execução do passo-a-passo, você poderá visualizar seu novo servidor na aba "Servers" do Eclipse.</p>
+                    		<h3>2: Importar os Projetos</h3>
+                    		<p>Ao fazer o download da JAPI, você recebe duas pastas ("docs" e "modelo"), um arquivo "core.jar" e um arquivo "japiConfig.json".
+                    		Utilizando a ferramenta de importação do eclipse, você deve importar as duas pastas como sendo dois projetos java.</p>
+                    		<p>Segue o passo-a-passo:</p>
+                    		<ul>
+                    			<li>Clique em File -> Import...</li>
+                    			<li>Na pasta General, Selecione "Existing Projects into Workspace".</li>
+                    			<li>Na nova janela, selecione o caminho da pasta onde o conteudo baixado foi extraído. O eclipse encontrará, automaticamente, todos os projetos que ele pode importar a partir desta.</li>
+                    			<li>Confirme que deseja importar os dois projetos encontrados e finalize.</li>
+                    		</ul>
+                    		<p>Feito isso, os dois projetos estarão importados, mas ainda não estarão configurados. Façamos isso então nos próximos passos.</p>
+                    		<h3>3: Instalar as Facets</h3>
+                    		<p>Clicando com o botão direito e selecionando Properties de cada um dos dois projetos, nós entraremos no menu de configuração que será utilizado a partir daqui. Os passos devem ser repetidos para cada projeto e para cada novo módulo que possa vir a ser criado.</p>
+                    		<ul>
+                    			<li>Selecionando, no menu lateral, a opção Project Facets, encontraremos uma tela que diz que o projeto ainda não é definido para esta configuração. Clique em "Convert to Faceted Form" e um novo menu de opções aparecerá.</li>
+                    			<li>Nesse novo menu, você precisará selecionar duas opções: Java (certificando-se de colocar uma versão igual ou superior à 1.7) e Dynamic Web Module.</li>
+                    		</ul>
+                    		<h3>4: Configurar o Build Path</h3>
+                    		<ul>
+                    			<li>Ainda no menu de configurações, selecione a opção Java Build Path no menu lateral.</li>
+                    			<li>Na aba Source, confirme que a pasta que se encontra definida como fonte é a "nome_do_projeto/src".</li>
+                    			<li>Na aba Libraries, devem constar: </li>
+                    			<ul>
+                    				<li>EAR Libraries (Encontrada no menu principal da janela de "Add Library").</li>
+                    				<li>JRE System Library (Encontrada da mesma forma).</li>
+                    				<li>JBoss Enterprise Application Platform 6.1 (Encontrada em Server Runtime -> Nome do seu servidor.)</li>
+                    				<li>core.jar (baixado com a JAPI e encontrado pela guia "Add External JARs").</li>
+                    			</ul>
+                    		</ul>
+                    		<h3>5: Configurar o deployment assembly</h3>
+                    		<ul>
+                    			<li>Vá agora para a opção Deployment Assembly, no menu lateral.</li>
+                    			<li>Clique em "Add" e escolha "Java Build Path Entries" e enão "core.jar".</li>
+                    		</ul>
+                    		<h3>6: Adicionar os módulos ao JBoss e iniciar</h3>
+                    		<ul>
+                    			<li>Para finalizar, basta clicar com o botão direito sobre o seu servidor, na aba "Servers" do Eclipse.</li>
+                    			<li>Escolha a opção "Add and Remove..." e adicione seus dois módulos a ela.</li>
+                    			<li>Novamente com o botão direito no nome do servidor, clique em start.</li>
+                    			<li>Acesse <a href = "http://localhost:8080/docs/japidocs">esse link</a> e veja o seu servidor funcionando.</li>
+                    		</ul>
+                    	</div>
+                    	<hr>
+                    	<div id = "modulos">
+                    		<h1>Módulos</h1>
+                    		<p>Botar um texto bonito aqui explicando a filosofia dos modulos, que eles são independentes, bla bla bla</p>
+                    		<hr>
+                    		<h3 id="primeiroModulo">Criando seu primeiro módulo</h3>
+                    		<p>Para começarmos a trabalhar com a Framework, devemos criar nossa primeira API. Para isso, devemos criar um novo projeto (ou utilizar o projeto modelo).</p>
+                    		<p>A configuração de nosso novo projeto é idêntica a do Docs, que pode ser revista <a href="#configurando">aqui</a></p>
+                    		<p>O projeto deve contar com quatro packages, descritos abaixo:
+                    		<ul>
+                    			<li>
+                    				<h5>app</h5>
+                    				<p>Contém apenas uma classe, que deve ser muito semelhante ao modelo:</p>
+                    				<pre class="brush: js;">package br.gov.planejamento.api.modelo.app;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath("/")
+public class ApiModelo extends Application {
+		
+}</pre>
+									<p>Essa classe é fundamental para o funcionamento e mapeamento da sua API.</p>
+                    			</li>
+                    			<li>request</li>
+                    			<li>resource</li>
+                    			<li>service</li>
+                    		</ul>
+                    		<p>O conteúdo dos pacotes será explicado na próxima seção.</p>
+                    	</div>
+                    	<hr>
+                    	<div id = "camadas">
+                    		<h1>As Camadas</h1>
+                    		<p>Botar um texto bonito aqui, explicando a filosofia por trás da abstração, se quiserem. Eu por mim deixo em branco mesmo rsrsrs</p>
+                    		<hr>
+                    		<h3 id="request">Request</h3>
+                    		<p>A camada de Request é a responsável por tratar a requisição feita pelo usuário.</p>
+                    		<p>Isso significa que, ao digitar uma url do tipo "http://localhost:8080/modulo/pagina", o sistema saberá, a partir da camada de request, quais ações devem ser tomadas e quais listagens devem ser exibidas.</p>
+                    		<p>O conteúdo exemplificado de uma classe de request segue abaixo:</p>
+                    		<pre class="brush: js;">@Path("/") //No caso, a raíz do módulo que estamos utilizando. Seria "http://localhost:8080/modelo", por padrão.
+public class ModeloRequest {
+
+	private ModeloService mService = new ModeloService();
+
+	@GET
+	@Path("modelos") //A URL que será digitada para chegarmos a esse método. No caso seria a raíz/modelos
+	/*
+	 * O método abaixo tem como retorno uma Response, que contém do que uma lista de Resources (explicados mais a frente).
+	 *
+	 * Os paramêtros do método são as informações que ele pode receber por GET. No caso, a URL poderia conter os parâmetros
+	 * "inteiro" e "str".
+	 *
+	 * Esses parâmetros serão usados mais a frente para realizarmos filtros dentro do banco de dados.
+	 *
+	 * A annotation "@DocParameterField" representa que aquelas informações são utilizadas pela documentação da API.
+	 *
+	 * O campo "name" representa o nome do campo que aparecerá na documentação, "required" define se o campo é obrigatório
+	 * ou não e "description" é uma breve descrição do que o campo representa, no sistema.
+	 *
+	 * O lançamento da JAPIException é obrigatório, já que ela encapsula todas as exceptions do Java e as trata, além de 
+	 * exceptions próprias da JAPI.
+	 */
+	public Response modelos( 
+				@DocParameterField(name = "inteiro", required = false, description = "Um inteiro") int inteiro,
+				@DocParameterField(name = "str", required = false, description = "Uma sting") String str			
+			) throws JapiException,
+			ParserConfigurationException, SAXException, IOException,
+			SQLException {
+		
+		/*
+		 * O tipo Session contém todas as informações da Request feita pelo usuário e é preenchido internamente pela API. 
+		 *
+		 * Para descobrirmos, por exemplo, qual a URL e os parâmetros passados pelo usuário, devemos consultar esse tipo.
+		 */
+		Session currentSession = Session.getCurrentSession(); 
+		
+		/*
+		 * O método addFilter descrito abaixo é o responsável por adicionar na Session os filtros que serão feitos no banco
+		 * de dados.
+		 *
+		 * os argumentos são do tipo Filter, e a API reconhece três possiveis como padrão, podendo ser criados novos pelo
+		 * usuário.
+		 *
+		 * Os três existentes são: 
+		 *
+		 * EqualFilter, que realiza uma busca por elementos estritamente iguais no banco de dados;
+		 * LikeFilter, que realiza uma busca por elementos que contenham o trecho passado;
+		 * CaseInsensitiveLikeFilter, que é semelhante ao LikeFilter, mas não diferencia maiúsculas e minúsculas do 
+		 * argumento.
+		 *
+		 * A declaração dos filtros utiliza dois argumentos: tipo e databaseAlias.
+		 *
+		 * O tipo é opcional, e define a comparação que ocorrerá. Por exemplo, comparação entre Inteiros, Booleanos, 
+		 * Strings...
+		 *
+		 * O DatabaseAlias é um tipo próprio da JAPI que relaciona um argumento passado pela URL a uma coluna do banco de 
+		 * dados ao qual ele deverá ser comparado.
+		 *
+		 * Para isso, a constução dele recebe dois argumentos: o nome da coluna no banco de dados e o nome da variável 
+		 * utilizada no método
+		 *
+		 * Caso a variável tenha o mesmo nome que a coluna no banco, o segundo argumento pe desnecessário. 
+		 */
+		currentSession.addFilter(
+				new EqualFilter(Integer.class, new DatabaseAlias("int_inteiro", "inteiro")),
+				new CaseInsensitiveLikeFilter(new DatabaseAlias("str"))
+		);
+		
+		/*
+		* É invocado o método do Service (explicado mais a frente) que realizará a busca no banco de dados. e retornará a 
+		* Response contendo os elementos filtrados.
+		*/
+		Response response = mService.all();
+		return response;
+	}
+}</pre> 
+                    		<hr>
+                    		<h3 id="resource">Resource</h3>
+                    		<p>Para a API, a camada Resource representa o Objeto java que é formado a partir dos dados recebidos do Banco.</p>
+                    		<p>É a camada fundamental que trata a resposta, para o usuário, da Resquest que ele fez.</p>
+                    		<p>O tipo Response, visto como o retorno de uma Request, contem uma lista de Objetos Resource, que é então exibida para o usuário.</p>
+                    		<p>Para entendermos melhor como ele funciona, segue o trecho do código:</p>
+                    		<pre class = "brush:js">/*É necessário que a Classe do seu Resource extenda a Classe abstrata Resource, da JAPI.
+ * Essa classe contem métodos que são utilizados para exibir as informações do Resource para o usuário.
+ */
+public class ModeloResource extends Resource {
+
+	private int inteiro;
+	private String str;
+	
+	public ModeloResource() {
+		super();
+	}
+	
+	
+	/*
+	 * Construtor utilizado para gerar um objeto do Resource a partir de uma linha do BD. Automatiza o mapeamento
+	 * dos parâmetros e facilita a adaptaçao dos campos pelo desenvolvedor, uma vez que ele não precisa modificar o 
+	 * service sempre que houver uma mudança no resource, precisando apenas modificar esse construtor.
+	 *
+	 * O método get, do tipo Datarow, recebe como argumento o nome da coluna daquele campo no banco de dados. 
+	 */
+	public ModeloResource(DataRow modelo) {
+		super();
+		this.inteiro = modelo.get("inteiro");
+		this.str = modelo.get("str");
+	}
+	
+	/* A partir daqui temos os Getters and Setters das propriedades do Resource.
+	 *
+	 * O único cuidado que precisamos ter é que o retorno dos Getters deve ser, sempre, uma Property.
+	 *
+	 * Property é um tipo primitivo da Framework que representa um campo que deve vir a ser exibido para o usuário.
+	 *
+	 * O contrutor da Property recebe dois argumentos: Uma String que representa o nome da Property (que será visto pelo
+	 * usuário) e o valor da property, que nada mais é do que a variável que, normalemnte, seria retornada pelo Getter.
+	 *
+	 * Além disso, a Property pode conter um link para alguma página externa, e para isso é usado o tipo LinkProperty,
+	 * que recebe em seu construtor, além do nome e do valor, uma String que representa a "href"" do link e uma outra que
+	 * representa a "rel".
+	 *
+	 *A utilização de LinkProperties é fundamental para relacionar os módulos entre si e integrar a API.
+	 */ 
+	public Property getInteiro() {
+		return new LinkProperty('Um inteiro', 
+		inteiro, 
+		'URL para outro módulo ou outra área do mesmo módulo', 
+		'Nome do módulo ou área relacionada');
+	}
+
+	public void setInteiro(int inteiro) {
+		this.inteiro = inteiro;
+	}
+
+	public Property getStr() {
+		return new Property('Uma String', str);
+	}
+
+	public void setStr(String str) {
+		this.str = str;
+	}
+
+	/*
+	 * SelfLink é o link que aponta para o seu Resource. 
+	 *
+	 * Ao realizar uma consulta, a resposta virá em formato de Response, que é uma lista de Resources.
+	 * 
+	 * Nessa lista é possível acessar a página exclusiva de um desses Resources clicando sobre o SelfLink do mesmo.
+	 *
+	 * O contrutor do SelfLink recebe dois parâmetros: Uma string "href", que representa a url para o mesmo e uma string 
+	 * "title" que define o nome de exibição do link.
+	 */
+	@Override
+	public Link getSelfLink() {
+		return new SelfLink('url para o meu resource', 'nome do meu resource');
+	}
+
+}
+                    		</pre>
+                    		<hr>
+                    		<h3 id="service">Service</h3>
+                    		<p>É a camada intermediária da API. A partir da Request, o Service é chamado com a função de gerar uma Resposta a partor do que foi pedido.</p>
+                    		<p>Para isso, essa camada faz a conexão com o banco de dados, executando a query específica e obtendo os resultados desejados em forma de uma Response.</p>
+                    		<p>Para entendermos melhor, segue o código:</p>
+                    		<pre class = "brush: js">/* 
+ * A sua classe service deve extender a classe abstrata Service, que contém as lógicas de conexão com o Banco de dados e definicão de queries.
+ */
+public class ModeloService extends Service {
+
+	/*
+	 * O método getServiceConfiguration é o responsável por configurar a conexão do seu Service com o Banco de dados a ele relacionado.
+	 *
+	 * Como cada Service será relacionado a uma tabela do banco de dados, é a partir deste método que definimos qual tabela é essa, a qual schema ela pertence e quais os campo dela nosso service utilizará para montar a Response.
+	 *
+	 * As queries criadas pelo Service (classe abstrata) utilizam as informações inseridas aqui.
+	 */
+	@Override
+	protected ServiceConfiguration getServiceConfiguration() {
+		ServiceConfiguration configs = new ServiceConfiguration();
+		configs.setSchema("schema"); //Nome do schema postgres ao qual estamos conectando. Lembrando que a configuração do banco de dados em si é feita no JAPIConfig.json, como descrito no primeiro passo da seção "Configurando o ambiente".
+		configs.setTable("table"); //Nome da table ou view de onde serão extraídas as informações.
+		configs.setResponseFields("inteiro", "str"); //Campos que serão recebidos como resposta da query, e consequentemente moldarão a Response.
+
+		return configs;
+	}
+
+	/*
+	 * Método que fará o mapeamento das linhas retornadas pelo banco de Dados para a Response, transformando as linhas em Resources no caminho.
+	 */
+	private Response getResourceList(DatabaseData data) {
+		Response resources = new Response(data.getCount());
+		for (DataRow licitacao : data) {
+			resources.add(new LicitacaoResource(licitacao));
+		}
+		return resources;
+	}
+
+	/*
+	 * Método que ativa toda a lógica de conexão com o Banco de dados e retorno de resultados.
+	 *
+	 * O desenvolvedor precisa apenas chamar o método getData() da classe pai, que fará tudo automáticamente utilizando os filtos que foram inseridos na Session pelo Request e as configurações feitas no getServiceConfiguration().
+	 * 
+	 * Feito isso, transforma-se as linhas recebidas em Response a partir do método getResourceList().
+	 */
+	public Response all() throws SQLException,
+			InvalidFilterValueTypeJapiException, InvalidOrderSQLParameterJapiException,
+			ParserConfigurationException, SAXException, IOException,
+			InvalidOrderByValueJapiException, InvalidOffsetValueJapiException {
+		return getResourceList(getData());
+	}
+
+	/*
+	 * Esse método existe para permitir a utilização de "order_by" na URL.
+	 * 
+	 * Aqui são definidos quais os possiveis valores para esse atributo.
+	 *
+	 * Adicionar um valor na lista que é retornada define que o usuário poderá ordenar sua Resposta por este campo. 
+	 */
+	@Override
+	public List< String> availableOrderByValues() {
+		List< String> values = new ArrayList< String>();
+		values.add("inteiro");
+		return values;
+	}
+
+}
+                    		</pre>
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+    
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
+	<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	     SyntaxHighlighter.all()
+	</script>
+</body>
+
+</html>

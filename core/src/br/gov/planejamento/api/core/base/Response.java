@@ -34,8 +34,10 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
+	 * Retorna true se a Response em questão é uma listagem de Resources.
 	 * Caso a Response seja de um item único (página de detalhamento), retorna false.
 	 * 
+	 * Observe que pode haver uma listagem que contém somente um elemento, onde a Response 
 	 * não é uma página de detalhamento e portanto isList() retorna true.
 	 * @return
 	 */
@@ -44,6 +46,7 @@ public class Response extends ArrayList<Resource> {
 	}
 	
 	/**
+	 * Define se a Response em questão é uma listagem de Resources (true) ou uma página de detalhamento
 	 * de um único Resource (false).
 	 * @param isList
 	 */
@@ -96,7 +99,7 @@ public class Response extends ArrayList<Resource> {
 	 * @return
 	 */
 	public Link getSelfLink() {
-		return new SelfLink();
+		return new SelfLink(Session.getCurrentSession().getFullPath());
 	}
 	
 	/**

@@ -29,7 +29,7 @@ public class LicitacaoService extends Service {
 		configs.setSchema("dados_abertos");
 		configs.setTable("vw_licitacao");
 		configs.setResponseFields("modalidade", "nome_modalidade", "nome_uasg",
-				"numero_aviso", "uasg");
+				"numero_aviso", "uasg","data_abertura_proposta");
 
 		return configs;
 	}
@@ -57,6 +57,7 @@ public class LicitacaoService extends Service {
 		values.add("uasg");
 		values.add("nome_modalidade");
 		values.add("numero_aviso");
+		values.add("data_abertura_proposta");
 		return values;
 	}
 

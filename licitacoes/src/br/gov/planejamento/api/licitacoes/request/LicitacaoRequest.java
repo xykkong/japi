@@ -11,6 +11,11 @@ import br.gov.planejamento.api.core.annotations.ResourceType;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
+import br.gov.planejamento.api.core.exceptions.InvalidArgToAddFilterJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -25,22 +30,26 @@ public class LicitacaoRequest {
 	private TesteService tService = new TesteService();
 	private LicitacaoService lService = new LicitacaoService();
 
-	@GET	
+	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@ResourceType(LicitacaoResource.class)
-	public Response licitacoes() throws JapiException {
-		
-		try {
-			Session.getCurrentSession().addFilter(
-					new EqualFilter(Integer.class, new DatabaseAlias("uasg")),
-					new ZeroFillEqualFilter(new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
-					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
-			);
-			
-			return lService.licitacoes();
-		} catch(Exception e) {
-			throw new JapiException(e);
-		}
+	public Response licitacoes(
+				@DocParameterField(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
+				@DocParameterField(name = "modalidade", required = false, description = "Modalidade") String modalidade,
+				@DocParameterField(name = "numero_aviso", required = false, description = "Número aviso") String numeroAviso,
+				@DocParameterField(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg				
+			) throws JapiException,
+			ParserConfigurationException, SAXException, IOException,
+			SQLException {
+		Session currentSession = Session.getCurrentSession();
+
+		currentSession.addFilter(
+				new EqualFilter(Integer.class, new DatabaseAlias("uasg"), new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
+				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
+		);
+
+		Response response = lService.licitacoes();
+		return response;
 	}
 
 	@GET
@@ -55,5 +64,11 @@ public class LicitacaoRequest {
 		} catch (Exception e) {
 			throw new JapiException(e);
 		}
+		// currentSession.addFilter(EqualFilter.class, Integer.class, new
+		// DatabaseAlias("teste_int"));
+		// currentSession.addFilter(LikeFilter.class, new
+		// DatabaseAlias("teste_string", "nome"));
+
+		return tService.teste();
 	}
 }

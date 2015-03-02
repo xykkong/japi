@@ -2,22 +2,21 @@ package br.gov.planejamento.api.core.base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 
+import javax.enterprise.context.spi.Context;
 import javax.ws.rs.core.MultivaluedMap;
+
+import org.hibernate.validator.internal.util.privilegedactions.GetAnnotationParameter;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
-import br.gov.planejamento.api.core.exceptions.ExpectedParameterNotFoundJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class Session {
@@ -30,7 +29,7 @@ public class Session {
 	/**
 	 * All parameters sent in querystring
 	 */
-	private Map<String, List<String>> parameters;
+	private Map<String, List<String>> parameters = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
 
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
@@ -39,6 +38,8 @@ public class Session {
 	private String requestFormat = Constants.RequestFormats.HTML;
 
 	private String path;
+	
+	private String fullPath;
 
 	/**
 	 * Constructor that populates the static current variable with the created
@@ -58,26 +59,24 @@ public class Session {
 		return filters;
 	}
 
-	public void addFilter(Filter...filters)
-			throws ExpectedParameterNotFoundJapiException {
-		Set<String> expectedParameters = parameters.keySet();
-		List<String> foundParameters = new ArrayList<>();
+	public void addFilter(Filter...filters) {
 		for(Filter filter : filters){
+			Boolean addThisFilter = false;
 			for(String parameter : filter.getUriParameters()){
 				if (hasParameter(parameter)) {
-					filter.addValues(currentSession.getValues(parameter));
-					foundParameters.add(parameter);
-					this.filters.add(filter);
+					addThisFilter = true;
+					filter.putValues(parameter, currentSession.getValues(parameter));
+					System.out.println("\n\tfilter added: "+ parameter+" with "+
+							currentSession.getValues(parameter).size()+" values.");
 				}
 			}
+			if(addThisFilter)
+				this.filters.add(filter);
 		}
-//		if(!foundParameters.contains(expectedParameters)){
-//			throw new ExpectedParameterNotFoundJapiException(new ArrayList<String>(expectedParameters), foundParameters);
-//		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {
-		parameters = multivaluedMap;
+		parameters.putAll(multivaluedMap);
 	}
 
 	public List<String> getValues(String key) {
@@ -173,6 +172,14 @@ public class Session {
 		return path;
 	}
 	
+	public String getFullPath() {
+		return fullPath;
+	}
+
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
+	}
+
 	public Boolean isHTML() {
 		return isCurrentFormat(RequestFormats.HTML);
 	}
@@ -200,7 +207,7 @@ public class Session {
 	}
 	public String asset(String...asset){
 		//TODO pegar do japiConfig.json
-		return getRootURL()+"common/assets/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+		return "http://"+getRootURL()+"licitacoes/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
 }

@@ -3,7 +3,6 @@ package br.gov.planejamento.api.core.serializers;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -13,8 +12,6 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import br.gov.planejamento.api.core.base.Property;
-import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
 
@@ -51,6 +48,6 @@ public abstract class HTMLSerializer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "dey ruim";
+		return "deu ruim na renderização do velocity";
 	}
 }

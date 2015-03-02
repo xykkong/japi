@@ -18,31 +18,29 @@ public class ZeroFillEqualFilter extends Filter {
 		super(databaseAliases);
 	}
 
+	@Override
+	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
+		StringBuilder statement = new StringBuilder();
+		int numberOfValues = getValues(parameterAlias).size();
+		statement.append(parameterAlias.getDbName());
+		statement.append(" SIMILAR TO ?");
+		for (int i=1; i<numberOfValues; i++) {
+			statement.append(" AND ");
+			statement.append(parameterAlias.getDbName());
+			statement.append(" SIMILAR TO ?");
+		}
+		return statement;
+	}
 
 	@Override
-	public String getStatement() {
-		StringBuilder statement = new StringBuilder();
-		Session currentSession = Session.getCurrentSession();
-		for(DatabaseAlias parameterAlias : parametersAliases){
-			int numberOfValues = currentSession.getValues(parameterAlias.getUriName()).size();
-			statement.append(parameterAlias.getDbName());
-			statement.append(" SIMILAR TO ");
-			for (int i=0; i<numberOfValues; i++) {
-				statement.append("?");
-			}
-		}
-		return statement.toString();
-	}
-	@Override
-	public List<String> getValues() {
+	public List<String> getValues(DatabaseAlias parameterAlias) {
 		List<String> values = new ArrayList<String>();
-		for(String value : this.values){
+		for(String value : this.values.get(parameterAlias.getUriName())){
 			StringBuilder response = new StringBuilder("0*");
 			response.append(StringUtils.removeLeftZero(value));
 			values.add(response.toString());
 		}
 		return values;
-		
 	}
 
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:custom="http://java.sun.com/jsf/composite/components">
+
+<body>
+	<ui:composition>
+		<!-- Content Div-->
+		<div class="p_c_prin container pag-listmetodo">
+
+			<div id="titulo-pagina">
+				<h2>
+					<ui:insert name="title">
+						Insira o Título
+					</ui:insert>
+				</h2>
+			</div>
+
+			<p>
+				<ui:insert name="descricaoMetodo">
+					Insira a Descrição do Método
+				</ui:insert>
+			</p>
+
+			<br></br>
+
+			<p>
+				<strong>URL:</strong><br /> <i> <ui:insert name="url" />
+				</i>
+			</p>
+			<br></br>
+			<p>
+				<strong>Formatos:</strong><br /> html, xml, json, csv
+			</p>
+			<br></br>
+			<p>
+				<strong>Exemplo:</strong><br />
+				<ui:insert name="urlExemplo" />
+
+			</p>
+			<br />
+
+			<ui:insert name="parametroSolicitacao">
+				Insira o seu parâmetro de solicitação
+			</ui:insert>
+
+			<ui:insert name="informacaoResposta">
+				Insira os parametros da resposta
+			</ui:insert>
+
+		</div>
+	</ui:composition>
+</body>
+
+</html>

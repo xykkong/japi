@@ -4,18 +4,21 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
 
 public abstract class Filter {
 
 	protected Class<? extends Object> valueType = String.class;
 	protected List<DatabaseAlias> parametersAliases = new ArrayList<DatabaseAlias>();
-	protected List<String> values = new ArrayList<String>();
+	protected Map<String, List<String>> values = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
 
-	public abstract String getStatement();
+	public abstract StringBuilder subStatement(DatabaseAlias parameterAlias);
 
-	public abstract List<String> getValues();
+	public abstract List<String> getValues(DatabaseAlias parameterAlias);
 
 	public Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
 		for(DatabaseAlias databaseAlias : databaseAliases ){
@@ -33,33 +36,43 @@ public abstract class Filter {
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
 			throws InvalidFilterValueTypeJapiException {
-		for (int i = 0; i < parametersAliases.size(); i++) {
-			for (String value : getValues()) {
-
-				// TODO filtros de data
-				try {
-					if (valueType.equals(Integer.class)) {
-						pst.setInt(index++, Integer.parseInt(value));
-					} else if (valueType.equals(Double.class)) {
-						pst.setDouble(index++, Double.parseDouble(value));
-					} else if (valueType.equals(Float.class)) {
-						pst.setFloat(index++, Float.parseFloat(value));
+		int i=index;
+		for(DatabaseAlias parameter : parametersAliases){
+			System.out.println(parameter.getUriName());
+			List<String> values = getValues(parameter);
+			if(values!=null){
+				for (String value : values) {
+					// TODO filtros de data
+					try {
+						if (valueType.equals(Integer.class)) {
+							pst.setInt(i++, Integer.parseInt(value));
+						} else if (valueType.equals(Double.class)) {
+							pst.setDouble(i++, Double.parseDouble(value));
+						} else if (valueType.equals(Float.class)) {
+							pst.setFloat(i++, Float.parseFloat(value));
+						}
+						else if (valueType.equals(Boolean.class)) {
+							pst.setBoolean(i++, Boolean.parseBoolean(value));
+						}
+						else {
+							pst.setString(i++, value);
+						}
+					} catch (SQLException | NumberFormatException ex) {
+						System.out.println("wut");
+						ex.printStackTrace();
+						System.out.println("wut");
+						throw new InvalidFilterValueTypeJapiException(value, i,
+								pst, valueType);
 					}
-					else {
-						pst.setString(index++, value);
-					}
-				} catch (SQLException | NumberFormatException ex) {
-					throw new InvalidFilterValueTypeJapiException(value, index,
-							pst, valueType);
 				}
 			}
 		}
-		return index;
+		return i;
 
 	}
 
-	public void addValues(List<String> values) {
-		this.values.addAll(values);
+	public void putValues(String uriName, List<String> values) {
+		this.values.put(uriName, values);
 	}
 	
 	public List<String> getDbParameters() {
@@ -76,5 +89,25 @@ public abstract class Filter {
 			parameters.add(p.getUriName());
 		}
 		return parameters;
+	}
+	
+	public String getStatement() {
+		StringBuilder statement = new StringBuilder();
+		Session currentSession = Session.getCurrentSession();
+		Boolean first = true;
+		for (DatabaseAlias parameterAlias : parametersAliases) {
+			if(currentSession.hasParameter(parameterAlias.getUriName())){
+				if(first)
+					first = false;
+				else
+					statement.append(" AND ");
+				statement.append(subStatement(parameterAlias));
+			}	
+		}
+		return statement.toString();
+	}
+	
+	public List<DatabaseAlias> getParametersAliases() {
+		return parametersAliases;
 	}
 }

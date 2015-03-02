@@ -61,6 +61,7 @@ public abstract class ReflectionUtils {
 		
 		for(Method method : ReflectionUtils.getFilteredMethods(object)) {
 			if(Property.class.isAssignableFrom(method.getReturnType())) {
+				//TODO testar se o metodo possui argumento(s), se sim, retornar uma getterNoResourceJapiExcepton, por exemplo
 				Property property = (Property) method.invoke(object);
 				
 				//Setting id for the properties, based on getter name (getPropertyName => property_name)

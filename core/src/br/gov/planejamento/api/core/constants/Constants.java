@@ -3,15 +3,15 @@ package br.gov.planejamento.api.core.constants;
 public abstract class Constants {
 
 	/**
-	 * Vers�es j� lan�adas do sistema
+	 * Versões já lançadas do sistema
 	 */
 	public static final class ApiVersions {
 		public static final String V1 = "/v1";
 	}
 	
 	/**
-	 * Uma requisi��o do tipo MIRROR � uma URL espelho que ir� redirecionar para a URL final (DOCUMENT).
-	 * A DOCUMENT � de fato a URI que identifica unicamente o documento em quest�o. 
+	 * Uma requisição do tipo MIRROR é uma URL espelho que irá redirecionar para a URL final (DOCUMENT).
+	 * A DOCUMENT é de fato a URI que identifica unicamente o documento em questão. 
 	 */
 	public static final class RequestTypes {
 		public static final String MIRROR = "/id";
@@ -19,11 +19,10 @@ public abstract class Constants {
 	}
 	
 	/**
-	 * Constantes de parâmetros fixos
+	 * Constantes de parâmetros fixos como número de valores por página, order by, etc
 	 */
 	public static final class FixedParameters {
 		public static final int VALUES_PER_PAGE = 500;
-		public static final String PAGINATION = "page";
 		public static final String ORDER_BY = "order_by";
 		public static final String ORDER = "order";
 		public static final String[] VALID_ORDERS = new String[]{"ASC", "DESC"};
@@ -45,5 +44,9 @@ public abstract class Constants {
 	public static final class DateFormats {
 		public static final String AMERICAN = "yyyy-MM-dd";
 		public static final String BRAZILIAN = "dd/MM/yyyy";
+	}
+	
+	public static final class Configuration {
+		public static final String CONFIG_FILE_NAME = "japi_config.json";
 	}
 }
