@@ -34,41 +34,42 @@ public class LicitacaoRequest {
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@ResourceType(LicitacaoResource.class)
 	public Response licitacoes(
-				@DocParameterField(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
-				@DocParameterField(name = "modalidade", required = false, description = "Modalidade") String modalidade,
-				@DocParameterField(name = "numero_aviso", required = false, description = "Número aviso") String numeroAviso,
-				@DocParameterField(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg				
-			) throws JapiException,
-			ParserConfigurationException, SAXException, IOException,
-			SQLException {
-		Session currentSession = Session.getCurrentSession();
-
-		currentSession.addFilter(
-				new EqualFilter(Integer.class, new DatabaseAlias("uasg"), new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
-				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
-		);
-
-		Response response = lService.licitacoes();
-		return response;
+				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
+				@Parameter(name = "modalidade", required = false, description = "Modalidade") String modalidade,
+				@Parameter(name = "numero_aviso", required = false, description = "Número aviso") String numeroAviso,
+				@Parameter(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg				
+			) throws JapiException {
+		
+		try {
+			Session currentSession = Session.getCurrentSession();
+			currentSession.addFilter(
+					new EqualFilter(Integer.class, new DatabaseAlias("uasg"), new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
+					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
+			);
+	
+			Response response = lService.licitacoes();
+			return response;
+		} catch (Exception exception) {
+			throw new JapiException(exception);
+		}
 	}
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	@ResourceType(TesteResource.class)
 	@Description("Lista de pessoas da tabela de testes")	
-	public Response teste(	@Parameter(name = "idade", description = "Idade da pessoa") String testeInt,
-							@Parameter(name = "nome", description = "Nome da pessoa") String testeString)
+	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
+							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
 							throws Exception {		
 		try {
 			return tService.teste();
 		} catch (Exception e) {
 			throw new JapiException(e);
 		}
+		
 		// currentSession.addFilter(EqualFilter.class, Integer.class, new
 		// DatabaseAlias("teste_int"));
 		// currentSession.addFilter(LikeFilter.class, new
 		// DatabaseAlias("teste_string", "nome"));
-
-		return tService.teste();
 	}
 }

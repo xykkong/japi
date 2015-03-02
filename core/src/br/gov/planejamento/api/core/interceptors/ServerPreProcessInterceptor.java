@@ -19,9 +19,7 @@ import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
-import com.google.common.collect.Multiset.Entry;
-
-import br.gov.planejamento.api.core.annotations.DocParameterField;
+import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants;
@@ -96,8 +94,8 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			if(!foundParameter) {
 				for(Annotation[] argAnnotations : method.getMethod().getParameterAnnotations()){
 					for(Annotation annotation : argAnnotations){
-						if(annotation.annotationType() == DocParameterField.class){
-							DocParameterField doc = (DocParameterField) annotation;
+						if(annotation.annotationType() == Parameter.class){
+							Parameter doc = (Parameter) annotation;
 							foundParameter |= doc.name().toLowerCase().equals(parameter.toLowerCase());
 						}
 					}

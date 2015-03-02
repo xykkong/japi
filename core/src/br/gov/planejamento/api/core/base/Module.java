@@ -66,6 +66,7 @@ public abstract class Module extends Application {
 							paramObject.addProperty("name", parameter.name());
 							paramObject.addProperty("description", parameter.description());
 							paramObject.addProperty("type", paramTypes[i].getSimpleName());
+							paramObject.addProperty("required", parameter.required());
 							parameters.add(paramObject);
 						}
 					}

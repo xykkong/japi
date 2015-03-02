@@ -4,9 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
-import br.gov.planejamento.api.core.annotations.Docs;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
