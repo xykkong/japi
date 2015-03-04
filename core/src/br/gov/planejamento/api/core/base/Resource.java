@@ -8,7 +8,7 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 public abstract class Resource {
 	
-	public abstract Link getSelfLink();
+	public abstract SelfLink getSelfLink();
 
 	public ArrayList<Property> getProperties() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return ReflectionUtils.getProperties(this);

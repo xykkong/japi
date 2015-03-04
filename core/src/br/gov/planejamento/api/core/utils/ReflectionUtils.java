@@ -85,8 +85,6 @@ public abstract class ReflectionUtils {
 				if(!method.getReturnType().equals(SelfLink.class)){
 					links.add((Link) method.invoke(object));
 				}
-				else System.out.println("Método gera SelfLink: "+ method);
-				//TODO: Essa zuera cai no else e adiciona o SelfLink mesmo assim. E agora?
 			}
 		}
 		
