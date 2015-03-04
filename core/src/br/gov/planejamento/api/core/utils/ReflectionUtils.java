@@ -81,10 +81,12 @@ public abstract class ReflectionUtils {
 		ArrayList<Link> links = new ArrayList<Link>();
 		
 		for(Method method : ReflectionUtils.getFilteredMethods(object)) {			
-			if((Link.class.isAssignableFrom(method.getReturnType()) 
-					|| method.getReturnType().equals(Link.class))) {
-				System.out.println("metodo "+ method);
-				links.add((Link) method.invoke(object));
+			if(Link.class.isAssignableFrom(method.getReturnType())) {
+				if(!method.getReturnType().equals(SelfLink.class)){
+					links.add((Link) method.invoke(object));
+				}
+				else System.out.println("Método gera SelfLink: "+ method);
+				//TODO: Essa zuera cai no else e adiciona o SelfLink mesmo assim. E agora?
 			}
 		}
 		

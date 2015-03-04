@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import br.gov.planejamento.api.common.constants.CommonConstants;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
@@ -120,9 +121,20 @@ public class TesteResource extends Resource {
 	
 	@Override
 	@Description("")
-	public Link getSelfLink() {
-		return new SelfLink("Teste feliz");
-	}	
+	public SelfLink getSelfLink() {
+		return new SelfLink(CommonConstants.URIConstants.Licitacoes.Doc.LICITACAOTESTE+this.testeInt);
+	}
+	
+	@Description("")
+	public SelfLink getUasgDaZuera()
+	{
+		return new SelfLink("http://localhost:8080/licitacoes/v1/licitacoes?uasg=1000", "Todas as licitacoes uasg 1000");
+	}
+	@Description("")
+	public Link getUasgDaZuera2()
+	{
+		return new Link("http://localhost:8080/licitacoes/v1/licitacoes?uasg=1000", "Todas as licitacoes uasg 2000");
+	}
 	
  
 

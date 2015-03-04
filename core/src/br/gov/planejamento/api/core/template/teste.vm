@@ -216,9 +216,11 @@
 															#end															
 														</div>
 													#end
-													
-													#foreach($link in $resource.links)
-														<p class="inner" style="font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;margin-bottom: 0px;padding: 8px 8px;"><a href="$link.href">$link.title</a></p>
+													#if(!$resource.links.isEmpty())
+														<p class="outer tabela-lista-item">Veja Mais:</p>
+														#foreach($link in $resource.links)
+															<p class="inner" style="font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;margin-bottom: 0px;padding: 8px 8px;"><a href="$link.href">$link.title</a></p>
+														#end
 													#end
 												</li>
 											#end

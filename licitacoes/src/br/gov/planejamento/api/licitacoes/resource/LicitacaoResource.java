@@ -88,16 +88,5 @@ public class LicitacaoResource extends Resource {
 	public SelfLink getSelfLink() {
 		return new SelfLink();
 	}
-	
-
-	public SelfLink getUasgDaZuera()
-	{
-		return new SelfLink("http://localhost:8080/licitacoes/v1/licitacoes?uasg=1000", "Todas as licitacoes uasg 1000");
-	}
-	
-	public Link getUasgDaZuera2()
-	{
-		return new Link("http://localhost:8080/licitacoes/v1/licitacoes?uasg=1000", "Todas as licitacoes uasg 1000");
-	}
 
 }
