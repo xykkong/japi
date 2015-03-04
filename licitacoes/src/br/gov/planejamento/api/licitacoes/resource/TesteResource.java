@@ -122,7 +122,7 @@ public class TesteResource extends Resource {
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(CommonConstants.URIConstants.Licitacoes.Doc.LICITACAOTESTE+this.testeInt);
+		return new SelfLink(CommonConstants.URIConstants.Licitacoes.Doc.LICITACAOTESTE+this.testeInt, this.testeString);
 	}
 	
 	@Description("")
