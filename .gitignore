@@ -159,3 +159,5 @@ local.properties
 # adicionado por Graciano
 core/.classpath
 licitacoes/.classpath
+docs/.classpath
+commom/.classpath

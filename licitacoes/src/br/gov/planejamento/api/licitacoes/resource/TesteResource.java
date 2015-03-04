@@ -123,5 +123,7 @@ public class TesteResource extends Resource {
 	public Link getSelfLink() {
 		return new SelfLink("Teste feliz");
 	}	
+	
  
+
 }

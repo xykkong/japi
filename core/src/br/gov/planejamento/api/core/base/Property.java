@@ -7,8 +7,12 @@ public class Property {
 	protected String name;	
 	protected String value;	
 	
-	public Property(String name, String value) {
+	public Property(String name) {
 		this.name = name;
+	}
+	
+	public Property(String name, String value) {
+		this(name);
 		this.value = value;
 	}
 
