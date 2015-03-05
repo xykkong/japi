@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.core.annotations.Description;
+import br.gov.planejamento.api.core.annotations.MethodName;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.ResourceType;
 import br.gov.planejamento.api.core.base.Response;
@@ -31,8 +32,10 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
+	@MethodName("licitacoes")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@ResourceType(LicitacaoResource.class)
+	@Description("Lista de licitacoes")
 	public Response licitacoes(
 				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", required = false, description = "Modalidade") String modalidade,
@@ -56,6 +59,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
+	@MethodName("licitacoesteste")
 	@ResourceType(TesteResource.class)
 	@Description("Lista de pessoas da tabela de testes")	
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,

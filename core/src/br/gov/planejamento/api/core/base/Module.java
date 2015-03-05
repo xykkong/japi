@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
+import br.gov.planejamento.api.core.annotations.MethodName;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.ResourceType;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
@@ -23,11 +24,11 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 public abstract class Module extends Application {
 	
 	/**
-	 * Extrai a documentação de um dado package através de Reflection, procurando por todos os métodos
+	 * Extrai a documentaï¿½ï¿½o de um dado package atravï¿½s de Reflection, procurando por todos os mï¿½todos
 	 * de todas as classes deste package que retornem um Response e estejam anotados por @Path e @ResourceType.
 	 * 
-	 * É aconselhável que o package informado seja aquele que contém as classes de Request, ou seja,
-	 * a camada mais externa que mapeia cada URL para seu método correspondente. 
+	 * ï¿½ aconselhï¿½vel que o package informado seja aquele que contï¿½m as classes de Request, ou seja,
+	 * a camada mais externa que mapeia cada URL para seu mï¿½todo correspondente. 
 	 * @param packageName
 	 * @return
 	 */
@@ -43,18 +44,23 @@ public abstract class Module extends Application {
 				
 				JsonObject request = new JsonObject();
 				
-				//Obtendo documentação do método requisitado
+				//Obtendo documentaï¿½ï¿½o do mï¿½todo requisitado
 				String requestDescription = "";
 				if(requestMethod.isAnnotationPresent(Description.class)) {
 					requestDescription = requestMethod.getAnnotation(Description.class).value();
 					request.addProperty("description", requestDescription);
+				}
+				String requestMethodName = "";
+				if(requestMethod.isAnnotationPresent(MethodName.class)) {
+					requestMethodName = requestMethod.getAnnotation(MethodName.class).value();
+					request.addProperty("method_name", requestMethodName);
 				}
 				String requestPath = requestMethod.getAnnotation(Path.class).value();
 				request.addProperty("path", requestPath);
 				String requestResourceType = requestMethod.getAnnotation(ResourceType.class).value().getSimpleName();
 				request.addProperty("resource_type", requestResourceType);
 				
-				//Obtendo informações dos parâmetros do método
+				//Obtendo informaï¿½ï¿½es dos parï¿½metros do mï¿½todo
 				JsonArray parameters = new JsonArray();
 				Class<?> paramTypes[] = requestMethod.getParameterTypes();
 				int i = 0;
@@ -75,7 +81,7 @@ public abstract class Module extends Application {
 				request.add("parameters", parameters);
 				
 				
-				//Otendo informações do retorno do método
+				//Otendo informaï¿½ï¿½es do retorno do mï¿½todo
 				JsonObject properties = new JsonObject();
 				Class resourceType = requestMethod.getAnnotation(ResourceType.class).value();
 				for(Method propertyMethod : resourceType.getMethods()) {
