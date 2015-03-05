@@ -10,13 +10,19 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
+import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.docs.utils.SwaggerParser;
 
 @Path("/")
 public class JapiDocs {
 	@GET
 	@Path("/")
-	public String docs(){
+	public String docs(@Parameter(name = "modulo") String modulo){
+		modulo = Session.getCurrentSession().getValue("modulo");
+		System.out.println("Documentação do Modulo "+ modulo);
+		SwaggerParser.parse(modulo);
+		
 		try {
 			Velocity.setProperty("resource.loader", "classpath");
 			Velocity.setProperty("classpath.resource.loader.class",
@@ -41,7 +47,7 @@ public class JapiDocs {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "deu ruim na renderização do velocity";
+		return "Problema na Renderização";
 	}
 	
 	public class HTMLDocs {
