@@ -212,7 +212,7 @@ public class Session {
 		JapiConfigLoader jcl = new JapiConfigLoader();
 		if(jcl.getJapiConfig().getDocsHtmlFolder() != null)
 			return jcl.getJapiConfig().getDocsHtmlFolder();
-		else return "br/gov/planejamento/api/docs/template/teste.vm";
+		else return "br/gov/planejamento/api/docs/templates/teste.vm";
 	}
 	
 	public String getRootURL(){
