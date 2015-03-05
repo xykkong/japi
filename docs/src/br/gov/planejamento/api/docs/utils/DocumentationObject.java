@@ -8,7 +8,7 @@ public class DocumentationObject {
 	
 	public class Request{
 		private String path;
-		private String resource_type;
+		private String resourceType;
 		public String getPath() {
 			return path;
 		}
@@ -20,12 +20,12 @@ public class DocumentationObject {
 
 
 		public String getResourceType() {
-			return resource_type;
+			return resourceType;
 		}
 
 
 		public void setResourceType(String resourceType) {
-			this.resource_type = resourceType;
+			this.resourceType = resourceType;
 		}
 
 
