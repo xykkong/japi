@@ -202,17 +202,15 @@ public class Session {
 
 	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
 		// TODO realmente fazer este método
-		JapiConfigLoader jcl = new JapiConfigLoader();
-		if(jcl.getJapiConfig().getHtmlFolder() != null)
-			return jcl.getJapiConfig().getHtmlFolder();
+		if(JapiConfigLoader.getJapiConfig().getHtmlFolder() != null)
+			return JapiConfigLoader.getJapiConfig().getHtmlFolder();
 		else return "br/gov/planejamento/api/core/template/teste.vm";
 	}
 	
 	public String getDocsTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
-		JapiConfigLoader jcl = new JapiConfigLoader();
-		if(jcl.getJapiConfig().getDocsHtmlFolder() != null)
-			return jcl.getJapiConfig().getDocsHtmlFolder();
-		else return "br/gov/planejamento/api/docs/template/teste.vm";
+		if(JapiConfigLoader.getJapiConfig().getDocsHtmlFolder() != null)
+			return JapiConfigLoader.getJapiConfig().getDocsHtmlFolder();
+		else return "br/gov/planejamento/api/docs/templates/teste.vm";
 	}
 	
 	public String getRootURL(){
