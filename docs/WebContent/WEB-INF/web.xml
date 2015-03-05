@@ -8,7 +8,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>JAX-RS Servlet</servlet-name>
-    <url-pattern>/v1/*</url-pattern>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
