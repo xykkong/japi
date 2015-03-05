@@ -714,5 +714,25 @@ body.fundoPreto .pager li a{
 	}
 }
 /*  fim da web font   */
+
+/* Villacinha - Docs Page&Table */
+.met_descricao{
+	margin-bottom: 30px;
+}
+
+.table caption {
+	text-align: left;
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+
+.table thead tr th {
+	background: #EEEFF1;
+	padding: 7px;
+}
+
+.col_metodo{
+	width:25%;
+}
 	
 	
