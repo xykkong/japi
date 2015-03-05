@@ -117,57 +117,33 @@
 				<div id="header">					
 					<hr class="barra" style="margin: 0px;"/>
 					<div id="header-content">
-						<h2 id="titulo" class="titulo-pagina">Métodos de $documentation.modulo</h2>
+						<h2 id="titulo" class="titulo-pagina">$documentation.method_name</h2>
 						<hr class="barra" style="margin: 0px;"/>
-						<p class="met_descricao">Possibilita a obtenção de dados sobre $documentation.modulo realizados pelo Governo Federal</p>
+						<p class="met_descricao">Fornece uma lista das informações relacionadas aos registros de $documentation.method_name</p>
 					</div>
 				</div>
-				#set($rootUrl = $session.rootUrl())
+				
+				<h3>Parâmetros da Solicitação</h3>
 				<table class="table">
-					<caption>
-						<strong>Métodos de Consultas Básicas</strong>
-					</caption>
 					<thead>
 						<tr>
-							<th class="col_metodo">Método</th>
+							<th class="col_metodo">Campo</th>
+							<th>Tipo</th>
+							<th>Obrigatório</th>
 							<th>Descrição</th>
 						</tr>
 					</thead>
 					<tbody>
-						#foreach($request in $documentation.requests)
-							<tr>
-								<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
-								<td>
-									<p>$request.description</p>
-								</td>
-							</tr>
-						#end
-					</tbody>								
-				</table>
-				<br>
-				<br>	
-
-				<table class="table">
-					<caption>
-						<strong>Métodos de Consultas Detalhadas</strong>
-					</caption>
-					<thead>
+						#foreach($param in $documentation.parameters)
 						<tr>
-							<th class="col_metodo">Método</th>
-							<th>Descrição</th>
+							<td>$param.name</td>
+							<td>$param.type</td>
+							<td>$param.required</td>
+							<td>$param.description</td>
 						</tr>
-					</thead>
-					<tbody>
-						#foreach($request in $documentation.requests)
-							<tr>
-								<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
-								<td>
-									<p>$request.description</p>
-								</td>
-							</tr>
 						#end
-					</tbody>								
-				</table>			
+					</tbody>
+				</table>	
 			</div>
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 				
