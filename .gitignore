@@ -160,4 +160,8 @@ local.properties
 core/.classpath
 licitacoes/.classpath
 docs/.classpath
-commom/.classpath
+commom/.project
+core/.project
+licitacoes/.project
+docs/.project
+commom/.project
