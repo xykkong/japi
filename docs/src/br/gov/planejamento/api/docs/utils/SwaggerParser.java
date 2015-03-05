@@ -13,17 +13,19 @@ import com.google.gson.GsonBuilder;
 
 public class SwaggerParser {
 	
-	public static void parse(String modulo){
+	public static DocumentationObject parse(String modulo){
 		String docUrl = "http://" + Session.getCurrentSession().getRootURL() + modulo + CommonConstants.URIConstants.VERSION + "/" + modulo + "docs";
 		System.out.println("A url para a documentação é " + docUrl);
 		
 		try{
             Reader reader = new InputStreamReader(new URL(docUrl+".json").openStream()); //Read the json output
             Gson gson = new GsonBuilder().create();
-            ArrayList<String> obj = gson.fromJson(reader, ArrayList.class);
-            System.out.println(obj.get(0));
+            DocumentationObject obj = gson.fromJson(reader, DocumentationObject.class);
+            return obj;
         }catch(Exception e){
             System.out.println(e);
+
+        	return null;
         }
 
 	}
