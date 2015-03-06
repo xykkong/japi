@@ -28,7 +28,7 @@ public class LicitacaoRequest {
 	@GET
 	@MethodName("licitacoes")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	@Returns(LicitacaoResource.class)
+	@Returns(resource=LicitacaoResource.class)
 	@Description("Lista de licitacoes")
 	public Response licitacoes(
 				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,

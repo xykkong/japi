@@ -25,7 +25,7 @@ public class OrgaoRequest {
 	@GET
 	@Path(LicitacaoConstants.Requests.List.ORGAOS)
 	@MethodName("orgaos")
-	@Returns(OrgaoResource.class)
+	@Returns(resource=OrgaoResource.class)
 	@Description("Lista de orgãos")
 	public Response orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
