@@ -50,7 +50,7 @@ public class JapiDocs {
 			documentation.setModulo(modulo);
 			for (DocumentationObject.Request request : documentation.getRequests()) {
 				if(request.getMethod_name() != null && request.getMethod_name().equals(method))
-					return render(request, "br/gov/planejamento/api/docs/templates/templateMethod.vm");
+					return render(request, "br/gov/planejamento/api/docs/templates/innerDocs.vm");
 			}
 			throw new JapiException("Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
 		

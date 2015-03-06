@@ -117,7 +117,7 @@
                     		</ul>
                     		<p>Ao fim da execução do passo-a-passo, você poderá visualizar seu novo servidor na aba "Servers" do Eclipse.</p>
                     		<h3>2: Importar os Projetos</h3>
-                    		<p>Ao fazer o download da JAPI, você recebe três pastas ("common", "docs" e "modelo"), um arquivo "core.jar" e um arquivo "japiConfig.json".
+                    		<p>Ao fazer o download da JAPI, você recebe quatro pastas ("assets", "common", "docs" e "modelo"), um arquivo "core.jar" e um arquivo "japiConfig.json".
                     		Utilizando a ferramenta de importação do eclipse, você deve importar as duas pastas como sendo dois projetos java.</p>
                     		<p>Segue o passo-a-passo:</p>
                     		<ul>
@@ -126,7 +126,8 @@
                     			<li>Na nova janela, selecione o caminho da pasta onde o conteudo baixado foi extraído. O eclipse encontrará, automaticamente, todos os projetos que ele pode importar a partir desta.</li>
                     			<li>Confirme que deseja importar os dois projetos encontrados e finalize.</li>
                     		</ul>
-                    		<p>Feito isso, os três projetos estarão importados, mas ainda não estarão configurados.</p>
+                    		<p>Feito isso, os quatro projetos estarão importados, mas ainda não estarão configurados.</p>
+                    		<p>O projeto Assets será um projeto estático, e será tratado mais a frente</p>
                     		<p>O projeto Common, em específico, é um projeto que terá uma configuração diferente, já que será apenas um utilitário.</p>
                     		<p>É remoendável que recursos que serão utilizadas por todos os métodos (como por exemplo classes de constantes e templates velocity) sejam definidos no mesmo.</p>
                     		<p>O passo-a-passo para configuração do "Docs" e do "Modelo" seguem abaixo. O Common será tratado no item 6 desse passo-a-passo.
@@ -155,7 +156,7 @@
                     			<li>Clique em "Add" e escolha "Java Build Path Entries" e então "core.jar".</li>
                     			<li>Para finalizar, adicione também o projeto "Common".</li>
                     		</ul>
-                    		<h3>6: Configurando o Common</h3>
+                    		<h3>6: Configurando o Common e o Assets</h3>
                     		<p>Como o Common será um projeto de utilidades, cabe ao desenvolvedor escolher como o utilizará.</p>
                     		<p>Ele pode, por exemplo, ser um projeto Gradle ou Maven e gerenciar dependências da aplicação, ou mesmo ser um projeto que armazena recursos web (html, css e javascript) e se tornar um Dynamic Web Module.</p>
                     		<p>Porém, a configuração padrão do mesmo é a de UtilityModule, em que contenha apenas recursos a serem utilizados pelo Java nos demais módulos.</p>
@@ -175,12 +176,24 @@
                     				<li>Uma observação importante é que, caso o Common seja utilizado como gerenciador de dependênias, as suas bibliotecas de dependência devem ser adicionadas, também, ao Deployment Assembly. Isso garante que todos os projetos tenham acesso a elas.</li>
                     			</ul>
                     		</ul>
+                    		<p>Já o Assets é um projeto unica e exclusivamente voltado para armazenamento de recursos web (html, css, javascript).</p>
+                    		<p>A configuração dele segue abaixo:</p>
+                    		<ul>
+                    			<li>Project Facets
+	                    			<ul>
+	                    				<li>Devem ser adicionadas as Facets "Javascript" e "Static Web Module".</li>
+	                    			</ul>
+	                    		<li>Deployment Assembly</li>
+	                    			<ul>
+	                    				<li>Apenas a pasta WebContent deve estar presente.</li>
+	                    			</ul>
+                    		</ul>
                     		<h3>7: Adicionar os módulos ao JBoss e iniciar</h3>
                     		<ul>
                     			<li>Para finalizar, basta clicar com o botão direito sobre o seu servidor, na aba "Servers" do Eclipse.</li>
-                    			<li>Escolha a opção "Add and Remove..." e adicione seus dois módulos a ela.</li>
+                    			<li>Escolha a opção "Add and Remove..." e adicione os módulos "Assets", "Docs" e "Modelo" a ela.</li>
                     			<li>Novamente com o botão direito no nome do servidor, clique em start.</li>
-                    			<li>Acesse <a href = "http://localhost:8080/docs/japidocs">esse link</a> e veja o seu servidor funcionando.</li>
+                    			<li>Acesse <a href = "http://localhost:8080/docs">esse link</a> e veja o seu servidor funcionando.</li>
                     		</ul>
                     	</div>
                     	<hr>
@@ -190,6 +203,7 @@
                     		<hr>
                     		<h3 id="primeiroModulo">Criando seu primeiro módulo</h3>
                     		<p>Para começarmos a trabalhar com a Framework, devemos criar nossa primeira API. Para isso, devemos criar um novo projeto (ou utilizar o projeto modelo).</p>
+                    		<p>Além disso, devemos alterar o método DocsConfig, encontrado na Classe JapiDocs em br.planejamento.gov.api.docs.app, dentro do projeto Docs. Deve ser adicionado à array o nome de nosso novo projeto, para que ele seja inserido no menu Documentação.</p>
                     		<p>A configuração de nosso novo projeto é idêntica a do Docs, que pode ser revista <a href="#configurando">aqui</a></p>
                     		<p>O projeto deve contar com quatro packages, descritos abaixo:
                     		<ul>
@@ -213,6 +227,7 @@ public class ModeloModule extends Module {
 	 * Para que esse JSON seja gerado, a configuração abaixo é necessária.
 	 *
 	 * No Path definimos o endereço por onde o json será encontrado. No exemplo dado, ele seria acessível por "http://localhost:8080/licitacoes/v1/licitacoesdocs".
+	 *Esse é o padrão de endereço para documentação.
 	 *
 	 * O método extractDocumentation lê todo o arquivo que é apontado (no caso, a camada request do módulo modelo) e, a partir das annotations, gera o json.
 	 */
@@ -249,10 +264,14 @@ public class ModeloRequest {
 	 *
 	 * Cada método é uma consulta (por isso é assinalado com a Annotation @GET) que é feita ao banco de dados.
 	 *
+	 * Ao ler esse método, a documentação atribuirá a ele no nome definido em @MethodName. Portanto, é necessário que o atributo seja preenchido.
+	 *
 	 * Em @Path, devemos preencher o caminho a ser digitado, a partir da API, para chegarmos ao método da request.
 	 * Por exemplo, no caso, acessaríamos o método abaixo ao digitar http://localhost:8080/modelo/v1/modelos
 	 *
-	 * @ResourceType define o retorno da Request. Será utilizado na documentação automática.
+	 * @Returns define o retorno da Request. Será utilizado na documentação automática.
+	 * Essa annotation pode ter um segundo parâmtro "isList=true", caso a consulta retorne uma lista de resultados.
+	 * O padrão é "isList=false" que retorna um resultado único
 	 *
 	 * @Description define, na docuemntação, qual será a explicação daquele método.
 	 *
@@ -260,8 +279,9 @@ public class ModeloRequest {
 	 * para o funcionamento do Request.
 	 */
 	@GET
-	@Path("modelos")
-	@ResourceType(ModeloResource.class)
+	@MethodName("modelos")
+	@Path("v1/modelos")
+	@Returns(ModeloResource.class, isList=true)
 	@Description("Lista de modelos")
 	/*
 	 * O método abaixo tem como retorno uma Response, que contém do que uma lista de Resources (explicados mais a frente).

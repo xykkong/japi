@@ -136,12 +136,14 @@
 						</thead>
 						<tbody>
 							#foreach($request in $documentation.requests)
+								#if($request.returns.isList)
 								<tr>
 									<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
 									<td>
 										<p>$request.description</p>
 									</td>
 								</tr>
+								#end
 							#end
 						</tbody>								
 					</table>
@@ -160,12 +162,14 @@
 						</thead>
 						<tbody>
 							#foreach($request in $documentation.requests)
-								<tr>
-									<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
-									<td>
-										<p>$request.description</p>
-									</td>
-								</tr>
+								#if(!$request.returns.isList)
+									<tr>
+										<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
+										<td>
+											<p>$request.description</p>
+										</td>
+									</tr>
+								#end
 							#end
 						</tbody>								
 					</table>	

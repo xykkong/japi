@@ -210,7 +210,7 @@ public class Session {
 	public String getDocsTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
 		if(JapiConfigLoader.getJapiConfig().getDocsHtmlFolder() != null)
 			return JapiConfigLoader.getJapiConfig().getDocsHtmlFolder();
-		else return "br/gov/planejamento/api/docs/templates/teste.vm";
+		else return "br/gov/planejamento/api/docs/templates/docs.vm";
 	}
 	
 	public String getRootURL(){
@@ -219,7 +219,7 @@ public class Session {
 	}
 	public String asset(String...asset){
 		//TODO pegar do japiConfig.json
-		return "http://"+getRootURL()+"licitacoes/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+		return "http://"+getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
 }
