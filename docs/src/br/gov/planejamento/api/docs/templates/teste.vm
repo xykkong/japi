@@ -157,7 +157,6 @@
 								<th class="col_metodo">Método</th>
 								<th>Descrição</th>
 							</tr>
-<<<<<<< HEAD
 						</thead>
 						<tbody>
 							#foreach($request in $documentation.requests)
@@ -170,6 +169,7 @@
 							#end
 						</tbody>								
 					</table>			
+				</div>
 				</div>
 			#else
 				<div id="conteudo" class="p_c_prin">	
@@ -184,13 +184,6 @@
 					</div>
 				</div>
 			#end
-=======
-						#end
-					</tbody>								
-				</table>			
-			</div>
-			</div>
->>>>>>> 89221dc39f2b8e0e18be1a82b61b4210c3d38264
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 				
 				</div>	
