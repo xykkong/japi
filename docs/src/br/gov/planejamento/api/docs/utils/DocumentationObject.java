@@ -29,6 +29,7 @@ public class DocumentationObject {
 		private String description;
 		private String method_name;
 		private ArrayList<Parameter> parameters;
+		private ArrayList<Property> properties;
 
 		public String getMethod_name() {
 			return method_name;
@@ -78,6 +79,16 @@ public class DocumentationObject {
 		public void setParameters(ArrayList<Parameter> parameters) {
 			this.parameters = parameters;
 		}
+		
+
+		public ArrayList<Property> getProperties() {
+			return properties;
+		}
+
+
+		public void setProperties(ArrayList<Property> properties) {
+			this.properties = properties;
+		}
 
 
 		
@@ -112,6 +123,24 @@ public class DocumentationObject {
 			}
 			public void setRequired(String required) {
 				this.required = required;
+			}
+		}
+		
+		public class Property {
+			private String name;
+			private String description;
+			
+			public String getName() {
+				return name;
+			}
+			public void setName(String name) {
+				this.name = name;
+			}
+			public String getDescription() {
+				return description;
+			}
+			public void setDescription(String description) {
+				this.description = description;
 			}
 		}
 	}

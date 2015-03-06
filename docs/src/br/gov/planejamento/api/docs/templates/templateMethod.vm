@@ -144,6 +144,25 @@
 						#end
 					</tbody>
 				</table>	
+				<br><br>
+				<h3>Parâmetros de Retorno</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="col_metodo">Campo</th>
+							<th>Descrição</th>
+						</tr>
+					</thead>
+					<tbody>
+						#foreach($param in $documentation.properties)
+						<tr>
+							<td>$param.name</td>
+							<td>$param.description</td>
+						</tr>
+						#end
+					</tbody>
+				</table>	
+				<br><br>
 			</div>			
 		</div>
 		<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->

@@ -82,7 +82,7 @@ public abstract class Module extends Application {
 				
 				
 				//Otendo informa��es do retorno do m�todo
-				JsonObject properties = new JsonObject();
+				JsonArray properties = new JsonArray();
 				Class resourceType = requestMethod.getAnnotation(Returns.class).value();
 				for(Method propertyMethod : resourceType.getMethods()) {
 					if(propertyMethod.getReturnType().equals(Property.class) && !propertyMethod.isAnnotationPresent(Ignore.class)) {
@@ -94,8 +94,9 @@ public abstract class Module extends Application {
 						}
 										
 						JsonObject property = new JsonObject();
+						property.addProperty("name", propertyName);
 						property.addProperty("description", propertyDescription);
-						properties.add(propertyName, property);
+						properties.add(property);
 					}					
 				}
 				request.add("properties", properties);

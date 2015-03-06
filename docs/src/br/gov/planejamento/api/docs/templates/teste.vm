@@ -168,7 +168,8 @@
 								</tr>
 							#end
 						</tbody>								
-					</table>			
+					</table>	
+					<br><br>		
 				</div>
 			#else
 				<div id="conteudo" class="p_c_prin">	
