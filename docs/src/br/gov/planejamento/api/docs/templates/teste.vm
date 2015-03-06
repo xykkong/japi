@@ -170,7 +170,6 @@
 						</tbody>								
 					</table>			
 				</div>
-				</div>
 			#else
 				<div id="conteudo" class="p_c_prin">	
 					<!-- Header Div-->
@@ -184,6 +183,8 @@
 					</div>
 				</div>
 			#end
+			
+			</div>
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 				
 				</div>	
