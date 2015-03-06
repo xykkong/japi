@@ -37,28 +37,31 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				Response response = (Response) serverResponse.getEntity();
 				serverResponse.setGenericType(String.class);
 				ArrayList<HashMap<String, Property>> resourceMapList = new ArrayList<HashMap<String, Property>>();
-
+				Headers headers = new Headers();
+				
 				switch (Session.getCurrentSession().getRequestFormat()) {
 				case RequestFormats.HTML:
 					serverResponse.setEntity(response.toHTML());
 					break;
 				case RequestFormats.JSON:
+					headers.add("Content-Type", "text/json");
 					String json = response.toJSON();
 					serverResponse.setEntity(json);
 					break;
 				case RequestFormats.XML:
+					headers.add("Content-Type", "text/xml");
 					String xml = response.toXML();
 					serverResponse.setEntity(xml);
 					break;
 				case RequestFormats.CSV:
-					Headers headers = new Headers();
 					headers.add("Content-Type", "text/csv");
 					headers.add("Content-Disposition",
 							"attachment; filename=\"result.csv\"");
-					serverResponse.setMetadata(headers);
 					serverResponse.setEntity(response.toCSV());
 					break;
 				}
+				
+				serverResponse.setMetadata(headers);
 			} catch (JapiException japiException) {
 				serverResponse.setEntity(japiException);
 				showErrorMessage(serverResponse);

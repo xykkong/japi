@@ -12,6 +12,7 @@ import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
+import br.gov.planejamento.api.core.database.DataRow;
 
 public class TesteResource extends Resource {
 
@@ -20,6 +21,14 @@ public class TesteResource extends Resource {
 	private String testeNumeric;
 	private String testeDate;
 	private String testeTime;
+	
+	public TesteResource(DataRow teste) {
+		setTesteDate(teste.get("teste_date"));
+		setTesteInt(teste.get("teste_int"));
+		setTesteNumeric(teste.get("teste_numeric"));
+		setTesteString(teste.get("teste_string"));
+		setTesteTime(teste.get("teste_time"));
+	}
 
 	/*
 	 * SETTERS

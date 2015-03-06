@@ -19,6 +19,7 @@ import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiExcepti
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
 public class LicitacaoService extends Service {
@@ -30,35 +31,22 @@ public class LicitacaoService extends Service {
 		configs.setTable("vw_licitacao");
 		configs.setResponseFields("modalidade", "nome_modalidade", "nome_uasg",
 				"numero_aviso", "uasg","data_abertura_proposta");
-
+		configs.setValidOrderByValues("uasg","nome_modalidade","numero_aviso", "data_abertura_proposta");
 		return configs;
 	}
 
-	private Response getResourceList(DatabaseData data) {
-		Response resources = new Response(data.getCount());
-		for (DataRow licitacao : data) {
-			resources.add(new LicitacaoResource(licitacao));
-		}
-		return resources;
-	}
-
-	public Response licitacoes() throws SQLException,
-			InvalidFilterValueTypeJapiException, InvalidOrderSQLParameterJapiException,
-			ParserConfigurationException, SAXException, IOException,
-			InvalidOrderByValueJapiException, InvalidOffsetValueJapiException {
+	public Response licitacoes() throws JapiException {
 		ConnectionManager.removeConfiguration();
 		ConnectionManager.loadConfiguration("database-properties");
-		return getResourceList(getData());
-	}
-
-	@Override
-	public List<String> availableOrderByValues() {
-		List<String> values = new ArrayList<String>();
-		values.add("uasg");
-		values.add("nome_modalidade");
-		values.add("numero_aviso");
-		values.add("data_abertura_proposta");
-		return values;
+		
+		DatabaseData dados = getAllFiltered();
+		Response retorno = new Response(dados.getCount());
+		
+		for(DataRow licitacao : dados) {
+			retorno.add(new LicitacaoResource(licitacao));
+		}
+		
+		return retorno;
 	}
 
 }

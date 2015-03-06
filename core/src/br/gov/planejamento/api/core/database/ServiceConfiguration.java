@@ -11,6 +11,7 @@ public class ServiceConfiguration {
 	private ArrayList<String> requiredParameters = new ArrayList<String>();
 	private ArrayList<String> optionalParameters = new ArrayList<String>();
 	private ArrayList<String> availableFilters = new ArrayList<String>();
+	private ArrayList<String> validOrderByValues = new ArrayList<String>();
 		
 	public String getSchema(){
 		return schema;
@@ -47,6 +48,14 @@ public class ServiceConfiguration {
 	}
 	public void setAvailableFilters(ArrayList<String> availableFilters) {
 		this.availableFilters = availableFilters;
+	}
+	public ArrayList<String> getValidOrderByValues() {
+		return this.validOrderByValues;
+	}
+	public void setValidOrderByValues(String... values) {
+		for(String value : values) {
+			validOrderByValues.add(value);
+		}
 	}
 
 	

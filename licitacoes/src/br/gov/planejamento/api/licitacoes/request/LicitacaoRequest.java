@@ -4,18 +4,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
-import br.gov.planejamento.api.common.filters.ZeroFillEqualFilter;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.annotations.ResourceType;
+import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.Session;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
-import br.gov.planejamento.api.core.exceptions.InvalidArgToAddFilterJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -32,7 +26,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	@ResourceType(LicitacaoResource.class)
+	@Returns(LicitacaoResource.class)
 	public Response licitacoes(
 				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", required = false, description = "Modalidade") String modalidade,
@@ -56,20 +50,16 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@ResourceType(TesteResource.class)
+	@Returns(TesteResource.class)
 	@Description("Lista de pessoas da tabela de testes")	
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
 							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
-							throws Exception {		
+							throws JapiException {		
 		try {
+			Session.getCurrentSession().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int")));
 			return tService.teste();
 		} catch (Exception e) {
 			throw new JapiException(e);
 		}
-		
-		// currentSession.addFilter(EqualFilter.class, Integer.class, new
-		// DatabaseAlias("teste_int"));
-		// currentSession.addFilter(LikeFilter.class, new
-		// DatabaseAlias("teste_string", "nome"));
 	}
 }

@@ -10,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import br.gov.planejamento.api.core.exceptions.JapiException;
+
 public class ConnectionManager {
 
 	private static Connection connection = null;
@@ -25,18 +27,21 @@ public class ConnectionManager {
 	 * @throws SQLException
 	 */
 	public static void loadConfiguration(String filename)
-			throws ParserConfigurationException, SAXException, IOException,
-			SQLException {
-		DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
-				.getInstance(filename);
-		Properties connectionProps = new Properties();
-		connectionProps.put("user", loader.getUser());
-		connectionProps.put("password", loader.getPassword());
-
-		String connectionString = "jdbc:postgresql://" + loader.getUrl() + ":"
-				+ loader.getPort() + "/" + loader.getDatabaseName();
-		connection = DriverManager.getConnection(connectionString,
-				connectionProps);
+			throws JapiException{
+		try {
+			DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
+					.getInstance(filename);
+			Properties connectionProps = new Properties();
+			connectionProps.put("user", loader.getUser());
+			connectionProps.put("password", loader.getPassword());
+	
+			String connectionString = "jdbc:postgresql://" + loader.getUrl() + ":"
+					+ loader.getPort() + "/" + loader.getDatabaseName();
+			connection = DriverManager.getConnection(connectionString,
+					connectionProps);
+		} catch (Exception exception) {
+			throw new JapiException(exception);
+		}
 	}
 	
 	/**
@@ -46,8 +51,7 @@ public class ConnectionManager {
 		connection = null;
 	}
 
-	public static Connection getConnection() throws SQLException,
-			ParserConfigurationException, SAXException, IOException {
+	public static Connection getConnection() throws JapiException {
 		if (connection == null)
 			loadConfiguration("database-properties");
 		return connection;
