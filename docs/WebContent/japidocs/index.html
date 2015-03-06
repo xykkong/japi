@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>JAPIDOCS - Documentação da Framework</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -112,12 +112,12 @@
                     			<li>Na janela seguinte, confirme se a opção marcada no menu dropdown será "Create new Runtime" e siga para a página de configuração.</li>
                     			<li>No campo "Home Directory", preencha com o caminho onde o jboss foi extraído.</li>
                     			<li>No campo de seleção da JRE, selecione a 1.7 que você possui instalada. Passe para próxima página e, então, finalize a instalação.</li>
-                    			<li>Dentro da pasta da JAPI, você encontrará um arquivo "japiConfig.json". Copie-o para a pasta "standalone" encontrada no local de instalação do seu JBoss.</li>
+                    			<li>Dentro da pasta da JAPI, você encontrará um arquivo "japiConfig.json". Copie-o para a pasta "standalone/configuration" encontrada no local de instalação do seu JBoss.</li>
                     			<li>Abra o arquivo que você acabou de copiar e modifique de acordo com as configurações do seu banco de dados.</li>
                     		</ul>
                     		<p>Ao fim da execução do passo-a-passo, você poderá visualizar seu novo servidor na aba "Servers" do Eclipse.</p>
                     		<h3>2: Importar os Projetos</h3>
-                    		<p>Ao fazer o download da JAPI, você recebe duas pastas ("docs" e "modelo"), um arquivo "core.jar" e um arquivo "japiConfig.json".
+                    		<p>Ao fazer o download da JAPI, você recebe três pastas ("common", "docs" e "modelo"), um arquivo "core.jar" e um arquivo "japiConfig.json".
                     		Utilizando a ferramenta de importação do eclipse, você deve importar as duas pastas como sendo dois projetos java.</p>
                     		<p>Segue o passo-a-passo:</p>
                     		<ul>
@@ -126,7 +126,10 @@
                     			<li>Na nova janela, selecione o caminho da pasta onde o conteudo baixado foi extraído. O eclipse encontrará, automaticamente, todos os projetos que ele pode importar a partir desta.</li>
                     			<li>Confirme que deseja importar os dois projetos encontrados e finalize.</li>
                     		</ul>
-                    		<p>Feito isso, os dois projetos estarão importados, mas ainda não estarão configurados. Façamos isso então nos próximos passos.</p>
+                    		<p>Feito isso, os três projetos estarão importados, mas ainda não estarão configurados.</p>
+                    		<p>O projeto Common, em específico, é um projeto que terá uma configuração diferente, já que será apenas um utilitário.</p>
+                    		<p>É remoendável que recursos que serão utilizadas por todos os métodos (como por exemplo classes de constantes e templates velocity) sejam definidos no mesmo.</p>
+                    		<p>O passo-a-passo para configuração do "Docs" e do "Modelo" seguem abaixo. O Common será tratado no item 6 desse passo-a-passo.
                     		<h3>3: Instalar as Facets</h3>
                     		<p>Clicando com o botão direito e selecionando Properties de cada um dos dois projetos, nós entraremos no menu de configuração que será utilizado a partir daqui. Os passos devem ser repetidos para cada projeto e para cada novo módulo que possa vir a ser criado.</p>
                     		<ul>
@@ -137,6 +140,7 @@
                     		<ul>
                     			<li>Ainda no menu de configurações, selecione a opção Java Build Path no menu lateral.</li>
                     			<li>Na aba Source, confirme que a pasta que se encontra definida como fonte é a "nome_do_projeto/src".</li>
+                    			<li>Na aba Projects, adicione o projeto Common</li>
                     			<li>Na aba Libraries, devem constar: </li>
                     			<ul>
                     				<li>EAR Libraries (Encontrada no menu principal da janela de "Add Library").</li>
@@ -148,9 +152,30 @@
                     		<h3>5: Configurar o deployment assembly</h3>
                     		<ul>
                     			<li>Vá agora para a opção Deployment Assembly, no menu lateral.</li>
-                    			<li>Clique em "Add" e escolha "Java Build Path Entries" e enão "core.jar".</li>
+                    			<li>Clique em "Add" e escolha "Java Build Path Entries" e então "core.jar".</li>
+                    			<li>Para finalizar, adicione também o projeto "Common".</li>
                     		</ul>
-                    		<h3>6: Adicionar os módulos ao JBoss e iniciar</h3>
+                    		<h3>6: Configurando o Common</h3>
+                    		<p>Como o Common será um projeto de utilidades, cabe ao desenvolvedor escolher como o utilizará.</p>
+                    		<p>Ele pode, por exemplo, ser um projeto Gradle ou Maven e gerenciar dependências da aplicação, ou mesmo ser um projeto que armazena recursos web (html, css e javascript) e se tornar um Dynamic Web Module.</p>
+                    		<p>Porém, a configuração padrão do mesmo é a de UtilityModule, em que contenha apenas recursos a serem utilizados pelo Java nos demais módulos.</p>
+                    		<p>Portanto, segue a configuração padrão do projeto:</p>
+                    		<ul>
+                    			<li>Project Facets</li>
+                    			<ul>
+                    				<li>Devem ser adicionadas as Facets "Java" e "Utility Module"</li>
+                    			</ul>
+                    			<li>Build Path</li>
+                    			<ul>
+                    				<li>A configuração é semelhante à do Build Path dos demais módulos, com a diferença de que a aba Projects deve ficar vazia.</li>
+                    			</ul>
+                    			<li>Deployment Assembly</li>
+                    			<ul>
+                    				<li>A configuração também é semelhante à dos demais projetos, não havendo necessidade de adicionar o prórprio projeto ao seu Deploym,ent Assembly</li>
+                    				<li>Uma observação importante é que, caso o Common seja utilizado como gerenciador de dependênias, as suas bibliotecas de dependência devem ser adicionadas, também, ao Deployment Assembly. Isso garante que todos os projetos tenham acesso a elas.</li>
+                    			</ul>
+                    		</ul>
+                    		<h3>7: Adicionar os módulos ao JBoss e iniciar</h3>
                     		<ul>
                     			<li>Para finalizar, basta clicar com o botão direito sobre o seu servidor, na aba "Servers" do Eclipse.</li>
                     			<li>Escolha a opção "Add and Remove..." e adicione seus dois módulos a ela.</li>
@@ -169,16 +194,33 @@
                     		<p>O projeto deve contar com quatro packages, descritos abaixo:
                     		<ul>
                     			<li>
-                    				<h5>app</h5>
+                    				<h5>module</h5>
                     				<p>Contém apenas uma classe, que deve ser muito semelhante ao modelo:</p>
-                    				<pre class="brush: js;">package br.gov.planejamento.api.modelo.app;
+                    				<pre class="brush: js;">package br.gov.planejamento.api.modelo.module;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
 @ApplicationPath("/")
-public class ApiModelo extends Application {
-		
+public class ModeloModule extends Module {
+	
+	/*
+	 * Dentro da classe que define o módulo, devemos configurar o sistema de Documentação.
+	 * A documentação gerada pela JAPI utiliza uma representação JSON (swagger) que interpreta o código feito nos demais packages
+	 * e mapeia, para o usuário, as possibilidades de request e de resposta do servidor.
+	 *
+	 * Para que esse JSON seja gerado, a configuração abaixo é necessária.
+	 *
+	 * No Path definimos o endereço por onde o json será encontrado. No exemplo dado, ele seria acessível por "http://localhost:8080/licitacoes/v1/licitacoesdocs".
+	 *
+	 * O método extractDocumentation lê todo o arquivo que é apontado (no caso, a camada request do módulo modelo) e, a partir das annotations, gera o json.
+	 */
+	@GET
+	@Path("/v1/licitacoesdocs")
+	public String getDocs() {
+		return extractDocumentation("br.gov.planejamento.api.modelo.request");
+	}
 }</pre>
 									<p>Essa classe é fundamental para o funcionamento e mapeamento da sua API.</p>
                     			</li>
@@ -201,9 +243,26 @@ public class ApiModelo extends Application {
 public class ModeloRequest {
 
 	private ModeloService mService = new ModeloService();
-
+	
+	/*
+	 * A partir daqui começamos a desenvolver nossos métodos da request.
+	 *
+	 * Cada método é uma consulta (por isso é assinalado com a Annotation @GET) que é feita ao banco de dados.
+	 *
+	 * Em @Path, devemos preencher o caminho a ser digitado, a partir da API, para chegarmos ao método da request.
+	 * Por exemplo, no caso, acessaríamos o método abaixo ao digitar http://localhost:8080/modelo/v1/modelos
+	 *
+	 * @ResourceType define o retorno da Request. Será utilizado na documentação automática.
+	 *
+	 * @Description define, na docuemntação, qual será a explicação daquele método.
+	 *
+	 * Todas as annotations são obrigatórias para a geração de documentação, embora apenas as duas primeiras sejam necessárias 
+	 * para o funcionamento do Request.
+	 */
 	@GET
-	@Path("modelos") //A URL que será digitada para chegarmos a esse método. No caso seria a raíz/modelos
+	@Path("modelos")
+	@ResourceType(ModeloResource.class)
+	@Description("Lista de modelos")
 	/*
 	 * O método abaixo tem como retorno uma Response, que contém do que uma lista de Resources (explicados mais a frente).
 	 *
@@ -259,7 +318,7 @@ public class ModeloRequest {
 		 * Para isso, a constução dele recebe dois argumentos: o nome da coluna no banco de dados e o nome da variável 
 		 * utilizada no método
 		 *
-		 * Caso a variável tenha o mesmo nome que a coluna no banco, o segundo argumento pe desnecessário. 
+		 * Caso a variável tenha o mesmo nome que a coluna no banco, o segundo argumento é desnecessário. 
 		 */
 		currentSession.addFilter(
 				new EqualFilter(Integer.class, new DatabaseAlias("int_inteiro", "inteiro")),
@@ -351,8 +410,29 @@ public class ModeloResource extends Resource {
 	 * "title" que define o nome de exibição do link.
 	 */
 	@Override
-	public Link getSelfLink() {
+	public SelfLink getSelfLink() {
 		return new SelfLink('url para o meu resource', 'nome do meu resource');
+	}
+	
+	/*
+	 * LINKS
+	 * 
+	 * Al�m do SelfLink, um Resource pode possuir outros métodos que retornem links, fazendo referências a
+	 * ResourceLists. Todos os métodos que retornem Link serão automaticamente chamados
+	 * em todos os formatos de request.
+	 * Caso um método não deva ser automaticamente chamado, deve ser anotado com @Ignore ou
+	 * @HTMLIgnore, @JSONIgnore, @XMLIgnore, @CSVIgnore caso deva ser ignorado somente em formatos específicos.
+	 * 
+	 * Uma observação importante é que estes métodos só devem ser usados para retornar Links genéricos,
+	 * que não estejam associados a nenhuma propriedade do Resource. Caso deseje inserir um link associado
+	 * a uma Property, como geralmente usado em chaves estrangeiras, você deve criar um método que retorne LinkProperty,
+	 * como explicado na seção acima
+	 */
+	 
+	 @Description("")
+	public Link getLinkParaConsultasExternas()
+	{
+		return new Link('url para a consulta', 'título da consulta');
 	}
 
 }

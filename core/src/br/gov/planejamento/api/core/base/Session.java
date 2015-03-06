@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.core.base;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +11,9 @@ import javax.enterprise.context.spi.Context;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.validator.internal.util.privilegedactions.GetAnnotationParameter;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
@@ -196,9 +200,17 @@ public class Session {
 		return isCurrentFormat(RequestFormats.CSV);
 	}
 
-	public String getHTMLTemplate() {
+	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
 		// TODO realmente fazer este método
-		return "br/gov/planejamento/api/core/template/teste.vm";
+		if(JapiConfigLoader.getJapiConfig().getHtmlFolder() != null)
+			return JapiConfigLoader.getJapiConfig().getHtmlFolder();
+		else return "br/gov/planejamento/api/core/template/teste.vm";
+	}
+	
+	public String getDocsTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+		if(JapiConfigLoader.getJapiConfig().getDocsHtmlFolder() != null)
+			return JapiConfigLoader.getJapiConfig().getDocsHtmlFolder();
+		else return "br/gov/planejamento/api/docs/templates/teste.vm";
 	}
 	
 	public String getRootURL(){

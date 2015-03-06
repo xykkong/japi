@@ -105,9 +105,7 @@
 					</div>
 
 					<ul>
-						<li><a href="docs/lista-metodos-licitacao.html">Módulo de Teste</a></li>
-						<li><a href="">Módulo 2</a></li>
-						<li><a href="">Módulo 3</a></li>
+						<li><a href="docs">Documentação</a></li>
 					</ul>
 				</div>
 			
@@ -205,11 +203,22 @@
 											#foreach($resource in $response)
 												<li class="info-holder">
 													<h3 style=""><a href="$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
-													#foreach($property in $resource.properties)
-															<div class="tabela-lista-valor">
-																<p class="outer tabela-lista-item"> $property.name </p>
+													#foreach($property in $resource.properties)												
+														<div class="tabela-lista-valor">
+															#set($className = $property.class.name)
+															<p class="outer tabela-lista-item"> $property.name </p>
+															#if($className.endsWith("LinkProperty"))	
+																<p class="inner" style="font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;margin-bottom: 0px;padding: 8px 8px;"><a href="$property.link.href">$property.link.title</a></p>
+															#else										
 																<p class="inner" style="font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;margin-bottom: 0px;padding: 8px 8px;">$property.value</p>
-															</div>
+															#end															
+														</div>
+													#end
+													#if(!$resource.links.isEmpty())
+														<p class="outer tabela-lista-item">Veja Mais:</p>
+														#foreach($link in $resource.links)
+															<p class="inner" style="font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;margin-bottom: 0px;padding: 8px 8px;"><a href="$link.href">$link.title</a></p>
+														#end
 													#end
 												</li>
 											#end

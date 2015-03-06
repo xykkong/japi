@@ -1,6 +1,6 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-import br.gov.planejamento.api.core.base.Link;
+import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
@@ -44,7 +44,7 @@ public class LicitacaoResource extends Resource {
 	}
 
 	public Property getUasg() {
-		return new Property("UASG", uasg);
+		return new LinkProperty("UASG","http://google.com",uasg, "uasg");
 	}
 
 	public void setUasg(String uasg) {
@@ -84,7 +84,7 @@ public class LicitacaoResource extends Resource {
 
 
 	@Override
-	public Link getSelfLink() {
+	public SelfLink getSelfLink() {
 		return new SelfLink();
 	}
 

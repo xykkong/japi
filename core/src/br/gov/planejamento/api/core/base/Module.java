@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
+import br.gov.planejamento.api.core.annotations.MethodName;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
@@ -48,6 +49,11 @@ public abstract class Module extends Application {
 				if(requestMethod.isAnnotationPresent(Description.class)) {
 					requestDescription = requestMethod.getAnnotation(Description.class).value();
 					request.addProperty("description", requestDescription);
+				}
+				String requestMethodName = "";
+				if(requestMethod.isAnnotationPresent(MethodName.class)) {
+					requestMethodName = requestMethod.getAnnotation(MethodName.class).value();
+					request.addProperty("method_name", requestMethodName);
 				}
 				String requestPath = requestMethod.getAnnotation(Path.class).value();
 				request.addProperty("path", requestPath);

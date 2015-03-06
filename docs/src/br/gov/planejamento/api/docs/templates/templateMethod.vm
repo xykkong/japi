@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" />
+	<meta charset="UTF-8">
+	<title>JAPI - Framework para API's Governamentais</title>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" href='$session.asset("css/template.css")'/>
+	
+</head>
+	<body>
+		##Barra do Governo Federal, obrigatória para sites governamentais
+		<div id="barra-brasil" style="background:#7F7F7F; height: 20px; padding:0 0 0 10px;display:block;"> 
+			<ul id="menu-barra-temp" style="list-style:none;">
+				<li style="display:inline; float:left;padding-right:10px; margin-right:10px; border-right:1px solid #EDEDED"><a href="http://brasil.gov.br" style="font-family:sans,sans-serif; text-decoration:none; color:white;">Portal do Governo Brasileiro</a></li> 
+				<li><a style="font-family:sans,sans-serif; text-decoration:none; color:white;" href="http://epwg.governoeletronico.gov.br/barra/atualize.html">Atualize sua Barra de Governo</a></li>
+			</ul>
+		</div>
+
+		<div id="container">
+			##Cabeçalho do site, onde teremos o menu e as informações da API
+			<div id="p_header">
+				<div id="p_h_interno" class="p_container">
+					<ul id="p_h_sitactions">
+						<li><a href="acessibilidade.html" accesskey="4">Acessibilidade</a></li>
+						<li id="siteaction-contraste" class="contrasteIcone"><a accesskey="5" title="Alto contraste">Alto Contraste</a></li>
+						<li id="siteaction-contraste2" class="contrasteIcone" style="display: none;"><a accesskey="6" title="Alto Contraste" class="contrasteIconeNegativo">Alto Contraste</a></li>
+						<li><a href="mapa-site.html" accesskey="7">Mapa do site</a></li>
+					</ul>
+				
+					<ul id="p_h_aces">
+						<li>
+							<a href="#conteudo" accesskey="1">
+								Ir para o conteúdo
+								<span>1</span>
+							</a>
+						 </li>
+						 <li>
+							 <a href="#menu_nav" accesskey="2">
+								  Ir para a navegação
+								  <span>2</span>
+							  </a>
+						 </li>
+						 <li>
+							<a href="#p_footer" accesskey="3">
+								Ir para o rodapé
+								<span>3</span>
+							</a>
+						 </li>
+					</ul>
+								
+					<div id="p_h_titulo">
+						<a href="$session.path" title="JAPI - Framework para API's governamentais">
+							<img alt="Brasil - Governo Federal" src="$session.asset('imagens/logo_vetorizado.png')" id="logo-dados-abertos">
+							<span id="p_h_tit_den"></span>
+							<h1 id="p_h_tit_nome">JAPI - Framework para API's governamentais</h1>
+							<span id="p_h_tit_sub">Beta</span>
+						</a>
+					</div>   
+								
+				</div>
+						
+				<div id="p_h_menu">
+					<div id="p_h_menu_interno" class="p_container">	
+						<ul>
+							<li id="faq">
+								<a href="perguntas-frequentes.html">
+								Perguntas frequentes
+								</a>  
+							</li>
+							<li id="contato">
+								<a href="contato">
+								Contato
+								</a>  
+							</li>
+							<li id="sobre">
+								<a href="http://kit.dados.gov.br/Gloss%C3%A1rio/#api">
+								O que são API's
+								</a>  
+							</li>
+							<li id="documentacao">
+								<a href="swagger.html">
+								Documentação Automática
+								</a>
+							</li>	
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			##Menus de navegaçao interna e resposta do servidor
+			<div class="p_container">
+				##Breadcrumbs
+				<div class="bread-crumb-container">
+					<div>VOCÊ ESTÁ AQUI: </div>
+					<div class="rcrumbs" id="breadcrumbs">
+						<ul>
+						</ul>
+					</div>
+				</div>
+				##Menu lateral para navegação de documentações
+				<div class="p_m_dir m_lateral" id="link-navegacao">
+					<div class="m_lateral_ti">
+						<span>Módulos</span>
+					</div>
+
+					<ul>
+						#foreach($modulo in $modulos)
+							<li><a href="../docs?modulo=$modulo">$modulo</a></li>
+						#end
+					</ul>
+				</div>
+			
+			##Conteudo da resposta do servidor
+			<div id="conteudo" class="p_c_prin">	
+				<!-- Header Div-->
+				<div id="header">					
+					<hr class="barra" style="margin: 0px;"/>
+					<div id="header-content">
+						<h2 id="titulo" class="titulo-pagina">$documentation.method_name</h2>
+						<hr class="barra" style="margin: 0px;"/>
+						<p class="met_descricao">Fornece uma lista das informações relacionadas aos registros de $documentation.method_name</p>
+					</div>
+				</div>
+				
+				<h3>Parâmetros da Solicitação</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="col_metodo">Campo</th>
+							<th>Tipo</th>
+							<th>Obrigatório</th>
+							<th>Descrição</th>
+						</tr>
+					</thead>
+					<tbody>
+						#foreach($param in $documentation.parameters)
+						<tr>
+							<td>$param.name</td>
+							<td>$param.type</td>
+							<td>$param.required</td>
+							<td>$param.description</td>
+						</tr>
+						#end
+					</tbody>
+				</table>	
+			</div>			
+		</div>
+		<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
+			
+			</div>	
+				<div id="p_footer">
+					<div id="p_f_bra">
+						<div id="p_f_bra_interno"  class="p_container">	
+							<a href="http://www.acessoainformacao.gov.br/" target="_blank">
+								<img alt="Acesso a Informação" src="$session.asset('imagens/acesso-a-infornacao.png')" />
+							</a>
+							
+							<a href="http://www.brasil.gov.br/" class="lg_esq" target="_blank">
+								<img alt="Brasil - Governo Federal" src="$session.asset('imagens/brasil.png')" />
+							</a>
+			
+						</div>
+					</div>
+				</div>
+				
+				<script defer="defer" async="async" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
+    		</div>
+		</body>
+	
+	##Manter os Javascripts aso final da body facilita o carregamento da página
+	<script type="text/javascript" src="$session.asset('js/jquery-1.9.1.js')"> </script>
+	<script type="text/javascript" src="$session.asset('js/jquery.rcrumbs.js')"> </script>
+	<script src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
+	<script type="text/javascript" src='$session.asset("javascript.js")'></script>
+</html>
+

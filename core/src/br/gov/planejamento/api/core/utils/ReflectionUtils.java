@@ -11,6 +11,7 @@ import br.gov.planejamento.api.core.annotations.JSONIgnore;
 import br.gov.planejamento.api.core.annotations.XMLIgnore;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
+import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.base.Session;
 
 import com.google.common.base.CaseFormat;
@@ -79,9 +80,11 @@ public abstract class ReflectionUtils {
 		
 		ArrayList<Link> links = new ArrayList<Link>();
 		
-		for(Method method : ReflectionUtils.getFilteredMethods(object)) {
+		for(Method method : ReflectionUtils.getFilteredMethods(object)) {			
 			if(Link.class.isAssignableFrom(method.getReturnType())) {
-				links.add((Link) method.invoke(object));
+				if(!method.getReturnType().equals(SelfLink.class)){
+					links.add((Link) method.invoke(object));
+				}
 			}
 		}
 		

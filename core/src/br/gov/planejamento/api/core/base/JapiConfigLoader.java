@@ -32,12 +32,19 @@ public class JapiConfigLoader {
 		private DatabaseProperties databaseProperties;
 		private String assetFolder; 
 		private String htmlFolder;
+		private String docsHtmlFolder;
 		
 		public String getAssetFolder() {
 			return assetFolder;
 		}
 		public void setAssetFolder(String assetFolder) {
 			this.assetFolder = assetFolder;
+		}
+		public String getDocsHtmlFolder() {
+			return docsHtmlFolder;
+		}
+		public void setDocsHtmlFolder(String docsFolder) {
+			this.docsHtmlFolder = docsFolder;
 		}
 		public String getHtmlFolder() {
 			return htmlFolder;
