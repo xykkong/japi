@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
 
 import com.google.gson.JsonArray;
@@ -12,7 +13,7 @@ import com.google.gson.JsonObject;
 
 public abstract class JSONSerializer {
 
-	public static String fromResponse(Response response) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static String fromResponse(Response response) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, JapiException {
 		JsonObject json = new JsonObject();
 		
 		JsonArray resources = new JsonArray();		

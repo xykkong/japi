@@ -6,21 +6,27 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import br.gov.planejamento.api.core.base.Link;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 
 import com.google.gson.JsonObject;
 
 public abstract class SerializeUtils {
 	
-	public static JsonObject linksToJSON(ArrayList<Link> links) {
-		JsonObject json = new JsonObject();
-		for(Link link : links) {
-			if(link == null) continue;
-			JsonObject linkObject = new JsonObject();
-			linkObject.addProperty("href", link.getHref());
-			linkObject.addProperty("title", link.getTitle());
-			json.add(link.getRel(), linkObject); //TODO: Lançar exception caso getRel retorne vazio/null
+	public static JsonObject linksToJSON(ArrayList<Link> links) throws JapiException {
+		try {
+			JsonObject json = new JsonObject();
+			for(Link link : links) {
+				if(link == null) continue;
+				JsonObject linkObject = new JsonObject();
+				linkObject.addProperty("href", link.getHref());
+				linkObject.addProperty("title", link.getTitle());
+				linkObject.addProperty("rel", link.getRel());
+				json.add(link.getRel(), linkObject);
+			}
+			return json; 
+		} catch(Exception exception) {
+			throw new JapiException(exception);
 		}
-		return json;		
 	}
 	
 	public static ArrayList<Element> linksToXML(Document document, ArrayList<Link> links) {

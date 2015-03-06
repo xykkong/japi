@@ -8,17 +8,9 @@ public class Link {
 	
 	public Link() {}
 	
-	public Link(String href) {
-		this.href = href;
-	}
-	
-	public Link(String href, String title) {
-		this(href);
-		this.title = title;
-	}
-	
 	public Link(String href, String title, String rel) {
-		this(href, title);
+		this.href = href;
+		this.title = title;
 		this.rel = rel;
 	}
 	

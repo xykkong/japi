@@ -40,7 +40,7 @@ public class LicitacaoRequest {
 		try {
 			Session currentSession = Session.getCurrentSession();
 			currentSession.addFilter(
-					new EqualFilter(Integer.class, new DatabaseAlias("uasg"), new DatabaseAlias("modalidade"), new DatabaseAlias("numero_aviso")),
+					new EqualFilter(Integer.class, "uasg", "modalidade", "numero_aviso"),
 					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
 			);
 	
@@ -60,7 +60,7 @@ public class LicitacaoRequest {
 							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
 							throws JapiException {		
 		try {
-			Session.getCurrentSession().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int")));
+			Session.getCurrentSession().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int","idade")));
 			return tService.teste();
 		} catch (Exception e) {
 			throw new JapiException(e);

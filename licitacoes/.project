@@ -3,8 +3,9 @@
 	<name>licitacoes</name>
 	<comment></comment>
 	<projects>
-		<project>core</project>
 		<project>common</project>
+		<project>assets</project>
+		<project>core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

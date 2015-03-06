@@ -21,6 +21,7 @@ import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class Session {
@@ -200,11 +201,11 @@ public class Session {
 		return isCurrentFormat(RequestFormats.CSV);
 	}
 
-	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException, JapiException {
 		// TODO realmente fazer este método
-		if(JapiConfigLoader.getJapiConfig().getHtmlFolder() != null)
-			return JapiConfigLoader.getJapiConfig().getHtmlFolder();
-		else return "br/gov/planejamento/api/core/template/teste.vm";
+		if(JapiConfigLoader.getJapiConfig().getHtmlTemplate() != null)
+			return (JapiConfigLoader.getJapiConfig().getHtmlTemplate());
+		else throw new JapiException("Caminho do Template HTML não configurado no japi_config.json");
 	}
 	
 	public String getDocsTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {

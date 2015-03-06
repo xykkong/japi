@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.core.filters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.planejamento.api.core.base.Session;
@@ -15,6 +16,13 @@ public class EqualFilter extends Filter {
 	public EqualFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
+	public EqualFilter(Class<? extends Object> type, String...parameters) {
+		super(type, parameters);
+	}
+	public EqualFilter(String...parameters) {
+		super(parameters);
+	}
+	
 	
 	@Override
 	public StringBuilder subStatement(DatabaseAlias parameterAlias) {

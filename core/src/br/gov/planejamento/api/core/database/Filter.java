@@ -20,6 +20,14 @@ public abstract class Filter {
 
 	public abstract List<String> getValues(DatabaseAlias parameterAlias);
 
+	private static DatabaseAlias[] stringsToAliases(String...parameters) {
+		DatabaseAlias aliases[] = new DatabaseAlias[parameters.length];
+		for(int i = 0; i < parameters.length; i++) {
+			aliases[i] = new DatabaseAlias(parameters[i]);
+		}
+		return aliases;
+	}
+	
 	public Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
 		for(DatabaseAlias databaseAlias : databaseAliases ){
 			parametersAliases.add(databaseAlias);
@@ -28,6 +36,14 @@ public abstract class Filter {
 	}
 	public Filter(DatabaseAlias...databaseAliases){
 		this(String.class, databaseAliases);
+	}
+	
+	public Filter(String...parameters) {
+		this(String.class, parameters);
+	}
+	
+	public Filter(Class<? extends Object> type, String...parameters) {
+		this(type, stringsToAliases(parameters));
 	}
 
 	public Class<? extends Object> getValueType() {

@@ -5,10 +5,10 @@ public class LinkProperty extends Property {
 	
 	protected Link link = new Link();
 	
-	public LinkProperty(String name,  String href, String title, String rel) {
-		super(name);
+	public LinkProperty(String name, String value,  String href, String rel) {
+		super(name, value);
 		this.link.setHref(href);
-		this.link.setTitle(title);
+		this.link.setTitle(name);
 		this.link.setRel(rel);
 	}	
 	

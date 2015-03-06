@@ -38,7 +38,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			ResourceMethod method) throws Failure, WebApplicationException {	
 		
 		try {
-			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlFolder());
+			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
 			System.out.println("Houve um erro ao carregar o arquivo japi_config.json");
 			e.printStackTrace();
