@@ -105,7 +105,7 @@
 					</div>
 
 					<ul>
-						<li><a href="docs">Documentação</a></li>
+						<li><a href="../../docs/">Documentação</a></li>
 					</ul>
 				</div>
 			
@@ -202,7 +202,7 @@
 										#if ($count > 0)
 											#foreach($resource in $response)
 												<li class="info-holder">
-													<h3 style=""><a href="$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
+													<h3 style=""><a href="http://$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
 													#foreach($property in $resource.properties)												
 														<div class="tabela-lista-valor">
 															#set($className = $property.class.name)

@@ -1,7 +1,6 @@
 package br.gov.planejamento.api.licitacoes.service;
 
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.database.ConnectionManager;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.database.Service;
@@ -24,8 +23,6 @@ public class TesteService extends Service {
 	}
 
 	public Response teste() throws JapiException {
-		ConnectionManager.removeConfiguration();
-		ConnectionManager.loadConfiguration("database-properties");
 		
 		DatabaseData dados = getAllFiltered();
 		Response retorno = new Response(dados.getCount());

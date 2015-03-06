@@ -5,7 +5,7 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
-import br.gov.planejamento.api.core.annotations.MethodName;
+import br.gov.planejamento.api.core.annotations.Name;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.Response;
@@ -24,7 +24,7 @@ public class OrgaoRequest {
 	
 	@GET
 	@Path(LicitacaoConstants.Requests.List.ORGAOS)
-	@MethodName("orgaos")
+	@Name("orgaos")
 	@Returns(resource=OrgaoResource.class)
 	@Description("Lista de orgãos")
 	public Response orgaos(

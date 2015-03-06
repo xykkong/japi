@@ -81,8 +81,8 @@ public class TesteResource extends Resource {
 	}
 	
 	@Description("Int que é uma idade")
-	public LinkProperty getTesteInt() {
-		return new LinkProperty("Idade Artística", testeInt, "http://globo.com", "Idade");
+	public Property getTesteInt() {
+		return new Property("Idade Artística", testeInt);
 	}
 	
 	@Description("Numeric que é uma altura")

@@ -1,59 +1,34 @@
 package br.gov.planejamento.api.core.database;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
+import br.gov.planejamento.api.core.base.JapiConfigLoader;
+import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 import br.gov.planejamento.api.core.exceptions.JapiException;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 public class ConnectionManager {
 
 	private static Connection connection = null;
 	
-	/**
-	 * Este método deve ser private, está como public para podermos fazer testes,
-	 * veja mais nas classes de service do módulo de licitações 
-	 * 
-	 * @param filename
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws SQLException
-	 */
-	public static void loadConfiguration(String filename)
-			throws JapiException{
-		try {
-			DatabasePropertiesFileLoader loader = DatabasePropertiesFileLoader
-					.getInstance(filename);
+	public static Connection getConnection() throws JapiException, JsonSyntaxException, JsonIOException, FileNotFoundException, SQLException {
+		if (connection == null){
+			JapiConfig.DatabaseProperties dbProperties = JapiConfigLoader.getJapiConfig().getDatabaseProperties();
 			Properties connectionProps = new Properties();
-			connectionProps.put("user", loader.getUser());
-			connectionProps.put("password", loader.getPassword());
+			connectionProps.put("user", dbProperties.getUser());
+			connectionProps.put("password", dbProperties.getPassword());
 	
-			String connectionString = "jdbc:postgresql://" + loader.getUrl() + ":"
-					+ loader.getPort() + "/" + loader.getDatabaseName();
+			String connectionString = "jdbc:postgresql://" + dbProperties.getUrl() + ":"
+					+ dbProperties.getPort() + "/" + dbProperties.getDatabaseName();
 			connection = DriverManager.getConnection(connectionString,
 					connectionProps);
-		} catch (Exception exception) {
-			throw new JapiException(exception);
 		}
-	}
-	
-	/**
-	 * Este método n�o deveria existir, da mesma maneira que o m�todo acima deveria ser private 
-	 */
-	public static void removeConfiguration(){
-		connection = null;
-	}
-
-	public static Connection getConnection() throws JapiException {
-		if (connection == null)
-			loadConfiguration("database-properties");
 		return connection;
 	}
 }

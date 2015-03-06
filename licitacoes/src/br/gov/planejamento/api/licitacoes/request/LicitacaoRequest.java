@@ -5,7 +5,7 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
-import br.gov.planejamento.api.core.annotations.MethodName;
+import br.gov.planejamento.api.core.annotations.Name;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.Response;
@@ -26,7 +26,7 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
-	@MethodName("licitacoes")
+	@Name("licitacoes")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@Returns(resource=LicitacaoResource.class)
 	@Description("Lista de licitacoes")
@@ -53,7 +53,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@MethodName("licitacoesteste")
+	@Name("licitacoesteste")
 	@Returns(resource=TesteResource.class, isList=true)
 	@Description("Lista de pessoas da tabela de testes")	
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
@@ -61,6 +61,7 @@ public class LicitacaoRequest {
 							throws JapiException {		
 		try {
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int","idade")));
+
 			return tService.teste();
 		} catch (Exception e) {
 			throw new JapiException(e);
