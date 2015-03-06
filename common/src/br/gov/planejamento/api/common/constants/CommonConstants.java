@@ -1,6 +1,6 @@
 package br.gov.planejamento.api.common.constants;
 
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 
 public class CommonConstants {
 	/**
@@ -12,7 +12,7 @@ public class CommonConstants {
 	
 	public static final class URIConstants{
 		
-		public static final String BASE_URL = Session.getCurrentSession().getRootURL();
+		public static final String BASE_URL = RequestContext.getContext().getRootURL();
 		public static final String VERSION = "/v1";
 		
 		public static final class Licitacoes{

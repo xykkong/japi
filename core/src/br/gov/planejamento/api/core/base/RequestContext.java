@@ -24,12 +24,12 @@ import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiExcep
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
-public class Session {
+public class RequestContext {
 
 	/**
 	 * Current request object created by Resteasy
 	 */
-	private static Session currentSession = null;
+	private static RequestContext context = null;
 
 	/**
 	 * All parameters sent in querystring
@@ -50,14 +50,14 @@ public class Session {
 	 * Constructor that populates the static current variable with the created
 	 * Request
 	 */
-	private Session() {
-		currentSession = this;
+	private RequestContext() {
+		context = this;
 	}
 
-	public static Session getCurrentSession() {
-		if (currentSession == null)
-			currentSession = new Session();
-		return currentSession;
+	public static RequestContext getContext() {
+		if (context == null)
+			context = new RequestContext();
+		return context;
 	}
 
 	public ArrayList<Filter> getFilters() {
@@ -70,9 +70,9 @@ public class Session {
 			for(String parameter : filter.getUriParameters()){
 				if (hasParameter(parameter)) {
 					addThisFilter = true;
-					filter.putValues(parameter, currentSession.getValues(parameter));
+					filter.putValues(parameter, context.getValues(parameter));
 					System.out.println("\n\tfilter added: "+ parameter+" with "+
-							currentSession.getValues(parameter).size()+" values.");
+							context.getValues(parameter).size()+" values.");
 				}
 			}
 			if(addThisFilter)
@@ -150,7 +150,7 @@ public class Session {
 	}
 
 	public void clear() {
-		currentSession = null;
+		context = null;
 	}
 	
 	public void addAvailableOrderByValues(List<String> values) {
@@ -166,7 +166,7 @@ public class Session {
 	}
 	
 	public boolean isCurrentFormat(String format) {
-		return Session.getCurrentSession().getRequestFormat().equals(format);
+		return RequestContext.getContext().getRequestFormat().equals(format);
 	}
 
 	public void setPath(String path) {

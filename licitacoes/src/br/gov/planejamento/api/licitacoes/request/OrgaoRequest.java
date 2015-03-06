@@ -9,7 +9,7 @@ import br.gov.planejamento.api.core.annotations.MethodName;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -33,8 +33,8 @@ public class OrgaoRequest {
 			) throws JapiException {
 		
 		try {
-			Session currentSession = Session.getCurrentSession();
-			currentSession.addFilter(
+			RequestContext context = RequestContext.getContext();
+			context.addFilter(
 					new EqualFilter(Integer.class, new DatabaseAlias("codigo_tipo_adm", "tipo_adm")),
 					new EqualFilter(Boolean.class, new DatabaseAlias("ativo"))
 					);

@@ -100,7 +100,7 @@ public class Response extends ArrayList<Resource> {
 	 * @return
 	 */
 	public Link getSelfLink() {
-		return new SelfLink(Session.getCurrentSession().getFullPath());
+		return new SelfLink(RequestContext.getContext().getFullPath());
 	}
 	
 	/**

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
 
 public abstract class Filter {
@@ -109,10 +109,10 @@ public abstract class Filter {
 	
 	public String getStatement() {
 		StringBuilder statement = new StringBuilder();
-		Session currentSession = Session.getCurrentSession();
+		RequestContext context = RequestContext.getContext();
 		Boolean first = true;
 		for (DatabaseAlias parameterAlias : parametersAliases) {
-			if(currentSession.hasParameter(parameterAlias.getUriName())){
+			if(context.hasParameter(parameterAlias.getUriName())){
 				if(first)
 					first = false;
 				else

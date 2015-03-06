@@ -12,7 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
@@ -30,15 +30,15 @@ public abstract class Service {
 	protected DatabaseData getAllFiltered() throws JapiException {
 
 		try {
-			Session currentSession = Session.getCurrentSession();
-			currentSession.addAvailableOrderByValues(configs.getValidOrderByValues());
+			RequestContext context = RequestContext.getContext();
+			context.addAvailableOrderByValues(configs.getValidOrderByValues());
 	
-			String orderByValue = currentSession.getOrderByValue();
-			String orderValue = currentSession.getOrderValue();
+			String orderByValue = context.getOrderByValue();
+			String orderValue = context.getOrderValue();
 	
 			// SETUP
 			Connection connection = ConnectionManager.getConnection();
-			ArrayList<Filter> filtersFromRequest = currentSession.getFilters();
+			ArrayList<Filter> filtersFromRequest = context.getFilters();
 	
 			// QUERYS
 			
@@ -79,7 +79,7 @@ public abstract class Service {
 				filter.setPreparedStatementValues(pstCount, previousIndex);
 			}
 	
-			int offsetValue = currentSession.getOffsetValue();
+			int offsetValue = context.getOffsetValue();
 			pstQuery.setInt(index++, offsetValue);
 	
 			// DEBUG
@@ -136,7 +136,7 @@ public abstract class Service {
 		ArrayList<String> wheres = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
 			for(DatabaseAlias dbAlias : filter.getParametersAliases()){
-				if(Session.getCurrentSession().hasParameter(dbAlias.getUriName()))
+				if(RequestContext.getContext().hasParameter(dbAlias.getUriName()))
 					wheres.addAll(filter.getValues(dbAlias));
 			}
 		}

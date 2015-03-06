@@ -14,7 +14,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 
 public abstract class HTMLSerializer {
 
@@ -37,10 +37,10 @@ public abstract class HTMLSerializer {
 
 			Velocity.init();
 
-			Template template = Velocity.getTemplate(Session
-					.getCurrentSession().getHTMLTemplate(), "UTF-8");
+			Template template = Velocity.getTemplate(RequestContext
+					.getContext().getHTMLTemplate(), "UTF-8");
 			VelocityContext context = new VelocityContext();
-			context.put("session", Session.getCurrentSession());
+			context.put("session", RequestContext.getContext());
 			context.put("response", response);
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);

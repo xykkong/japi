@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import br.gov.planejamento.api.common.constants.CommonConstants;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 public class SwaggerParser {
 	
 	public static DocumentationObject parse(String modulo){
-		String docUrl = "http://" + Session.getCurrentSession().getRootURL() + modulo + CommonConstants.URIConstants.VERSION + "/" + modulo + "docs";
+		String docUrl = "http://" + RequestContext.getContext().getRootURL() + modulo + CommonConstants.URIConstants.VERSION + "/" + modulo + "docs";
 		System.out.println("A url para a documentação é " + docUrl);
 		
 		try{

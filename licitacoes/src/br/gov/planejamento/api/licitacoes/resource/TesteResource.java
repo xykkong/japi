@@ -11,7 +11,7 @@ import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -95,7 +95,7 @@ public class TesteResource extends Resource {
 		String name = "Nascimento";
 		String value = testeDate;
 		
-		if(Session.getCurrentSession().isCurrentFormat(RequestFormats.HTML)) {
+		if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
 			SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
 			Date dt = formatter.parse(value);
 			value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);

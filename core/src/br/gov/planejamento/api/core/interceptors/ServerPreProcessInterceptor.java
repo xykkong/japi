@@ -21,7 +21,7 @@ import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
 import br.gov.planejamento.api.core.utils.StringUtils;
@@ -43,8 +43,8 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			System.out.println("Houve um erro ao carregar o arquivo japi_config.json");
 			e.printStackTrace();
 		}
-		Session.getCurrentSession().clear();
-		Session.getCurrentSession().putValues(httpRequest.getUri().getQueryParameters());
+		RequestContext.getContext().clear();
+		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
 		
 		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
 		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();
@@ -68,13 +68,13 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			requestFormat = Constants.RequestFormats.HTML;
 		}
 		
-		Session.getCurrentSession().setRequestFormat(requestFormat);
+		RequestContext.getContext().setRequestFormat(requestFormat);
 		String path = httpRequest.getUri().getAbsolutePath().getPath();
 		System.out.println(httpRequest.getUri().getBaseUri().getPath());
 		path = FilenameUtils.removeExtension(path);
-		Session.getCurrentSession().setPath(path);
-		Session.getCurrentSession().setFullPath(fullPath);
-		System.out.println(Session.getCurrentSession().getPath());
+		RequestContext.getContext().setPath(path);
+		RequestContext.getContext().setFullPath(fullPath);
+		System.out.println(RequestContext.getContext().getPath());
 		
 		try {	
 			validateURIParametersUsingAnotations(httpRequest, method);

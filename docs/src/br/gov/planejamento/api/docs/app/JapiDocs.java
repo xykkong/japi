@@ -11,7 +11,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.docs.utils.DocumentationObject;
 import br.gov.planejamento.api.docs.utils.SwaggerParser;
@@ -26,8 +26,8 @@ public class JapiDocs {
 	@GET
 	@Path("/")
 	public String docs(@Parameter(name = "modulo") String modulo){
-		if(Session.getCurrentSession().getValue("modulo") != null){
-			modulo = Session.getCurrentSession().getValue("modulo");
+		if(RequestContext.getContext().getValue("modulo") != null){
+			modulo = RequestContext.getContext().getValue("modulo");
 			DocumentationObject documentation = SwaggerParser.parse(modulo);
 			documentation.setModulo(modulo);
 			
@@ -43,8 +43,8 @@ public class JapiDocs {
 	public String innerDocs(
 		@Parameter(name = "consulta") String method,
 		@Parameter(name = "modulo") String modulo) throws JapiException{
-			modulo = Session.getCurrentSession().getValue("modulo");
-			method = Session.getCurrentSession().getValue("consulta");
+			modulo = RequestContext.getContext().getValue("modulo");
+			method = RequestContext.getContext().getValue("consulta");
 			if(modulo == null || method == null) throw new JapiException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");
 			DocumentationObject documentation = SwaggerParser.parse(modulo);
 			documentation.setModulo(modulo);
@@ -73,14 +73,14 @@ public class JapiDocs {
 			Template template = new Template();
 
 			if(templateName == null){
-				template = Velocity.getTemplate(Session
-						.getCurrentSession().getDocsTemplate(), "UTF-8");
+				template = Velocity.getTemplate(RequestContext
+						.getContext().getDocsTemplate(), "UTF-8");
 			}
 			else{
 				template = Velocity.getTemplate(templateName, "UTF-8");
 			}
 			VelocityContext context = new VelocityContext();
-			context.put("session", Session.getCurrentSession());
+			context.put("session", RequestContext.getContext());
 			if(documentation!=null){
 				context.put("documentation", documentation);
 			}

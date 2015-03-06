@@ -12,7 +12,7 @@ import br.gov.planejamento.api.core.annotations.XMLIgnore;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.SelfLink;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 
 import com.google.common.base.CaseFormat;
 
@@ -31,19 +31,19 @@ public abstract class ReflectionUtils {
 	}
 
 	public static ArrayList<Method> getFilteredMethods(Object object) {
-		Session currentSession = Session.getCurrentSession();
+		RequestContext context = RequestContext.getContext();
 		
 		Method allMethods[] = object.getClass().getMethods();
 		ArrayList<Method> methods = new ArrayList<Method>();
 		for(Method method : allMethods) {
 			Boolean ignore = false;
-			if(currentSession.isHTML()) {
+			if(context.isHTML()) {
 				ignore = (method.getAnnotation(HTMLIgnore.class) != null);
-			} else if(currentSession.isJSON()) {
+			} else if(context.isJSON()) {
 				ignore = (method.getAnnotation(JSONIgnore.class) != null);
-			} else if(currentSession.isXML()) {
+			} else if(context.isXML()) {
 				ignore = (method.getAnnotation(XMLIgnore.class) != null);
-			} else if(currentSession.isCSV()) {
+			} else if(context.isCSV()) {
 				ignore = (method.getAnnotation(CSVIgnore.class) != null);
 			} else {
 				ignore = (method.getAnnotation(Ignore.class) != null);

@@ -14,7 +14,7 @@ import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 
@@ -29,7 +29,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 			return;
 		}
 
-		String firstPathSegment = Session.getCurrentSession().getPath()
+		String firstPathSegment = RequestContext.getContext().getPath()
 				.split("/")[1];
 		if (!firstPathSegment.equals("docs")) // TODO: Mudar forma de identificar docs
 			try {
@@ -39,7 +39,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				ArrayList<HashMap<String, Property>> resourceMapList = new ArrayList<HashMap<String, Property>>();
 				Headers headers = new Headers();
 				
-				switch (Session.getCurrentSession().getRequestFormat()) {
+				switch (RequestContext.getContext().getRequestFormat()) {
 				case RequestFormats.HTML:
 					serverResponse.setEntity(response.toHTML());
 					break;
@@ -104,7 +104,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 
 	private static void showErrorMessageByRequestFormat(ServerResponse serverResponse,
 			String errorMessage) {
-		switch (Session.getCurrentSession().getRequestFormat()) {
+		switch (RequestContext.getContext().getRequestFormat()) {
 		// TODO tratamento de erro pegando template html, formatando json etc
 		}
 		serverResponse.setEntity(errorMessage);
