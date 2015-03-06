@@ -12,38 +12,49 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.Session;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.docs.utils.DocumentationObject;
 import br.gov.planejamento.api.docs.utils.SwaggerParser;
 
 @Path("/")
 public class JapiDocs {
+	
+	public static class DocsConfig {
+		private static String[] modulos = {"licitacoes"};
+	}
+	
 	@GET
 	@Path("/")
 	public String docs(@Parameter(name = "modulo") String modulo){
-		modulo = Session.getCurrentSession().getValue("modulo");
-		DocumentationObject documentation = SwaggerParser.parse(modulo);
-		documentation.setModulo(modulo);
-		
-		return render(documentation, null);
-		
+		if(!modulo.equals("")){
+			System.out.println("Modulo " +modulo);
+			modulo = Session.getCurrentSession().getValue("modulo");
+			DocumentationObject documentation = SwaggerParser.parse(modulo);
+			documentation.setModulo(modulo);
+			
+			return render(documentation, null);
+		}
+		else{
+			return render(null, null);
+		}
 	}
 	
 	@GET
 	@Path("/doc")
 	public String innerDocs(
-		@Parameter(name = "method") String method,
-		@Parameter(name = "modulo") String modulo){
+		@Parameter(name = "consulta") String method,
+		@Parameter(name = "modulo") String modulo) throws JapiException{
 			modulo = Session.getCurrentSession().getValue("modulo");
-			method = Session.getCurrentSession().getValue("method");
+			method = Session.getCurrentSession().getValue("consulta");
+			if(modulo == null || method == null) throw new JapiException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");
 			DocumentationObject documentation = SwaggerParser.parse(modulo);
 			documentation.setModulo(modulo);
 			System.out.println("oioioi" +documentation.getRequests().get(0).getDescription());
 			for (DocumentationObject.Request request : documentation.getRequests()) {
 				if(request.getMethod_name() != null && request.getMethod_name().equals(method))
 					return render(request, "br/gov/planejamento/api/docs/templates/templateMethod.vm");
-				else System.out.println("Comparando "+request.getMethod_name()+" com "+ method);
 			}
-			return "Documentação não existe";
+			throw new JapiException("Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
 		
 	}
 
@@ -72,7 +83,10 @@ public class JapiDocs {
 			}
 			VelocityContext context = new VelocityContext();
 			context.put("session", Session.getCurrentSession());
-			context.put("documentation", documentation);
+			if(documentation!=null){
+				context.put("documentation", documentation);
+			}
+			context.put("modulos", DocsConfig.modulos);
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);
 			return writer.toString();

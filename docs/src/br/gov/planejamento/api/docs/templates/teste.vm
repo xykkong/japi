@@ -105,9 +105,9 @@
 					</div>
 
 					<ul>
-						<li><a href="docs/lista-metodos-licitacao.html">Módulo de Teste</a></li>
-						<li><a href="">Módulo 2</a></li>
-						<li><a href="">Módulo 3</a></li>
+						#foreach($modulo in $modulos)
+							<li><a href="docs?modulo=$modulo">$modulo</a></li>
+						#end
 					</ul>
 				</div>
 			
@@ -136,7 +136,7 @@
 					<tbody>
 						#foreach($request in $documentation.requests)
 							<tr>
-								<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
+								<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
 								<td>
 									<p>$request.description</p>
 								</td>
