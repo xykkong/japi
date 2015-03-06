@@ -111,64 +111,78 @@
 					</ul>
 				</div>
 			
-			##Conteudo da resposta do servidor
-			<div id="conteudo" class="p_c_prin">	
-				<!-- Header Div-->
-				<div id="header">					
-					<hr class="barra" style="margin: 0px;"/>
-					<div id="header-content">
-						<h2 id="titulo" class="titulo-pagina">Métodos de $documentation.modulo</h2>
+			#if($documentation)
+				##Conteudo da resposta do servidor
+				<div id="conteudo" class="p_c_prin">	
+					<!-- Header Div-->
+					<div id="header">					
 						<hr class="barra" style="margin: 0px;"/>
-						<p class="met_descricao">Possibilita a obtenção de dados sobre $documentation.modulo realizados pelo Governo Federal</p>
+						<div id="header-content">
+							<h2 id="titulo" class="titulo-pagina">Métodos de $documentation.modulo</h2>
+							<hr class="barra" style="margin: 0px;"/>
+							<p class="met_descricao">Possibilita a obtenção de dados sobre $documentation.modulo realizados pelo Governo Federal</p>
+						</div>
+					</div>
+					#set($rootUrl = $session.rootUrl())
+					<table class="table">
+						<caption>
+							<strong>Métodos de Consultas Básicas</strong>
+						</caption>
+						<thead>
+							<tr>
+								<th class="col_metodo">Método</th>
+								<th>Descrição</th>
+							</tr>
+						</thead>
+						<tbody>
+							#foreach($request in $documentation.requests)
+								<tr>
+									<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
+									<td>
+										<p>$request.description</p>
+									</td>
+								</tr>
+							#end
+						</tbody>								
+					</table>
+					<br>
+					<br>	
+	
+					<table class="table">
+						<caption>
+							<strong>Métodos de Consultas Detalhadas</strong>
+						</caption>
+						<thead>
+							<tr>
+								<th class="col_metodo">Método</th>
+								<th>Descrição</th>
+							</tr>
+						</thead>
+						<tbody>
+							#foreach($request in $documentation.requests)
+								<tr>
+									<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
+									<td>
+										<p>$request.description</p>
+									</td>
+								</tr>
+							#end
+						</tbody>								
+					</table>			
+				</div>
+			#else
+				<div id="conteudo" class="p_c_prin">	
+					<!-- Header Div-->
+					<div id="header">					
+						<hr class="barra" style="margin: 0px;"/>
+						<div id="header-content">
+							<h2 id="titulo" class="titulo-pagina">Documentação JAPI</h2>
+							<hr class="barra" style="margin: 0px;"/>
+							<p class="met_descricao">Seja bem vindo ao módulo de Documentação Automática da JAPI.</p>
+						</div>
 					</div>
 				</div>
-				#set($rootUrl = $session.rootUrl())
-				<table class="table">
-					<caption>
-						<strong>Métodos de Consultas Básicas</strong>
-					</caption>
-					<thead>
-						<tr>
-							<th class="col_metodo">Método</th>
-							<th>Descrição</th>
-						</tr>
-					</thead>
-					<tbody>
-						#foreach($request in $documentation.requests)
-							<tr>
-								<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
-								<td>
-									<p>$request.description</p>
-								</td>
-							</tr>
-						#end
-					</tbody>								
-				</table>
-				<br>
-				<br>	
-
-				<table class="table">
-					<caption>
-						<strong>Métodos de Consultas Detalhadas</strong>
-					</caption>
-					<thead>
-						<tr>
-							<th class="col_metodo">Método</th>
-							<th>Descrição</th>
-						</tr>
-					</thead>
-					<tbody>
-						#foreach($request in $documentation.requests)
-							<tr>
-								<td><a href="docs/doc?modulo=$documentation.modulo&method=$request.method_name">$request.method_name</a></td>
-								<td>
-									<p>$request.description</p>
-								</td>
-							</tr>
-						#end
-					</tbody>								
-				</table>			
-			</div>
+			#end
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 				
 				</div>	

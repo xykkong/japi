@@ -26,8 +26,7 @@ public class JapiDocs {
 	@GET
 	@Path("/")
 	public String docs(@Parameter(name = "modulo") String modulo){
-		if(!modulo.equals("")){
-			System.out.println("Modulo " +modulo);
+		if(Session.getCurrentSession().getValue("modulo") != null){
 			modulo = Session.getCurrentSession().getValue("modulo");
 			DocumentationObject documentation = SwaggerParser.parse(modulo);
 			documentation.setModulo(modulo);
@@ -49,7 +48,6 @@ public class JapiDocs {
 			if(modulo == null || method == null) throw new JapiException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");
 			DocumentationObject documentation = SwaggerParser.parse(modulo);
 			documentation.setModulo(modulo);
-			System.out.println("oioioi" +documentation.getRequests().get(0).getDescription());
 			for (DocumentationObject.Request request : documentation.getRequests()) {
 				if(request.getMethod_name() != null && request.getMethod_name().equals(method))
 					return render(request, "br/gov/planejamento/api/docs/templates/templateMethod.vm");
