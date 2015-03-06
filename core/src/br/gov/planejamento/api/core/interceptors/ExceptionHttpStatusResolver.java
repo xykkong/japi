@@ -12,6 +12,8 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
 import br.gov.planejamento.api.core.base.ErrorResource;
+import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 
 @Provider
@@ -34,7 +36,22 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		response.isList(false);
 			
 		try {
-			return Response.status(httpStatus).entity(response.toHTML()).build();
+			String retorno = "";
+			switch (RequestContext.getContext().getRequestFormat()) {
+				case RequestFormats.HTML:
+					retorno = response.toHTML().toString();
+					break;
+				case RequestFormats.JSON:
+					retorno = response.toJSON();
+					break;
+				case RequestFormats.XML:
+					retorno = response.toXML();
+					break;
+				case RequestFormats.CSV:
+					retorno = response.toHTML().toString();
+					break;
+			}
+			return Response.status(httpStatus).entity(retorno).build();
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
