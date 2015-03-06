@@ -384,7 +384,7 @@ table {
 /*******RODAPï¿½ - FOOTER***************/
 #container {
 	/* Div que engloba cabeï¿½alho e corpo do site para manter o rodapï¿½ colado no 'chï¿½o'*/
-	height: auto !important;
+	height: 100%;
 	margin: 0 auto -89px;
 	min-height: 100%;
 	position: relative;
@@ -394,7 +394,7 @@ table {
 	height: 89px;
 }
 
-#p_footer {
+#p_footer {	
 	background: #034811;
 	margin-top: 40px;
 	width: 100%;
@@ -730,9 +730,12 @@ body.fundoPreto .pager li a{
 	background: #EEEFF1;
 	padding: 7px;
 }
+.table tbody tr td {	
+	border-bottom: 1px solid #ddd;
+	padding: 5px;
+}
 
 .col_metodo{
 	width:25%;
 }
-	
-	
+
