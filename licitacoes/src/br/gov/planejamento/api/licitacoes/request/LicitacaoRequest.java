@@ -54,7 +54,7 @@ public class LicitacaoRequest {
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	@MethodName("licitacoesteste")
-	@Returns(TesteResource.class)
+	@Returns(resource=TesteResource.class, isList=true)
 	@Description("Lista de pessoas da tabela de testes")	
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
 							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
