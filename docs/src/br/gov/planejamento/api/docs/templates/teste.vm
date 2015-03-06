@@ -169,6 +169,7 @@
 					</tbody>								
 				</table>			
 			</div>
+			</div>
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 				
 				</div>	
@@ -189,7 +190,7 @@
 					
 					<script defer="defer" async="async" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
 	    		</div>
-    		</div>
+    		
 		</body>
 	
 	##Manter os Javascripts aso final da body facilita o carregamento da página
