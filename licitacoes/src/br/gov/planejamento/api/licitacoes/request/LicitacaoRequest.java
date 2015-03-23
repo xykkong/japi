@@ -3,6 +3,8 @@ package br.gov.planejamento.api.licitacoes.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
+import org.jboss.resteasy.annotations.GZIP;
+
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Name;
@@ -19,10 +21,12 @@ import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 import br.gov.planejamento.api.licitacoes.service.TesteService;
 
+
+@GZIP
 @Path("/")
 public class LicitacaoRequest {
-
 	private TesteService tService = new TesteService();
+	
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
@@ -52,6 +56,7 @@ public class LicitacaoRequest {
 	}
 
 	@GET
+	@GZIP
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	@Name("licitacoesteste")
 	@Returns(resource=TesteResource.class, isList=true)
