@@ -3,7 +3,7 @@ package br.gov.planejamento.api.licitacoes.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import br.gov.planejamento.api.common.constants.LicitacaoConstants;
+import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Name;
 import br.gov.planejamento.api.core.annotations.Parameter;

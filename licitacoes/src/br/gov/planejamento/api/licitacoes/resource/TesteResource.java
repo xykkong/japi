@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.gov.planejamento.api.common.constants.CommonConstants;
+import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.LinkProperty;
