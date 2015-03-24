@@ -14,9 +14,10 @@ import org.reflections.util.ClasspathHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
-import br.gov.planejamento.api.core.annotations.Name;
+
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
@@ -46,19 +47,26 @@ public abstract class Module extends Application {
 				
 				//Obtendo documenta��o do m�todo requisitado
 				String requestDescription = "";
-				if(requestMethod.isAnnotationPresent(Description.class)) {
-					requestDescription = requestMethod.getAnnotation(Description.class).value();
+				String requestMethodName = "";
+				String requestExampleQueryString = "";
+				String examplePath = requestMethod.getAnnotation(Path.class).value();
+				if(requestMethod.isAnnotationPresent(About.class)) {
+					requestDescription = requestMethod.getAnnotation(About.class).description();
+					requestMethodName = requestMethod.getAnnotation(About.class).name();
+					requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
+					request.addProperty("example_query_string",examplePath+requestExampleQueryString);
+					request.addProperty("method_name", requestMethodName);
 					request.addProperty("description", requestDescription);
 				}
-				String requestMethodName = "";
-				if(requestMethod.isAnnotationPresent(Name.class)) {
-					requestMethodName = requestMethod.getAnnotation(Name.class).value();
-					request.addProperty("method_name", requestMethodName);
-				}
+				
 				String requestPath = requestMethod.getAnnotation(Path.class).value();
 				request.addProperty("path", requestPath);
-				String requestResourceType = requestMethod.getAnnotation(Returns.class).resource().getSimpleName();
-				request.addProperty("resource_type", requestResourceType);
+				String returnsResource = requestMethod.getAnnotation(Returns.class).resource().getSimpleName();
+				Boolean returnsIsList = requestMethod.getAnnotation(Returns.class).isList();
+				JsonObject returns = new JsonObject();
+				returns.addProperty("resource", returnsResource);
+				returns.addProperty("isList", returnsIsList);
+				request.add("returns", returns);
 				
 				//Obtendo informa��es dos par�metros do m�todo
 				JsonArray parameters = new JsonArray();
