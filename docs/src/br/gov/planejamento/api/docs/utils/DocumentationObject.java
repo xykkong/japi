@@ -2,6 +2,8 @@ package br.gov.planejamento.api.docs.utils;
 
 import java.util.ArrayList;
 
+import br.gov.planejamento.api.core.annotations.Returns;
+
 public class DocumentationObject {
 	
 	ArrayList<Request> requests;
@@ -25,11 +27,12 @@ public class DocumentationObject {
 
 	public class Request{
 		private String path;
-		private String resource_type;
+		private Returns returns;
 		private String description;
 		private String method_name;
 		private ArrayList<Parameter> parameters;
 		private ArrayList<Property> properties;
+		
 
 		public String getMethod_name() {
 			return method_name;
@@ -51,11 +54,6 @@ public class DocumentationObject {
 		}
 
 
-		public String getResourceType() {
-			return resource_type;
-		}
-
-
 		public String getDescription() {
 			return description;
 		}
@@ -63,11 +61,6 @@ public class DocumentationObject {
 
 		public void setDescription(String description) {
 			this.description = description;
-		}
-
-
-		public void setResourceType(String resourceType) {
-			this.resource_type = resourceType;
 		}
 
 
@@ -90,8 +83,31 @@ public class DocumentationObject {
 			this.properties = properties;
 		}
 
+		public Returns getReturns() {
+			return returns;
+		}
 
-		
+
+		public void setReturns(Returns returns) {
+			this.returns = returns;
+		}
+
+		public class Returns{
+			private String resource;
+			private Boolean isList;
+			public String getResource() {
+				return resource;
+			}
+			public void setResource(String resource) {
+				this.resource = resource;
+			}
+			public boolean getIsList() {
+				return isList;
+			}
+			public void setList(Boolean isList) {
+				this.isList = isList;
+			}
+		}
 		
 		
 		public class Parameter{

@@ -106,7 +106,7 @@
 
 					<ul>
 						#foreach($modulo in $modulos)
-							<li><a href="docs?modulo=$modulo">$modulo</a></li>
+							<li><a href="../docs?modulo=$modulo">$modulo</a></li>
 						#end
 					</ul>
 				</div>

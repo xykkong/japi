@@ -61,8 +61,12 @@ public abstract class Module extends Application {
 				
 				String requestPath = requestMethod.getAnnotation(Path.class).value();
 				request.addProperty("path", requestPath);
-				String requestResourceType = requestMethod.getAnnotation(Returns.class).resource().getSimpleName();
-				request.addProperty("resource_type", requestResourceType);
+				String returnsResource = requestMethod.getAnnotation(Returns.class).resource().getSimpleName();
+				Boolean returnsIsList = requestMethod.getAnnotation(Returns.class).isList();
+				JsonObject returns = new JsonObject();
+				returns.addProperty("resource", returnsResource);
+				returns.addProperty("isList", returnsIsList);
+				request.add("returns", returns);
 				
 				//Obtendo informa��es dos par�metros do m�todo
 				JsonArray parameters = new JsonArray();
