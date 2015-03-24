@@ -5,7 +5,7 @@ import javax.ws.rs.Path;
 
 import org.jboss.resteasy.annotations.GZIP;
 
-import br.gov.planejamento.api.common.constants.LicitacaoConstants;
+import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;

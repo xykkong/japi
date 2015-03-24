@@ -4,12 +4,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
-import br.gov.planejamento.api.core.annotations.Description;
-import br.gov.planejamento.api.core.annotations.Name;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
