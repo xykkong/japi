@@ -4,8 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
-import br.gov.planejamento.api.core.annotations.Description;
-import br.gov.planejamento.api.core.annotations.Name;
+import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.Response;
@@ -26,10 +25,9 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
-	@Name("licitacoes")
+	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=1000")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@Returns(resource=LicitacaoResource.class)
-	@Description("Lista de licitacoes")
 	public Response licitacoes(
 				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", required = false, description = "Modalidade") String modalidade,
@@ -53,9 +51,8 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@Name("licitacoesteste")
-	@Returns(resource=TesteResource.class, isList=true)
-	@Description("Lista de pessoas da tabela de testes")	
+	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="?uasg=1000")
+	@Returns(resource=TesteResource.class, isList=true)		
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
 							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
 							throws JapiException {		

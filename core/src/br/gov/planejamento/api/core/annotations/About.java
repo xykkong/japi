@@ -4,8 +4,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Description {
-
-	String value();
-
+public @interface About {
+    public String name() default "";
+    public String description() default "";
+    public String exampleQuery() default "";
 }
+
