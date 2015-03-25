@@ -3,14 +3,14 @@ package br.gov.planejamento.api.licitacoes.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import org.jboss.resteasy.annotations.GZIP;
-
+import br.gov.planejamento.api.common.constants.CommonConstants;
 import br.gov.planejamento.api.common.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.About;
+import br.gov.planejamento.api.core.annotations.Module;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
@@ -20,12 +20,11 @@ import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 import br.gov.planejamento.api.licitacoes.service.TesteService;
 
-
-@GZIP
 @Path("/")
+@Module(CommonConstants.Modules.LICITACOES)
 public class LicitacaoRequest {
-	private TesteService tService = new TesteService();
 	
+	private TesteService tService = new TesteService();
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
@@ -54,9 +53,8 @@ public class LicitacaoRequest {
 	}
 
 	@GET
-	@GZIP
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="?uasg=1000")
+	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="")
 	@Returns(resource=TesteResource.class, isList=true)		
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
 							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
