@@ -3,7 +3,6 @@ package br.gov.planejamento.api.commons.filters;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.utils.StringUtils;

@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.base;
 
-import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 
 public class ErrorResource extends Resource {
 

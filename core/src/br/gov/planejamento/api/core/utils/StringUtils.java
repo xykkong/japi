@@ -2,8 +2,6 @@ package br.gov.planejamento.api.core.utils;
 
 import java.util.List;
 
-import br.gov.planejamento.api.core.database.DatabaseAlias;
-
 public class StringUtils {
 
 	public static String join(String separator, List<String> list) {

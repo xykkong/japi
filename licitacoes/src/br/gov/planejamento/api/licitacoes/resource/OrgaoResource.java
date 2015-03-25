@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
