@@ -15,13 +15,14 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.parameters.DateParam;
 
 public class TesteResource extends Resource {
 
 	private String testeString;
 	private String testeInt;
 	private String testeNumeric;
-	private String testeDate;
+	private DateParam testeDate;
 	private String testeTime;
 	
 	public TesteResource(DataRow teste) {
@@ -49,7 +50,7 @@ public class TesteResource extends Resource {
 		this.testeInt = testeInt;
 	}	
 	public void setTesteDate(String testeDate) {
-		this.testeDate = testeDate;
+		this.testeDate = new DateParam(testeDate);
 	}	
 	public void setTesteTime(String testeTime) {
 		this.testeTime = testeTime;
@@ -93,7 +94,7 @@ public class TesteResource extends Resource {
 	@Description("Date que é um nascimento")
 	public Property getTesteDate() throws ParseException {
 		String name = "Nascimento";
-		String value = testeDate;
+		String value = this.testeDate.getValue();
 		
 		if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
 			SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);

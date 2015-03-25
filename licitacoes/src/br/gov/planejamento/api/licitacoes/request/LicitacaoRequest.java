@@ -14,7 +14,9 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
+import br.gov.planejamento.api.core.filters.DateEqualFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
@@ -60,10 +62,12 @@ public class LicitacaoRequest {
 	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="?uasg=1000")
 	@Returns(resource=TesteResource.class, isList=true)		
 	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
-							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString)
+							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString,
+							@Parameter(name = "nascimento", required=true, description = "Nascimento") DateParam testeDate)
 							throws JapiException {		
 		try {
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int","idade")));
+			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 
 			return tService.teste();
 		} catch (Exception e) {
