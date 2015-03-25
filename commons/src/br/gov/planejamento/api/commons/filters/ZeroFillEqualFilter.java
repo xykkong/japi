@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.common.filters;
+package br.gov.planejamento.api.commons.filters;
 
 import java.util.ArrayList;
 import java.util.List;

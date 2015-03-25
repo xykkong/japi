@@ -91,11 +91,16 @@ public abstract class Service {
 			System.out.print("\tvalor OFFSET: ");
 			System.out.println(offsetValue);
 			if (whereValues.size() > 0) {
-				System.out.println("\t valores where:");
+				System.out.println("\t valores originais do where:");
 				System.out.print("\t");
 				System.out.println(StringUtils.join(", ", whereValues));
+				
 			} else
 				System.out.println("\tnenhum valor no where (considerado 1=1)");
+			
+			System.out.println("\t query final:");
+			System.out.print("\t");
+			System.out.println(pstQuery);
 	
 			// EXECUTE
 	
