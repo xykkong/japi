@@ -1,23 +1,12 @@
 package br.gov.planejamento.api.core.database;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 

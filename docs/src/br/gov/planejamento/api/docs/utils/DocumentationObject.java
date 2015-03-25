@@ -2,8 +2,6 @@ package br.gov.planejamento.api.docs.utils;
 
 import java.util.ArrayList;
 
-import br.gov.planejamento.api.core.annotations.Returns;
-
 public class DocumentationObject {
 	
 	ArrayList<Request> requests;

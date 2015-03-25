@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
-import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.parameters.DateParam;
 
 public abstract class Filter {
