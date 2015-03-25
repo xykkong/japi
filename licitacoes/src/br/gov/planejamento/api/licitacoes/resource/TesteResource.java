@@ -15,6 +15,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 
 public class TesteResource extends Resource {
@@ -24,6 +25,7 @@ public class TesteResource extends Resource {
 	private String testeNumeric;
 	private DateParam testeDate;
 	private String testeTime;
+	private BooleanParam testeBoolean;
 	
 	public TesteResource(DataRow teste) {
 		setTesteDate(teste.get("teste_date"));
@@ -31,6 +33,7 @@ public class TesteResource extends Resource {
 		setTesteNumeric(teste.get("teste_numeric"));
 		setTesteString(teste.get("teste_string"));
 		setTesteTime(teste.get("teste_time"));
+		setTesteBoolean(teste.get("teste_boolean"));
 	}
 
 	/*
@@ -54,6 +57,10 @@ public class TesteResource extends Resource {
 	}	
 	public void setTesteTime(String testeTime) {
 		this.testeTime = testeTime;
+	}
+	
+	public void setTesteBoolean(String testeBoolean) {
+		this.testeBoolean = new BooleanParam(testeBoolean);
 	}
 	
 	/*
@@ -101,6 +108,14 @@ public class TesteResource extends Resource {
 			Date dt = formatter.parse(value);
 			value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
 		}
+		
+		return new Property(name, value);
+	}	
+	
+	@Description("Boolean de Teste")
+	public Property getTesteBoolean(){
+		String name = "Booleano Legal";
+		String value = this.testeBoolean.getValue();
 		
 		return new Property(name, value);
 	}	

@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
+import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 
 public abstract class Filter {
@@ -69,7 +70,8 @@ public abstract class Filter {
 							pst.setFloat(i++, Float.parseFloat(value));
 						}
 						else if (valueType.equals(Boolean.class)) {
-							pst.setBoolean(i++, Boolean.parseBoolean(value));
+							BooleanParam booleanP = new BooleanParam(value); 
+							pst.setBoolean(i++, Boolean.parseBoolean(booleanP.getValue()));
 						}
 						else if (valueType.equals(DateParam.class)){
 							DateParam date = new DateParam(value);
