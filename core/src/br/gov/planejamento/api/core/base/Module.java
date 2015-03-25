@@ -11,15 +11,15 @@ import org.reflections.Reflections;
 import org.reflections.scanners.MethodParameterScanner;
 import org.reflections.util.ClasspathHelper;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public abstract class Module extends Application {
 	
@@ -48,14 +48,20 @@ public abstract class Module extends Application {
 				String requestDescription = "";
 				String requestMethodName = "";
 				String requestExampleQueryString = "";
-				String examplePath = requestMethod.getAnnotation(Path.class).value();		
-				String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
+				
 				
 				if(requestMethod.isAnnotationPresent(About.class)) {
 					requestDescription = requestMethod.getAnnotation(About.class).description();
 					requestMethodName = requestMethod.getAnnotation(About.class).name();
-					requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
-					request.addProperty("example_query_string",classModule+examplePath+requestExampleQueryString);
+					
+					//Só insere uma example_query_string caso a @Module for definida no Request
+					if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.Module.class)){
+						String examplePath = requestMethod.getAnnotation(Path.class).value();		
+						String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
+						requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
+						request.addProperty("example_query_string",classModule +examplePath+requestExampleQueryString);		
+					}
+					
 					request.addProperty("method_name", requestMethodName);
 					request.addProperty("description", requestDescription);
 				}
@@ -92,7 +98,7 @@ public abstract class Module extends Application {
 				
 				//Otendo informa��es do retorno do m�todo
 				JsonArray properties = new JsonArray();
-				Class<? extends Object> resourceType = requestMethod.getAnnotation(Returns.class).resource();
+				Class resourceType = requestMethod.getAnnotation(Returns.class).resource();
 				for(Method propertyMethod : resourceType.getMethods()) {
 					if(propertyMethod.getReturnType().equals(Property.class) && !propertyMethod.isAnnotationPresent(Ignore.class)) {
 												
