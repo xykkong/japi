@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
+import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.parameters.DateParam;
 
 public abstract class Filter {
@@ -24,7 +25,14 @@ public abstract class Filter {
 	private static DatabaseAlias[] stringsToAliases(String...parameters) {
 		DatabaseAlias aliases[] = new DatabaseAlias[parameters.length];
 		for(int i = 0; i < parameters.length; i++) {
-			aliases[i] = new DatabaseAlias(parameters[i]);
+			String parameter = parameters[i];
+			String[] explodedString = parameter.toUpperCase().split(" AS ");
+			if(explodedString.length==1)
+				aliases[i] = new DatabaseAlias(parameter);
+			else if(explodedString.length==2)
+				aliases[i] = new DatabaseAlias(explodedString[0], explodedString[1]);
+			else
+				throw new IllegalArgumentException("Para criar um filtro é esperado um parâmetro ou uma string 'dbName as uriName', encontrado "+parameter);
 		}
 		return aliases;
 	}

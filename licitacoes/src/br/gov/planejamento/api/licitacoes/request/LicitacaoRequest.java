@@ -39,14 +39,15 @@ public class LicitacaoRequest {
 				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", required = false, description = "Modalidade") String modalidade,
 				@Parameter(name = "numero_aviso", required = false, description = "Número aviso") String numeroAviso,
-				@Parameter(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg				
+				@Parameter(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg,
+				@Parameter(name = "data_abertura", required = false, description = "Data de abertuda da proposta") String dataAbertura
 			) throws JapiException {
 		
 		try {
-			RequestContext context = RequestContext.getContext();
-			context.addFilter(
-					new EqualFilter(Integer.class, "uasg", "modalidade", "numero_aviso"),
-					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg"))
+			RequestContext.getContext().addFilter(
+					new EqualFilter(Integer.class, "uasg as uasg", "modalidade", "numero_aviso"),
+					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg")),
+					new DateEqualFilter(DateParam.class, new DatabaseAlias("data_abertura_proposta","data_abertura"))
 			);
 	
 			Response response = lService.licitacoes();
