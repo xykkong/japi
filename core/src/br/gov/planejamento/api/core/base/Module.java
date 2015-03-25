@@ -40,20 +40,22 @@ public abstract class Module extends Application {
 		JsonArray requests = new JsonArray();
 		
 		for(Method requestMethod : methods) {
-			if(requestMethod.isAnnotationPresent(Path.class) && requestMethod.isAnnotationPresent(Returns.class)) {
+			if(requestMethod.isAnnotationPresent(Path.class) && requestMethod.isAnnotationPresent(Returns.class)) {				
 				
-				JsonObject request = new JsonObject();
+				JsonObject request = new JsonObject();				
 				
 				//Obtendo documenta��o do m�todo requisitado
 				String requestDescription = "";
 				String requestMethodName = "";
 				String requestExampleQueryString = "";
-				String examplePath = requestMethod.getAnnotation(Path.class).value();
+				String examplePath = requestMethod.getAnnotation(Path.class).value();		
+				String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
+				
 				if(requestMethod.isAnnotationPresent(About.class)) {
 					requestDescription = requestMethod.getAnnotation(About.class).description();
 					requestMethodName = requestMethod.getAnnotation(About.class).name();
 					requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
-					request.addProperty("example_query_string",examplePath+requestExampleQueryString);
+					request.addProperty("example_query_string",classModule+examplePath+requestExampleQueryString);
 					request.addProperty("method_name", requestMethodName);
 					request.addProperty("description", requestDescription);
 				}
