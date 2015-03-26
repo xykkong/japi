@@ -1,7 +1,5 @@
 package br.gov.planejamento.api.core.parameters;
 
-import br.gov.planejamento.api.core.exceptions.JapiException;
-
 public class BooleanParam {
 	String original;
 	String value;
@@ -19,12 +17,14 @@ public class BooleanParam {
 			case "true":
 			case "verdadeiro":
 			case "sim":
+			case "1":
 				this.value="true";
 				break;
 			case "f":
 			case "false":
 			case "falso":
 			case "nao":
+			case "0":
 			default:
 				this.value="false";
 				break;
