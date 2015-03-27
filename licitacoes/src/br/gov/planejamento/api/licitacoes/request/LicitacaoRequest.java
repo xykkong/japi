@@ -31,7 +31,7 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
-	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=1000")
+	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@Returns(resource=LicitacaoResource.class)
 	public Response licitacoes(

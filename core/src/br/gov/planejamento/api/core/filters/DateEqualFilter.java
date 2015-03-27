@@ -14,6 +14,13 @@ public class DateEqualFilter extends Filter {
 	public DateEqualFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
+	public DateEqualFilter(String...parameters) {
+		super(parameters);
+	}
+	
+	public DateEqualFilter(Class<? extends Object> type, String...parameters) {
+		super(type, parameters);
+	}
 
 	
 	@Override
