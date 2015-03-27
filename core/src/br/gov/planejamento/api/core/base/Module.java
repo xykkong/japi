@@ -98,7 +98,7 @@ public abstract class Module extends Application {
 				
 				//Otendo informa��es do retorno do m�todo
 				JsonArray properties = new JsonArray();
-				Class resourceType = requestMethod.getAnnotation(Returns.class).resource();
+				Class<? extends Object> resourceType = requestMethod.getAnnotation(Returns.class).resource();
 				for(Method propertyMethod : resourceType.getMethods()) {
 					if(propertyMethod.getReturnType().equals(Property.class) && !propertyMethod.isAnnotationPresent(Ignore.class)) {
 												
