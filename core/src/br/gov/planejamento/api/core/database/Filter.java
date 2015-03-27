@@ -27,9 +27,9 @@ public abstract class Filter {
 			String parameter = parameters[i];
 			String[] explodedString = parameter.toUpperCase().split(" AS ");
 			if(explodedString.length==1)
-				aliases[i] = new DatabaseAlias(parameter);
+				aliases[i] = new DatabaseAlias(parameter.trim());
 			else if(explodedString.length==2)
-				aliases[i] = new DatabaseAlias(explodedString[0], explodedString[1]);
+				aliases[i] = new DatabaseAlias(explodedString[0].trim(), explodedString[1].trim());
 			else
 				throw new IllegalArgumentException("Para criar um filtro é esperado um parâmetro ou uma string 'dbName as uriName', encontrado "+parameter);
 		}

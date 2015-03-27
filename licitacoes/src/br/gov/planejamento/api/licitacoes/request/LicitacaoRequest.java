@@ -65,7 +65,8 @@ public class LicitacaoRequest {
 							@Parameter(name = "nascimento", required=true, description = "Nascimento") DateParam testeDate)
 							throws JapiException {		
 		try {
-			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int","idade")));
+			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
+			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 
 			return tService.teste();
