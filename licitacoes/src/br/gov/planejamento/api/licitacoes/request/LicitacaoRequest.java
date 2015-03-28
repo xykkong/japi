@@ -32,7 +32,7 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
-	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=1000")
+	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@Returns(resource=LicitacaoResource.class)
 	public Response licitacoes(
@@ -67,7 +67,8 @@ public class LicitacaoRequest {
 							@Parameter(name = "boolean", required=false, description = "Teste Boolean") BooleanParam testeBoolean)
 							throws JapiException {		
 		try {
-			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, new DatabaseAlias("teste_int","idade")));
+			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
+			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 			RequestContext.getContext().addFilter(new EqualFilter(Boolean.class, new DatabaseAlias("teste_boolean","boolean")));
 			return tService.teste();

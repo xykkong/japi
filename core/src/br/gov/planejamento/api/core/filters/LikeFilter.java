@@ -14,6 +14,14 @@ public class LikeFilter extends Filter {
 	public LikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
+	
+	public LikeFilter(String...parameters) {
+		super(parameters);
+	}
+	
+	public LikeFilter(Class<? extends Object> type, String...parameters) {
+		super(type, parameters);
+	}	
 
 	
 	@Override

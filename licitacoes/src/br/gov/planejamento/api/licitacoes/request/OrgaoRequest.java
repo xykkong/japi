@@ -8,7 +8,6 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
@@ -31,8 +30,8 @@ public class OrgaoRequest {
 		try {
 			RequestContext context = RequestContext.getContext();
 			context.addFilter(
-					new EqualFilter(Integer.class, new DatabaseAlias("codigo_tipo_adm", "tipo_adm")),
-					new EqualFilter(Boolean.class, new DatabaseAlias("ativo"))
+					new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
+					new EqualFilter(Boolean.class, "ativo")
 					);
 	
 			Response response = null;

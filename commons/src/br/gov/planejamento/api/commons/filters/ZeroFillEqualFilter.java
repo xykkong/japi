@@ -16,6 +16,14 @@ public class ZeroFillEqualFilter extends Filter {
 	public ZeroFillEqualFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
+	
+	public ZeroFillEqualFilter(String...parameters) {
+		super(parameters);
+	}
+	
+	public ZeroFillEqualFilter(Class<? extends Object> type, String...parameters) {
+		super(type, parameters);
+	}
 
 	@Override
 	public StringBuilder subStatement(DatabaseAlias parameterAlias) {

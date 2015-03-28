@@ -14,6 +14,14 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	public CaseInsensitiveLikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
+	
+	public CaseInsensitiveLikeFilter(String...parameters) {
+		super(parameters);
+	}
+	
+	public CaseInsensitiveLikeFilter(Class<? extends Object> type, String...parameters) {
+		super(type, parameters);
+	}
 
 	@Override
 	public List<String> getValues(DatabaseAlias parameterAlias) {
