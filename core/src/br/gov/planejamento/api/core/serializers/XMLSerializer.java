@@ -70,7 +70,7 @@ public abstract class XMLSerializer {
 				root = resources.get(0);
 				xml.appendChild(root);
 			} else {
-				//TODO: Lan�ar exception quando uma p�gina de detalhamento � chamada havendo mais de um registro
+				//TODO: Lançar exception quando uma página de detalhamento é chamada havendo mais de um registro
 			}
 		}
 		

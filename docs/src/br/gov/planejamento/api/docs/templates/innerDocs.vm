@@ -122,7 +122,7 @@
 						<p class="met_descricao">Fornece uma lista das informações relacionadas aos registros de $documentation.method_name</p>
 						<p>
 							<strong>Exemplo:</strong></br>
-							<a href=http://$documentation.example_query_string>http://$documentation.example_query_string</a>
+							<a href=$documentation.example_query_string>$documentation.example_query_string</a>
 						</p>
 						<br>
 					</div>

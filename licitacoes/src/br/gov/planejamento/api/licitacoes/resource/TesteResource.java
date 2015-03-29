@@ -37,9 +37,9 @@ public class TesteResource extends Resource {
 
 	/*
 	 * SETTERS
-	 * M�todos para definir todos os valores que um Resource precisa para existir.
+	 * Métodos para definir todos os valores que um Resource precisa para existir.
 	 * 
-	 * N�o h� getters para estes valores. Tudo o que um Resource deve retornar s�o Properties ou Links.
+	 * Não há getters para estes valores. Tudo o que um Resource deve retornar são Properties ou Links.
 	 */
 	
 	public void setTesteNumeric(String testeNumeric) {
@@ -64,21 +64,21 @@ public class TesteResource extends Resource {
 	
 	/*
 	 * PROPERTIES
-	 * M�todos que retornam as Properties do Resource.
+	 * Métodos que retornam as Properties do Resource.
 	 * 
-	 * Um Property simples possui somente um nome de exibi��o e um valor, ambos Strings.
-	 * Podem ser criadas Properties personalizadas que herdem desta Property base. Um exemplo � a 
+	 * Um Property simples possui somente um nome de exibição e um valor, ambos Strings.
+	 * Podem ser criadas Properties personalizadas que herdem desta Property base. Um exemplo é a 
 	 * LinkProperty, que extende Property e possui um "Link" associado.
 	 * 
-	 * O id de uma Property ser� gerado automaticamente a partir do nome do m�todo em quest�o.
-	 * O padr�o � "getIdDaPropropriedade()" ser traduzido para "id_da_propriedade". Este id ser�
-	 * usado como label da propriedade no JSON e no XML. O nome de exibi��o ser� usado somente para HTML. 
+	 * O id de uma Property será gerado automaticamente a partir do nome do método em questão.
+	 * O padrão é "getIdDaPropropriedade()" ser traduzido para "id_da_propriedade". Este id será
+	 * usado como label da propriedade no JSON e no XML. O nome de exibição será usado somente para HTML. 
 	 * 
-	 * Todos os m�todos que retornam Property s�o automaticamente chamados em todos os formatos de request.
-	 * Caso um m�todo n�o deva ser automaticamente chamado, deve ser anotado com @Ignore ou
-	 * @HTMLIgnore, @JSONIgnore, @XMLIgnore, @CSVIgnore caso deva ser ignorado somente em formatos espec�ficos.
+	 * Todos os métodos que retornam Property são automaticamente chamados em todos os formatos de request.
+	 * Caso um método não deva ser automaticamente chamado, deve ser anotado com @Ignore ou
+	 * @HTMLIgnore, @JSONIgnore, @XMLIgnore, @CSVIgnore caso deva ser ignorado somente em formatos específicos.
 	 * 
-	 * Para gerar a documenta��o autom�tica do Resource, utiliza-se a annotation @Docs, passando uma String
+	 * Para gerar a documentação automática do Resource, utiliza-se a annotation @Docs, passando uma String
 	 * como description.
 	 */
 	
@@ -127,21 +127,21 @@ public class TesteResource extends Resource {
 	
 	/*
 	 * LINKS
-	 * M�todos que retornam os Links do Resource.
+	 * Métodos que retornam os Links do Resource.
 	 * 
-	 * Todo Resource deve retornar pelo menos um Link, que � o Link a ele pr�prio (SelfLink), e por isso getSelfLink
+	 * Todo Resource deve retornar pelo menos um Link, que é o Link a ele próprio (SelfLink), e por isso getSelfLink
 	 * deve ser sobrescrito.
 	 * 
-	 * Al�m do SelfLink, um Resource pode possuir outros m�todos que retornem links, fazendo refer�ncias a
-	 * ResourceLists. Todos os m�todos que retornem Link ser�o automaticamente chamados
+	 * Além do SelfLink, um Resource pode possuir outros métodos que retornem links, fazendo referências a
+	 * ResourceLists. Todos os métodos que retornem Link serão automaticamente chamados
 	 * em todos os formatos de request.
-	 * Caso um m�todo n�o deva ser automaticamente chamado, deve ser anotado com @Ignore ou
-	 * @HTMLIgnore, @JSONIgnore, @XMLIgnore, @CSVIgnore caso deva ser ignorado somente em formatos espec�ficos.
+	 * Caso um método não deva ser automaticamente chamado, deve ser anotado com @Ignore ou
+	 * @HTMLIgnore, @JSONIgnore, @XMLIgnore, @CSVIgnore caso deva ser ignorado somente em formatos específicos.
 	 * 
-	 * Uma observa��o importante � que estes m�todos s� devem ser usados para retornar Links gen�ricos,
-	 * que n�o estejam associados a nenhuma propriedade do Resource. Caso deseje inserir um link associado
-	 * a uma Property, como geralmente usado em chaves estrangeiras, voc� deve criar um m�todo que retorne Property,
-	 * na se��o acima, e retornar uma LinkProperty. 
+	 * Uma observação importante é que estes métodos só devem ser usados para retornar Links genéricos,
+	 * que não estejam associados a nenhuma propriedade do Resource. Caso deseje inserir um link associado
+	 * a uma Property, como geralmente usado em chaves estrangeiras, você deve criar um método que retorne Property,
+	 * na seção acima, e retornar uma LinkProperty. 
 	 */
 	
 	@Override
