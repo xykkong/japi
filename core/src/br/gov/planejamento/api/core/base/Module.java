@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Application;
 
 import org.reflections.Reflections;
@@ -90,6 +91,12 @@ public abstract class Module extends Application {
 							paramObject.addProperty("description", parameter.description());
 							paramObject.addProperty("type", paramTypes[i].getSimpleName());
 							paramObject.addProperty("required", parameter.required());
+							parameters.add(paramObject);
+						}
+						if(annotation.annotationType().equals(PathParam.class)) {
+							JsonObject paramObject = new JsonObject();	
+							PathParam pathparam = (PathParam) annotation;
+							paramObject.addProperty("name", pathparam.value());
 							parameters.add(paramObject);
 						}
 					}

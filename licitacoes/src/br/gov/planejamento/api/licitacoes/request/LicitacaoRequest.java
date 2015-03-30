@@ -80,8 +80,8 @@ public class LicitacaoRequest {
 	
 	@GET
 	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
-	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="")
-	@Returns(resource=TesteResource.class, isList=true)
+	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleQuery="")
+	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
 			@PathParam("idade") String testeInt
 			) throws JapiException {
