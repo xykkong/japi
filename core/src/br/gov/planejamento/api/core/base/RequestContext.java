@@ -9,6 +9,8 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
@@ -218,6 +220,12 @@ public class RequestContext {
 	public String asset(String...asset){
 		//TODO pegar do japiConfig.json
 		return "http://"+getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+	}
+	
+	public void putPathParameters(String name, String value){
+		MultivaluedMap<String, String> pathParameters = new MultivaluedMapImpl<String, String>();
+		pathParameters.add(name, value);
+		RequestContext.getContext().putValues(pathParameters);
 	}
 	
 }
