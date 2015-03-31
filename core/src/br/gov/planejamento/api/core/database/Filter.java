@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.core.database;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,8 +11,7 @@ import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
-import br.gov.planejamento.api.core.parameters.BooleanParam;
-import br.gov.planejamento.api.core.parameters.DateParam;
+import br.gov.planejamento.api.core.parameters.Param;
 
 public abstract class Filter {
 
@@ -60,7 +61,7 @@ public abstract class Filter {
 	}
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
-			throws InvalidFilterValueTypeJapiException {
+			throws InvalidFilterValueTypeJapiException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
 			System.out.println(parameter.getUriName());
@@ -75,16 +76,12 @@ public abstract class Filter {
 							pst.setDouble(i++, Double.parseDouble(value));
 						} else if (valueType.equals(Float.class)) {
 							pst.setFloat(i++, Float.parseFloat(value));
-						}
-						else if (valueType.equals(Boolean.class)) {
-							BooleanParam booleanP = new BooleanParam(value); 
-							pst.setBoolean(i++, Boolean.parseBoolean(booleanP.getValue()));
-						}
-						else if (valueType.equals(DateParam.class)){
-							DateParam date = new DateParam(value);
-							pst.setString(i++, date.getValue());
-						}
-						else {
+						}else if(valueType.isAssignableFrom(Param.class)){
+							@SuppressWarnings("unchecked")
+							Constructor<? extends Param> constructor = (Constructor<? extends Param>) valueType.getConstructor(new Class[]{String.class});
+							Param param = (Param) constructor.newInstance(value);
+							param.setPreparedStatementValue(i++, pst);
+						} else {
 							pst.setString(i++, value);
 						}
 					} catch (SQLException | NumberFormatException ex) {
