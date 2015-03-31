@@ -87,7 +87,6 @@ public class LicitacaoRequest {
 			) throws JapiException {
 		try {
 			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
-			RequestContext.getContext().putPathParameters("idade", testeInt);
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			return tService.teste();
 		} catch (Exception e) {
