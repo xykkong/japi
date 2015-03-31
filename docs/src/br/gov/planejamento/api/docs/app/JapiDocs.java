@@ -12,7 +12,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.docs.utils.DocumentationObject;
 import br.gov.planejamento.api.docs.utils.SwaggerParser;
 
@@ -42,17 +42,17 @@ public class JapiDocs {
 	@Path("/doc")
 	public String innerDocs(
 		@Parameter(name = "consulta") String method,
-		@Parameter(name = "modulo") String modulo) throws JapiException{
+		@Parameter(name = "modulo") String modulo) throws RequestException{
 			modulo = RequestContext.getContext().getValue("modulo");
 			method = RequestContext.getContext().getValue("consulta");
-			if(modulo == null || method == null) throw new JapiException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");
+			if(modulo == null || method == null) throw new RequestException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");
 			DocumentationObject documentation = SwaggerParser.parse(modulo);
 			documentation.setModulo(modulo);
 			for (DocumentationObject.Request request : documentation.getRequests()) {
 				if(request.getMethod_name() != null && request.getMethod_name().equals(method))
 					return render(request, "br/gov/planejamento/api/docs/templates/innerDocs.vm");
 			}
-			throw new JapiException("Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
+			throw new RequestException("Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
 		
 	}
 

@@ -14,17 +14,17 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import br.gov.planejamento.api.core.base.ErrorResource;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 
 @Provider
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	@Override
 	public Response toResponse(Exception exception) {
 		
-		Response.Status httpStatus = Response.Status.INTERNAL_SERVER_ERROR;
+		/*Response.Status httpStatus = Response.Status.INTERNAL_SERVER_ERROR;
 		
-		if(!(exception instanceof JapiException)) {
-			exception = new JapiException(exception);
+		if(!(exception instanceof RequestException)) {
+			exception = new RequestException(exception);
 		}
 		
 		ErrorResource error = new ErrorResource();
@@ -76,7 +76,7 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return null;
 	}	
 }

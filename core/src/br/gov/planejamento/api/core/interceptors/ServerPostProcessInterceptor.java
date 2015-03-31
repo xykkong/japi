@@ -16,7 +16,8 @@ import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 
 @Provider
 @ServerInterceptor
@@ -62,7 +63,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				}
 				
 				serverResponse.setMetadata(headers);
-			} catch (JapiException japiException) {
+			} catch (RequestException japiException) {
 				serverResponse.setEntity(japiException);
 				showErrorMessage(serverResponse);
 			} catch (ParserConfigurationException e) {
@@ -82,17 +83,16 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 	private static void showErrorMessage(ServerResponse serverResponse) {
 		Object responseEntity = serverResponse.getEntity();
 		String errorMessage = "";
-		if (responseEntity instanceof JapiException) {
-			JapiException japiException = (JapiException) responseEntity;
-			if (japiException.isUserShowable()) {
-				errorMessage = japiException.getMessage();
-
-			} else {
-				System.out.println("JapiException ocurred, stackTrace:");
-				japiException.printStackTrace();
+		if (responseEntity instanceof RequestException) {
+			RequestException japiException = (RequestException) responseEntity;
+			errorMessage = japiException.getMessage();
+		} else if(responseEntity instanceof CoreException) {
+			errorMessage = "Erro interno desconhecido";
+			serverResponse.setStatus(500);
+			if(responseEntity instanceof Exception){
+				((Exception) responseEntity).printStackTrace();
 			}
 		} else {
-			// TODO mensagem de erro genérica
 			errorMessage = "Erro interno desconhecido";
 			serverResponse.setStatus(500);
 			if(responseEntity instanceof Exception){

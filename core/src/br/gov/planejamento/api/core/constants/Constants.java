@@ -49,4 +49,10 @@ public abstract class Constants {
 	public static final class Configuration {
 		public static final String CONFIG_FILE_NAME = "japi_config.json";
 	}
+	
+	public static final class HttpStatusCodes {
+		public static final String NOT_FOUND = "404";
+		public static final String BAD_REQUEST = "400";
+		public static final String INTERNAL_ERROR = "500";
+	}
 }

@@ -18,52 +18,81 @@ import com.google.gson.JsonSyntaxException;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
-import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueJapiException;
-import br.gov.planejamento.api.core.exceptions.InvalidOrderSQLParameterJapiException;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueRequestException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueRequestException;
+import br.gov.planejamento.api.core.exceptions.InvalidOrderValueRequestException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class RequestContext {
 
 	/**
-	 * Current request object created by Resteasy
+	 * Singleton do RequestContext que guardará todos os dados da requisição
 	 */
 	private static RequestContext context = null;
 
+	
 	/**
-	 * All parameters sent in querystring
+	 * Parâmetros enviados na query string
 	 */
 	private Map<String, List<String>> parameters = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
 
+	/**
+	 * Filtros inseridos pela camada de Request
+	 */
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
+	/**
+	 * Colunas permitidas no order by do service requisitado
+	 */
 	private List<String> availableOrderByValues = new ArrayList<String>();
 	
+	/**
+	 * Formato de resposta requisitado pelo cliente. Por padrão, HTML.
+	 */
 	private String requestFormat = Constants.RequestFormats.HTML;
 
+	/**
+	 * URL requisitada pelo cliente sem incluir a query string
+	 */
 	private String path;
 	
+	/**
+	 * URL requisitada pelo cliente incluindo a query string
+	 */
 	private String fullPath;
 
 	/**
-	 * Constructor that populates the static current variable with the created
-	 * Request
+	 * Contrutor privado para o singleton
 	 */
 	private RequestContext() {
-		context = this;
 	}
 
+	/**
+	 * Factory do singleton
+	 * @return
+	 */
 	public static RequestContext getContext() {
 		if (context == null)
 			context = new RequestContext();
 		return context;
 	}
 
+	/**
+	 * Retorna os filtros de consulta ao banco adicionados na camada de Request
+	 * @return
+	 */
 	public ArrayList<Filter> getFilters() {
 		return filters;
 	}
 
+	/**
+	 * Adiciona à filtragem da consulta os filtros que tenham seus respectivos query parameters
+	 * presentes na query string da requisição 
+	 * @param filters Filtros a serem inseridos
+	 */
 	public void addFilter(Filter...filters) {
 		for(Filter filter : filters){
 			Boolean addThisFilter = false;
@@ -71,7 +100,7 @@ public class RequestContext {
 				if (hasParameter(parameter)) {
 					addThisFilter = true;
 					filter.putValues(parameter, context.getValues(parameter));
-					System.out.println("\n\tfilter added: "+ parameter+" with "+
+					System.out.println("\n\tFilter added: "+ parameter+" with "+
 							context.getValues(parameter).size()+" values.");
 				}
 			}
@@ -104,33 +133,33 @@ public class RequestContext {
 	}
 
 	/**
-	 * 
+	 * Teste testaaaa
 	 * @return valor de order_by da URI ou "1", se não existir
-	 * @throws InvalidOrderByValueJapiException 
+	 * @throws InvalidOrderByValueRequestException 
 	 */
-	public String getOrderByValue() throws InvalidOrderByValueJapiException {
+	public String getOrderByValue() throws InvalidOrderByValueRequestException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
 			String value = getValue(Constants.FixedParameters.ORDER_BY);
 			if(!availableOrderByValues.contains(value))
-				throw new InvalidOrderByValueJapiException(value, availableOrderByValues);
+				throw new InvalidOrderByValueRequestException(value, availableOrderByValues);
 			return value;
 		}
 		return "1";
 	}
 
-	public String getOrderValue() throws InvalidOrderSQLParameterJapiException {
+	public String getOrderValue() throws InvalidOrderValueRequestException {
 		if (hasParameter(Constants.FixedParameters.ORDER)) {
 			String order = getValue(Constants.FixedParameters.ORDER);
 			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
 					order.toUpperCase()))
 				return order;
 			else
-				throw new InvalidOrderSQLParameterJapiException(order);
+				throw new InvalidOrderValueRequestException(order);
 		}
-		return "ASC";
+		return Constants.FixedParameters.VALID_ORDERS[0];
 	}
 	
-	public int getOffsetValue() throws InvalidOffsetValueJapiException {
+	public int getOffsetValue() throws InvalidOffsetValueRequestException {
 		if(hasParameter(Constants.FixedParameters.OFFSET)){
 			String sOffset = "";
 			try{
@@ -138,7 +167,7 @@ public class RequestContext {
 				int offset = Integer.parseInt(sOffset);
 				return offset;
 			}catch(NumberFormatException ex){
-				throw new InvalidOffsetValueJapiException(sOffset);
+				throw new InvalidOffsetValueRequestException(sOffset);
 			}
 		}
 		return 0;
@@ -201,14 +230,14 @@ public class RequestContext {
 		return isCurrentFormat(RequestFormats.CSV);
 	}
 
-	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException, JapiException {
+	public String getHTMLTemplate() throws ApiException {
 		// TODO realmente fazer este método
 		if(JapiConfigLoader.getJapiConfig().getHtmlTemplate() != null)
 			return (JapiConfigLoader.getJapiConfig().getHtmlTemplate());
-		else throw new JapiException("Caminho do Template HTML não configurado no japi_config.json");
+		else throw new RequestException("Caminho do Template HTML não configurado no japi_config.json");
 	}
 	
-	public String getDocsTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+	public String getDocsTemplate() throws ApiException {
 		if(JapiConfigLoader.getJapiConfig().getDocsHtmlFolder() != null)
 			return JapiConfigLoader.getJapiConfig().getDocsHtmlFolder();
 		else return "br/gov/planejamento/api/docs/templates/docs.vm";

@@ -12,7 +12,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.w3c.dom.DOMException;
 
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.serializers.CSVSerializer;
 import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
@@ -106,9 +106,9 @@ public class Response extends ArrayList<Resource> {
 	/**
 	 * Serializa a Response no formato JSON, seguindo o padrão HAL.
 	 * @return
-	 * @throws JapiException 
+	 * @throws RequestException 
 	 */
-	public String toJSON() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, JapiException {
+	public String toJSON() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, RequestException {
 		return JSONSerializer.fromResponse(this);		
 	}
 

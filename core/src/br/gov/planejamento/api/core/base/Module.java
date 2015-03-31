@@ -41,7 +41,6 @@ public abstract class Module extends Application {
 		
 		for(Method requestMethod : methods) {
 			if(requestMethod.isAnnotationPresent(Path.class) && requestMethod.isAnnotationPresent(Returns.class)) {
-				
 				JsonObject request = new JsonObject();
 				
 				//Obtendo documenta��o do m�todo requisitado
@@ -55,6 +54,7 @@ public abstract class Module extends Application {
 					requestMethodName = requestMethod.getAnnotation(Name.class).value();
 					request.addProperty("method_name", requestMethodName);
 				}
+				
 				String requestPath = requestMethod.getAnnotation(Path.class).value();
 				request.addProperty("path", requestPath);
 				String requestResourceType = requestMethod.getAnnotation(Returns.class).resource().getSimpleName();

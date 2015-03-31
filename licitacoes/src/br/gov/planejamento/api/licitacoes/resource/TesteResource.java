@@ -23,6 +23,8 @@ public class TesteResource extends Resource {
 	private String testeNumeric;
 	private String testeDate;
 	private String testeTime;
+	private String dataInicio;
+	private String dataFim;
 	
 	public TesteResource(DataRow teste) {
 		setTesteDate(teste.get("teste_date"));
@@ -30,6 +32,8 @@ public class TesteResource extends Resource {
 		setTesteNumeric(teste.get("teste_numeric"));
 		setTesteString(teste.get("teste_string"));
 		setTesteTime(teste.get("teste_time"));
+		setTesteString(teste.get("data_inicio"));
+		setTesteTime(teste.get("data_fim"));
 	}
 
 	/*

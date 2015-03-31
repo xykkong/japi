@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeJapiException;
+import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
 
 public abstract class Filter {
 
@@ -51,7 +51,7 @@ public abstract class Filter {
 	}
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
-			throws InvalidFilterValueTypeJapiException {
+			throws InvalidFilterValueTypeRequestException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
 			System.out.println(parameter.getUriName());
@@ -74,10 +74,8 @@ public abstract class Filter {
 							pst.setString(i++, value);
 						}
 					} catch (SQLException | NumberFormatException ex) {
-						System.out.println("wut");
 						ex.printStackTrace();
-						System.out.println("wut");
-						throw new InvalidFilterValueTypeJapiException(value, i,
+						throw new InvalidFilterValueTypeRequestException(value, i,
 								pst, valueType);
 					}
 				}

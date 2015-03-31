@@ -23,7 +23,8 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedRequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 import com.google.gson.JsonIOException;
@@ -39,9 +40,11 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		
 		try {
 			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			System.out.println("Houve um erro ao carregar o arquivo japi_config.json");
-			e.printStackTrace();
+		} catch (CoreException e1) {
+			//Todo: redirecionar para método que retorne um erro.
+			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
+			//o jeito é redirecionar para uma página de erro
+			//Talvez seja interessante o próprio postprocess também fazer isso.
 		}
 		RequestContext.getContext().clear();
 		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
@@ -78,7 +81,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		
 		try {	
 			validateURIParametersUsingAnotations(httpRequest, method);
-		} catch (URIParameterNotAcceptedJAPIException e) {
+		} catch (URIParameterNotAcceptedRequestException e) {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		
@@ -86,7 +89,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 	}
 	
 	private static void validateURIParametersUsingAnotations(HttpRequest httpRequest, ResourceMethod method)
-			throws URIParameterNotAcceptedJAPIException{
+			throws URIParameterNotAcceptedRequestException{
 		
 		for(String parameter : httpRequest.getUri().getQueryParameters().keySet()){
 			boolean foundParameter = false;
@@ -102,7 +105,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 				}
 			}
 			if (!foundParameter)
-				throw new URIParameterNotAcceptedJAPIException(parameter);
+				throw new URIParameterNotAcceptedRequestException(parameter);
 		}
 	}
 
