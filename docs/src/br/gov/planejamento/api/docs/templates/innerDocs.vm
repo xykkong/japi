@@ -106,7 +106,7 @@
 
 					<ul>
 						#foreach($modulo in $modulos)
-							<li><a href="../docs?modulo=$modulo">$modulo</a></li>
+							<li><a href="$/$modulo">$modulo</a></li>
 						#end
 					</ul>
 				</div>
@@ -122,7 +122,7 @@
 						<p class="met_descricao">Fornece uma lista das informações relacionadas aos registros de $documentation.method_name</p>
 						<p>
 							<strong>Exemplo:</strong></br>
-							<a href=$documentation.example_query_string>$documentation.example_query_string</a>
+							<a href=$documentation.example_url>$documentation.example_url</a>
 						</p>
 						<br>
 					</div>

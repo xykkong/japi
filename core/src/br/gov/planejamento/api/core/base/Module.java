@@ -12,15 +12,15 @@ import org.reflections.Reflections;
 import org.reflections.scanners.MethodParameterScanner;
 import org.reflections.util.ClasspathHelper;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public abstract class Module extends Application {
 	
@@ -49,6 +49,7 @@ public abstract class Module extends Application {
 				String requestDescription = "";
 				String requestMethodName = "";
 				String requestExampleQueryString = "";
+				String requestExampleId = "";
 				
 				
 				if(requestMethod.isAnnotationPresent(About.class)) {
@@ -60,9 +61,14 @@ public abstract class Module extends Application {
 						String root = RequestContext.getContext().getRootURL();
 						String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
 						String examplePath = requestMethod.getAnnotation(Path.class).value();
-						requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();						 
+						requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
+						requestExampleId = requestMethod.getAnnotation(About.class).exampleId();					 
 						
-						request.addProperty("example_query_string",root + classModule +examplePath+requestExampleQueryString);		
+						if(!requestExampleId.equals(null)){
+							String[] pathParts = examplePath.split("\\{");
+							request.addProperty("example_url",root + classModule +pathParts[0]+requestExampleId);
+						}
+						else request.addProperty("example_url",root + classModule +examplePath+requestExampleQueryString);
 					}
 					
 					request.addProperty("method_name", requestMethodName);
@@ -91,15 +97,6 @@ public abstract class Module extends Application {
 							paramObject.addProperty("description", parameter.description());
 							paramObject.addProperty("type", paramTypes[i].getSimpleName());
 							paramObject.addProperty("required", parameter.required());
-							parameters.add(paramObject);
-						}
-						if(annotation.annotationType().equals(PathParam.class)) {
-							JsonObject paramObject = new JsonObject();	
-							PathParam pathparam = (PathParam) annotation;
-							paramObject.addProperty("name", pathparam.value());
-							paramObject.addProperty("description", "Identificador do(a) "+requestMethodName);
-							paramObject.addProperty("type", paramTypes[i].getSimpleName());
-							paramObject.addProperty("required", true);
 							parameters.add(paramObject);
 						}
 					}

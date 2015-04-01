@@ -2,7 +2,6 @@ package br.gov.planejamento.api.licitacoes.request;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
@@ -80,10 +79,10 @@ public class LicitacaoRequest {
 	
 	@GET
 	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
-	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleQuery="")
+	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleId="666")
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
-			@PathParam("idade") String testeInt
+			@Parameter(name="idade") String testeInt
 			) throws JapiException {
 		try {
 			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
