@@ -59,7 +59,7 @@ public abstract class Module extends Application {
 					if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.Module.class)){
 						String root = RequestContext.getContext().getRootURL();
 						String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
-						String examplePath = requestMethod.getAnnotation(Path.class).value();		
+						String examplePath = requestMethod.getAnnotation(Path.class).value();
 						requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();						 
 						
 						request.addProperty("example_query_string",root + classModule +examplePath+requestExampleQueryString);		
@@ -97,6 +97,9 @@ public abstract class Module extends Application {
 							JsonObject paramObject = new JsonObject();	
 							PathParam pathparam = (PathParam) annotation;
 							paramObject.addProperty("name", pathparam.value());
+							paramObject.addProperty("description", "Identificador do(a) "+requestMethodName);
+							paramObject.addProperty("type", paramTypes[i].getSimpleName());
+							paramObject.addProperty("required", true);
 							parameters.add(paramObject);
 						}
 					}

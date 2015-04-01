@@ -106,7 +106,7 @@
 
 					<ul>
 						#foreach($modulo in $modulos)
-							<li><a href="../docs?modulo=$modulo">$modulo</a></li>
+							<li><a href="../docs/$modulo">$modulo</a></li>
 						#end
 					</ul>
 				</div>
@@ -138,7 +138,7 @@
 							#foreach($request in $documentation.requests)
 								#if($request.returns.isList)
 								<tr>
-									<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
+									<td><a href="../docs/doc/$documentation.modulo/$request.method_name">$request.method_name</a></td>
 									<td>
 										<p>$request.description</p>
 									</td>
@@ -164,7 +164,7 @@
 							#foreach($request in $documentation.requests)
 								#if(!$request.returns.isList)
 									<tr>
-										<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
+										<td><a href="../docs/doc/$documentation.modulo/$request.method_name">$request.method_name</a></td>
 										<td>
 											<p>$request.description</p>
 										</td>
