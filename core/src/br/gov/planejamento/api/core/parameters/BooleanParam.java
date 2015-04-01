@@ -1,15 +1,16 @@
 package br.gov.planejamento.api.core.parameters;
 
-public class BooleanParam {
-	String original;
-	String value;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class BooleanParam extends Param{
 	
 	public BooleanParam(String original) {
-		super();
-		this.original = original;
-		parse();
+		super(original);
 	}
 	
+
+	@Override
 	public void parse(){
 		switch(original){
 			case "v":
@@ -31,13 +32,9 @@ public class BooleanParam {
 		}
 	}
 	
-	public String getOriginal() {
-		return original;
-	}
-	public void setOriginal(String original) {
-		this.original = original;
-	}
-	public String getValue() {
-		return value;
+	@Override
+	public void setPreparedStatementValue(int i, PreparedStatement pst) throws SQLException {
+		System.out.println("IT'S ALIVE");
+		pst.setBoolean(i, Boolean.parseBoolean(getValue()));
 	}
 }

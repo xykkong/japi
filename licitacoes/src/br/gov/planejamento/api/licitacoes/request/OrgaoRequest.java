@@ -12,6 +12,7 @@ import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
 import br.gov.planejamento.api.licitacoes.service.OrgaoService;
 
@@ -29,15 +30,19 @@ public class OrgaoRequest {
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
 			) throws ApiException {
 		
-		RequestContext context = RequestContext.getContext();
-		context.addFilter(
-				new EqualFilter(Integer.class, new DatabaseAlias("codigo_tipo_adm", "tipo_adm")),
-				new EqualFilter(Boolean.class, new DatabaseAlias("ativo"))
-				);
-
-		Response response = null;
-		response = oService.orgaos();
-		return response;
+		try {
+			RequestContext context = RequestContext.getContext();
+			context.addFilter(
+					new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
+					new EqualFilter(BooleanParam.class, "ativo")
+					);
+	
+			Response response = null;
+			response = oService.orgaos();
+			return response;
+		} catch (Exception exception) {
+			throw new JapiException(exception);
+		}
 	}
 		
 	

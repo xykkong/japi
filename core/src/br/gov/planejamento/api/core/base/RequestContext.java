@@ -239,8 +239,14 @@ public class RequestContext {
 		else return "br/gov/planejamento/api/docs/templates/docs.vm";
 	}
 	
-	public String getRootURL(){
-		return "http://localhost:8080/";
+	public String getRootURL(){		
+		try {
+			return JapiConfigLoader.getJapiConfig().getRootUrl();
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 	public String asset(String...asset){
 

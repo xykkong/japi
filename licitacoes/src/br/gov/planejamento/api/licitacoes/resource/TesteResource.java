@@ -4,9 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.gov.planejamento.api.commons.constants.CommonConstants;
+import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.base.Link;
+import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Resource;
@@ -88,8 +89,8 @@ public class TesteResource extends Resource {
 	}
 	
 	@Description("Int que é uma idade")
-	public Property getTesteInt() {
-		return new Property("Idade Artística", testeInt);
+	public LinkProperty getTesteInt() {
+		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, LicitacaoConstants.Properties.Link.IDADE+testeInt, "licitacoes");
 	}
 	
 	@Description("Numeric que é uma altura")
@@ -144,13 +145,13 @@ public class TesteResource extends Resource {
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(CommonConstants.URIConstants.Licitacoes.Doc.LICITACAOTESTE+this.testeInt, this.testeString);
+		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.testeInt, this.testeString);
 	}
 	
 	@Description("")
 	public Link getUasg()
 	{
-		return new Link("http://localhost:8080/licitacoes/v1/licitacoes?uasg=1000", "Todas as licitacoes uasg 2000", "uasg");
+		return new Link(LicitacaoConstants.URIConstants.List.LICITACOES+"?uasg=2000", "Todas as licitacoes uasg 2000", "uasg");
 	}
 	
  
