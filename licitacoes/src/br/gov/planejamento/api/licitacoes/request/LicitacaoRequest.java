@@ -82,7 +82,7 @@ public class LicitacaoRequest {
 	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleId="666")
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
-			@Parameter(name="idade") String testeInt
+			@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt
 			) throws JapiException {
 		try {
 			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")

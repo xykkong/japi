@@ -199,7 +199,6 @@ public class RequestContext {
 	}
 
 	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException, JapiException {
-		// TODO realmente fazer este método
 		if(JapiConfigLoader.getJapiConfig().getHtmlTemplate() != null)
 			return (JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 		else throw new JapiException("Caminho do Template HTML não configurado no japi_config.json");
@@ -212,12 +211,11 @@ public class RequestContext {
 	}
 	
 	public String getRootURL(){
-		//TODO pegar do japiConfig.json
-		return "localhost:8080/";
+		return "http://localhost:8080/";
 	}
 	public String asset(String...asset){
-		//TODO pegar do japiConfig.json
-		return "http://"+getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+
+		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
 }

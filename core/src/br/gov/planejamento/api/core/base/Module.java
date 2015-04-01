@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Application;
 
 import org.reflections.Reflections;
@@ -64,7 +63,7 @@ public abstract class Module extends Application {
 						requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
 						requestExampleId = requestMethod.getAnnotation(About.class).exampleId();					 
 						
-						if(!requestExampleId.equals(null)){
+						if(!requestExampleId.equals("")){
 							String[] pathParts = examplePath.split("\\{");
 							request.addProperty("example_url",root + classModule +pathParts[0]+requestExampleId);
 						}

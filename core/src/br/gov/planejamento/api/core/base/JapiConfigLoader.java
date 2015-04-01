@@ -33,7 +33,14 @@ public class JapiConfigLoader {
 		private String assetFolder; 
 		private String htmlTemplate;
 		private String docsHtmlFolder;
+		private String rootUrl;
 		
+		public String getRootUrl() {
+			return rootUrl;
+		}
+		public void setRootUrl(String rootUrl) {
+			this.rootUrl = rootUrl;
+		}
 		public String getAssetFolder() {
 			return assetFolder;
 		}
