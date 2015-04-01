@@ -12,6 +12,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.docs.utils.DocumentationObject;
 import br.gov.planejamento.api.docs.utils.SwaggerParser;
@@ -45,7 +46,7 @@ public class JapiDocs {
 	@Path("/doc/{modulo}/{consulta}")
 	public String innerDocs(
 		@PathParam("consulta") String method,
-		@PathParam("modulo") String modulo) throws JapiException{
+		@PathParam("modulo") String modulo) throws ApiException{
 			modulo = RequestContext.getContext().getValue("modulo");
 			method = RequestContext.getContext().getValue("consulta");
 			if(modulo == null || method == null) throw new RequestException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");

@@ -40,7 +40,7 @@ public class LicitacaoRequest {
 				@Parameter(name = "uasg", description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", description = "Modalidade") String modalidade,
 				@Parameter(name = "numero_aviso", description = "Número aviso") String numeroAviso,
-				@Parameter(name = "nome_uasg", description = "nome da Uasg") String nomeUasg				
+				@Parameter(name = "nome_uasg", description = "nome da Uasg") String nomeUasg,				
 				@Parameter(name = "data_abertura", required = false, description = "Data de abertuda da proposta") String dataAbertura
 			) throws ApiException {
 		
@@ -68,7 +68,8 @@ public class LicitacaoRequest {
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 			RequestContext.getContext().addFilter(new EqualFilter(Boolean.class, new DatabaseAlias("teste_boolean","boolean")));
-			return tService.teste();
+			Response r = tService.teste();
+			return r;
 	}
 	
 	@GET
@@ -77,13 +78,8 @@ public class LicitacaoRequest {
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
 			@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt
-			) throws JapiException {
-		try {
-			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
-			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
-			return tService.teste();
-		} catch (Exception e) {
-			throw new JapiException(e);
-		}
+			) throws ApiException {
+		RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
+		return tService.teste();
 	}
 }
