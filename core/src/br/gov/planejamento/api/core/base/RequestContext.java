@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
@@ -210,8 +211,14 @@ public class RequestContext {
 		else return "br/gov/planejamento/api/docs/templates/docs.vm";
 	}
 	
-	public String getRootURL(){
-		return "http://localhost:8080/";
+	public String getRootURL(){		
+		try {
+			return JapiConfigLoader.getJapiConfig().getRootUrl();
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 	public String asset(String...asset){
 
