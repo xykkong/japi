@@ -61,10 +61,14 @@ public class LicitacaoRequest {
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="")
 	@Returns(resource=TesteResource.class, isList=true)		
-	public Response teste(	@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt,
-							@Parameter(name = "nome", required=true, description = "Nome da pessoa") String testeString,
-							@Parameter(name = "nascimento", required=true, description = "Nascimento") DateParam testeDate,
-							@Parameter(name = "boolean", required=false, description = "Teste Boolean") BooleanParam testeBoolean)
+	public Response teste(	@Parameter(name = LicitacaoConstants.Properties.Names.IDADE,
+										description = LicitacaoConstants.Properties.Description.IDADE) String testeInt,
+							@Parameter(name = LicitacaoConstants.Properties.Names.NOME, 
+										description = LicitacaoConstants.Properties.Description.NOME) String testeString,
+							@Parameter(name = LicitacaoConstants.Properties.Names.IDADE, 
+										description = LicitacaoConstants.Properties.Description.NASCIMENTO) DateParam testeDate,
+							@Parameter(name = LicitacaoConstants.Properties.Names.BOOLEAN, 
+										description = LicitacaoConstants.Properties.Description.BOOLEAN) BooleanParam testeBoolean)
 							throws JapiException {		
 		try {
 			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
