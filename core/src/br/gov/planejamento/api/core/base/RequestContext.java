@@ -9,8 +9,7 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-
+import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
@@ -201,7 +200,6 @@ public class RequestContext {
 	}
 
 	public String getHTMLTemplate() throws JsonSyntaxException, JsonIOException, FileNotFoundException, JapiException {
-		// TODO realmente fazer este método
 		if(JapiConfigLoader.getJapiConfig().getHtmlTemplate() != null)
 			return (JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 		else throw new JapiException("Caminho do Template HTML não configurado no japi_config.json");
@@ -213,19 +211,18 @@ public class RequestContext {
 		else return "br/gov/planejamento/api/docs/templates/docs.vm";
 	}
 	
-	public String getRootURL(){
-		//TODO pegar do japiConfig.json
-		return "localhost:8080/";
+	public String getRootURL(){		
+		try {
+			return JapiConfigLoader.getJapiConfig().getRootUrl();
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 	public String asset(String...asset){
-		//TODO pegar do japiConfig.json
-		return "http://"+getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
-	}
-	
-	public void putPathParameters(String name, String value){
-		MultivaluedMap<String, String> pathParameters = new MultivaluedMapImpl<String, String>();
-		pathParameters.add(name, value);
-		RequestContext.getContext().putValues(pathParameters);
+
+		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
 }

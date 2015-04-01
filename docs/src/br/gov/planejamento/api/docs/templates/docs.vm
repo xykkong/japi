@@ -22,10 +22,10 @@
 			<div id="p_header">
 				<div id="p_h_interno" class="p_container">
 					<ul id="p_h_sitactions">
-						<li><a href="acessibilidade.html" accesskey="4">Acessibilidade</a></li>
+						<li><a href="$session.RootURL.concat('acessibilidade.html')" accesskey="4">Acessibilidade</a></li>
 						<li id="siteaction-contraste" class="contrasteIcone"><a accesskey="5" title="Alto contraste">Alto Contraste</a></li>
 						<li id="siteaction-contraste2" class="contrasteIcone" style="display: none;"><a accesskey="6" title="Alto Contraste" class="contrasteIconeNegativo">Alto Contraste</a></li>
-						<li><a href="mapa-site.html" accesskey="7">Mapa do site</a></li>
+						<li><a href="$session.RootURL.concat('mapa-site.html')" accesskey="7">Mapa do site</a></li>
 					</ul>
 				
 					<ul id="p_h_aces">
@@ -64,12 +64,12 @@
 					<div id="p_h_menu_interno" class="p_container">	
 						<ul>
 							<li id="faq">
-								<a href="perguntas-frequentes.html">
+								<a href="$session.RootURL.concat('perguntas-frequentes.html')">
 								Perguntas frequentes
 								</a>  
 							</li>
 							<li id="contato">
-								<a href="contato">
+								<a href="$session.RootURL.concat('contato')">
 								Contato
 								</a>  
 							</li>
@@ -79,7 +79,7 @@
 								</a>  
 							</li>
 							<li id="documentacao">
-								<a href="swagger.html">
+								<a href="$session.RootURL.concat('swagger.html')">
 								Documentação Automática
 								</a>
 							</li>	
@@ -106,7 +106,7 @@
 
 					<ul>
 						#foreach($modulo in $modulos)
-							<li><a href="../docs?modulo=$modulo">$modulo</a></li>
+							<li><a href="$session.RootURL.concat('docs/')$modulo">$modulo</a></li>
 						#end
 					</ul>
 				</div>
@@ -138,7 +138,7 @@
 							#foreach($request in $documentation.requests)
 								#if($request.returns.isList)
 								<tr>
-									<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
+									<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
 									<td>
 										<p>$request.description</p>
 									</td>
@@ -164,9 +164,9 @@
 							#foreach($request in $documentation.requests)
 								#if(!$request.returns.isList)
 									<tr>
-										<td><a href="docs/doc?modulo=$documentation.modulo&consulta=$request.method_name">$request.method_name</a></td>
+										<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
 										<td>
-											<p>$request.description</p>
+											<p>$request.description </p>
 										</td>
 									</tr>
 								#end

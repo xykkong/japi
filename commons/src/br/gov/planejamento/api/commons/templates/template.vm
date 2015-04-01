@@ -117,7 +117,7 @@
 					<hr class="barra" style="margin: 0px;"/>
 					<div id="header-content">
 						#if ($response.isList())
-							<h2 id="titulo" class="titulo-pagina">$response.name</h2>
+							<h2 id="titulo" class="titulo-pagina">$response.description</h2>
 						#else
 							#set($resource = $response.get(0))
 							<h2 id="titulo" class="titulo-pagina">$resource.selfLink.title</h2>
@@ -202,7 +202,7 @@
 										#if ($count > 0)
 											#foreach($resource in $response)
 												<li class="info-holder">
-													<h3 style=""><a href="http://$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
+													<h3 style=""><a href="$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
 													#foreach($property in $resource.properties)												
 														<div class="tabela-lista-valor">
 															#set($className = $property.class.name)

@@ -8,5 +8,6 @@ public @interface About {
     public String name() default "";
     public String description() default "";
     public String exampleQuery() default "";
+	public String exampleId() default "";
 }
 
