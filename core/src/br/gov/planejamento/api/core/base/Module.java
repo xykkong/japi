@@ -48,8 +48,8 @@ public abstract class Module extends Application {
 				String requestDescription = "";
 				String requestMethodName = "";
 				String requestExampleQueryString = "";
-				String requestExampleId = "";
-				
+				String requestExampleId = "";	
+				String requestPathFilterless = "";
 				
 				if(requestMethod.isAnnotationPresent(About.class)) {
 					requestDescription = requestMethod.getAnnotation(About.class).description();
@@ -60,14 +60,19 @@ public abstract class Module extends Application {
 						String root = RequestContext.getContext().getRootURL();
 						String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
 						String examplePath = requestMethod.getAnnotation(Path.class).value();
+						
 						requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
-						requestExampleId = requestMethod.getAnnotation(About.class).exampleId();					 
+						requestExampleId = requestMethod.getAnnotation(About.class).exampleId();
+												
 						
 						if(!requestExampleId.equals("")){
 							String[] pathParts = examplePath.split("\\{");
 							request.addProperty("example_url",root + classModule +pathParts[0]+requestExampleId);
 						}
-						else request.addProperty("example_url",root + classModule +examplePath+requestExampleQueryString);
+						else{
+							request.addProperty("example_url",root + classModule +examplePath+requestExampleQueryString);
+							request.addProperty("path_filterless", root + classModule + examplePath );
+						}
 					}
 					
 					request.addProperty("method_name", requestMethodName);
