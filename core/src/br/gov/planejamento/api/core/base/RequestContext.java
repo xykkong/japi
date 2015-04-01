@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
