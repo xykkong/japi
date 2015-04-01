@@ -3,14 +3,11 @@ package br.gov.planejamento.api.licitacoes.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import br.gov.planejamento.api.common.constants.LicitacaoConstants;
-import br.gov.planejamento.api.core.annotations.Description;
-import br.gov.planejamento.api.core.annotations.Name;
+import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.database.DatabaseAlias;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -24,10 +21,8 @@ public class OrgaoRequest {
 	private OrgaoService oService = new OrgaoService();
 	
 	@GET
-	@Path(LicitacaoConstants.Requests.List.ORGAOS)
-	@Name("orgaos")
-	@Returns(resource=OrgaoResource.class)
-	@Description("Lista de orgãos")
+	@Path(LicitacaoConstants.Requests.List.ORGAOS)	
+	@Returns(resource=OrgaoResource.class)	
 	public Response orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo

@@ -9,6 +9,8 @@ import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
+import br.gov.planejamento.api.core.parameters.BooleanParam;
+import br.gov.planejamento.api.core.parameters.DateParam;
 
 public abstract class Filter {
 
@@ -23,7 +25,14 @@ public abstract class Filter {
 	private static DatabaseAlias[] stringsToAliases(String...parameters) {
 		DatabaseAlias aliases[] = new DatabaseAlias[parameters.length];
 		for(int i = 0; i < parameters.length; i++) {
-			aliases[i] = new DatabaseAlias(parameters[i]);
+			String parameter = parameters[i];
+			String[] explodedString = parameter.toUpperCase().split(" AS ");
+			if(explodedString.length==1)
+				aliases[i] = new DatabaseAlias(parameter.trim());
+			else if(explodedString.length==2)
+				aliases[i] = new DatabaseAlias(explodedString[0].trim(), explodedString[1].trim());
+			else
+				throw new IllegalArgumentException("Para criar um filtro é esperado um parâmetro ou uma string 'dbName as uriName', encontrado "+parameter);
 		}
 		return aliases;
 	}
@@ -68,7 +77,12 @@ public abstract class Filter {
 							pst.setFloat(i++, Float.parseFloat(value));
 						}
 						else if (valueType.equals(Boolean.class)) {
-							pst.setBoolean(i++, Boolean.parseBoolean(value));
+							BooleanParam booleanP = new BooleanParam(value); 
+							pst.setBoolean(i++, Boolean.parseBoolean(booleanP.getValue()));
+						}
+						else if (valueType.equals(DateParam.class)){
+							DateParam date = new DateParam(value);
+							pst.setString(i++, date.getValue());
 						}
 						else {
 							pst.setString(i++, value);

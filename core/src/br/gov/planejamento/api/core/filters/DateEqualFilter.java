@@ -6,42 +6,43 @@ import java.util.List;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 
-public class LikeFilter extends Filter {
+public class DateEqualFilter extends Filter {
 
-	public LikeFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+	public DateEqualFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
 		super(type, databaseAliases);
 	}
-	public LikeFilter(DatabaseAlias...databaseAliases) {
+	public DateEqualFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
-	
-	public LikeFilter(String...parameters) {
+	public DateEqualFilter(String...parameters) {
 		super(parameters);
 	}
 	
-	public LikeFilter(Class<? extends Object> type, String...parameters) {
+	public DateEqualFilter(Class<? extends Object> type, String...parameters) {
 		super(type, parameters);
-	}	
+	}
 
 	
 	@Override
 	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
 		StringBuilder statement = new StringBuilder();
-		int numberOfValues = getValues(parameterAlias).size();
+		int numberOfValues = getValues(parameterAlias).size()/2;
 		statement.append(parameterAlias.getDbName());
-		statement.append(" like ? ");
+		statement.append(" >= ?::date AND "+parameterAlias.getDbName()+" <(?::date + '1 day'::interval)");
 		for (int i=1; i<numberOfValues; i++) {
 			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			statement.append(" like ? ");				
+			statement.append(" >= ?::date AND "+parameterAlias.getDbName()+" <(?::date + '1 day'::interval)");				
 		}
 		return statement;
 	}
 	@Override
 	public List<String> getValues(DatabaseAlias parameterAlias) {
 		List<String> values = new ArrayList<String>();
-		for(String value : this.values.get(parameterAlias.getUriName()))
-			values.add("%" + value + "%");
+		for(String value : this.values.get(parameterAlias.getUriName())){
+			values.add(value);
+			values.add(value);
+		}
 		return values;
 	}
 

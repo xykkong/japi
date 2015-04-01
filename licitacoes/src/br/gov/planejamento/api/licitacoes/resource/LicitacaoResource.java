@@ -22,7 +22,7 @@ public class LicitacaoResource extends Resource {
 	
 	/*
 	 * Construtor utilizado para gerar um objeto do Resource a partir de uma linha do banco de dados. Automatiza o mapeamento
-	 * dos parâmetros e facilita a adaptaçao dos campos pelo desenvolvedor, uma vez que ele n�o precisa modificar o service
+	 * dos parâmetros e facilita a adaptaçao dos campos pelo desenvolvedor, uma vez que ele não precisa modificar o service
 	 * sempre que houver uma mudança no resource, precisando apenas modificar esse construtor.
 	 */
 	public LicitacaoResource(DataRow licitacao) {

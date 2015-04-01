@@ -17,7 +17,7 @@ public class TesteService extends Service {
 		configs.setSchema("public");
 		configs.setTable("test_table");
 		configs.setResponseFields("id", "teste_string", "teste_int",
-				"teste_numeric", "teste_date", "teste_time");
+				"teste_numeric", "teste_date", "teste_time", "teste_boolean");
 		configs.setValidOrderByValues("id","teste_string","teste_date");
 
 		return configs;

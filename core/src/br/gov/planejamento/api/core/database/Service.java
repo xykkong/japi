@@ -3,7 +3,6 @@ package br.gov.planejamento.api.core.database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.gov.planejamento.api.core.base.RequestContext;
@@ -26,18 +25,18 @@ public abstract class Service {
 		String orderByValue = context.getOrderByValue();
 		String orderValue = context.getOrderValue();
 		
-		//Valida√ß√£o
+		//ValidaÁ„o
 		if(configs == null) {
-			throw new CoreException("O m√©todo getServiceConfiguration retornou null. Verifique sua implementa√ß√£o na classe de Service utilizada.");
+			throw new CoreException("O mÈtodo getServiceConfiguration retornou null. Verifique sua implementaÁ„o na classe de Service utilizada.");
 		}
 		if(configs.getResponseFields() == null || configs.getResponseFields().size() == 0) {
-			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o m√©todo getServiceConfiguration est√° implementado corretamente no Service em quest√£o.");
+			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o mÈtodo getServiceConfiguration est· implementado corretamente no Service em quest„o.");
 		}
 		if(configs.getSchema() == null || configs.getSchema() == "") {
-			throw new CoreException("O schema informado √© inv√°lido. Verifique a implementa√ß√£o do m√©todo getServiceConfiguration na classe Service utilizada.");
+			throw new CoreException("O schema informado È inv·lido. Verifique a implementaÁ„o do mÈtodo getServiceConfiguration na classe Service utilizada.");
 		}
 		if(configs.getTable() == null || configs.getTable() == "") {
-			throw new CoreException("A table informada √© inv√°lida. Verifique a implementa√ß√£o do m√©todo getServiceConfiguration na classe Service utilizada.");
+			throw new CoreException("A table informada È inv·lida. Verifique a implementaÁ„o do mÈtodo getServiceConfiguration na classe Service utilizada.");
 		}
 		
 		// SETUP
@@ -81,7 +80,7 @@ public abstract class Service {
 			pstQuery = connection.prepareStatement(sbQuery.toString());
 			pstCount = connection.prepareStatement(sbCountQuery.toString());
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro durante a prepara√ß√£o dos statements da query.", e);
+			throw new CoreException("Houve um erro durante a preparaÁ„o dos statements da query.", e);
 		}
 		
 
@@ -98,7 +97,7 @@ public abstract class Service {
 		try {
 			pstQuery.setInt(index++, offsetValue);
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao definir o valor de offset na constru√ß√£o da query.", e);
+			throw new CoreException("Houve um erro ao definir o valor de offset na construÁ„o da query.", e);
 		}
 
 		// DEBUG
@@ -136,7 +135,7 @@ public abstract class Service {
 			data.setCount(count);
 			pstCount.close();
 		} catch(SQLException e) {
-			throw new CoreException("Houve um erro durante a execu√ß√£o das queries.", e);
+			throw new CoreException("Houve um erro durante a execuÁ„o das queries.", e);
 		}
 		return data;
 	}

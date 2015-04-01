@@ -21,6 +21,10 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 public class Response extends ArrayList<Resource> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8239651864123040735L;
 	private Boolean isList = true;
 	private String name = "resources";
 	private String description = "";

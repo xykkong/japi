@@ -1,8 +1,5 @@
 package br.gov.planejamento.api.core.interceptors;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.ws.rs.ext.Provider;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -12,9 +9,8 @@ import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
-import br.gov.planejamento.api.core.base.Property;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
@@ -37,8 +33,8 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				if(serverResponse.getEntity() instanceof String) return;
 				Response response = (Response) serverResponse.getEntity();
 				serverResponse.setGenericType(String.class);
-				ArrayList<HashMap<String, Property>> resourceMapList = new ArrayList<HashMap<String, Property>>();
-				Headers headers = new Headers();
+				
+				Headers<Object> headers = new Headers<Object>();
 				
 				switch (RequestContext.getContext().getRequestFormat()) {
 				case RequestFormats.HTML:

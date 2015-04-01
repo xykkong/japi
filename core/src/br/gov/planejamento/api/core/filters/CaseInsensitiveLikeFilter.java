@@ -3,7 +3,6 @@ package br.gov.planejamento.api.core.filters;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 
@@ -14,6 +13,14 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	}
 	public CaseInsensitiveLikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
+	}
+	
+	public CaseInsensitiveLikeFilter(String...parameters) {
+		super(parameters);
+	}
+	
+	public CaseInsensitiveLikeFilter(Class<? extends Object> type, String...parameters) {
+		super(type, parameters);
 	}
 
 	@Override

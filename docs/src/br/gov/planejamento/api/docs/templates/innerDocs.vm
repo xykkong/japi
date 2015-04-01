@@ -120,6 +120,11 @@
 						<h2 id="titulo" class="titulo-pagina">$documentation.method_name</h2>
 						<hr class="barra" style="margin: 0px;"/>
 						<p class="met_descricao">Fornece uma lista das informações relacionadas aos registros de $documentation.method_name</p>
+						<p>
+							<strong>Exemplo:</strong></br>
+							<a href=$documentation.example_query_string>$documentation.example_query_string</a>
+						</p>
+						<br>
 					</div>
 				</div>
 				

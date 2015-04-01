@@ -3,17 +3,11 @@ package br.gov.planejamento.api.core.serializers;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.utils.SerializeUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public abstract class CSVSerializer {
 

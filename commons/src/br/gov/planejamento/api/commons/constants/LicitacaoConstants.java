@@ -1,4 +1,4 @@
-package br.gov.planejamento.api.common.constants;
+package br.gov.planejamento.api.commons.constants;
 
 import br.gov.planejamento.api.core.constants.Constants;
 

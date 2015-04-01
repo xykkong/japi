@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.enterprise.context.spi.Context;
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.hibernate.validator.internal.util.privilegedactions.GetAnnotationParameter;
-
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
+import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
@@ -25,6 +21,9 @@ import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueRequestExcepti
 import br.gov.planejamento.api.core.exceptions.InvalidOrderValueRequestException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 public class RequestContext {
 
@@ -250,6 +249,12 @@ public class RequestContext {
 	public String asset(String...asset){
 		//TODO pegar do japiConfig.json
 		return "http://"+getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+	}
+	
+	public void putPathParameters(String name, String value){
+		MultivaluedMap<String, String> pathParameters = new MultivaluedMapImpl<String, String>();
+		pathParameters.add(name, value);
+		RequestContext.getContext().putValues(pathParameters);
 	}
 	
 }

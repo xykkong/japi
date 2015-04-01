@@ -25,12 +25,22 @@ public class DocumentationObject {
 
 	public class Request{
 		private String path;
-		private String resource_type;
+		private Returns returns;
 		private String description;
 		private String method_name;
+		private String example_query_string;
 		private ArrayList<Parameter> parameters;
 		private ArrayList<Property> properties;
+		
+		public String getExample_query_string() {
+			return example_query_string;
+		}
 
+
+		public void setExample_query_string(String example_query_string) {
+			this.example_query_string = example_query_string;
+		}
+		
 		public String getMethod_name() {
 			return method_name;
 		}
@@ -51,11 +61,6 @@ public class DocumentationObject {
 		}
 
 
-		public String getResourceType() {
-			return resource_type;
-		}
-
-
 		public String getDescription() {
 			return description;
 		}
@@ -63,11 +68,6 @@ public class DocumentationObject {
 
 		public void setDescription(String description) {
 			this.description = description;
-		}
-
-
-		public void setResourceType(String resourceType) {
-			this.resource_type = resourceType;
 		}
 
 
@@ -90,8 +90,31 @@ public class DocumentationObject {
 			this.properties = properties;
 		}
 
+		public Returns getReturns() {
+			return returns;
+		}
 
-		
+
+		public void setReturns(Returns returns) {
+			this.returns = returns;
+		}
+
+		public class Returns{
+			private String resource;
+			private Boolean isList;
+			public String getResource() {
+				return resource;
+			}
+			public void setResource(String resource) {
+				this.resource = resource;
+			}
+			public boolean getIsList() {
+				return isList;
+			}
+			public void setList(Boolean isList) {
+				this.isList = isList;
+			}
+		}
 		
 		
 		public class Parameter{
