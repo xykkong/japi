@@ -117,7 +117,7 @@
 					<hr class="barra" style="margin: 0px;"/>
 					<div id="header-content">
 						#if ($response.isList())
-							<h2 id="titulo" class="titulo-pagina">$response.name</h2>
+							<h2 id="titulo" class="titulo-pagina">$response.description</h2>
 						#else
 							#set($resource = $response.get(0))
 							<h2 id="titulo" class="titulo-pagina">$resource.selfLink.title</h2>
