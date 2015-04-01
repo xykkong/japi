@@ -28,19 +28,20 @@ public class DocumentationObject {
 		private Returns returns;
 		private String description;
 		private String method_name;
-		private String example_query_string;
+		private String example_url;
 		private ArrayList<Parameter> parameters;
 		private ArrayList<Property> properties;
 		
-		public String getExample_query_string() {
-			return example_query_string;
+		public String getExample_url() {
+			return example_url;
 		}
 
 
-		public void setExample_query_string(String example_query_string) {
-			this.example_query_string = example_query_string;
+		public void setExample_url(String example_url) {
+			this.example_url = example_url;
 		}
-		
+
+
 		public String getMethod_name() {
 			return method_name;
 		}

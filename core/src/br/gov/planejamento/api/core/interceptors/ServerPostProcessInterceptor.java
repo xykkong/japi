@@ -9,6 +9,7 @@ import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
+import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
@@ -33,6 +34,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				if(serverResponse.getEntity() instanceof String) return;
 				Response response = (Response) serverResponse.getEntity();
 				serverResponse.setGenericType(String.class);
+				response.isList(serverResponse.getResourceMethod().getAnnotation(Returns.class).isList());
 				
 				Headers<Object> headers = new Headers<Object>();
 				

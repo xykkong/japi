@@ -4,13 +4,13 @@ import java.io.StringWriter;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.docs.utils.DocumentationObject;
@@ -25,24 +25,27 @@ public class JapiDocs {
 	
 	@GET
 	@Path("/")
-	public String docs(@Parameter(name = "modulo") String modulo){
-		if(RequestContext.getContext().getValue("modulo") != null){
-			modulo = RequestContext.getContext().getValue("modulo");
-			DocumentationObject documentation = SwaggerParser.parse(modulo);
-			documentation.setModulo(modulo);
-			
-			return render(documentation, null);
-		}
-		else{
+	public String docsHome(){
+		
 			return render(null, null);
-		}
 	}
 	
 	@GET
-	@Path("/doc")
+	@Path("/{modulo}")
+	public String docs(@PathParam("modulo") String modulo){
+		
+		modulo = RequestContext.getContext().getValue("modulo");
+		DocumentationObject documentation = SwaggerParser.parse(modulo);
+		documentation.setModulo(modulo);
+		
+		return render(documentation, null);
+	}
+	
+	@GET
+	@Path("/doc/{modulo}/{consulta}")
 	public String innerDocs(
-		@Parameter(name = "consulta") String method,
-		@Parameter(name = "modulo") String modulo) throws RequestException{
+		@PathParam("consulta") String method,
+		@PathParam("modulo") String modulo) throws JapiException{
 			modulo = RequestContext.getContext().getValue("modulo");
 			method = RequestContext.getContext().getValue("consulta");
 			if(modulo == null || method == null) throw new RequestException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");

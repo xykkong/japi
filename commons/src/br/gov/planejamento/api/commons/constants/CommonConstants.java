@@ -21,8 +21,8 @@ public class CommonConstants {
 			public static final String LICITACOESTESTE = URIConstants.BASE_URL + Modules.LICITACOES + URIConstants.VERSION + "/licitacoesteste";
 			
 			public static final class Doc{
-				public static final String LICITACAO = URIConstants.Licitacoes.LICITACOES+"/doc/";
-				public static final String LICITACAOTESTE = URIConstants.Licitacoes.LICITACOESTESTE+"/doc/";
+				public static final String LICITACAO = URIConstants.BASE_URL+ Modules.LICITACOES + "/doc/licitacao/";
+				public static final String LICITACAOTESTE = URIConstants.BASE_URL+ Modules.LICITACOES + "/doc/licitacaoteste/";
 			}
 		}
 	}

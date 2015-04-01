@@ -48,6 +48,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		}
 		RequestContext.getContext().clear();
 		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
+		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
 		
 		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
 		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();

@@ -13,7 +13,9 @@ import com.google.gson.GsonBuilder;
 public class SwaggerParser {
 	
 	public static DocumentationObject parse(String modulo){
-		String docUrl = "http://" + RequestContext.getContext().getRootURL() + modulo + CommonConstants.URIConstants.VERSION + "/" + modulo + "docs";
+		String docUrl = "";
+		docUrl = RequestContext.getContext().getRootURL() + modulo + CommonConstants.URIConstants.VERSION + "/" + modulo + "docs";
+		
 		System.out.println("A url para a documentação é " + docUrl);
 		
 		try{

@@ -9,8 +9,6 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
@@ -230,7 +228,6 @@ public class RequestContext {
 	}
 
 	public String getHTMLTemplate() throws ApiException {
-		// TODO realmente fazer este método
 		if(JapiConfigLoader.getJapiConfig().getHtmlTemplate() != null)
 			return (JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 		else throw new RequestException("Caminho do Template HTML não configurado no japi_config.json");
@@ -243,18 +240,11 @@ public class RequestContext {
 	}
 	
 	public String getRootURL(){
-		//TODO pegar do japiConfig.json
-		return "localhost:8080/";
+		return "http://localhost:8080/";
 	}
 	public String asset(String...asset){
-		//TODO pegar do japiConfig.json
-		return "http://"+getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
-	}
-	
-	public void putPathParameters(String name, String value){
-		MultivaluedMap<String, String> pathParameters = new MultivaluedMapImpl<String, String>();
-		pathParameters.add(name, value);
-		RequestContext.getContext().putValues(pathParameters);
+
+		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
 }
