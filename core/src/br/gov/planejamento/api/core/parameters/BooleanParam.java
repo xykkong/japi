@@ -34,6 +34,7 @@ public class BooleanParam extends Param{
 	
 	@Override
 	public void setPreparedStatementValue(int i, PreparedStatement pst) throws SQLException {
+		System.out.println("IT'S ALIVE");
 		pst.setBoolean(i, Boolean.parseBoolean(getValue()));
 	}
 }

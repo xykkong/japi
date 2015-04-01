@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.database;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -61,14 +60,14 @@ public abstract class Filter {
 	}
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
-			throws InvalidFilterValueTypeJapiException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+			throws InvalidFilterValueTypeJapiException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
 			System.out.println(parameter.getUriName());
 			List<String> values = getValues(parameter);
 			if(values!=null){
+				System.out.println("oi oi oi");
 				for (String value : values) {
-					// TODO filtros de data
 					try {
 						if (valueType.equals(Integer.class)) {
 							pst.setInt(i++, Integer.parseInt(value));
@@ -76,12 +75,13 @@ public abstract class Filter {
 							pst.setDouble(i++, Double.parseDouble(value));
 						} else if (valueType.equals(Float.class)) {
 							pst.setFloat(i++, Float.parseFloat(value));
-						}else if(valueType.isAssignableFrom(Param.class)){
-							@SuppressWarnings("unchecked")
-							Constructor<? extends Param> constructor = (Constructor<? extends Param>) valueType.getConstructor(new Class[]{String.class});
-							Param param = (Param) constructor.newInstance(value);
+						}else if(Param.class.isAssignableFrom(valueType)){
+							System.out.println("name ------> "+valueType.getName());
+							Param param = (Param) valueType.getDeclaredConstructor(new Class[]{String.class}).newInstance(value);
 							param.setPreparedStatementValue(i++, pst);
 						} else {
+							System.out.println("caí no else, sabe-se lá porque diabos");
+							System.out.println("name ----------->>>>"+valueType.getName());
 							pst.setString(i++, value);
 						}
 					} catch (SQLException | NumberFormatException ex) {
