@@ -147,7 +147,9 @@ public class TesteResource extends Resource {
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(CommonConstants.URIConstants.Licitacoes.Doc.LICITACAOTESTE+this.testeInt, this.testeString);
+		SelfLink self = new SelfLink(CommonConstants.URIConstants.Licitacoes.Doc.LICITACAOTESTE+this.testeInt, this.testeString);
+		System.out.println(self.getHref());
+		return self;
 	}
 	
 	@Description("")
