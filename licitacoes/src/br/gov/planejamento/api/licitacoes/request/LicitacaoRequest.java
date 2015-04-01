@@ -65,7 +65,7 @@ public class LicitacaoRequest {
 										description = LicitacaoConstants.Properties.Description.IDADE) String testeInt,
 							@Parameter(name = LicitacaoConstants.Properties.Names.NOME, 
 										description = LicitacaoConstants.Properties.Description.NOME) String testeString,
-							@Parameter(name = LicitacaoConstants.Properties.Names.IDADE, 
+							@Parameter(name = LicitacaoConstants.Properties.Names.NASCIMENTO, 
 										description = LicitacaoConstants.Properties.Description.NASCIMENTO) DateParam testeDate,
 							@Parameter(name = LicitacaoConstants.Properties.Names.BOOLEAN, 
 										description = LicitacaoConstants.Properties.Description.BOOLEAN) BooleanParam testeBoolean)
@@ -95,5 +95,11 @@ public class LicitacaoRequest {
 		} catch (Exception e) {
 			throw new JapiException(e);
 		}
+	}
+	
+	@GET
+	@Path("/id/*")
+	public void testezaum(){
+		System.out.println( "oi");
 	}
 }
