@@ -10,6 +10,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.JapiException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
 import br.gov.planejamento.api.licitacoes.service.OrgaoService;
 
@@ -31,7 +32,7 @@ public class OrgaoRequest {
 			RequestContext context = RequestContext.getContext();
 			context.addFilter(
 					new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
-					new EqualFilter(Boolean.class, "ativo")
+					new EqualFilter(BooleanParam.class, "ativo")
 					);
 	
 			Response response = null;

@@ -48,8 +48,7 @@ public abstract class Module extends Application {
 				String requestDescription = "";
 				String requestMethodName = "";
 				String requestExampleQueryString = "";
-				String requestExampleId = "";	
-				String requestPathFilterless = "";
+				String requestExampleId = "";
 				
 				if(requestMethod.isAnnotationPresent(About.class)) {
 					requestDescription = requestMethod.getAnnotation(About.class).description();
