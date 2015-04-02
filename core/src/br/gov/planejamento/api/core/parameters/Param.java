@@ -3,6 +3,9 @@ package br.gov.planejamento.api.core.parameters;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+
 public abstract class Param {
 	protected String original;
 	protected String value;
@@ -24,7 +27,11 @@ public abstract class Param {
 		return value;
 	}
 
-	public void setPreparedStatementValue(int i, PreparedStatement pst) throws SQLException {
-		pst.setString(i, getValue());
+	public void setPreparedStatementValue(int i, PreparedStatement pst) throws ApiException {
+		try {
+			pst.setString(i, getValue());
+		} catch (SQLException e) {
+			throw new CoreException("Houve um erro ao processar o parâmetro recebido.", e);
+		}
 	}
 }

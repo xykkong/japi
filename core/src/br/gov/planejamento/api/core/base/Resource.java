@@ -1,21 +1,20 @@
 package br.gov.planejamento.api.core.base;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 
 public abstract class Resource {
 	
-	public abstract SelfLink getSelfLink() throws CoreException;
+	public abstract SelfLink getSelfLink() throws ApiException;
 
-	public ArrayList<Property> getProperties() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public ArrayList<Property> getProperties() throws ApiException {
 		return ReflectionUtils.getProperties(this);
 	}
 	
-	public ArrayList<Link> getLinks() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public ArrayList<Link> getLinks() throws ApiException {
 		return ReflectionUtils.getLinks(this);
 	}
 }

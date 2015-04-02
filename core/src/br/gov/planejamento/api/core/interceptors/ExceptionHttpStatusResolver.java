@@ -1,20 +1,8 @@
 package br.gov.planejamento.api.core.interceptors;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-
-import br.gov.planejamento.api.core.base.ErrorResource;
-import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 
 @Provider
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {

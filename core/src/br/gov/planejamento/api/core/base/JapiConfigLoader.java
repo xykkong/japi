@@ -4,25 +4,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-
-import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.exceptions.CoreException;
 
 
 public class JapiConfigLoader {
 	
 	private static JapiConfig japiConfig;
 	
-	public static JapiConfig getJapiConfig() throws CoreException {
+	public static JapiConfig getJapiConfig() throws ApiException {
 		if(japiConfig == null)
 			japiConfig = loadJapiConfigFile();
 		return japiConfig;
 	}
 	
-	private static JapiConfig loadJapiConfigFile() throws CoreException {
+	private static JapiConfig loadJapiConfigFile() throws ApiException {
 		String fileName = System.getProperty("jboss.server.config.dir") +"/"+ Constants.Configuration.CONFIG_FILE_NAME;
 		File f = new File(fileName);
 		Gson gson = new Gson();

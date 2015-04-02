@@ -6,6 +6,8 @@ import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class InvalidOrderByValueRequestException extends RequestException {
 
+	private static final long serialVersionUID = 8450986921231387097L;
+
 	public InvalidOrderByValueRequestException(String value, List<String> availableOrderByValues) {
 		super("Valor de order by'"+ value +"' não está disponível.\n"
 				+ "Valores disponíveis nesta URI: "+ StringUtils.join(", ", availableOrderByValues));

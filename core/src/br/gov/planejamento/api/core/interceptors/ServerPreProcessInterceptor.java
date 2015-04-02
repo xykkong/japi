@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.interceptors;
 
-import java.io.FileNotFoundException;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +22,9 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedRequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
-
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 @Provider
 @ServerInterceptor
@@ -45,7 +41,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		try {
 			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
-		} catch (CoreException e1) {
+		} catch (ApiException e) {
 			//Todo: redirecionar para método que retorne um erro.
 			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
 			//o jeito é redirecionar para uma página de erro
@@ -84,7 +80,8 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		
 		try {	
 			validateURIParametersUsingAnotations(httpRequest, method);
-		} catch (URIParameterNotAcceptedRequestException e) {
+		} catch (ApiException e) {
+			//mesma coisa que o comentário acima, tem que redirecionar para uma página de erro
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		

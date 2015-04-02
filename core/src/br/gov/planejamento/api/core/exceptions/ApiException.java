@@ -2,6 +2,8 @@ package br.gov.planejamento.api.core.exceptions;
 
 public class ApiException extends Exception {
 	
+	private static final long serialVersionUID = 7744204513648250685L;
+	
 	private String httpStatusCode;
 	private String message;
 	private Exception originalException;

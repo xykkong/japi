@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.base;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,15 +12,11 @@ import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderValueRequestException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
-
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 public class RequestContext {
 
@@ -139,7 +134,7 @@ public class RequestContext {
 	 * @return valor de order_by da URI ou "1", se não existir
 	 * @throws InvalidOrderByValueRequestException 
 	 */
-	public String getOrderByValue() throws InvalidOrderByValueRequestException {
+	public String getOrderByValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
 			String value = getValue(Constants.FixedParameters.ORDER_BY);
 			if(!availableOrderByValues.contains(value))
@@ -149,7 +144,7 @@ public class RequestContext {
 		return "1";
 	}
 
-	public String getOrderValue() throws InvalidOrderValueRequestException {
+	public String getOrderValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER)) {
 			String order = getValue(Constants.FixedParameters.ORDER);
 			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
@@ -161,7 +156,7 @@ public class RequestContext {
 		return Constants.FixedParameters.VALID_ORDERS[0];
 	}
 	
-	public int getOffsetValue() throws InvalidOffsetValueRequestException {
+	public int getOffsetValue() throws ApiException {
 		if(hasParameter(Constants.FixedParameters.OFFSET)){
 			String sOffset = "";
 			try{
@@ -252,7 +247,7 @@ public class RequestContext {
 		this.rootURL = rootURL;
 	}
 	
-	public String asset(String...asset) throws CoreException{
+	public String asset(String...asset) throws ApiException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	

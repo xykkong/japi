@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
 public class DatabaseData implements Iterable<DataRow> {
@@ -17,7 +18,7 @@ public class DatabaseData implements Iterable<DataRow> {
 		return data.iterator();
 	}
 
-	public DatabaseData(ResultSet resultSet, ServiceConfiguration configs) throws CoreException {
+	public DatabaseData(ResultSet resultSet, ServiceConfiguration configs) throws ApiException {
 		try {
 			while (resultSet.next()) {
 				DataRow row = new DataRow();
@@ -27,7 +28,6 @@ public class DatabaseData implements Iterable<DataRow> {
 				data.add(row);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new CoreException("Houve um erro ao processar o retorno do banco de dados. Verifique sua query.",e);
 		}
 	}

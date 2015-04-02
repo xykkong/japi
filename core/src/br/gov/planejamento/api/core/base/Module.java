@@ -16,6 +16,7 @@ import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
@@ -34,7 +35,7 @@ public abstract class Module extends Application {
 	 * @return
 	 * @throws CoreException 
 	 */
-	protected String extractDocumentation(String packageName) throws CoreException {
+	protected String extractDocumentation(String packageName) throws ApiException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodParameterScanner());
 		Set<Method> methods = reflections.getMethodsReturn(Response.class);
 		
@@ -138,5 +139,5 @@ public abstract class Module extends Application {
 		return json.toString();
 	}
 	
-	public abstract String getDocs() throws CoreException;
+	public abstract String getDocs() throws ApiException;
 }

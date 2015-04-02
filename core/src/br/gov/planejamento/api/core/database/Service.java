@@ -10,7 +10,6 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
@@ -26,18 +25,18 @@ public abstract class Service {
 		String orderByValue = context.getOrderByValue();
 		String orderValue = context.getOrderValue();
 		
-		//Valida��o
+		//Validação
 		if(configs == null) {
-			throw new CoreException("O m�todo getServiceConfiguration retornou null. Verifique sua implementa��o na classe de Service utilizada.");
+			throw new CoreException("O método getServiceConfiguration retornou null. Verifique sua implementação na classe de Service utilizada.");
 		}
 		if(configs.getResponseFields() == null || configs.getResponseFields().size() == 0) {
-			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o m�todo getServiceConfiguration est� implementado corretamente no Service em quest�o.");
+			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o método getServiceConfiguration está implementado corretamente no Service em questão.");
 		}
 		if(configs.getSchema() == null || configs.getSchema() == "") {
-			throw new CoreException("O schema informado � inv�lido. Verifique a implementa��o do m�todo getServiceConfiguration na classe Service utilizada.");
+			throw new CoreException("O schema informado é inválido. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
 		}
 		if(configs.getTable() == null || configs.getTable() == "") {
-			throw new CoreException("A table informada � inv�lida. Verifique a implementa��o do m�todo getServiceConfiguration na classe Service utilizada.");
+			throw new CoreException("A table informada é inválida. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
 		}
 		
 		// SETUP
@@ -98,7 +97,7 @@ public abstract class Service {
 		try {
 			pstQuery.setInt(index++, offsetValue);
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao definir o valor de offset na constru��o da query.", e);
+			throw new CoreException("Houve um erro ao definir o valor de offset na construção da query.", e);
 		}
 
 		// DEBUG
@@ -136,7 +135,7 @@ public abstract class Service {
 			data.setCount(count);
 			pstCount.close();
 		} catch(SQLException e) {
-			throw new CoreException("Houve um erro durante a execu��o das queries.", e);
+			throw new CoreException("Houve um erro durante a execução das queries.", e);
 		}
 		return data;
 	}

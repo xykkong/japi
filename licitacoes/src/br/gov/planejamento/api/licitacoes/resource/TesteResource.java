@@ -15,6 +15,7 @@ import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 
@@ -99,17 +100,21 @@ public class TesteResource extends Resource {
 	}
 	
 	@Description("Date que é um nascimento")
-	public Property getTesteDate() throws ParseException {
-		String name = "Nascimento";
-		String value = this.testeDate;
-		
-		if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
-			SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
-			Date dt = formatter.parse(value);
-			value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
+	public Property getTesteDate() throws CoreException  {
+		try{
+			String name = "Nascimento";
+			String value = this.testeDate;
+			
+			if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
+				SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
+				Date dt = formatter.parse(value);
+				value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
+			}
+			
+			return new Property(name, value);
+		} catch(ParseException e) {
+			throw new CoreException("Houve um erro ao formatar a data.", e);
 		}
-		
-		return new Property(name, value);
 	}	
 	
 	@Description("Boolean de Teste")

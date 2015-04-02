@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
 import br.gov.planejamento.api.core.parameters.Param;
@@ -61,7 +62,7 @@ public abstract class Filter {
 	}
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
-			throws CoreException {
+			throws ApiException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
 			System.out.println(parameter.getUriName());

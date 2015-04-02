@@ -7,6 +7,8 @@ import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class InvalidOrderValueRequestException extends RequestException {
 
+	private static final long serialVersionUID = 7033737635583980791L;
+
 	public InvalidOrderValueRequestException(String order) {
 		super("A ordem informada '"
 				+ order

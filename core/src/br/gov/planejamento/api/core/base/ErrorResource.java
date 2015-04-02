@@ -1,6 +1,6 @@
 package br.gov.planejamento.api.core.base;
 
-import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 
 
 public class ErrorResource extends Resource {
@@ -25,7 +25,7 @@ public class ErrorResource extends Resource {
 	}
 	
 	@Override
-	public SelfLink getSelfLink() throws CoreException {
+	public SelfLink getSelfLink() throws ApiException {
 		return new SelfLink(RequestContext.getContext().getRootURL(), "Erro " + codigo);
 	}
 

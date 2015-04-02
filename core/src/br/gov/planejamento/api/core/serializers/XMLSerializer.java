@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -21,14 +22,21 @@ import org.w3c.dom.Element;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
 
 public abstract class XMLSerializer {
 
-	public static String fromResponse(Response response) throws ParserConfigurationException, TransformerException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DOMException {
+	public static String fromResponse(Response response) throws ApiException {
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new CoreException("Houve um erro ao construir o DocumentBuilder do XML.", e);
+		}
 		
 		Document xml = builder.newDocument();		
 		
@@ -75,10 +83,19 @@ public abstract class XMLSerializer {
 		}
 		
 		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer = tf.newTransformer();
+		Transformer transformer;
+		try {
+			transformer = tf.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			throw new CoreException("Houve um erro ao construir o Transformer do XML.", e);
+		}
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		StringWriter writer = new StringWriter();
-		transformer.transform(new DOMSource(xml), new StreamResult(writer));
+		try {
+			transformer.transform(new DOMSource(xml), new StreamResult(writer));
+		} catch (TransformerException e) {
+			throw new CoreException("Houve um erro ao processar o Transformer do XML", e);
+		}
 		String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
 		
 		return output;
