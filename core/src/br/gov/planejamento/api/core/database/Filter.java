@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
 import br.gov.planejamento.api.core.parameters.Param;
 
@@ -60,7 +61,7 @@ public abstract class Filter {
 	}
 
 	public int setPreparedStatementValues(PreparedStatement pst, int index)
-			throws InvalidFilterValueTypeRequestException {
+			throws CoreException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
 			System.out.println(parameter.getUriName());
@@ -77,7 +78,16 @@ public abstract class Filter {
 							pst.setFloat(i++, Float.parseFloat(value));
 						}else if(Param.class.isAssignableFrom(valueType)){
 							System.out.println("name ------> "+valueType.getName());
-							Param param = (Param) valueType.getDeclaredConstructor(new Class[]{String.class}).newInstance(value);
+							Param param;
+							try {
+								param = (Param) valueType.getDeclaredConstructor(new Class[]{String.class}).newInstance(value);
+							} catch (InstantiationException
+									| IllegalAccessException
+									| IllegalArgumentException
+									| InvocationTargetException
+									| NoSuchMethodException | SecurityException e) {
+								throw new CoreException("Houve um erro na instanciação do Filtro", e);
+							}
 							param.setPreparedStatementValue(i++, pst);
 						} else {
 							System.out.println("caí no else, sabe-se lá porque diabos");

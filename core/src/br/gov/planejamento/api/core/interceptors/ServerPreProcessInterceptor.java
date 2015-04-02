@@ -38,17 +38,19 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 	public ServerResponse preProcess(HttpRequest httpRequest,
 			ResourceMethod method) throws Failure, WebApplicationException {	
 		
+		RequestContext.getContext().clear();
+		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
+		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
+		
 		try {
 			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
+			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
 		} catch (CoreException e1) {
 			//Todo: redirecionar para método que retorne um erro.
 			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
 			//o jeito é redirecionar para uma página de erro
 			//Talvez seja interessante o próprio postprocess também fazer isso.
 		}
-		RequestContext.getContext().clear();
-		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
-		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
 		
 		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
 		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();

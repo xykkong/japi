@@ -29,20 +29,15 @@ public class OrgaoRequest {
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
 			) throws ApiException {
-		
-		try {
-			RequestContext context = RequestContext.getContext();
-			context.addFilter(
-					new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
-					new EqualFilter(BooleanParam.class, "ativo")
-					);
-	
-			Response response = null;
-			response = oService.orgaos();
-			return response;
-		} catch (Exception exception) {
-			throw new JapiException(exception);
-		}
+		RequestContext context = RequestContext.getContext();
+		context.addFilter(
+				new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
+				new EqualFilter(BooleanParam.class, "ativo")
+				);
+
+		Response response = null;
+		response = oService.orgaos();
+		return response;
 	}
 		
 	

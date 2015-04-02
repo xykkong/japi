@@ -60,6 +60,11 @@ public class RequestContext {
 	 * URL requisitada pelo cliente incluindo a query string
 	 */
 	private String fullPath;
+	
+	/**
+	 * URL raíz da aplicação
+	 */
+	private String rootURL;
 
 	/**
 	 * Contrutor privado para o singleton
@@ -239,17 +244,15 @@ public class RequestContext {
 		else return "br/gov/planejamento/api/docs/templates/docs.vm";
 	}
 	
-	public String getRootURL(){		
-		try {
-			return JapiConfigLoader.getJapiConfig().getRootUrl();
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "";
+	public String getRootURL() {		
+		return rootURL;
 	}
-	public String asset(String...asset){
-
+	
+	public void setRootURL(String rootURL) {
+		this.rootURL = rootURL;
+	}
+	
+	public String asset(String...asset) throws CoreException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
