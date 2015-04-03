@@ -13,7 +13,6 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -35,7 +34,7 @@ public class LicitacaoRequest {
 	@GET
 	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	@Returns(resource=LicitacaoResource.class)
+	@Returns(resource=LicitacaoResource.class, isList=true)
 	public Response licitacoes(
 				@Parameter(name = "uasg", description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", description = "Modalidade") String modalidade,

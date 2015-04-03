@@ -16,8 +16,6 @@ import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-import br.gov.planejamento.api.core.parameters.BooleanParam;
-import br.gov.planejamento.api.core.parameters.DateParam;
 
 public class TesteResource extends Resource {
 

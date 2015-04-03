@@ -8,9 +8,7 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
@@ -24,7 +22,7 @@ public class OrgaoRequest {
 	
 	@GET
 	@Path(LicitacaoConstants.Requests.List.ORGAOS)	
-	@Returns(resource=OrgaoResource.class)	
+	@Returns(resource=OrgaoResource.class, isList=true)	
 	public Response orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
