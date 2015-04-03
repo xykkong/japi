@@ -4,28 +4,34 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-
-import br.gov.planejamento.api.core.constants.Constants;
 
 
 public class JapiConfigLoader {
 	
 	private static JapiConfig japiConfig;
 	
-	public static JapiConfig getJapiConfig() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
-		if(japiConfig==null)
+	public static JapiConfig getJapiConfig() throws ApiException {
+		if(japiConfig == null)
 			japiConfig = loadJapiConfigFile();
 		return japiConfig;
 	}
 	
-	private static JapiConfig loadJapiConfigFile() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+	private static JapiConfig loadJapiConfigFile() throws ApiException {
 		String fileName = System.getProperty("jboss.server.config.dir") +"/"+ Constants.Configuration.CONFIG_FILE_NAME;
 		File f = new File(fileName);
 		Gson gson = new Gson();
-		return gson.fromJson(new FileReader(f), JapiConfig.class);
+		try {
+			return gson.fromJson(new FileReader(f), JapiConfig.class);
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			throw new CoreException("Erro na leitura do arquivo .json de configuração da API. Verifique se o caminho do arquivo está configurado corretamente, se ele existe e se está em um formato válido.", e);
+		}
 	}
 
 	public class JapiConfig {

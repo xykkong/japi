@@ -15,6 +15,7 @@ import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 
@@ -23,9 +24,9 @@ public class TesteResource extends Resource {
 	private String testeString;
 	private String testeInt;
 	private String testeNumeric;
-	private DateParam testeDate;
+	private String testeDate;
 	private String testeTime;
-	private BooleanParam testeBoolean;
+	private String testeBoolean;
 	
 	public TesteResource(DataRow teste) {
 		setTesteDate(teste.get("teste_date"));
@@ -53,14 +54,14 @@ public class TesteResource extends Resource {
 		this.testeInt = testeInt;
 	}	
 	public void setTesteDate(String testeDate) {
-		this.testeDate = new DateParam(testeDate);
+		this.testeDate = testeDate;
 	}	
 	public void setTesteTime(String testeTime) {
 		this.testeTime = testeTime;
 	}
 	
 	public void setTesteBoolean(String testeBoolean) {
-		this.testeBoolean = new BooleanParam(testeBoolean);
+		this.testeBoolean = testeBoolean;
 	}
 	
 	/*
@@ -99,25 +100,26 @@ public class TesteResource extends Resource {
 	}
 	
 	@Description("Date que é um nascimento")
-	public Property getTesteDate() throws ParseException {
-		String name = "Nascimento";
-		String value = this.testeDate.getValue();
-		
-		if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
-			SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
-			Date dt = formatter.parse(value);
-			value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
+	public Property getTesteDate() throws CoreException  {
+		try{
+			String name = "Nascimento";
+			String value = this.testeDate;
+			
+			if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
+				SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
+				Date dt = formatter.parse(value);
+				value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
+			}
+			
+			return new Property(name, value);
+		} catch(ParseException e) {
+			throw new CoreException("Houve um erro ao formatar a data.", e);
 		}
-		
-		return new Property(name, value);
 	}	
 	
 	@Description("Boolean de Teste")
 	public Property getTesteBoolean(){
-		String name = "Booleano Legal";
-		String value = this.testeBoolean.getValue();
-		
-		return new Property(name, value);
+		return new Property("Ativo", (Boolean.valueOf(this.testeBoolean) ? "Sim" : "Não"));
 	}	
 
 	@Description("Time que é uma hora preferida")

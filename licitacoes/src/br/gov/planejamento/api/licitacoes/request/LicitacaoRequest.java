@@ -12,7 +12,8 @@ import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -30,20 +31,19 @@ public class LicitacaoRequest {
 	private TesteService tService = new TesteService();
 	
 	private LicitacaoService lService = new LicitacaoService();
-
+	
 	@GET
 	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	@Returns(resource=LicitacaoResource.class)
 	public Response licitacoes(
-				@Parameter(name = "uasg", required = false, description = "número UASG da Licitação") String uasg,
-				@Parameter(name = "modalidade", required = false, description = "Modalidade") String modalidade,
-				@Parameter(name = "numero_aviso", required = false, description = "Número aviso") String numeroAviso,
-				@Parameter(name = "nome_uasg", required = false, description = "nome da Uasg") String nomeUasg,
+				@Parameter(name = "uasg", description = "número UASG da Licitação") String uasg,
+				@Parameter(name = "modalidade", description = "Modalidade") String modalidade,
+				@Parameter(name = "numero_aviso", description = "Número aviso") String numeroAviso,
+				@Parameter(name = "nome_uasg", description = "nome da Uasg") String nomeUasg,				
 				@Parameter(name = "data_abertura", required = false, description = "Data de abertuda da proposta") String dataAbertura
-			) throws JapiException {
+			) throws ApiException {
 		
-		try {
 			RequestContext.getContext().addFilter(
 					new EqualFilter(Integer.class, "uasg as uasg", "modalidade", "numero_aviso"),
 					new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg")),
@@ -52,9 +52,6 @@ public class LicitacaoRequest {
 	
 			Response response = lService.licitacoes();
 			return response;
-		} catch (Exception exception) {
-			throw new JapiException(exception);
-		}
 	}
 
 	@GET
@@ -69,16 +66,14 @@ public class LicitacaoRequest {
 										description = LicitacaoConstants.Properties.Description.NASCIMENTO) DateParam testeDate,
 							@Parameter(name = LicitacaoConstants.Properties.Names.BOOLEAN, 
 										description = LicitacaoConstants.Properties.Description.BOOLEAN) BooleanParam testeBoolean)
-							throws JapiException {		
-		try {
+							throws ApiException {		
+			
 			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 			RequestContext.getContext().addFilter(new EqualFilter(Boolean.class, new DatabaseAlias("teste_boolean","boolean")));
-			return tService.teste();
-		} catch (Exception e) {
-			throw new JapiException(e);
-		}
+			Response r = tService.teste();
+			return r;
 	}
 	
 	@GET
@@ -87,14 +82,9 @@ public class LicitacaoRequest {
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
 			@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt
-			) throws JapiException {
-		try {
-			//tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName", "uriName")
-			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
-			return tService.teste();
-		} catch (Exception e) {
-			throw new JapiException(e);
-		}
+			) throws ApiException {
+		RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
+		return tService.teste();
 	}
 	
 	@GET

@@ -1,18 +1,8 @@
 package br.gov.planejamento.api.core.base;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.w3c.dom.DOMException;
-
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.serializers.CSVSerializer;
 import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 import br.gov.planejamento.api.core.serializers.JSONSerializer;
@@ -21,9 +11,6 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 public class Response extends ArrayList<Resource> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8239651864123040735L;
 	private Boolean isList;
 	private String name;
@@ -95,7 +82,7 @@ public class Response extends ArrayList<Resource> {
 	 * Retorna todos os Links do Response
 	 * @return
 	 */
-	public ArrayList<Link> getLinks() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public ArrayList<Link> getLinks() throws ApiException {
 		return ReflectionUtils.getLinks(this);
 	}
 	
@@ -110,30 +97,32 @@ public class Response extends ArrayList<Resource> {
 	/**
 	 * Serializa a Response no formato JSON, seguindo o padrão HAL.
 	 * @return
-	 * @throws JapiException 
 	 */
-	public String toJSON() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, JapiException {
+	public String toJSON() throws ApiException {
 		return JSONSerializer.fromResponse(this);		
 	}
 
-	public String toCSV() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+	/**
+	 * Serializa a Response no formato CSV.
+	 * @return
+	 */
+	public String toCSV() throws ApiException {
 		return CSVSerializer.fromResponse(this);
 	}
 
-	public Object toHTML() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, Exception {
+	/**
+	 * Serializa a Response no formato HTML, utilizando o Velocity.
+	 * @return
+	 */
+	public Object toHTML() throws ApiException {
 		return HTMLSerializer.fromResponse(this);
 	}
 	
 	/**
 	 * Serializa a Response no formato XML, seguindo o padrão HAL.
 	 * @return
-	 * @throws TransformerException 
-	 * @throws DOMException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
 	 */
-	public String toXML() throws ParserConfigurationException, TransformerException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DOMException {
+	public String toXML() throws ApiException {
 		return XMLSerializer.fromResponse(this);
 	}
 }

@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.interceptors;
 
-import java.io.FileNotFoundException;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
@@ -23,11 +22,9 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
-import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedJAPIException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedRequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
-
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 @Provider
 @ServerInterceptor
@@ -37,15 +34,19 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 	public ServerResponse preProcess(HttpRequest httpRequest,
 			ResourceMethod method) throws Failure, WebApplicationException {	
 		
-		try {
-			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			System.out.println("Houve um erro ao carregar o arquivo japi_config.json");
-			e.printStackTrace();
-		}
 		RequestContext.getContext().clear();
 		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
 		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
+		
+		try {
+			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
+			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
+		} catch (ApiException e) {
+			//Todo: redirecionar para método que retorne um erro.
+			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
+			//o jeito é redirecionar para uma página de erro
+			//Talvez seja interessante o próprio postprocess também fazer isso.
+		}
 		
 		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
 		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();
@@ -79,7 +80,8 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		
 		try {	
 			validateURIParametersUsingAnotations(httpRequest, method);
-		} catch (URIParameterNotAcceptedJAPIException e) {
+		} catch (ApiException e) {
+			//mesma coisa que o comentário acima, tem que redirecionar para uma página de erro
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		
@@ -87,7 +89,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 	}
 	
 	private static void validateURIParametersUsingAnotations(HttpRequest httpRequest, ResourceMethod method)
-			throws URIParameterNotAcceptedJAPIException{
+			throws URIParameterNotAcceptedRequestException{
 		
 		for(String parameter : httpRequest.getUri().getQueryParameters().keySet()){
 			boolean foundParameter = false;
@@ -103,7 +105,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 				}
 			}
 			if (!foundParameter)
-				throw new URIParameterNotAcceptedJAPIException(parameter);
+				throw new URIParameterNotAcceptedRequestException(parameter);
 		}
 	}
 

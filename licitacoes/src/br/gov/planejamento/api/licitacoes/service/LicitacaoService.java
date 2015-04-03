@@ -5,7 +5,8 @@ import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.database.Service;
 import br.gov.planejamento.api.core.database.ServiceConfiguration;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
 public class LicitacaoService extends Service {
@@ -21,7 +22,7 @@ public class LicitacaoService extends Service {
 		return configs;
 	}
 
-	public Response licitacoes() throws JapiException {
+	public Response licitacoes() throws ApiException {
 		
 		DatabaseData dados = getAllFiltered();
 		Response retorno = new Response(dados.getCount());

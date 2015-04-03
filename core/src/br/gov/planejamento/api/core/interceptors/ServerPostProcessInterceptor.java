@@ -1,8 +1,6 @@
 package br.gov.planejamento.api.core.interceptors;
 
 import javax.ws.rs.ext.Provider;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.Headers;
@@ -14,7 +12,9 @@ import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 
 @Provider
 @ServerInterceptor
@@ -30,15 +30,15 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 		String firstPathSegment = RequestContext.getContext().getPath()
 				.split("/")[1];
 		if (!firstPathSegment.equals("docs")) // TODO: Mudar forma de identificar docs
+			if(serverResponse.getEntity() instanceof String) return;
+			Response response = (Response) serverResponse.getEntity();
+			serverResponse.setGenericType(String.class);
+			response.isList(serverResponse.getResourceMethod().getAnnotation(Returns.class).isList());
+			response.setDescription(serverResponse.getResourceMethod().getAnnotation(About.class).description());
+			
+			Headers<Object> headers = new Headers<Object>();
+			
 			try {
-				if(serverResponse.getEntity() instanceof String) return;
-				Response response = (Response) serverResponse.getEntity();
-				serverResponse.setGenericType(String.class);
-				response.isList(serverResponse.getResourceMethod().getAnnotation(Returns.class).isList());
-				response.setDescription(serverResponse.getResourceMethod().getAnnotation(About.class).description());
-				
-				Headers<Object> headers = new Headers<Object>();
-				
 				switch (RequestContext.getContext().getRequestFormat()) {
 				case RequestFormats.HTML:
 					serverResponse.setEntity(response.toHTML());
@@ -60,39 +60,26 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 					serverResponse.setEntity(response.toCSV());
 					break;
 				}
-				
-				serverResponse.setMetadata(headers);
-			} catch (JapiException japiException) {
-				serverResponse.setEntity(japiException);
-				showErrorMessage(serverResponse);
-			} catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception ex) {
-				// TODO tratamento de erro
-				serverResponse.setEntity(ex);
+			} catch (ApiException e) {
 				showErrorMessage(serverResponse);
 			}
-
+			
+			serverResponse.setMetadata(headers);
 	}
 
 	private static void showErrorMessage(ServerResponse serverResponse) {
 		Object responseEntity = serverResponse.getEntity();
 		String errorMessage = "";
-		if (responseEntity instanceof JapiException) {
-			JapiException japiException = (JapiException) responseEntity;
-			if (japiException.isUserShowable()) {
-				errorMessage = japiException.getMessage();
-
-			} else {
-				System.out.println("JapiException ocurred, stackTrace:");
-				japiException.printStackTrace();
+		if (responseEntity instanceof RequestException) {
+			RequestException japiException = (RequestException) responseEntity;
+			errorMessage = japiException.getMessage();
+		} else if(responseEntity instanceof CoreException) {
+			errorMessage = "Erro interno desconhecido";
+			serverResponse.setStatus(500);
+			if(responseEntity instanceof Exception){
+				((Exception) responseEntity).printStackTrace();
 			}
 		} else {
-			// TODO mensagem de erro genérica
 			errorMessage = "Erro interno desconhecido";
 			serverResponse.setStatus(500);
 			if(responseEntity instanceof Exception){

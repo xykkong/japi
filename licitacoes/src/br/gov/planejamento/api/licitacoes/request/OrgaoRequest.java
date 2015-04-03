@@ -8,7 +8,9 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
-import br.gov.planejamento.api.core.exceptions.JapiException;
+import br.gov.planejamento.api.core.database.DatabaseAlias;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
@@ -26,21 +28,16 @@ public class OrgaoRequest {
 	public Response orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
-			) throws JapiException {
-		
-		try {
-			RequestContext context = RequestContext.getContext();
-			context.addFilter(
-					new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
-					new EqualFilter(BooleanParam.class, "ativo")
-					);
-	
-			Response response = null;
-			response = oService.orgaos();
-			return response;
-		} catch (Exception exception) {
-			throw new JapiException(exception);
-		}
+			) throws ApiException {
+		RequestContext context = RequestContext.getContext();
+		context.addFilter(
+				new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
+				new EqualFilter(BooleanParam.class, "ativo")
+				);
+
+		Response response = null;
+		response = oService.orgaos();
+		return response;
 	}
 		
 	

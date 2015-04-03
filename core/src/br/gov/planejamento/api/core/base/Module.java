@@ -16,6 +16,8 @@ import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 import com.google.gson.JsonArray;
@@ -31,8 +33,9 @@ public abstract class Module extends Application {
 	 * a camada mais externa que mapeia cada URL para seu método correspondente. 
 	 * @param packageName
 	 * @return
+	 * @throws CoreException 
 	 */
-	protected String extractDocumentation(String packageName) {
+	protected String extractDocumentation(String packageName) throws ApiException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodParameterScanner());
 		Set<Method> methods = reflections.getMethodsReturn(Response.class);
 		
@@ -41,7 +44,6 @@ public abstract class Module extends Application {
 		
 		for(Method requestMethod : methods) {
 			if(requestMethod.isAnnotationPresent(Path.class) && requestMethod.isAnnotationPresent(Returns.class)) {				
-				
 				JsonObject request = new JsonObject();				
 				
 				//Obtendo documentação do método requisitado
@@ -137,5 +139,5 @@ public abstract class Module extends Application {
 		return json.toString();
 	}
 	
-	public abstract String getDocs();
+	public abstract String getDocs() throws ApiException;
 }

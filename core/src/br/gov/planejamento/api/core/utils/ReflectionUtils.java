@@ -13,6 +13,8 @@ import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 
 import com.google.common.base.CaseFormat;
 
@@ -57,13 +59,19 @@ public abstract class ReflectionUtils {
 		return methods;
 	}
 	
-	public static ArrayList<Property> getProperties(Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static ArrayList<Property> getProperties(Object object) throws ApiException {
 		ArrayList<Property> properties = new ArrayList<Property>();
 		
 		for(Method method : ReflectionUtils.getFilteredMethods(object)) {
 			if(Property.class.isAssignableFrom(method.getReturnType())) {
 				//TODO testar se o metodo possui argumento(s), se sim, retornar uma getterNoResourceJapiExcepton, por exemplo
-				Property property = (Property) method.invoke(object);
+				Property property;
+				try {
+					property = (Property) method.invoke(object);
+				} catch (IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					throw new CoreException("Houve um erro ao obter as propriedades do resource.", e);
+				}
 				
 				//Setting id for the properties, based on getter name (getPropertyName => property_name)
 				String id = getterToPropertyName(method.getName());				
@@ -76,14 +84,19 @@ public abstract class ReflectionUtils {
 		return properties;
 	}
 	
-	public static ArrayList<Link> getLinks(Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static ArrayList<Link> getLinks(Object object) throws CoreException {
 		
 		ArrayList<Link> links = new ArrayList<Link>();
 		
 		for(Method method : ReflectionUtils.getFilteredMethods(object)) {			
 			if(Link.class.isAssignableFrom(method.getReturnType())) {
 				if(!method.getReturnType().equals(SelfLink.class)){
-					links.add((Link) method.invoke(object));
+					try {
+						links.add((Link) method.invoke(object));
+					} catch (IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException e) {
+						throw new CoreException("Houve um erro ao obter os links do resource.", e);
+					}
 				}
 			}
 		}
