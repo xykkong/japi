@@ -52,6 +52,8 @@ public abstract class HTMLSerializer {
 			template.merge(context, writer);
 		} catch (ResourceNotFoundException | ParseErrorException
 				| MethodInvocationException | IOException e) {
+
+			e.printStackTrace();
 			throw new CoreException("Houve um erro ao processar o template do Velocity.", e);
 		}
 		return writer.toString();

@@ -76,7 +76,7 @@ public class LicitacaoRequest {
 	}
 	
 	@GET
-	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
+	@Path(LicitacaoConstants.Requests.Mirror.LICITACAO + "teste/{idade}")
 	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleId="666")
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
