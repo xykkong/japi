@@ -35,7 +35,7 @@ public class TesteResource extends Resource {
 		
 		// Construção das informações do resource
 		setTitle("Resource de nome "+this.testeString);
-		setSelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.testeInt);
+		setSelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt);
 	}
 
 	/*
