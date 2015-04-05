@@ -39,7 +39,7 @@ public class OrgaoResource extends Resource {
 
 	@Override
 	public SelfLink getSelfLink() {
-		return new SelfLink();
+		return new SelfLink("", "");
 	}
 
 }

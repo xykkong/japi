@@ -4,6 +4,7 @@ import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
 
 public class LicitacaoResource extends Resource {
@@ -33,9 +34,6 @@ public class LicitacaoResource extends Resource {
 		this.numeroAviso = licitacao.get("numero_aviso");
 		this.uasg = licitacao.get("uasg");
 		this.dataAberturaProposta = licitacao.get("data_abertura_proposta");
-		
-		setTitle("Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
-		setSelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso);
 	}
 	
 	public Property getDataAberturaProposta(){
@@ -85,11 +83,11 @@ public class LicitacaoResource extends Resource {
 		this.numeroAviso = numeroAviso;
 	}
 
-	/*
+	
 	@Override
 	public SelfLink getSelfLink() {
-		return new SelfLink();
+		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
 	}
-	*/
+	
 
 }

@@ -11,6 +11,7 @@ import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -32,10 +33,6 @@ public class TesteResource extends Resource {
 		setTesteString(teste.get("teste_string"));
 		setTesteTime(teste.get("teste_time"));
 		setTesteBoolean(teste.get("teste_boolean"));
-		
-		// Construção das informações do resource
-		setTitle("Resource de nome "+this.testeString);
-		setSelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt);
 	}
 
 	/*
@@ -148,13 +145,13 @@ public class TesteResource extends Resource {
 	 * na seção acima, e retornar uma LinkProperty. 
 	 */
 	
-	/*
+	
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.testeInt, this.testeString);
+		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt, "Elemento de teste de nome "+this.testeString);
 	}
-	*/
+	
 	
 	@Description("")
 	public Link getUasg()
