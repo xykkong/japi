@@ -2,7 +2,6 @@ package br.gov.planejamento.api.core.serializers;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
