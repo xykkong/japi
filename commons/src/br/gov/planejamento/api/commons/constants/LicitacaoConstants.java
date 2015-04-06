@@ -66,8 +66,4 @@ public abstract class LicitacaoConstants {
 		}
 	}
 	
-	public static String getURI(String mirror) {
-		return CommonConstants.Modules.LICITACOES + mirror;
-	}
-	
 }

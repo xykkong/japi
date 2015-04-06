@@ -137,12 +137,14 @@
 						<tbody>
 							#foreach($request in $documentation.requests)
 								#if($request.returns.isList)
-								<tr>
-									<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
-									<td>
-										<p>$request.description</p>
-									</td>
-								</tr>
+									#if($request.method_name)
+										<tr>
+											<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
+											<td>
+												<p>$request.description</p>
+											</td>
+										</tr>
+									#end
 								#end
 							#end
 						</tbody>								

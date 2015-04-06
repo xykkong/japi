@@ -29,43 +29,50 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 
 		String firstPathSegment = RequestContext.getContext().getPath()
 				.split("/")[1];
-		if (!firstPathSegment.equals("docs")) // TODO: Mudar forma de identificar docs
-			if(serverResponse.getEntity() instanceof String) return;
-			Response response = (Response) serverResponse.getEntity();
-			serverResponse.setGenericType(String.class);
-			
-			response.isList(serverResponse.getResourceMethod().getAnnotation(Returns.class).isList());
-			response.setDescription(serverResponse.getResourceMethod().getAnnotation(About.class).description());
-			
-			Headers<Object> headers = new Headers<Object>();
-			
-			try {
-				switch (RequestContext.getContext().getRequestFormat()) {
-				case RequestFormats.HTML:
-					serverResponse.setEntity(response.toHTML());
-					break;
-				case RequestFormats.JSON:
-					headers.add("Content-Type", "text/json");
-					String json = response.toJSON();
-					serverResponse.setEntity(json);
-					break;
-				case RequestFormats.XML:
-					headers.add("Content-Type", "text/xml");
-					String xml = response.toXML();
-					serverResponse.setEntity(xml);
-					break;
-				case RequestFormats.CSV:
-					headers.add("Content-Type", "text/csv");
-					headers.add("Content-Disposition",
-							"attachment; filename=\"result.csv\"");
-					serverResponse.setEntity(response.toCSV());
-					break;
-				}
-			} catch (ApiException e) {
-				showErrorMessage(serverResponse);
+		if ( RequestContext.getContext().getPath().contains("docs")){ // TODO: Mudar forma de identificar docs
+			if(serverResponse.getEntity() instanceof String){
+				System.out.println("oi");
+				return;
 			}
-			
-			serverResponse.setMetadata(headers);
+			else System.out.println("oi2");
+		}else System.out.println("oi3 "+firstPathSegment);
+		
+		System.out.println("wut wut "+serverResponse.getEntity());
+		Response response = (Response) serverResponse.getEntity();
+		serverResponse.setGenericType(String.class);
+		
+		response.isList(serverResponse.getResourceMethod().getAnnotation(Returns.class).isList());
+		response.setDescription(serverResponse.getResourceMethod().getAnnotation(About.class).description());
+		
+		Headers<Object> headers = new Headers<Object>();
+		
+		try {
+			switch (RequestContext.getContext().getRequestFormat()) {
+			case RequestFormats.HTML:
+				serverResponse.setEntity(response.toHTML());
+				break;
+			case RequestFormats.JSON:
+				headers.add("Content-Type", "text/json");
+				String json = response.toJSON();
+				serverResponse.setEntity(json);
+				break;
+			case RequestFormats.XML:
+				headers.add("Content-Type", "text/xml");
+				String xml = response.toXML();
+				serverResponse.setEntity(xml);
+				break;
+			case RequestFormats.CSV:
+				headers.add("Content-Type", "text/csv");
+				headers.add("Content-Disposition",
+						"attachment; filename=\"result.csv\"");
+				serverResponse.setEntity(response.toCSV());
+				break;
+			}
+		} catch (ApiException e) {
+			showErrorMessage(serverResponse);
+		}
+		
+		serverResponse.setMetadata(headers);
 	}
 
 	private static void showErrorMessage(ServerResponse serverResponse) {

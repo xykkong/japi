@@ -42,10 +42,11 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
 		} catch (ApiException e) {
-			//Todo: redirecionar para método que retorne um erro.
+			//TODO: redirecionar para método que retorne um erro.
 			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
 			//o jeito é redirecionar para uma página de erro
 			//Talvez seja interessante o próprio postprocess também fazer isso.
+			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		
 		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
@@ -81,7 +82,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		try {	
 			validateURIParametersUsingAnotations(httpRequest, method);
 		} catch (ApiException e) {
-			//mesma coisa que o comentário acima, tem que redirecionar para uma página de erro
+			//TODO: mesma coisa que o comentário acima, tem que redirecionar para uma página de erro
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		
