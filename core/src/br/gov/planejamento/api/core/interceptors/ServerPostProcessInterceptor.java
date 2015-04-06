@@ -33,6 +33,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 			if(serverResponse.getEntity() instanceof String) return;
 			Response response = (Response) serverResponse.getEntity();
 			serverResponse.setGenericType(String.class);
+			
 			response.isList(serverResponse.getResourceMethod().getAnnotation(Returns.class).isList());
 			response.setDescription(serverResponse.getResourceMethod().getAnnotation(About.class).description());
 			
@@ -96,4 +97,5 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 		}
 		serverResponse.setEntity(errorMessage);
 	}
+	
 }

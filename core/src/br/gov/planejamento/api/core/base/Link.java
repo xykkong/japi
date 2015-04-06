@@ -2,9 +2,9 @@ package br.gov.planejamento.api.core.base;
 
 public class Link {
 
-	private String title;
-	private String href;
-	private String rel;
+	protected String title;
+	protected String href;
+	protected String rel;
 	
 	public Link() {}
 	

@@ -6,7 +6,6 @@ import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.database.Service;
 import br.gov.planejamento.api.core.database.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 
 public class LicitacaoService extends Service {

@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
+import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
@@ -82,10 +83,11 @@ public class LicitacaoResource extends Resource {
 		this.numeroAviso = numeroAviso;
 	}
 
-
+	
 	@Override
 	public SelfLink getSelfLink() {
-		return new SelfLink();
+		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
 	}
+	
 
 }

@@ -25,6 +25,7 @@ public class Response extends ArrayList<Resource> {
 		this.count = count;
 	}
 	
+	
 	/**
 	 * Retorna true se a Response em questão é uma listagem de Resources.
 	 * Caso a Response seja de um item único (página de detalhamento), retorna false.
@@ -91,7 +92,7 @@ public class Response extends ArrayList<Resource> {
 	 * @return
 	 */
 	public Link getSelfLink() {
-		return new SelfLink(RequestContext.getContext().getFullPath());
+		return new SelfLink(RequestContext.getContext().getFullPath(), this.description);
 	}
 	
 	/**

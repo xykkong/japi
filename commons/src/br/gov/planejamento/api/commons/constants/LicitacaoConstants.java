@@ -31,15 +31,18 @@ public abstract class LicitacaoConstants {
 		
 		public static final class List {
 			public static final String LICITACOES = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.LIST + "/licitacoes";
+			public static final String LICITACOESTESTE = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.LIST + "/licitacoesteste";
 			public static final String ORGAOS = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.LIST + "/orgaos";
 		}
 		
 		public static final class Document {
 			public static final String LICITACAO = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.DOCUMENT + "/licitacao/";
+			public static final String LICITACAOTESTE = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.DOCUMENT + "/licitacaoteste/";
 		}
 		
 		public static final class Mirror {
 			public static final String LICITACAO = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.MIRROR + "/licitacao/";
+			public static final String LICITACAOTESTE = CommonConstants.URIConstants.BASE_URL + CommonConstants.Modules.LICITACOES + Prefixes.MIRROR + "/licitacaoteste/";
 		}
 	}
 	

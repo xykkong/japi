@@ -13,7 +13,6 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
@@ -35,7 +34,7 @@ public class LicitacaoRequest {
 	@GET
 	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	@Returns(resource=LicitacaoResource.class)
+	@Returns(resource=LicitacaoResource.class, isList=true)
 	public Response licitacoes(
 				@Parameter(name = "uasg", description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", description = "Modalidade") String modalidade,
@@ -62,7 +61,7 @@ public class LicitacaoRequest {
 										description = LicitacaoConstants.Properties.Description.IDADE) String testeInt,
 							@Parameter(name = LicitacaoConstants.Properties.Names.NOME, 
 										description = LicitacaoConstants.Properties.Description.NOME) String testeString,
-							@Parameter(name = LicitacaoConstants.Properties.Names.IDADE, 
+							@Parameter(name = LicitacaoConstants.Properties.Names.NASCIMENTO, 
 										description = LicitacaoConstants.Properties.Description.NASCIMENTO) DateParam testeDate,
 							@Parameter(name = LicitacaoConstants.Properties.Names.BOOLEAN, 
 										description = LicitacaoConstants.Properties.Description.BOOLEAN) BooleanParam testeBoolean)
@@ -77,7 +76,7 @@ public class LicitacaoRequest {
 	}
 	
 	@GET
-	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
+	@Path(LicitacaoConstants.Requests.Mirror.LICITACAO + "teste/{idade}")
 	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleId="666")
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
@@ -85,5 +84,11 @@ public class LicitacaoRequest {
 			) throws ApiException {
 		RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 		return tService.teste();
+	}
+	
+	@GET
+	@Path("/id/*")
+	public void testezaum(){
+		System.out.println( "oi");
 	}
 }

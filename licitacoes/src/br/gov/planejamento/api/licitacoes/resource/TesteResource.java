@@ -16,8 +16,6 @@ import br.gov.planejamento.api.core.constants.Constants.DateFormats;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-import br.gov.planejamento.api.core.parameters.BooleanParam;
-import br.gov.planejamento.api.core.parameters.DateParam;
 
 public class TesteResource extends Resource {
 
@@ -147,11 +145,13 @@ public class TesteResource extends Resource {
 	 * na seção acima, e retornar uma LinkProperty. 
 	 */
 	
+	
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.testeInt, this.testeString);
+		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt, "Elemento de teste de nome "+this.testeString);
 	}
+	
 	
 	@Description("")
 	public Link getUasg()

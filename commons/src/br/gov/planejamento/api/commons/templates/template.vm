@@ -116,17 +116,19 @@
 					
 					<hr class="barra" style="margin: 0px;"/>
 					<div id="header-content">
-						#if ($response.isList())
-							<h2 id="titulo" class="titulo-pagina">$response.description</h2>
-						#else
-							#set($resource = $response.get(0))
-							<h2 id="titulo" class="titulo-pagina">$resource.selfLink.title</h2>
+					#set($count = $response.count)
+						#if($count > 0)
+							#if ($response.isList())
+								<h2 id="titulo" class="titulo-pagina">$response.description</h2>
+							#else
+								#set($resource = $response.get(0))
+								<h2 id="titulo" class="titulo-pagina">$resource.selfLink.title</h2>
+							#end
 						#end
 						
 						##Lógica de paginação
 						#if( $response.isList() )
 							#set($offset = $session.offsetValue)
-							#set($count = $response.count)
 							
 							#if ($count > 0)
 								#set($first = $offset + 1)
@@ -161,6 +163,7 @@
 							#*Para casos em que a exibição é feita em multiplos formatos
 							(html, xml, json, csv) aqui são linkados todos os demais 
 							formatos de exibição*#
+							#if ($count > 0)
 							<div id="lista-formatos">
 								<div>
 									#if($response.isList())
@@ -194,6 +197,7 @@
 									</div>
 								</div>
 							</div>
+							#end
 							
 							##Exibição da tabela de resultados
 							<div class="content" >
@@ -226,15 +230,18 @@
 											Nenhum resultado encontrado.
 										#end
 									#else
-										<li class="info-holder">
-											<h3 style=""><a href="$resource.selfLink.href" style="">$resource.selfLink.title</a></h3>
+										#if ($count > 0)
+											<li class="info-holder">
 												#foreach($property in $resource.properties)
 													<div class="tabela-lista-valor">
 														<p class="outer tabela-lista-item"> $property.name </p>
 														<p class="inner" style="font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;margin-bottom: 0px;padding: 8px 8px;">$property.value</p>
 													</div>
 												#end
-										</li>
+											</li>
+										#else
+											Não existe elemento com o identificador especificado.
+										#end
 									#end
 								</ul>
 								</div>
