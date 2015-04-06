@@ -13,7 +13,7 @@ public class Response extends ArrayList<Resource> {
 
 	private static final long serialVersionUID = 8239651864123040735L;
 	private Boolean isList;
-	private String name;
+	private String name = "resource";
 	private String description;
 	private int count = 0;
 

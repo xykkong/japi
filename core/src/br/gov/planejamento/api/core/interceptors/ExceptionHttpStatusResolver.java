@@ -8,7 +8,7 @@ import javax.ws.rs.ext.Provider;
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	@Override
 	public Response toResponse(Exception exception) {
-		
+		exception.printStackTrace();
 		/*Response.Status httpStatus = Response.Status.INTERNAL_SERVER_ERROR;
 		
 		if(!(exception instanceof RequestException)) {
