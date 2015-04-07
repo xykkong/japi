@@ -27,6 +27,7 @@ public class TesteResource extends Resource {
 	private String testeBoolean;
 	
 	public TesteResource(DataRow teste) {
+		super(teste);
 		setTesteDate(teste.get("teste_date"));
 		setTesteInt(teste.get("teste_int"));
 		setTesteNumeric(teste.get("teste_numeric"));

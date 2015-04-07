@@ -10,12 +10,9 @@ public class OrgaoResource extends Resource {
 	private String tipoAdm;
 	private String ativo;
 
-	public OrgaoResource() {
-		super();
-	}	
-	
+
 	public OrgaoResource(DataRow orgao) {
-		super();
+		super(orgao);
 		this.tipoAdm = orgao.get("codigo_tipo_adm");
 		this.ativo = orgao.get("ativo");
 	}
