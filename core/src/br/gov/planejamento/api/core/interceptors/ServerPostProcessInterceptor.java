@@ -29,7 +29,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 
 		String firstPathSegment = RequestContext.getContext().getPath()
 				.split("/")[1];
-		if ( RequestContext.getContext().getPath().contains("docs")){ // TODO: Mudar forma de identificar docs
+		if (RequestContext.getContext().getPath().contains("docs")){ // TODO: Mudar forma de identificar docs
 			if(serverResponse.getEntity() instanceof String){
 				System.out.println("oi");
 				return;

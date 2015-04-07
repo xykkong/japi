@@ -29,6 +29,16 @@ public class DocumentationObject {
 		private String description;
 		private String method_name;
 		private String example_url;
+		private String path_filterless;
+		public String getPath_filterless() {
+			return path_filterless;
+		}
+
+
+		public void setPath_filterless(String path_filterless) {
+			this.path_filterless = path_filterless;
+		}
+
 		private ArrayList<Parameter> parameters;
 		private ArrayList<Property> properties;
 		

@@ -121,6 +121,11 @@
 						<hr class="barra" style="margin: 0px;"/>
 						<p class="met_descricao">Fornece uma lista das informações relacionadas aos registros de $documentation.method_name</p>
 						<p>
+							<strong>URL:</strong>
+							<p>$documentation.path_filterless .{formato}</p>
+						</p>
+						
+						<p>
 							<strong>Exemplo:</strong></br>
 							<a href=$documentation.example_url>$documentation.example_url</a>
 						</p>
