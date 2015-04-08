@@ -57,5 +57,6 @@ dependencies {
     compile 'org.apache.velocity:velocity:1.6.2'
     compile 'org.reflections:reflections-maven:0.9.9-RC2'
     compile 'javassist:javassist:3.12.1.GA'
+    compile 'org.tuckey:urlrewritefilter:3.2.0'
     
 }

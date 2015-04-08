@@ -109,19 +109,21 @@ public class LicitacaoRequest {
 	}
 	
 	@GET
-	@Path(LicitacaoConstants.Requests.Mirror.LICITACAO + "teste/{idade}")
+	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
 	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleId="666")
 	@Returns(resource=TesteResource.class, isList=false)
 	public Response testeUnico(
 			@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt
 			) throws ApiException {
 		RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
-		return tService.teste();
-	}
-	
-	@GET
-	@Path("/id/*")
-	public void testezaum(){
-		System.out.println( "oi");
+		//era pro vilacinha ter feito isso :(
+		DatabaseData dados = tService.getAllFiltered();
+		try {
+			return Resource.resourceFactory(dados, TesteResource.class);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			// TODO vilacinha resolve essa parada
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
