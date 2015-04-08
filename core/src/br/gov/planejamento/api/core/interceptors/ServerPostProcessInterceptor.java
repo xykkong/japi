@@ -8,6 +8,7 @@ import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
 import br.gov.planejamento.api.core.annotations.About;
+import br.gov.planejamento.api.core.annotations.ResponseNotRequired;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
@@ -26,15 +27,13 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 			showErrorMessage(serverResponse);
 			return;
 		}
-
-		String firstPathSegment = RequestContext.getContext().getPath()
-				.split("/")[1];
-		if (RequestContext.getContext().getPath().contains("docs")){ // TODO: Mudar forma de identificar docs
-			if(serverResponse.getEntity() instanceof String){
-				return;
-			}
+		if(serverResponse.getResourceMethod().isAnnotationPresent(ResponseNotRequired.class)){
+			putResponse(serverResponse);
 		}
-		
+	}
+	
+	
+	public static void putResponse(ServerResponse serverResponse){
 		Response response = (Response) serverResponse.getEntity();
 		serverResponse.setGenericType(String.class);
 		

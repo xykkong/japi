@@ -1,11 +1,11 @@
-package br.gov.planejamento.api.docs.utils;
+package br.gov.planejamento.api.core.serializers;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
-import br.gov.planejamento.api.commons.constants.CommonConstants;
+import br.gov.planejamento.api.core.base.DocumentationObject;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -14,9 +14,7 @@ import com.google.gson.GsonBuilder;
 
 public class SwaggerParser {
 	
-	public static DocumentationObject parse(String modulo) throws ApiException {
-		String docUrl = "";
-		docUrl = CommonConstants.URIConstants.BASE_URL + modulo + "/" + modulo + "docs";
+	public static DocumentationObject parse(String docUrl) throws ApiException {
 		
 		System.out.println("A url para a documentação é " + docUrl);
 		
