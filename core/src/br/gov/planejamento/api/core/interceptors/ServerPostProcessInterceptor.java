@@ -31,13 +31,10 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 				.split("/")[1];
 		if (RequestContext.getContext().getPath().contains("docs")){ // TODO: Mudar forma de identificar docs
 			if(serverResponse.getEntity() instanceof String){
-				System.out.println("oi");
 				return;
 			}
-			else System.out.println("oi2");
-		}else System.out.println("oi3 "+firstPathSegment);
+		}
 		
-		System.out.println("wut wut "+serverResponse.getEntity());
 		Response response = (Response) serverResponse.getEntity();
 		serverResponse.setGenericType(String.class);
 		
