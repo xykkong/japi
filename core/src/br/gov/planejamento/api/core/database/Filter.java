@@ -12,6 +12,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
+import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.Param;
 
 public abstract class Filter {
@@ -78,7 +79,6 @@ public abstract class Filter {
 						} else if (valueType.equals(Float.class)) {
 							pst.setFloat(i++, Float.parseFloat(value));
 						}else if(Param.class.isAssignableFrom(valueType)){
-							System.out.println("name ------> "+valueType.getName());
 							Param param;
 							try {
 								param = (Param) valueType.getDeclaredConstructor(new Class[]{String.class}).newInstance(value);
@@ -90,9 +90,13 @@ public abstract class Filter {
 								throw new CoreException("Houve um erro na instanciação do Filtro", e);
 							}
 							param.setPreparedStatementValue(i++, pst);
-						} else {
-							System.out.println("caí no else, sabe-se lá porque diabos");
-							System.out.println("name ----------->>>>"+valueType.getName());
+						}
+						else if(valueType.equals(Boolean.class)){
+							//este if foi feito pelo bem da retrocompatibilidade
+							BooleanParam bParam = new BooleanParam(value);
+							bParam.setPreparedStatementValue(i++, pst);
+						}
+						else {
 							pst.setString(i++, value);
 						}
 					} catch (SQLException | NumberFormatException ex) {

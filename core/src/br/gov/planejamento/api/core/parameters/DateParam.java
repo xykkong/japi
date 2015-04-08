@@ -1,8 +1,6 @@
 package br.gov.planejamento.api.core.parameters;
 
 public class DateParam extends Param {
-	String original;
-	String value;
 	
 	public DateParam(String original) {
 		super(original);

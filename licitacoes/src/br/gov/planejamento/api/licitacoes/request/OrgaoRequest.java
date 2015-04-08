@@ -4,6 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
+import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
@@ -21,7 +22,8 @@ public class OrgaoRequest {
 	private OrgaoService oService = new OrgaoService();
 	
 	@GET
-	@Path(LicitacaoConstants.Requests.List.ORGAOS)	
+	@Path(LicitacaoConstants.Requests.List.ORGAOS)
+	@About(name="orgaos", description ="Lista de órgãos emissores de licitações", exampleQuery ="?tipo_adm=1")
 	@Returns(resource=OrgaoResource.class, isList=true)	
 	public Response orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,

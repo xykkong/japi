@@ -96,8 +96,16 @@ public class LicitacaoRequest {
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 			RequestContext.getContext().addFilter(new EqualFilter(Boolean.class, new DatabaseAlias("teste_boolean","boolean")));
-			Response r = tService.teste();
-			return r;
+			
+			//era pro vilacinha ter feito isso :(
+			DatabaseData dados = tService.getAllFiltered();
+			try {
+				return Resource.resourceFactory(dados, TesteResource.class);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				// TODO vilacinha resolve essa parada
+				e.printStackTrace();
+			}
+			return null;
 	}
 	
 	@GET

@@ -21,6 +21,7 @@ public class BooleanParam extends Param{
 			case "true":
 			case "verdadeiro":
 			case "sim":
+			case "yes":
 			case "1":
 				this.value="true";
 				break;

@@ -4,11 +4,20 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import br.gov.planejamento.api.core.exceptions.ApiException;
+
 @Provider
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	@Override
 	public Response toResponse(Exception exception) {
 		exception.printStackTrace();
+		if(exception instanceof ApiException){
+			Exception original = ((ApiException) exception).getOriginalException();
+			if(original != null){
+				System.out.println("Exceção original:");
+				original.printStackTrace();
+			}
+		}
 		/*Response.Status httpStatus = Response.Status.INTERNAL_SERVER_ERROR;
 		
 		if(!(exception instanceof RequestException)) {
