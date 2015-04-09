@@ -8,7 +8,9 @@ import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
@@ -34,10 +36,9 @@ public class OrgaoRequest {
 				new EqualFilter(Integer.class, "codigo_tipo_adm as tipo_adm"),
 				new EqualFilter(BooleanParam.class, "ativo")
 				);
-
-		Response response = null;
-		response = oService.orgaos();
-		return response;
+		
+		DatabaseData dados = oService.getAllFiltered();
+		return Resource.resourceFactory(dados, OrgaoResource.class);
 	}
 		
 	

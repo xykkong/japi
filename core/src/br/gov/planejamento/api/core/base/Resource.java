@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 
@@ -28,25 +29,23 @@ public abstract class Resource {
 		return ReflectionUtils.getLinks(this);
 	}
 	
-	public static Resource resourceFactory(DataRow dRow, Class<? extends Resource> type ) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		return type.getConstructor(DataRow.class).newInstance(dRow);
+	public static Resource resourceFactory(DataRow dRow, Class<? extends Resource> type ) throws CoreException{
+		try {
+			return type.getConstructor(DataRow.class).newInstance(dRow);
+		} catch (InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {		 
+
+			throw new CoreException("houve um erro ao tentar construir o resource "+ type.getName(), e);
+		}	
 	}
 	
-	public static Response resourceFactory(DatabaseData data, Class<? extends Resource> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Response retorno = new Response(data.getCount());		
-
+	public static Response resourceFactory(DatabaseData data, Class<? extends Resource> type) throws CoreException{
+		Response retorno = new Response(data.getCount());
         for(DataRow dRow : data) {
             retorno.add(resourceFactory(dRow, type));
         }
         
 		return retorno;
 	}
-	
-	
-	
-	/*
-	LicitacaoResource.factory(data);
-	Resource.factory();
-	LicitacaoResource.factory(DatabaseData); >> for new LicitacaoResource(DataRow) <<<<<< COREEXCEPTION
-	*/
 }

@@ -1,7 +1,5 @@
 package br.gov.planejamento.api.licitacoes.request;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -53,29 +51,10 @@ public class LicitacaoRequest {
 					new DateEqualFilter(DateParam.class, new DatabaseAlias("data_abertura_proposta","data_abertura"))
 			);
 	
-			DatabaseData dados = lService.getAllFiltered();
-			try {
-				return Resource.resourceFactory(dados, LicitacaoResource.class);
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
+			DatabaseData dados = lService.getAllFiltered();			
+			return Resource.resourceFactory(dados, LicitacaoResource.class);
+			
+		
 	}
 
 	@GET
@@ -96,16 +75,9 @@ public class LicitacaoRequest {
 			RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 			RequestContext.getContext().addFilter(new EqualFilter(Boolean.class, new DatabaseAlias("teste_boolean","boolean")));
-			
-			//era pro vilacinha ter feito isso :(
+						
 			DatabaseData dados = tService.getAllFiltered();
-			try {
-				return Resource.resourceFactory(dados, TesteResource.class);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				// TODO vilacinha resolve essa parada
-				e.printStackTrace();
-			}
-			return null;
+			return Resource.resourceFactory(dados, TesteResource.class);			
 	}
 	
 	@GET
@@ -116,14 +88,9 @@ public class LicitacaoRequest {
 			@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt
 			) throws ApiException {
 		RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
-		//era pro vilacinha ter feito isso :(
+		
 		DatabaseData dados = tService.getAllFiltered();
-		try {
-			return Resource.resourceFactory(dados, TesteResource.class);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			// TODO vilacinha resolve essa parada
-			e.printStackTrace();
-		}
-		return null;
+		return Resource.resourceFactory(dados, TesteResource.class);
+		
 	}
 }
