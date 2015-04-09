@@ -27,7 +27,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 			showErrorMessage(serverResponse);
 			return;
 		}
-		if(serverResponse.getResourceMethod().isAnnotationPresent(ResponseNotRequired.class)){
+		if(!serverResponse.getResourceMethod().isAnnotationPresent(ResponseNotRequired.class)){
 			putResponse(serverResponse);
 		}
 	}

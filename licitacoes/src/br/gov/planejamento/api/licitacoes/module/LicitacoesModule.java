@@ -5,6 +5,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
+import br.gov.planejamento.api.core.annotations.ResponseNotRequired;
 import br.gov.planejamento.api.core.base.Module;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 
@@ -14,6 +15,7 @@ public class LicitacoesModule extends Module {
 	
 	@GET
 	@Path(CommonConstants.Docs.LICITACOES)
+	@ResponseNotRequired
 	public String getDocs() throws ApiException {
 		return extractDocumentation("br.gov.planejamento.api.licitacoes.request");
 	}
