@@ -4,8 +4,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.jboss.resteasy.core.ServerResponse;
+
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ErrorResponse;
 
 @Provider
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
@@ -30,8 +33,11 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		}
 		System.out.println("-----------------------------------------------------------------");
 		
-		//Chamar aqui o getErrorResponse da ApiException em questão
+		ErrorResponse errorResponse = new ErrorResponse(apiException);
 		
-		return null;
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setEntity(errorResponse);
+		
+		return ServerResponseBuilder.build(serverResponse, errorResponse);
 	}	
 }

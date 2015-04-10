@@ -37,7 +37,5 @@ public class OrgaoRequest {
 		response = ResourceListResponse.factory(oService.getAllFiltered(), OrgaoResource.class);
 		return response;
 	}
-		
-	
 
 }

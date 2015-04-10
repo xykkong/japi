@@ -14,6 +14,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ErrorResponse;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 
@@ -61,6 +62,19 @@ public abstract class HTMLSerializer {
 	}
 	
 	public static String fromResourceResponse(ResourceResponse response) {
-		return "Temporariamente desabilitado. Falar com Pedro";
+		//Afonso, aqui pode temporariamente só chamar o mesmo método acima, já que a lógica pra
+		//diferenciar ResourceResponse e ResourceListResponse vai ficar no template
+		return "Temporariamente desabilitado.";
+	}
+	
+	public static String fromErrorResponse(ErrorResponse response) {
+		//Afonso, fiz isso aqui temporariamente, vê se tu consegue implementar o mesmo template
+		//da framework antiga pra esse caso aqui. (É um template bem simples, só com o cabeçalho
+		//e o rodapé verdes do layout e com o meio todo branco
+		StringBuilder sb = new StringBuilder();
+		sb.append("<h1>Error</h1>");
+		sb.append("<h3>Status: " + response.getApiException().getHttpStatusCode() + "</h3>");
+		sb.append("<h3>Mensagem: " + response.getApiException().getMessage() + "</h3>");
+		return sb.toString();
 	}
 }

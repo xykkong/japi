@@ -12,6 +12,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
+import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -106,5 +107,10 @@ public class ResourceResponse<T extends Resource> extends Response {
 	@Override
 	public String toXML() throws ApiException {
 		return XMLSerializer.fromResourceResponse(this);
+	}
+
+	@Override
+	public int getHttpStatusCode() {
+		return Constants.HttpStatusCodes.OK;
 	}
 }

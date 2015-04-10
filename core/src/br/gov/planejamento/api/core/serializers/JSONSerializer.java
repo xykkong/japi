@@ -3,6 +3,7 @@ package br.gov.planejamento.api.core.serializers;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.responses.ErrorResponse;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
@@ -41,6 +42,18 @@ public abstract class JSONSerializer {
 	
 	public static String fromResourceResponse(ResourceResponse response) throws ApiException {
 		JsonObject json = resourceToJsonObject(response.getResource());
+		return json.toString();
+	}
+	
+	public static String fromErrorResponse(ErrorResponse response) {
+		JsonObject json = new JsonObject();
+		
+		JsonObject error = new JsonObject();
+		error.addProperty("status", response.getApiException().getHttpStatusCode());
+		error.addProperty("mensagem", response.getApiException().getMessage());
+		
+		json.add("error", error);
+		
 		return json.toString();
 	}
 }

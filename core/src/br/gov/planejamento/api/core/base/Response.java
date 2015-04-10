@@ -7,6 +7,12 @@ import br.gov.planejamento.api.core.interfaces.ISerializable;
 
 public abstract class Response implements ISelfLink, ILinks, ISerializable {
 
+	/**
+	 * Obtém o código do Status HTTP da Response
+	 * @return
+	 */
+	public abstract int getHttpStatusCode();
+	
 	private String name = "";
 	private String description = "";
 	

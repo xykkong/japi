@@ -23,6 +23,7 @@ import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ErrorResponse;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
@@ -108,6 +109,23 @@ public abstract class XMLSerializer {
 		Document xml = newXMLDocument();
 		Element root = resourceToElement(xml, response.getResource());
 		xml.appendChild(root);
+		
+		return xmlToString(xml);
+	}
+	
+	public static String fromErrorResponse(ErrorResponse response) throws ApiException {
+		
+		Document xml = newXMLDocument();
+		Element root = xml.createElement("error");
+		
+		Element status = xml.createElement("status");
+		status.setTextContent(Integer.toString(response.getApiException().getHttpStatusCode()));
+		
+		Element mensagem = xml.createElement("mensagem");
+		mensagem.setTextContent(response.getApiException().getMessage());
+		
+		root.appendChild(status);
+		root.appendChild(mensagem);
 		
 		return xmlToString(xml);
 	}
