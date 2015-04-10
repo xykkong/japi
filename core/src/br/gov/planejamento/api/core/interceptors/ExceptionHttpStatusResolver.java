@@ -27,6 +27,18 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	public Response toResponse(Exception exception) {
 		
 		ApiException apiException;
+		//TODO: Pensar se existe uma forma melhor de trabalhar isso. É necessário, para carregar os resources no 
+		//template de erro, que eu saiba a rootURL, mas ela é setada apenas no pre-process e não chega até lá quando
+		//o erro ocorre.
+		try {
+			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
+		} catch (ApiException e) {
+			//TODO: redirecionar para método que retorne um erro.
+			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
+			//o jeito é redirecionar para uma página de erro
+			//Talvez seja interessante o próprio postprocess também fazer isso.
+			return new ServerResponse(e, 400, new Headers<Object>());
+		}
 		if(!(exception instanceof ApiException)) {
 			apiException = new CoreException("Houve um erro interno desconhecido.", exception);
 		} else {
