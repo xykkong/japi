@@ -97,7 +97,7 @@
 			
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
 
-			<div id="p_footer" style="position:fixed; bottom:0">
+			<div id="p_footer" style="position:fixed; bottom:0;">
 				<div id="p_f_bra">
 					<div id="p_f_bra_interno"  class="p_container">	
 						<a href="http://www.acessoainformacao.gov.br/" target="_blank">
