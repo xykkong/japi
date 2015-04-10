@@ -2,7 +2,6 @@ package br.gov.planejamento.api.core.responses;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +25,6 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 public class ResourceListResponse<T extends Resource> extends Response implements List<Resource> {
 
-	private static final long serialVersionUID = 8239651864123040735L;
 	private String name = "resource_list";
 	private String description = "";
 	private int totalFoundResources = 0;

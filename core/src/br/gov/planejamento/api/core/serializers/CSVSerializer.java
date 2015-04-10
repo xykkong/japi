@@ -47,7 +47,7 @@ public abstract class CSVSerializer {
 		return sw.toString();
 	}
 	
-	public static String fromResourceResponse(ResourceResponse response) throws ApiException {
+	public static String fromResourceResponse(ResourceResponse<?> response) throws ApiException {
 		
 		if(response.getResource() == null) return "";
 		

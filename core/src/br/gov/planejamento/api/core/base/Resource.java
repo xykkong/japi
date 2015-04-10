@@ -1,17 +1,12 @@
 package br.gov.planejamento.api.core.base;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import br.gov.planejamento.api.core.database.DataRow;
-import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.interfaces.ILinks;
 import br.gov.planejamento.api.core.interfaces.IProperties;
 import br.gov.planejamento.api.core.interfaces.ISelfLink;
-import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 

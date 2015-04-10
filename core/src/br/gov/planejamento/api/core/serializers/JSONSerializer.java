@@ -40,7 +40,7 @@ public abstract class JSONSerializer {
 		return json.toString();
 	}
 	
-	public static String fromResourceResponse(ResourceResponse response) throws ApiException {
+	public static String fromResourceResponse(ResourceResponse<?> response) throws ApiException {
 		JsonObject json = resourceToJsonObject(response.getResource());
 		return json.toString();
 	}

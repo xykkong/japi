@@ -2,10 +2,6 @@ package br.gov.planejamento.api.core.responses;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.RequestContext;

@@ -21,7 +21,7 @@ import br.gov.planejamento.api.core.responses.ResourceResponse;
 
 public abstract class HTMLSerializer {
 
-	public static String fromResourceListResponse(ResourceListResponse response)
+	public static String fromResourceListResponse(ResourceListResponse<?> response)
 			throws ApiException {
 
 		String template = RequestContext.getContext().getHTMLTemplate();
@@ -30,7 +30,7 @@ public abstract class HTMLSerializer {
 		
 	}
 	
-	public static String fromResourceResponse(ResourceResponse response) throws ApiException {
+	public static String fromResourceResponse(ResourceResponse<?> response) throws ApiException {
 		//Afonso, aqui pode temporariamente só chamar o mesmo método acima, já que a lógica pra
 		//diferenciar ResourceResponse e ResourceListResponse vai ficar no template
 		//return "Temporariamente desabilitado.";
