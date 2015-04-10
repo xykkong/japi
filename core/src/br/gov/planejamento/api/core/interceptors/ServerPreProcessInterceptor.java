@@ -42,7 +42,6 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
 		
 		try {
-			System.out.println(JapiConfigLoader.getJapiConfig().getHtmlTemplate());
 			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
 		} catch (ApiException e) {
 			//TODO: redirecionar para método que retorne um erro.
