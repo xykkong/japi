@@ -32,7 +32,10 @@ public class ResourceResponse<T extends Resource> extends Response {
 	/**
 	 * Construtor privado da ResourceResponse
 	 */
-	private ResourceResponse (){}
+	private ResourceResponse (){
+		setName(name);
+		setDescription(description);
+	}
 	
 	/**
 	 * Constrói uma ResourceResponse a partir de um DatabaseData e de um tipo de Resource especificado
@@ -41,9 +44,9 @@ public class ResourceResponse<T extends Resource> extends Response {
 	 * @return Uma instância de ResourceResponse contendo um Resource do tipo especificado
 	 * @throws ApiException 
 	 */
-	public static ResourceResponse factory(DatabaseData data, Class<? extends Resource> resourceType) throws ApiException {
+	public static <T extends Resource> ResourceResponse<T> factory(DatabaseData data, Class<? extends Resource> resourceType) throws ApiException {
 		
-		ResourceResponse response = new ResourceResponse();
+		ResourceResponse<T> response = new ResourceResponse<T>();
 		
 		try {
 			if(data.iterator().hasNext()) {

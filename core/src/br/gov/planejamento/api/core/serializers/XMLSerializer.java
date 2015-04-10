@@ -127,6 +127,8 @@ public abstract class XMLSerializer {
 		root.appendChild(status);
 		root.appendChild(mensagem);
 		
+		xml.appendChild(root);
+		
 		return xmlToString(xml);
 	}
 	
