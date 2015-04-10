@@ -6,6 +6,10 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.core.ServerResponse;
 
+import org.jboss.resteasy.core.Headers;
+
+import br.gov.planejamento.api.core.base.JapiConfigLoader;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
