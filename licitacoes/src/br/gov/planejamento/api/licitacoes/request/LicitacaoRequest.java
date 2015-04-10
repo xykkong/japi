@@ -1,7 +1,5 @@
 package br.gov.planejamento.api.licitacoes.request;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -10,10 +8,7 @@ import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Module;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.base.Resource;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -22,6 +17,8 @@ import br.gov.planejamento.api.core.filters.DateEqualFilter;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
+import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.licitacoes.resource.LicitacaoResource;
 import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
@@ -38,8 +35,7 @@ public class LicitacaoRequest {
 	@GET
 	@About(name="licitacoes", description ="Lista de licitações", exampleQuery ="?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
-	@Returns(resource=LicitacaoResource.class, isList=true)
-	public Response licitacoes(
+	public ResourceListResponse<LicitacaoResource> licitacoes(
 				@Parameter(name = "uasg", description = "número UASG da Licitação") String uasg,
 				@Parameter(name = "modalidade", description = "Modalidade") String modalidade,
 				@Parameter(name = "numero_aviso", description = "Número aviso") String numeroAviso,
@@ -54,35 +50,13 @@ public class LicitacaoRequest {
 			);
 	
 			DatabaseData dados = lService.getAllFiltered();
-			try {
-				return Resource.resourceFactory(dados, LicitacaoResource.class);
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
+			return ResourceListResponse.factory(dados, LicitacaoResource.class);
 	}
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
 	@About(name="licitacoesteste",description="Lista de pessoas da tabela de testes", exampleQuery="")
-	@Returns(resource=TesteResource.class, isList=true)		
-	public Response teste(	@Parameter(name = LicitacaoConstants.Properties.Names.IDADE,
+	public ResourceListResponse<TesteResource> teste(	@Parameter(name = LicitacaoConstants.Properties.Names.IDADE,
 										description = LicitacaoConstants.Properties.Description.IDADE) String testeInt,
 							@Parameter(name = LicitacaoConstants.Properties.Names.NOME, 
 										description = LicitacaoConstants.Properties.Description.NOME) String testeString,
@@ -97,33 +71,19 @@ public class LicitacaoRequest {
 			RequestContext.getContext().addFilter(new DateEqualFilter(DateParam.class, new DatabaseAlias("teste_date","nascimento")));
 			RequestContext.getContext().addFilter(new EqualFilter(Boolean.class, new DatabaseAlias("teste_boolean","boolean")));
 			
-			//era pro vilacinha ter feito isso :(
 			DatabaseData dados = tService.getAllFiltered();
-			try {
-				return Resource.resourceFactory(dados, TesteResource.class);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				// TODO vilacinha resolve essa parada
-				e.printStackTrace();
-			}
-			return null;
+			return ResourceListResponse.factory(dados, TesteResource.class);
 	}
 	
 	@GET
 	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
 	@About(name="licitacaoteste",description="Uma pessoa da tabela de testes", exampleId="666")
-	@Returns(resource=TesteResource.class, isList=false)
-	public Response testeUnico(
+	public ResourceResponse<TesteResource> testeUnico(
 			@Parameter(name = "idade", required=true, description = "Idade da pessoa") String testeInt
 			) throws ApiException {
 		RequestContext.getContext().addFilter(new EqualFilter(Integer.class, "teste_int as idade"));
-		//era pro vilacinha ter feito isso :(
+		
 		DatabaseData dados = tService.getAllFiltered();
-		try {
-			return Resource.resourceFactory(dados, TesteResource.class);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			// TODO vilacinha resolve essa parada
-			e.printStackTrace();
-		}
-		return null;
+		return ResourceResponse.factory(dados, TesteResource.class);
 	}
 }

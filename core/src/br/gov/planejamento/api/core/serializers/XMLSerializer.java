@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -22,12 +23,13 @@ import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
+import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.utils.SerializeUtils;
 
 public abstract class XMLSerializer {
 
-	public static String fromResponse(Response response) throws ApiException {
-		
+	private static Document newXMLDocument() throws ApiException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {
@@ -36,50 +38,10 @@ public abstract class XMLSerializer {
 			throw new CoreException("Houve um erro ao construir o DocumentBuilder do XML.", e);
 		}
 		
-		Document xml = builder.newDocument();		
-		
-		ArrayList<Element> resources = new ArrayList<Element>();	
-		for(Resource resource : response) {
-			if(resource == null) continue;
-			Element item = xml.createElement("resource");
-			Element links = xml.createElement("_links");
-			for(Element link : SerializeUtils.linksToXML(xml, resource.getLinks())) {
-				links.appendChild(link);
-			}
-			item.appendChild(links);
-			for(Property property : resource.getProperties()) {
-				if(property == null) continue;
-				Element element = xml.createElement(property.getId());
-				element.setTextContent(property.getValue());
-				item.appendChild(element);
-			}
-			resources.add(item);
-		}		
-		
-		Element root;
-		
-		if(response.isList()) {
-			root = xml.createElement("resource");
-			Element links = xml.createElement("_links");
-			for(Element link : SerializeUtils.linksToXML(xml, response.getLinks())) {
-				links.appendChild(link);
-			}
-			root.appendChild(links);
-			Element embedded = xml.createElement("_embedded");
-			for(Element resource : resources) {
-				embedded.appendChild(resource);
-			}
-			root.appendChild(embedded);
-			xml.appendChild(root);
-		} else {
-			if(resources.size() == 1) {
-				root = resources.get(0);
-				xml.appendChild(root);
-			} else {
-				//TODO: Lançar exception quando uma página de detalhamento é chamada havendo mais de um registro
-			}
-		}
-		
+		return builder.newDocument();	
+	}
+	
+	private static String xmlToString(Document xml) throws ApiException {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer;
 		try {
@@ -97,6 +59,57 @@ public abstract class XMLSerializer {
 		String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
 		
 		return output;
+	}
+	
+	private static Element resourceToElement(Document xml, Resource resource) throws ApiException {
+		if(resource == null) return null;
+		Element item = xml.createElement("resource");
+		Element links = xml.createElement("_links");
+		for(Element link : SerializeUtils.linksToXML(xml, resource.getLinks())) {
+			links.appendChild(link);
+		}
+		item.appendChild(links);
+		for(Property property : resource.getProperties()) {
+			if(property == null) continue;
+			Element element = xml.createElement(property.getId());
+			element.setTextContent(property.getValue());
+			item.appendChild(element);
+		}
+		return item;
+	}
+	
+	public static <T extends Resource> String fromResourceListResponse(ResourceListResponse<T> response) throws ApiException {
+		
+		Document xml = newXMLDocument();
+		
+		ArrayList<Element> resources = new ArrayList<Element>();	
+		for(Resource resource : response) {
+			resources.add(resourceToElement(xml, resource));
+		}		
+		
+		Element root = xml.createElement("resource");
+		Element links = xml.createElement("_links");
+		for(Element link : SerializeUtils.linksToXML(xml, response.getLinks())) {
+			links.appendChild(link);
+		}
+		root.appendChild(links);
+		Element embedded = xml.createElement("_embedded");
+		for(Element resource : resources) {
+			embedded.appendChild(resource);
+		}
+		root.appendChild(embedded);
+		xml.appendChild(root);
+		
+		return xmlToString(xml);
+	}
+	
+	public static String fromResourceResponse(ResourceResponse response) throws ApiException {
+		
+		Document xml = newXMLDocument();
+		Element root = resourceToElement(xml, response.getResource());
+		xml.appendChild(root);
+		
+		return xmlToString(xml);
 	}
 	
 }

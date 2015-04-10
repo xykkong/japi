@@ -6,12 +6,11 @@ import javax.ws.rs.Path;
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.annotations.Returns;
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.licitacoes.resource.OrgaoResource;
 import br.gov.planejamento.api.licitacoes.service.OrgaoService;
 
@@ -24,8 +23,7 @@ public class OrgaoRequest {
 	@GET
 	@Path(LicitacaoConstants.Requests.List.ORGAOS)
 	@About(name="orgaos", description ="Lista de órgãos emissores de licitações", exampleQuery ="?tipo_adm=1")
-	@Returns(resource=OrgaoResource.class, isList=true)	
-	public Response orgaos(
+	public ResourceListResponse<OrgaoResource> orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
 			) throws ApiException {
@@ -35,8 +33,8 @@ public class OrgaoRequest {
 				new EqualFilter(BooleanParam.class, "ativo")
 				);
 
-		Response response = null;
-		response = oService.orgaos();
+		ResourceListResponse response = null;
+		response = ResourceListResponse.factory(oService.getAllFiltered(), OrgaoResource.class);
 		return response;
 	}
 		

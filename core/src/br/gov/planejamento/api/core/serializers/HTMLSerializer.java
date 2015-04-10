@@ -12,13 +12,14 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
+import br.gov.planejamento.api.core.responses.ResourceResponse;
 
 public abstract class HTMLSerializer {
 
-	public static String fromResponse(Response response)
+	public static String fromResourceListResponse(ResourceListResponse response)
 			throws ApiException {
 
 		Velocity.setProperty("resource.loader", "classpath");
@@ -57,5 +58,9 @@ public abstract class HTMLSerializer {
 			throw new CoreException("Houve um erro ao processar o template do Velocity.", e);
 		}
 		return writer.toString();
+	}
+	
+	public static String fromResourceResponse(ResourceResponse response) {
+		return "Temporariamente desabilitado. Falar com Pedro";
 	}
 }

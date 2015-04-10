@@ -2,6 +2,7 @@ package br.gov.planejamento.api.core.base;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Set;
 
 import javax.ws.rs.Path;
@@ -15,9 +16,10 @@ import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.annotations.Returns;
+import br.gov.planejamento.api.core.base.DocumentationObject.Request.Returns;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 import com.google.gson.JsonArray;
@@ -37,13 +39,13 @@ public abstract class Module extends Application {
 	 */
 	protected String extractDocumentation(String packageName) throws ApiException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodParameterScanner());
-		Set<Method> methods = reflections.getMethodsReturn(Response.class);
+		Set<Method> methods = reflections.getMethodsReturn(ResourceListResponse.class);
 		
 		JsonObject json = new JsonObject();
 		JsonArray requests = new JsonArray();
 		
 		for(Method requestMethod : methods) {
-			if(requestMethod.isAnnotationPresent(Path.class) && requestMethod.isAnnotationPresent(Returns.class)) {				
+			if(requestMethod.isAnnotationPresent(Path.class)) {				
 				JsonObject request = new JsonObject();				
 				
 				//Obtendo documentação do método requisitado
@@ -82,11 +84,13 @@ public abstract class Module extends Application {
 				
 				String requestPath = requestMethod.getAnnotation(Path.class).value();
 				request.addProperty("path", requestPath);
-				String returnsResource = requestMethod.getAnnotation(Returns.class).resource().getSimpleName();
-				Boolean returnsIsList = requestMethod.getAnnotation(Returns.class).isList();
+				
+				@SuppressWarnings("unchecked") //Nunca pode acontecer, já que os Responses são do tipo ResourceResponse ou ResourceListResponse e por definição das classes possuem argumentos que extendem Resource
+				Class<? extends Resource> returnType = ((Class<? extends Resource>)((ParameterizedType)requestMethod.getReturnType().getGenericSuperclass()).getActualTypeArguments()[0]);
+				
 				JsonObject returns = new JsonObject();
-				returns.addProperty("resource", returnsResource);
-				returns.addProperty("isList", returnsIsList);
+				returns.addProperty("resource", returnType.getSimpleName());
+				returns.addProperty("response_type", requestMethod.getReturnType().getSimpleName());
 				request.add("returns", returns);
 				
 				//Obtendo informações dos parâmetros do método
@@ -112,8 +116,7 @@ public abstract class Module extends Application {
 				
 				//Otendo informaçães do retorno do método
 				JsonArray properties = new JsonArray();
-				Class<? extends Object> resourceType = requestMethod.getAnnotation(Returns.class).resource();
-				for(Method propertyMethod : resourceType.getMethods()) {
+				for(Method propertyMethod : returnType.getMethods()) {
 					if(propertyMethod.getReturnType().equals(Property.class) && !propertyMethod.isAnnotationPresent(Ignore.class)) {
 												
 						String propertyName = ReflectionUtils.getterToPropertyName(propertyMethod.getName());

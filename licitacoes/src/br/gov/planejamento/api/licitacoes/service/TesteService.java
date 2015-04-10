@@ -1,11 +1,11 @@
 package br.gov.planejamento.api.licitacoes.service;
 
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.database.Service;
 import br.gov.planejamento.api.core.database.ServiceConfiguration;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.licitacoes.resource.TesteResource;
 
 public class TesteService extends Service {
@@ -20,18 +20,6 @@ public class TesteService extends Service {
 		configs.setValidOrderByValues("id","teste_string","teste_date");
 
 		return configs;
-	}
-
-	public Response teste() throws ApiException {
-		
-		DatabaseData dados = getAllFiltered();
-		Response retorno = new Response(dados.getCount());
-		
-		for(DataRow teste : dados) {
-			retorno.add(new TesteResource(teste));
-		}
-		
-		return retorno;
 	}
 
 }

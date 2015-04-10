@@ -1,6 +1,7 @@
 package br.gov.planejamento.api.core.interceptors;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedRequestException;
