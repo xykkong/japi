@@ -6,6 +6,15 @@ public class DocumentationObject {
 	
 	ArrayList<Request> requests;
 	String modulo;
+	String template = null;
+	
+	public String getTemplate() {
+		return template;
+	}
+	
+	public void setTemplate(String template) {
+		this.template = template;
+	}
 	
 	public ArrayList<Request> getRequests() {
 		return requests;
