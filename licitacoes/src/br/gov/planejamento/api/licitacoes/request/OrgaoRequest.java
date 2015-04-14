@@ -33,7 +33,7 @@ public class OrgaoRequest {
 				new EqualFilter(BooleanParam.class, "ativo")
 				);
 
-		ResourceListResponse response = null;
+		ResourceListResponse<OrgaoResource> response = null;
 		response = ResourceListResponse.factory(oService.getAllFiltered(), OrgaoResource.class);
 		return response;
 	}

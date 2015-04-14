@@ -116,12 +116,20 @@
 					
 					<hr class="barra" style="margin: 0px;"/>
 					<div id="header-content">
-					#set($count = $response.count)
+					#if($response.isList())
+						#set($count = $response.totalFoundResources)
+					#else
+						#if(!$response.resource)
+							#set($count = 0)
+						#else 
+							#set($count = 1)
+						#end
+					#end					
 						#if($count > 0)
 							#if ($response.isList())
 								<h2 id="titulo" class="titulo-pagina">$response.description</h2>
 							#else
-								#set($resource = $response.get(0))
+								#set($resource = $response.resource)
 								<h2 id="titulo" class="titulo-pagina">$resource.selfLink.title</h2>
 							#end
 						#end

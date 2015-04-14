@@ -2,7 +2,6 @@ package br.gov.planejamento.api.core.responses;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +25,6 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 public class ResourceListResponse<T extends Resource> extends Response implements List<Resource> {
 
-	private static final long serialVersionUID = 8239651864123040735L;
 	private String name = "resource_list";
 	private String description = "";
 	private int totalFoundResources = 0;
@@ -37,6 +35,8 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 	 * @param totalFoundResources Número total de registros encontrados no banco para este Request, ignorando o limite de paginação
 	 */
 	private ResourceListResponse (int totalFoundResources){
+		setName(name);
+		setDescription(description);
 		this.totalFoundResources = totalFoundResources;
 	}
 	
@@ -47,9 +47,9 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 	 * @return Uma instância de ResourceListResponse contendo uma lista de Resources do tipo especificado
 	 * @throws ApiException 
 	 */
-	public static ResourceListResponse factory(DatabaseData data, Class<? extends Resource> resourceType) throws ApiException {
+	public static <T extends Resource> ResourceListResponse<T> factory(DatabaseData data, Class<? extends Resource> resourceType) throws ApiException {
 		
-		ResourceListResponse response = new ResourceListResponse(data.getCount());
+		ResourceListResponse<T> response = new ResourceListResponse<T>(data.getCount());
 		
 		for(DataRow row : data) {
 			try {

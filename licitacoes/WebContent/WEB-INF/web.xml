@@ -4,13 +4,13 @@
   <filter>
     <filter-name>UrlRewriteFilter</filter-name>
     <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-	</filter>
-	<filter-mapping>
-	    <filter-name>UrlRewriteFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
-	    <dispatcher>REQUEST</dispatcher>
-	    <dispatcher>FORWARD</dispatcher>
-	</filter-mapping>
+  </filter>
+  <filter-mapping>
+	  <filter-name>UrlRewriteFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	  <dispatcher>REQUEST</dispatcher>
+	  <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
   <context-param>
     <param-name>resteasy.media.type.mappings</param-name>
     <param-value>html: text/html, json : application/json, xml : application/xml, csv : text/csv</param-value>

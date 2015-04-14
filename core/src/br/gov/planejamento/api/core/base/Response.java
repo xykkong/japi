@@ -4,6 +4,7 @@ import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.interfaces.ILinks;
 import br.gov.planejamento.api.core.interfaces.ISelfLink;
 import br.gov.planejamento.api.core.interfaces.ISerializable;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
 
 public abstract class Response implements ISelfLink, ILinks, ISerializable {
 
@@ -15,6 +16,11 @@ public abstract class Response implements ISelfLink, ILinks, ISerializable {
 	
 	private String name = "";
 	private String description = "";
+	
+	public boolean isList(){
+		if(this instanceof ResourceListResponse<?>) return true;
+		return false;
+	}
 	
 	/**
 	 * Obtém o nome da Response	

@@ -10,7 +10,6 @@ import br.gov.planejamento.api.core.base.DocumentationObject;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
-import br.gov.planejamento.api.core.serializers.DocumentObjectSerializer;
 import br.gov.planejamento.api.core.serializers.SwaggerParser;
 
 @Path("/")
@@ -21,25 +20,24 @@ public class JapiDocs {
 	@Path("/")
 	@ResponseNotRequired
 	public String docsHome() throws ApiException{
-			return DocumentObjectSerializer.render(null, null);
+			return "";
 	}
 	
 	@GET
 	@Path("/{modulo}")
 	@ResponseNotRequired
-	public String docs(@PathParam("modulo") String modulo) throws ApiException{
+	public DocumentationObject docs(@PathParam("modulo") String modulo) throws ApiException{
 		
 		modulo = RequestContext.getContext().getValue("modulo");
 		DocumentationObject documentation = SwaggerParser.parse(docUrl(modulo));
 		documentation.setModulo(modulo);
-		
-		return DocumentObjectSerializer.render(documentation, null);
+		return documentation;
 	}
 	
 	@GET
 	@ResponseNotRequired
 	@Path("/doc/{modulo}/{consulta}")
-	public String innerDocs(
+	public DocumentationObject innerDocs(
 		@PathParam("consulta") String method,
 		@PathParam("modulo") String modulo) throws ApiException{
 			modulo = RequestContext.getContext().getValue("modulo");
@@ -48,8 +46,10 @@ public class JapiDocs {
 			DocumentationObject documentation = SwaggerParser.parse(docUrl(modulo));
 			documentation.setModulo(modulo);
 			for (DocumentationObject.Request request : documentation.getRequests()) {
-				if(request.getMethod_name() != null && request.getMethod_name().equals(method))
-					return DocumentObjectSerializer.render(request, PATH_INNER_DOCS);
+				if(request.getMethod_name() != null && request.getMethod_name().equals(method)){
+					documentation.setTemplate(PATH_INNER_DOCS);
+					return documentation;
+				}
 			}
 			throw new RequestException("Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
 		

@@ -14,13 +14,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
-import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -104,7 +102,7 @@ public abstract class XMLSerializer {
 		return xmlToString(xml);
 	}
 	
-	public static String fromResourceResponse(ResourceResponse response) throws ApiException {
+	public static String fromResourceResponse(ResourceResponse<?> response) throws ApiException {
 		
 		Document xml = newXMLDocument();
 		Element root = resourceToElement(xml, response.getResource());
@@ -126,6 +124,8 @@ public abstract class XMLSerializer {
 		
 		root.appendChild(status);
 		root.appendChild(mensagem);
+		
+		xml.appendChild(root);
 		
 		return xmlToString(xml);
 	}
