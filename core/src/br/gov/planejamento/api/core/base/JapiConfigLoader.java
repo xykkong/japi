@@ -36,9 +36,11 @@ public class JapiConfigLoader {
 
 	public class JapiConfig {
 		private DatabaseProperties databaseProperties;
-		private String assetFolder; 
+		private String assetFolder;
+		private String errorTemplate;
 		private String htmlTemplate;
-		private String docsHtmlFolder;
+		private String docsTemplate;
+		private String innerDocsTemplate;
 		private String rootUrl;
 		
 		public String getRootUrl() {
@@ -53,17 +55,29 @@ public class JapiConfigLoader {
 		public void setAssetFolder(String assetFolder) {
 			this.assetFolder = assetFolder;
 		}
-		public String getDocsHtmlFolder() {
-			return docsHtmlFolder;
+		public String getDocsTemplate() {
+			return docsTemplate;
 		}
-		public void setDocsHtmlFolder(String docsFolder) {
-			this.docsHtmlFolder = docsFolder;
+		public void setDocsTemplate(String docsFolder) {
+			this.docsTemplate = docsFolder;
+		}
+		public String getInnerDocsTemplate() {
+			return innerDocsTemplate;
+		}
+		public void setInnerDocsTemplate(String docsFolder) {
+			this.innerDocsTemplate = docsFolder;
 		}
 		public String getHtmlTemplate() {
 			return htmlTemplate;
 		}
 		public void setHtmlTemplate(String htmlTemplate) {
 			this.htmlTemplate = htmlTemplate;
+		}
+		public String getErrorTemplate() {
+			return errorTemplate;
+		}
+		public void setErrorTemplate(String htmlTemplate) {
+			this.errorTemplate = htmlTemplate;
 		}
 		public class DatabaseProperties{
 			public String getUrl() {

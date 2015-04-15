@@ -46,7 +46,7 @@ public abstract class HTMLSerializer {
 		//Afonso, fiz isso aqui temporariamente, vê se tu consegue implementar o mesmo template
 		//da framework antiga pra esse caso aqui. (É um template bem simples, só com o cabeçalho
 		//e o rodapé verdes do layout e com o meio todo branco
-		String template = "br/gov/planejamento/api/commons/templates/errorTemplate.vm";
+		String template = RequestContext.getContext().getErrorTemplate();
 		return render(response, template);
 	}
 	

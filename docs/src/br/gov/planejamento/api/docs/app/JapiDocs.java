@@ -14,13 +14,12 @@ import br.gov.planejamento.api.core.serializers.SwaggerParser;
 
 @Path("/")
 public class JapiDocs {
-	private final String PATH_INNER_DOCS = "br/gov/planejamento/api/docs/templates/innerDocs.vm";
 	
 	@GET
 	@Path("/")
 	@ResponseNotRequired
-	public String docsHome() throws ApiException{
-			return "";
+	public String docsHome() throws ApiException{	
+		return "";		
 	}
 	
 	@GET
@@ -31,6 +30,7 @@ public class JapiDocs {
 		modulo = RequestContext.getContext().getValue("modulo");
 		DocumentationResponse documentation = SwaggerParser.parse(docUrl(modulo));
 		documentation.setModulo(modulo);
+		documentation.setTemplate(RequestContext.getContext().getDocsTemplate());
 		return documentation;
 	}
 	
@@ -47,7 +47,7 @@ public class JapiDocs {
 			documentation.setModulo(modulo);
 			for (DocumentationResponse.Request request : documentation.getRequests()) {
 				if(request.getMethod_name() != null && request.getMethod_name().equals(method)){
-					documentation.setTemplate(PATH_INNER_DOCS);
+					documentation.setTemplate(RequestContext.getContext().getInnerDocsTemplate());
 					return documentation;
 				}
 			}
