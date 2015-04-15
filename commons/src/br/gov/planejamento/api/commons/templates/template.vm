@@ -138,6 +138,12 @@
 						#if( $response.isList() )
 							#set($offset = $session.offsetValue)
 							
+							#if($offset > 0)
+								#set($prev = $response.previousPage)
+							#end
+							#if($count - $offset > 500)
+								#set($next = $response.nextPage)
+							#end
 							#if ($count > 0)
 								#set($first = $offset + 1)
 								#if (($count - $offset) > 500)
