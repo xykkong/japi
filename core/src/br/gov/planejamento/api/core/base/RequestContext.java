@@ -234,9 +234,24 @@ public class RequestContext {
 	}
 	
 	public String getDocsTemplate() throws ApiException {
-		if(JapiConfigLoader.getJapiConfig().getDocsHtmlFolder() != null)
-			return JapiConfigLoader.getJapiConfig().getDocsHtmlFolder();
-		else return "br/gov/planejamento/api/docs/templates/docs.vm";
+		if(JapiConfigLoader.getJapiConfig().getDocsTemplate() != null)
+			return JapiConfigLoader.getJapiConfig().getDocsTemplate();
+		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
+		throw new RequestException("Caminho do Template do docs não configurado no japi_config.json");
+	}
+	
+	public String getInnerDocsTemplate() throws ApiException {
+		if(JapiConfigLoader.getJapiConfig().getInnerDocsTemplate() != null)
+			return JapiConfigLoader.getJapiConfig().getInnerDocsTemplate();
+		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
+		throw new RequestException("Caminho do Template do docs não configurado no japi_config.json");
+	}
+	
+	public String getErrorTemplate() throws ApiException {
+		if(JapiConfigLoader.getJapiConfig().getErrorTemplate() != null)
+			return JapiConfigLoader.getJapiConfig().getErrorTemplate();
+		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
+		throw new RequestException("Caminho do Template de erro não configurado no japi_config.json");
 	}
 	
 	public String getRootURL() {		
