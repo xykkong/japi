@@ -1,21 +1,17 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
-import br.gov.planejamento.api.core.constants.Constants.DateFormats;
-import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.DataRow;
-import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.masks.CPFMask;
+import br.gov.planejamento.api.core.masks.DateMask;
+import br.gov.planejamento.api.core.masks.MoneyMask;
+import br.gov.planejamento.api.core.masks.TimeMask;
 
 public class TesteResource extends Resource {
 
@@ -83,37 +79,30 @@ public class TesteResource extends Resource {
 	 * como description.
 	 */
 	
-	@Description("String que é um nome")
+	@Description("String que é um CPF")
 	public Property getTesteString() {
-		return new Property("Nome", testeString);
+		return new Property("CPF", testeString, new CPFMask());
 	}
+	
+	/*@Description("String que é um CPF")
+	 *public Property getTesteString() {
+	 *	return new Property("CNPJ", testeString, new CNPJMask());
+	 *}
+	 */
 	
 	@Description("Int que é uma idade")
 	public LinkProperty getTesteInt() {
 		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, LicitacaoConstants.Properties.Link.IDADE+testeInt, "licitacoes");
 	}
 	
-	@Description("Numeric que é uma altura")
+	@Description("Numeric que é um preço")
 	public Property getTesteNumeric() {
-		return new Property("Altura", testeNumeric);
+		return new Property("Preço", testeNumeric, new MoneyMask("US$")); //O argumento na mask é opicional. Padrão é R$.
 	}
 	
 	@Description("Date que é um nascimento")
-	public Property getTesteDate() throws CoreException  {
-		try{
-			String name = "Nascimento";
-			String value = this.testeDate;
-			
-			if(RequestContext.getContext().isCurrentFormat(RequestFormats.HTML)) {
-				SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.AMERICAN);
-				Date dt = formatter.parse(value);
-				value = (new SimpleDateFormat(DateFormats.BRAZILIAN)).format(dt);
-			}
-			
-			return new Property(name, value);
-		} catch(ParseException e) {
-			throw new CoreException("Houve um erro ao formatar a data.", e);
-		}
+	public Property getTesteDate() {
+		return new Property("Data de nascimento", testeDate, new DateMask());
 	}	
 	
 	@Description("Boolean de Teste")
@@ -123,7 +112,7 @@ public class TesteResource extends Resource {
 
 	@Description("Time que é uma hora preferida")
 	public Property getTesteTime() {
-		return new Property("Hora Preferida", testeTime);
+		return new Property("Hora Preferida", testeTime, new TimeMask("horas, ", "minutos, ", "segundos")); //Argumentos não obrigatórios. Padrão: HHhMMminSSs
 	}
 	
 	
@@ -150,7 +139,7 @@ public class TesteResource extends Resource {
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt, "Elemento de teste de nome "+this.testeString);
+		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt, "Elemento de teste de nome "+this.getTesteString());
 	}
 	
 	
