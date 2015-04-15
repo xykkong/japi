@@ -11,9 +11,10 @@ import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 
 public class DocumentationResponse  extends Response{
 
-	ArrayList<Request> requests;
-	String modulo;
-	String template = null;
+	private ArrayList<Request> requests;
+	private String modulo;
+	private String relativePath = "";
+	private String template = null;
 	
 	public String getTemplate() {
 		return template;
@@ -194,10 +195,14 @@ public class DocumentationResponse  extends Response{
 			}
 		}
 	}
+	
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
+	}
 
 	@Override
 	public SelfLink getSelfLink() throws ApiException {
-		return new SelfLink(RequestContext.getContext().getCurrentURL(), "Documentação "+this.modulo);
+		return new SelfLink(RequestContext.getContext().getRootURL()+"/"+relativePath, "Documentação "+this.modulo);
 	}
 
 	@Override
