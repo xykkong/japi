@@ -1,11 +1,14 @@
 package br.gov.planejamento.api.core.base;
 
+import br.gov.planejamento.api.core.interfaces.IMask;
+
 
 public class Property {
 	
 	protected String id;
 	protected String name;	
 	protected String value;	
+	protected String unmaskedValue;
 	
 	public Property(String name) {
 		this.name = name;
@@ -14,6 +17,12 @@ public class Property {
 	public Property(String name, String value) {
 		this(name);
 		this.value = value;
+	}
+	
+	public Property(String name, String value, IMask mask) {
+		this(name);
+		this.unmaskedValue = value;
+		this.value = mask.apply(value);
 	}
 
 	public String getId() {
@@ -39,5 +48,11 @@ public class Property {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	@Override
+	public String toString(){
+		return this.value;
+		
 	}
 }
