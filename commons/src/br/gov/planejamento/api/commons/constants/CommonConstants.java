@@ -8,10 +8,12 @@ public class CommonConstants {
 	 */
 	public static final class Modules {
 		public static final String LICITACOES = "licitacoes";
+		public static final String EXEMPLOS= "exemplos";
 	}
 	
 	public static final class Docs {
 		public static final String LICITACOES = "licitacoesdocs";
+		public static final String EXEMPLOS = "exemplos";
 	}
 	
 	public static final class URIConstants{
