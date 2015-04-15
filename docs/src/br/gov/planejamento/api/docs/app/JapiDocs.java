@@ -17,9 +17,8 @@ public class JapiDocs {
 	
 	@GET
 	@Path("/")
-	@ResponseNotRequired
-	public String docsHome() throws ApiException{
-			return "";
+	public String docsHome() throws ApiException{	
+		return "";		
 	}
 	
 	@GET
