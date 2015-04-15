@@ -1,9 +1,16 @@
-package br.gov.planejamento.api.core.base;
+package br.gov.planejamento.api.core.responses;
 
 import java.util.ArrayList;
 
-public class DocumentationObject {
-	
+import br.gov.planejamento.api.core.base.Link;
+import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.base.SelfLink;
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.serializers.HTMLSerializer;
+
+public class DocumentationResponse  extends Response{
+
 	ArrayList<Request> requests;
 	String modulo;
 	String template = null;
@@ -187,4 +194,43 @@ public class DocumentationObject {
 			}
 		}
 	}
+
+	@Override
+	public SelfLink getSelfLink() throws ApiException {
+		return new SelfLink(RequestContext.getContext().getCurrentURL(), "Documentação "+this.modulo);
+	}
+
+	@Override
+	public ArrayList<Link> getLinks() throws ApiException {
+		return new ArrayList<Link>();
+	}
+
+	@Override
+	public String toXML() throws ApiException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toCSV() throws ApiException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toJSON() throws ApiException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object toHTML() throws ApiException {
+		return HTMLSerializer.fromDocumentationResponse(this);
+	}
+
+	@Override
+	public int getHttpStatusCode() {
+		return 200;
+	}
+
 }
