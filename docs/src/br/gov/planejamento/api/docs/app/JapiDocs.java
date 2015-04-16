@@ -24,7 +24,6 @@ public class JapiDocs {
 	
 	@GET
 	@Path("/{modulo}")
-	@ResponseNotRequired
 	public DocumentationResponse docs(@PathParam("modulo") String modulo) throws ApiException{
 		
 		modulo = RequestContext.getContext().getValue("modulo");
@@ -35,7 +34,6 @@ public class JapiDocs {
 	}
 	
 	@GET
-	@ResponseNotRequired
 	@Path("/doc/{modulo}/{consulta}")
 	public DocumentationResponse innerDocs(
 		@PathParam("consulta") String method,
