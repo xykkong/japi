@@ -4,21 +4,28 @@ import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
 
 import br.gov.planejamento.api.core.annotations.About;
-import br.gov.planejamento.api.core.base.DocumentationObject;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.responses.DocumentationResponse;
+import br.gov.planejamento.api.core.responses.JsonObjectSwaggerResponse;
 
 public class ServerResponseBuilder {
 	public static ServerResponse build(ServerResponse serverResponse, Response response) {
 		serverResponse.setGenericType(String.class);
 		serverResponse.setStatus(response.getHttpStatusCode());
 		
-		if(serverResponse.getEntity() instanceof DocumentationObject){
-			DocumentationObject documentationObject = (DocumentationObject) serverResponse.getEntity();
-			serverResponse.setEntity(documentationObject);
+		if(serverResponse.getEntity() instanceof DocumentationResponse){
+			DocumentationResponse documentationResponse = (DocumentationResponse) serverResponse.getEntity();
+			serverResponse.setEntity(documentationResponse);
+			return serverResponse;
+		}
+		
+		if(serverResponse.getEntity() instanceof JsonObjectSwaggerResponse){
+			JsonObjectSwaggerResponse jsonObjectSwaggerResponse = (JsonObjectSwaggerResponse) serverResponse.getEntity();
+			serverResponse.setEntity(jsonObjectSwaggerResponse);
 			return serverResponse;
 		}
 		

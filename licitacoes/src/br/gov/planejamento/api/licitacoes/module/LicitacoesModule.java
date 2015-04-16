@@ -8,6 +8,7 @@ import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.core.annotations.ResponseNotRequired;
 import br.gov.planejamento.api.core.base.Module;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.responses.JsonObjectSwaggerResponse;
 
 @Path("/")
 @ApplicationPath("/")
@@ -16,7 +17,7 @@ public class LicitacoesModule extends Module {
 	@GET
 	@Path(CommonConstants.Docs.LICITACOES)
 	@ResponseNotRequired
-	public String getDocs() throws ApiException {
+	public JsonObjectSwaggerResponse getDocs() throws ApiException {
 		return extractDocumentation("br.gov.planejamento.api.licitacoes.request");
 	}
 }

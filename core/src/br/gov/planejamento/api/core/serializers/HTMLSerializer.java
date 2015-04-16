@@ -15,6 +15,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.DocumentationResponse;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
@@ -47,6 +48,10 @@ public abstract class HTMLSerializer {
 		//e o rodapé verdes do layout e com o meio todo branco
 		String template = RequestContext.getContext().getErrorTemplate();
 		return render(response, template);
+	}
+	
+	public static String fromDocumentationResponse(DocumentationResponse docResponse) throws ApiException {
+		return render(docResponse, docResponse.getTemplate());
 	}
 	
 	public static String render(Response response, String templateString) throws ApiException{
