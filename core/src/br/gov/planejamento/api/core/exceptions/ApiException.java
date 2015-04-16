@@ -12,6 +12,8 @@ public class ApiException extends Exception {
 		if(message!=null) this.message = message;
 		if(httpStatusCode!=0) this.httpStatusCode = httpStatusCode;
 		if(originalException!=null) this.originalException = originalException;
+		if(originalException!=null)
+			originalException.printStackTrace();
 	}
 	
 	public int getHttpStatusCode() {
