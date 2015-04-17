@@ -1,6 +1,7 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
+import br.gov.planejamento.api.commons.masks.HtmlOnlyDateMask;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.LinkProperty;
@@ -9,7 +10,6 @@ import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.masks.CPFMask;
-import br.gov.planejamento.api.core.masks.DateMask;
 import br.gov.planejamento.api.core.masks.MoneyMask;
 import br.gov.planejamento.api.core.masks.TimeMask;
 
@@ -102,7 +102,7 @@ public class TesteResource extends Resource {
 	
 	@Description("Date que é um nascimento")
 	public Property getTesteDate() {
-		return new Property("Data de nascimento", testeDate, new DateMask());
+		return new Property("Data de nascimento", testeDate, new HtmlOnlyDateMask());
 	}	
 	
 	@Description("Boolean de Teste")

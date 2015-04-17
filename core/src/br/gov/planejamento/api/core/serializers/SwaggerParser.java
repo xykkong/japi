@@ -5,16 +5,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
-import br.gov.planejamento.api.core.base.DocumentationObject;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.DocumentationResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class SwaggerParser {
 	
-	public static DocumentationObject parse(String docUrl) throws ApiException {
+	public static DocumentationResponse parse(String docUrl) throws ApiException {
 		
 		System.out.println("A url para a documentação é " + docUrl);
 		
@@ -25,7 +25,7 @@ public class SwaggerParser {
 			throw new CoreException("Houve um erro ao criar o arquivo JSON do SwaggerParser.", e);
 		} //Read the json output
         Gson gson = new GsonBuilder().create();
-        DocumentationObject obj = gson.fromJson(reader, DocumentationObject.class);
+        DocumentationResponse obj = gson.fromJson(reader, DocumentationResponse.class);
         return obj;
 
 	}

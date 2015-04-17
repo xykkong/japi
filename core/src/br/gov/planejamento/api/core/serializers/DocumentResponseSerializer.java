@@ -11,18 +11,18 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import br.gov.planejamento.api.core.base.DocumentationObject;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.DocumentationResponse;
 
-public class DocumentObjectSerializer {
+public class DocumentResponseSerializer {
 	
 	public static class DocsConfig {
 		private static String[] modulos = {"licitacoes"};
 	}
 	
-	public static String render(DocumentationObject documentation) throws ApiException {
+	public static String render(DocumentationResponse documentation) throws ApiException {
 		String templateName = documentation.getTemplate();
 		Velocity.setProperty("resource.loader", "classpath");
 		Velocity.setProperty("classpath.resource.loader.class",
