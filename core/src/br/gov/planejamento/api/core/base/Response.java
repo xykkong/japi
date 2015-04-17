@@ -1,6 +1,5 @@
 package br.gov.planejamento.api.core.base;
 
-import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.interfaces.ILinks;
 import br.gov.planejamento.api.core.interfaces.ISelfLink;
@@ -53,25 +52,5 @@ public abstract class Response implements ISelfLink, ILinks, ISerializable {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	
-	public String getNextPage() throws ApiException{
-		SelfLink self = getSelfLink();
-		String[] arraySelf = self.getHref().split("offset=");
-		int nextOffset = RequestContext.getContext().getOffsetValue()+Constants.FixedParameters.VALUES_PER_PAGE;
-		if(arraySelf[1].matches("(\\d+)(.*)")){
-			arraySelf[1] = arraySelf[1].replaceAll("(\\d+)(.*)", nextOffset+"$2");
-		}
-		return arraySelf[0]+"offset="+arraySelf[1];
-	}
-	
-	public String getPreviousPage() throws ApiException{
-		SelfLink self = getSelfLink();
-		String[] arraySelf = self.getHref().split("offset=");
-		int prevOffset = RequestContext.getContext().getOffsetValue()-Constants.FixedParameters.VALUES_PER_PAGE;
-		if(arraySelf[1].matches("(\\d+)(.*)")){
-			arraySelf[1] = arraySelf[1].replaceAll("(\\d+)(.*)", prevOffset+"$2");
-		}
-		return arraySelf[0]+"offset="+arraySelf[1];
 	}
 }
