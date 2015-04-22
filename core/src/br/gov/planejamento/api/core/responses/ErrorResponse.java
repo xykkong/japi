@@ -15,7 +15,6 @@ import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 public class ErrorResponse extends Response {
 
-	private String name = "api_exception";
 	private String description = "Página de erro";
 	private ApiException exception = null;
 
