@@ -5,11 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
@@ -17,6 +20,80 @@ public abstract class Service {
 	protected abstract ServiceConfiguration getServiceConfiguration();	
 	protected ServiceConfiguration configs = getServiceConfiguration();
 
+	public DataRow getOne() throws ApiException{
+		EqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
+		if(equalFilters==null){
+			throw new CoreException("Nenhuma chave primária encontrada na configuração deste service "
+					+this.getClass().getCanonicalName());
+		}
+		return getOne(equalFilters);
+	}
+	/**
+	 * 
+	 * @param equalFilters
+	 * @return a dataRow encontrada, nulo caso não encontre nenhuma
+	 * @throws ApiException
+	 */
+	public DataRow getOne(EqualFilter...equalFilters) throws ApiException{
+		configValidation();
+		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(equalFilters));
+		for (Filter filter : equalFilters) {
+			RequestContext.getContext().addFilter(filter);
+		}
+		
+		// SETUP
+		Connection connection = ConnectionManager.getConnection();
+		
+		StringBuilder sbQuery = new StringBuilder("SELECT ");
+		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
+		StringBuilder sbQueryGeneric = generateGenericQuery(filtersList);
+		sbQuery.append(sbQueryGeneric);
+		sbQuery.append("LIMIT 2");
+		
+		PreparedStatement pstQuery;
+		
+		try {
+			pstQuery = connection.prepareStatement(sbQuery.toString());
+		} catch (SQLException e) {
+			throw new CoreException("Houve um erro durante a preparação dos statements da query.", e);
+		}
+		
+
+		ArrayList<String> whereValues = getWhereValues(filtersList);
+		int index = 1;
+		for (Filter filter : equalFilters) {
+			index = filter.setPreparedStatementValues(pstQuery, index);
+		}
+
+		// DEBUG
+		System.out.println("Query executada:");
+		System.out.println("\t" + sbQuery.toString());
+		if (whereValues.size() > 0) {
+			System.out.println("\t valores where:");
+			System.out.print("\t");
+			System.out.println(StringUtils.join(", ", whereValues));
+		} else
+			System.out.println("\tNenhum valor no where (considerado 1=1)");
+
+		// EXECUTE
+		DataRow row = null;
+		try {
+			ResultSet rs = pstQuery.executeQuery();
+			DatabaseData data = new DatabaseData(rs, configs);
+			Iterator<DataRow> iterator = data.iterator();
+			if(iterator.hasNext()){
+				row = iterator.next();
+				if(iterator.hasNext())
+					throw new CoreException("Mais de duas ocorrências no banco de dados para o service.getOne().");
+			}
+			pstQuery.close();
+			
+		} catch(SQLException e) {
+			throw new CoreException("Houve um erro durante a execução das queries.", e);
+		}
+		return row;
+	}
+	
 	public DatabaseData getAllFiltered() throws ApiException {
 
 		RequestContext context = RequestContext.getContext();
@@ -25,19 +102,7 @@ public abstract class Service {
 		String orderByValue = context.getOrderByValue();
 		String orderValue = context.getOrderValue();
 		
-		//Validação
-		if(configs == null) {
-			throw new CoreException("O método getServiceConfiguration retornou null. Verifique sua implementação na classe de Service utilizada.");
-		}
-		if(configs.getResponseFields() == null || configs.getResponseFields().size() == 0) {
-			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o método getServiceConfiguration está implementado corretamente no Service em questão.");
-		}
-		if(configs.getSchema() == null || configs.getSchema() == "") {
-			throw new CoreException("O schema informado é inválido. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
-		}
-		if(configs.getTable() == null || configs.getTable() == "") {
-			throw new CoreException("A table informada é inválida. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
-		}
+		configValidation();
 		
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
@@ -52,13 +117,7 @@ public abstract class Service {
 		
 		StringBuilder sbCountQuery = new StringBuilder("SELECT COUNT(*) AS quantity ");
 
-		StringBuilder sbQueryGeneric = new StringBuilder(" FROM ");
-		sbQueryGeneric.append(configs.getSchema());
-		sbQueryGeneric.append(".");
-		sbQueryGeneric.append(configs.getTable());
-
-		sbQueryGeneric.append(" WHERE ");
-		sbQueryGeneric.append(getWhereStatement(filtersFromRequest));
+		StringBuilder sbQueryGeneric = generateGenericQuery(filtersFromRequest);
 
 		sbQuery.append(sbQueryGeneric);
 		sbCountQuery.append(sbQueryGeneric);
@@ -138,6 +197,32 @@ public abstract class Service {
 			throw new CoreException("Houve um erro durante a execução das queries.", e);
 		}
 		return data;
+	}
+
+	private void configValidation() throws CoreException {
+		if(configs == null) {
+			throw new CoreException("O método getServiceConfiguration retornou null. Verifique sua implementação na classe de Service utilizada.");
+		}
+		if(configs.getResponseFields() == null || configs.getResponseFields().size() == 0) {
+			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o método getServiceConfiguration está implementado corretamente no Service em questão.");
+		}
+		if(configs.getSchema() == null || configs.getSchema() == "") {
+			throw new CoreException("O schema informado é inválido. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
+		}
+		if(configs.getTable() == null || configs.getTable() == "") {
+			throw new CoreException("A table informada é inválida. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
+		}
+	}
+
+	private StringBuilder generateGenericQuery(ArrayList<Filter> filters) {
+		StringBuilder sbQueryGeneric = new StringBuilder(" FROM ");
+		sbQueryGeneric.append(configs.getSchema());
+		sbQueryGeneric.append(".");
+		sbQueryGeneric.append(configs.getTable());
+
+		sbQueryGeneric.append(" WHERE ");
+		sbQueryGeneric.append(getWhereStatement(filters));
+		return sbQueryGeneric;
 	}
 
 	private String getWhereStatement(ArrayList<Filter> filtersFromRequest) {

@@ -10,7 +10,6 @@ import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.database.DataRow;
-import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.serializers.CSVSerializer;
@@ -35,26 +34,22 @@ public class ResourceResponse<T extends Resource> extends Response {
 	
 	/**
 	 * Constrói uma ResourceResponse a partir de um DatabaseData e de um tipo de Resource especificado
-	 * @param data Dados recebidos do Banco de Dados
+	 * @param row Dados recebidos do Banco de Dados
 	 * @param resourceType Tipo de Resource a ser criado
 	 * @return Uma instância de ResourceResponse contendo um Resource do tipo especificado
 	 * @throws ApiException 
 	 */
-	public static <T extends Resource> ResourceResponse<T> factory(DatabaseData data, Class<? extends Resource> resourceType) throws ApiException {
+	public static <T extends Resource> ResourceResponse<T> factory(DataRow row, Class<? extends Resource> resourceType) throws ApiException {
 		
 		ResourceResponse<T> response = new ResourceResponse<T>();
 		
 		try {
-			if(data.iterator().hasNext()) {
-				Resource object = (resourceType.getConstructor(DataRow.class).newInstance(data.iterator().next()));
-				response.setResource(object);
-			} else {
-				return response;
-			}
+			Resource object = (resourceType.getConstructor(DataRow.class).newInstance(row));
+			response.setResource(object);
 		} catch (InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
-			throw new CoreException("Houve um erro ao criar os Resources a partir da DatabaseData", e);
+			throw new CoreException("Houve um erro ao criar os Resources a partir da DataRow", e);
 		}
 		
 		return response;

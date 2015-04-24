@@ -9,6 +9,7 @@ import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Module;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -85,10 +86,8 @@ public class LicitacaoRequest {
 	public ResourceResponse<TesteResource> testeUnico(
 			@Parameter(name = "idade", required = true, description = "Idade da pessoa") String testeInt)
 			throws ApiException {
-		RequestContext.getContext().addFilter(
-				new EqualFilter(Integer.class, "teste_int as idade"));
 
-		DatabaseData dados = tService.getAllFiltered();
-		return ResourceResponse.factory(dados, TesteResource.class);
+		DataRow row = tService.getOne();
+		return ResourceResponse.factory(row, TesteResource.class);
 	}
 }
