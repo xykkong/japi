@@ -138,7 +138,7 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
+	public <T1> T1[] toArray(T1[] a) {
 		return resources.toArray(a);
 	}
 
