@@ -43,16 +43,29 @@ public class ContratoRequest {
 			@Parameter(name = "cnpj_contratada", description = "Numero do CNPJ da empresa contratada") String cnpjContratada)
 			throws ApiException {
 	
-		RequestContext.getContext().addFilter(
-				new EqualFilter(Integer.class, "numero","id_contrato"),
-				new CaseInsensitiveLikeFilter(
-						new DatabaseAlias("cnpj_contratante"),
-						new DatabaseAlias("cnpj_contratada"),
-						new DatabaseAlias("valor_inicial")
-						),
-				new DateEqualFilter(DateParam.class, new DatabaseAlias("data_termino")),
-				new DateEqualFilter(BooleanParam.class, new DatabaseAlias("status"))
+//		RequestContext.getContext().addFilter(
+//				new EqualFilter(Integer.class, "numero","id_contrato"),
+//				new CaseInsensitiveLikeFilter(
+//						"cnpj_contratante", "cnpj_contratada","valor_inicial"
+//						),
+//				new DateEqualFilter(DateParam.class, "data_termino"),
+//				new DateEqualFilter(BooleanParam.class, "status")
+//				);
+		RequestContext.getContext().prepareJoinFilters(
+				cService, new EqualFilter(Integer.class, "numero","id_contrato"),
+				new DateEqualFilter(DateParam.class, "data_termino"),
+				new DateEqualFilter(BooleanParam.class, "status")
 				);
+		RequestContext.getContext().prepareJoinFilters(
+				empresaService, 
+				new CaseInsensitiveLikeFilter(
+						"cnpj_contratante", "cnpj_contratada","valor_inicial")
+				);
+		
+		JoinService joinService = new JoinService(cService, empresaService);
+		//por padrão, o join vai usar a primary key
+		
+		return ResourceListResponse.factory(joinService.getAllFiltered(), ClasseCustomParaEsteJoinResource.class);
 
 		DatabaseData dados = cService.getAllFiltered();
 		return ResourceListResponse.factory(dados, ContratoResource.class);
