@@ -10,9 +10,8 @@ public class ContratoResource extends Resource {
 	private String status;
 	private String data_termino;
 	private String valor_inicial;
-	/*JOIN*/	
-	private String cnpj_contratada;
-	private String cnpj_contratante;
+	/*JOIN*/
+	private String id_contratante;
 	
 	public ContratoResource(DataRow contrato) {
 		super(contrato);
@@ -22,8 +21,7 @@ public class ContratoResource extends Resource {
 		this.data_termino = contrato.get("data_termino");
 		this.valor_inicial= contrato.get("valor_inicial");
 		/*JOIN*/
-		this.cnpj_contratante = contrato.get("cnpj_contratante");
-		this.cnpj_contratada = contrato.get("cnpj_contratada");
+		this.id_contratante = contrato.get("id_contratante");		
 	}
 	
 	public String getDescricao() {
@@ -66,23 +64,16 @@ public class ContratoResource extends Resource {
 		this.valor_inicial = valor_inicial;
 	}
 
-	public String getCnpj_contratada() {
-		return cnpj_contratada;
-	}
-
-	public void setCnpj_contratada(String cnpj_contratada) {
-		this.cnpj_contratada = cnpj_contratada;
-	}
-
-	public String getCnpj_contratante() {
-		return cnpj_contratante;
-	}
-
-	public void setCnpj_contratante(String cnpj_contratante) {
-		this.cnpj_contratante = cnpj_contratante;
-	}
 	
 	//TODO: Acertar esse self-link;
+
+	public String getId_contratante() {
+		return id_contratante;
+	}
+
+	public void setId_contratante(String id_contratante) {
+		this.id_contratante = id_contratante;
+	}
 
 	@Override
 	public SelfLink getSelfLink() {
