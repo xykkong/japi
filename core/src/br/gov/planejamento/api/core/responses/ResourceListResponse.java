@@ -236,19 +236,30 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 		SelfLink self = getSelfLink();
 		String[] arraySelf = self.getHref().split("offset=");
 		int nextOffset = RequestContext.getContext().getOffsetValue()+Constants.FixedParameters.VALUES_PER_PAGE;
-		if(arraySelf[1].matches("(\\d+)(.*)")){
+		if(arraySelf.length == 2 && arraySelf[1].matches("(\\d+)(.*)")){
 			arraySelf[1] = arraySelf[1].replaceAll("(\\d+)(.*)", nextOffset+"$2");
+
+			return arraySelf[0]+"offset="+arraySelf[1];
 		}
-		return arraySelf[0]+"offset="+arraySelf[1];
+		else{
+			if(RequestContext.getContext().getFilters().isEmpty()) return arraySelf[0]+"?offset="+nextOffset;
+			else return arraySelf[0]+"&offset="+nextOffset;
+		}
+			
+		
 	}
 	
 	public String getPreviousPage() throws ApiException{
 		SelfLink self = getSelfLink();
 		String[] arraySelf = self.getHref().split("offset=");
 		int prevOffset = RequestContext.getContext().getOffsetValue()-Constants.FixedParameters.VALUES_PER_PAGE;
-		if(arraySelf[1].matches("(\\d+)(.*)")){
+		if(arraySelf.length == 2 && arraySelf[1].matches("(\\d+)(.*)")){
 			arraySelf[1] = arraySelf[1].replaceAll("(\\d+)(.*)", prevOffset+"$2");
+			return arraySelf[0]+"offset="+arraySelf[1];
 		}
-		return arraySelf[0]+"offset="+arraySelf[1];
+		else{
+			if(RequestContext.getContext().getFilters().isEmpty()) return arraySelf[0]+"?offset="+prevOffset;
+			else return arraySelf[0]+"&offset="+prevOffset;
+		}
 	}
 }
