@@ -38,9 +38,9 @@ public class JapiConfigLoader {
 		private DatabaseProperties databaseProperties;
 		private String assetFolder;
 		private String errorTemplate;
-		private String htmlTemplate;
-		private String docsTemplate;
-		private String innerDocsTemplate;
+		private String resourceTemplate;
+		private String docsModuloTemplate;
+		private String docsMetodoTemplate;
 		private String rootUrl;
 		
 		public String getRootUrl() {
@@ -55,29 +55,29 @@ public class JapiConfigLoader {
 		public void setAssetFolder(String assetFolder) {
 			this.assetFolder = assetFolder;
 		}
-		public String getDocsTemplate() {
-			return docsTemplate;
+		public String getDocsModuloTemplate() {
+			return docsModuloTemplate;
 		}
-		public void setDocsTemplate(String docsFolder) {
-			this.docsTemplate = docsFolder;
+		public void setDocsModuloTemplate(String docsModuloFolder) {
+			this.docsModuloTemplate = docsModuloFolder;
 		}
-		public String getInnerDocsTemplate() {
-			return innerDocsTemplate;
+		public String getDocsMetodoTemplate() {
+			return docsMetodoTemplate;
 		}
-		public void setInnerDocsTemplate(String docsFolder) {
-			this.innerDocsTemplate = docsFolder;
+		public void setDocsMetodoTemplate(String docsMetodoFolder) {
+			this.docsMetodoTemplate = docsMetodoFolder;
 		}
-		public String getHtmlTemplate() {
-			return htmlTemplate;
+		public String getResourceTemplate() {
+			return resourceTemplate;
 		}
-		public void setHtmlTemplate(String htmlTemplate) {
-			this.htmlTemplate = htmlTemplate;
+		public void setResourceTemplate(String resourceTemplate) {
+			this.resourceTemplate = resourceTemplate;
 		}
 		public String getErrorTemplate() {
 			return errorTemplate;
 		}
-		public void setErrorTemplate(String htmlTemplate) {
-			this.errorTemplate = htmlTemplate;
+		public void setErrorTemplate(String errorTemplate) {
+			this.errorTemplate = errorTemplate;
 		}
 		public class DatabaseProperties{
 			public String getUrl() {

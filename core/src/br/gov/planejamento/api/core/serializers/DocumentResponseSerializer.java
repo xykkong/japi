@@ -45,7 +45,7 @@ public class DocumentResponseSerializer {
 		if(templateName == null){
 			try {
 				template = Velocity.getTemplate(RequestContext
-						.getContext().getDocsTemplate(), "UTF-8");
+						.getContext().getDocsModuloTemplate(), "UTF-8");
 			} catch (Exception e) {
 				throw new CoreException("Houve um erro ao definir o template do Velocity.", e);
 			}

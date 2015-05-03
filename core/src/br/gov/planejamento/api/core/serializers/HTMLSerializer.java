@@ -25,7 +25,7 @@ public abstract class HTMLSerializer {
 	public static String fromResourceListResponse(ResourceListResponse<?> response)
 			throws ApiException {
 
-		String template = RequestContext.getContext().getHTMLTemplate();
+		String template = RequestContext.getContext().getResourceTemplate();
 		
 		return render(response, template);
 		
@@ -36,7 +36,7 @@ public abstract class HTMLSerializer {
 		//diferenciar ResourceResponse e ResourceListResponse vai ficar no template
 		//return "Temporariamente desabilitado.";
 			
-		String template = RequestContext.getContext().getHTMLTemplate();
+		String template = RequestContext.getContext().getResourceTemplate();
 		
 		return render(response, template);
 		
