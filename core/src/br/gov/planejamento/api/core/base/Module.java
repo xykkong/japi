@@ -2,6 +2,7 @@ package br.gov.planejamento.api.core.base;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.Set;
 
@@ -49,8 +50,9 @@ public abstract class Module extends Application {
 		for(Method requestMethod : methods) {
 			
 			//Validando método (Se possui annotation Path e se retorna ResourceResponse ou ResourceListResponse)
-			if(!requestMethod.isAnnotationPresent(Path.class) ||
-					!(requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class) ||
+			if(!Modifier.isPublic(requestMethod.getModifiers()) ||
+					!requestMethod.isAnnotationPresent(Path.class) ||
+						!(requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class) ||
 							requestMethod.getReturnType().isAssignableFrom(ResourceListResponse.class))) {
 				continue;
 			}
