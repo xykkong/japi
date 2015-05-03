@@ -43,14 +43,16 @@ public class ContratoRequest {
 			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante)
 			throws ApiException {
 	
-//		RequestContext.getContext().addFilter(
-//				new EqualFilter(Integer.class, "numero","id_contrato"),
-//				new CaseInsensitiveLikeFilter(
-//						"cnpj_contratante", "cnpj_contratada","valor_inicial"
-//						),
-//				new DateEqualFilter(DateParam.class, "data_termino"),
-//				new DateEqualFilter(BooleanParam.class, "status")
-//				);
+		RequestContext.getContext().addFilter(
+				new EqualFilter(Integer.class, "numero","id_contrato"),
+				new CaseInsensitiveLikeFilter(
+						"cnpj_contratante", "cnpj_contratada","valor_inicial"
+						),
+				new DateEqualFilter(DateParam.class, "data_termino"),
+				new DateEqualFilter(BooleanParam.class, "status")
+				);
+		
+		/* Exemplo de como poderia funcionar com join. Graciano e Villacinha são responsáveis por essa parte.
 		RequestContext.getContext().prepareJoinFilters(
 				cService, new EqualFilter(Integer.class, "numero","id_contrato"),
 				new DateEqualFilter(DateParam.class, "data_termino"),
@@ -66,7 +68,8 @@ public class ContratoRequest {
 		//por padrão, o join vai usar a primary key
 		
 		return ResourceListResponse.factory(joinService.getAllFiltered(), ClasseCustomParaEsteJoinResource.class);
-
+		*/
+		
 		DatabaseData dados = cService.getAllFiltered();
 		return ResourceListResponse.factory(dados, ContratoResource.class);
 	}
