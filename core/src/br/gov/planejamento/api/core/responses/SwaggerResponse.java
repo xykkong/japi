@@ -6,14 +6,15 @@ import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 
 import com.google.gson.JsonObject;
 
-public class JsonObjectSwaggerResponse extends Response {
+public class SwaggerResponse extends Response {
 	
 	private JsonObject jsonObject;
 	
-	public JsonObjectSwaggerResponse(JsonObject jsonObject) {
+	public SwaggerResponse(JsonObject jsonObject) {
 		this.jsonObject = jsonObject;
 	}
 
@@ -31,14 +32,12 @@ public class JsonObjectSwaggerResponse extends Response {
 
 	@Override
 	public String toXML() throws ApiException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new CoreException("Não é possível converter para XML. Uma response do tipo SwaggerResponse só pode ser serializada no formato JSON.");
 	}
 
 	@Override
 	public String toCSV() throws ApiException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new CoreException("Não é possível converter para CSV. Uma response do tipo SwaggerResponse só pode ser serializada no formato JSON.");
 	}
 
 	@Override
@@ -48,8 +47,7 @@ public class JsonObjectSwaggerResponse extends Response {
 
 	@Override
 	public Object toHTML() throws ApiException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new CoreException("Não é possível converter para HTML. Uma response do tipo SwaggerResponse só pode ser serializada no formato JSON.");
 	}
 
 	@Override

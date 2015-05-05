@@ -11,15 +11,12 @@ public class CommonConstants {
 		public static final String EXEMPLOS= "exemplos";
 	}
 	
-	public static final class Docs {
-		public static final String LICITACOES = "licitacoesdocs";
-		public static final String EXEMPLOS = "exemplos";
-	}
-	
 	public static final class URIConstants{
 		
 		public static final String BASE_URL = RequestContext.getContext().getRootURL();
 		public static final String DOCUMENT = "/doc";
 		public static final String MIRROR = "/id";
 	}
+	
+	public static final String DOCS = "docs";
 }
