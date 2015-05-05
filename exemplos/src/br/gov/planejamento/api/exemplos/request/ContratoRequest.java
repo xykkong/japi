@@ -40,7 +40,7 @@ public class ContratoRequest {
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
 			/*JOIN*/
 			@Parameter(name = "cnpj_contratante", description = "Numero do CNPJ da empresa contratante") String cnpjContratante,
-			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante)
+			@Parameter(name = "cnpj_contratada", description = "Numero do CNPJ da empresa contratada") String cnpjContratada)
 			throws ApiException {
 	
 //		RequestContext.getContext().addFilter(
