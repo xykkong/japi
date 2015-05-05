@@ -20,6 +20,7 @@ import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.JsonObjectSwaggerResponse;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
+import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 import com.google.gson.JsonArray;
@@ -45,7 +46,7 @@ public abstract class Module extends Application {
 		JsonArray requests = new JsonArray();
 		
 		for(Method requestMethod : methods) {
-			if(requestMethod.isAnnotationPresent(Path.class)) {				
+			if(requestMethod.isAnnotationPresent(Path.class) && (requestMethod.getReturnType().isAssignableFrom(ResourceListResponse.class) || requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class))) {				
 				JsonObject request = new JsonObject();				
 				
 				//Obtendo documentação do método requisitado
@@ -86,7 +87,7 @@ public abstract class Module extends Application {
 				request.addProperty("path", requestPath);
 				
 				@SuppressWarnings("unchecked") //Nunca pode acontecer, já que os Responses são do tipo ResourceResponse ou ResourceListResponse e por definição das classes possuem argumentos que extendem Resource
-				Class<? extends Resource> returnType = ((Class<? extends Resource>)((ParameterizedType)requestMethod.getReturnType().getGenericSuperclass()).getActualTypeArguments()[0]);
+				Class<? extends Resource> returnType = ((Class<? extends Resource>)((ParameterizedType)requestMethod.getGenericReturnType()).getActualTypeArguments()[0]);
 				
 				JsonObject returns = new JsonObject();
 				returns.addProperty("resource", returnType.getSimpleName());

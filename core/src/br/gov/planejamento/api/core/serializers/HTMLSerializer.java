@@ -25,27 +25,21 @@ public abstract class HTMLSerializer {
 	public static String fromResourceListResponse(ResourceListResponse<?> response)
 			throws ApiException {
 
-		String template = RequestContext.getContext().getHTMLTemplate();
+		String template = RequestContext.getContext().getResourceTemplate();
 		
 		return render(response, template);
 		
 	}
 	
 	public static String fromResourceResponse(ResourceResponse<?> response) throws ApiException {
-		//Afonso, aqui pode temporariamente só chamar o mesmo método acima, já que a lógica pra
-		//diferenciar ResourceResponse e ResourceListResponse vai ficar no template
-		//return "Temporariamente desabilitado.";
 			
-		String template = RequestContext.getContext().getHTMLTemplate();
+		String template = RequestContext.getContext().getResourceTemplate();
 		
 		return render(response, template);
 		
 	}
 	
 	public static String fromErrorResponse(ErrorResponse response) throws ApiException {
-		//Afonso, fiz isso aqui temporariamente, vê se tu consegue implementar o mesmo template
-		//da framework antiga pra esse caso aqui. (É um template bem simples, só com o cabeçalho
-		//e o rodapé verdes do layout e com o meio todo branco
 		String template = RequestContext.getContext().getErrorTemplate();
 		return render(response, template);
 	}
