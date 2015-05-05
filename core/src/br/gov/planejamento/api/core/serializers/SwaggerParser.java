@@ -20,7 +20,7 @@ public class SwaggerParser {
 		
         Reader reader;
 		try {
-			reader = new InputStreamReader(new URL(docUrl+".json").openStream());
+			reader = new InputStreamReader(new URL(docUrl).openStream());
 		} catch (IOException e) {
 			throw new CoreException("Houve um erro ao criar o arquivo JSON do SwaggerParser.", e);
 		} //Read the json output

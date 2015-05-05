@@ -84,7 +84,7 @@ public abstract class Service {
 			if(iterator.hasNext()){
 				row = iterator.next();
 				if(iterator.hasNext())
-					throw new CoreException("Mais de duas ocorrências no banco de dados para o service.getOne().");
+					throw new CoreException("Mais de duas ocorrências no banco de dados para o service.getOne(). Verifique sua chave primária.");
 			}
 			pstQuery.close();
 			

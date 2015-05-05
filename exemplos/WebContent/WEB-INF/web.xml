@@ -6,10 +6,10 @@
     <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
   </filter>
   <filter-mapping>
-	  <filter-name>UrlRewriteFilter</filter-name>
-	  <url-pattern>/*</url-pattern>
-	  <dispatcher>REQUEST</dispatcher>
-	  <dispatcher>FORWARD</dispatcher>
+    <filter-name>UrlRewriteFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
   <context-param>
     <param-name>resteasy.media.type.mappings</param-name>
@@ -34,4 +34,14 @@
     <servlet-name>Resteasy</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
-  </web-app>
+  <servlet>
+    <description>JAX-RS Tools Generated - Do not modify</description>
+    <servlet-name>JAX-RS Servlet</servlet-name>
+    <servlet-class>hh</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JAX-RS Servlet</servlet-name>
+    <url-pattern>/jaxrs/*</url-pattern>
+  </servlet-mapping>
+</web-app>
