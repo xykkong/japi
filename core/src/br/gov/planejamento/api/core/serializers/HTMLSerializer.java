@@ -50,7 +50,10 @@ public abstract class HTMLSerializer {
 	}
 	
 	public static String fromHtmlResponse(HTMLResponse htmlResponse) throws ApiException {
-		return render(htmlResponse, htmlResponse.getTemplate());
+		
+		String template =  RequestContext.getContext().getStaticHtmlTemplate();
+		
+		return render(htmlResponse, template);
 	}
 	
 	public static String render(Response response, String templateString) throws ApiException{

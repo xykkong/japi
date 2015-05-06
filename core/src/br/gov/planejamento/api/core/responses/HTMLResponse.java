@@ -12,7 +12,6 @@ import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 public class HTMLResponse extends Response {
 	
 	private String htmlCode;
-	private String template = null;
 	
 	//TODO: No futuro, implementar para parsear um arquivo HTML
 	//private String htmlUrl;
@@ -22,13 +21,16 @@ public class HTMLResponse extends Response {
 		this.htmlCode = htmlCode;
 	}
 	
-	public String getTemplate() {
-		return template;
+	
+	public String getHtmlCode() {
+		return htmlCode;
 	}
 
-	public void setTemplate(String template) {
-		this.template = template;
+
+	public void setHtmlCode(String htmlCode) {
+		this.htmlCode = htmlCode;
 	}
+
 
 	@Override
 	public SelfLink getSelfLink() throws ApiException {

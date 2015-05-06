@@ -41,6 +41,7 @@ public class JapiConfigLoader {
 		private String resourceTemplate;
 		private String docsModuloTemplate;
 		private String docsMetodoTemplate;
+		private String staticHtmlTemplate;
 		private String rootUrl;
 		
 		public String getRootUrl() {
@@ -79,6 +80,13 @@ public class JapiConfigLoader {
 		public void setErrorTemplate(String errorTemplate) {
 			this.errorTemplate = errorTemplate;
 		}
+		public String getStaticHtmlTemplate() {
+			return staticHtmlTemplate;
+		}
+		public void setStaticHtmlTemplate(String staticHtmlTemplate) {
+			this.staticHtmlTemplate = staticHtmlTemplate;
+		}
+
 		public class DatabaseProperties{
 			public String getUrl() {
 				return url;
