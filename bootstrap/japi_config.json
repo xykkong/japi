@@ -1,15 +1,16 @@
 {
     "databaseProperties":{
-        "url" : "127.0.0.1",
+        "url" : "localhost",
         "port" : "5432",
         "user": "postgres",
         "password" : "123456",
         "databaseName" : "teste"
     },
-    "assetFolder" : "assets/",
-    "htmlTemplate" : "br/gov/planejamento/api/commons/templates/template.vm",
-    "rootUrl" : "http://localhost:8080/",
-    "errorTemplate" : "br/gov/planejamento/api/commons/templates/errorTemplate.vm",
-    "docsTemplate" : "br/gov/planejamento/api/docs/templates/docs.vm",
-    "innerDocsTemplate" : "br/gov/planejamento/api/docs/templates/innerDocs.vm"
+    "assetFolder" : "assets/resources",
+    "resourceTemplate" : "br/gov/planejamento/api/commons/templates/resource-template.vm",
+	"errorTemplate" : "br/gov/planejamento/api/commons/templates/error-template.vm",
+	"docsModuloTemplate" : "br/gov/planejamento/api/commons/templates/docs-modulo-template.vm",
+	"docsMetodoTemplate" : "br/gov/planejamento/api/commons/templates/docs-metodo-template.vm",
+	"staticHtmlTemplate" : "br/gov/planejamento/api/commons/templates/static-html-template.vm",
+	"rootUrl" : "http://localhost:8080/"
 }
