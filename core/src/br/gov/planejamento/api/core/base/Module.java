@@ -10,7 +10,6 @@ import javax.ws.rs.core.Application;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.MethodParameterScanner;
 import org.reflections.util.ClasspathHelper;
 
 import br.gov.planejamento.api.core.annotations.About;
