@@ -7,10 +7,12 @@ import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 
 public class HTMLResponse extends Response {
 	
 	private String htmlCode;
+	private String template = null;
 	
 	//TODO: No futuro, implementar para parsear um arquivo HTML
 	//private String htmlUrl;
@@ -20,6 +22,14 @@ public class HTMLResponse extends Response {
 		this.htmlCode = htmlCode;
 	}
 	
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
 	@Override
 	public SelfLink getSelfLink() throws ApiException {
 		// TODO Auto-generated method stub
@@ -49,7 +59,7 @@ public class HTMLResponse extends Response {
 
 	@Override
 	public String toHTML() throws ApiException {
-		return this.htmlCode;
+		return HTMLSerializer.fromHtmlResponse(this);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public class Docs extends Application {
 	@Path("/")
 	public HTMLResponse docsHome() throws ApiException{	
 		HTMLResponse home = new HTMLResponse("<p>Bem vindo à Documentação da API.</p>");
+		home.setTemplate(RequestContext.getContext().getDocsModuloTemplate());
 		
 		return home;
 	}
