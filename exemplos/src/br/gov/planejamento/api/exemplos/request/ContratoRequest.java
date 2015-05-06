@@ -9,7 +9,6 @@ import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Module;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
-import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
