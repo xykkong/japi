@@ -82,8 +82,9 @@ public abstract class Module extends Application {
 					}
 					else{
 						request.addProperty("example_url",root + classModule +examplePath+requestExampleQueryString);
-						request.addProperty("path_filterless", root + classModule + examplePath );
 					}
+
+					request.addProperty("path_filterless", root + classModule + examplePath );
 				}
 				
 				request.addProperty("method_name", requestMethodName);

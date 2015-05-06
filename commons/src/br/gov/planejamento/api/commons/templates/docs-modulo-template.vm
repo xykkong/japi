@@ -110,7 +110,7 @@
 						#end
 					</ul>
 				</div>
-			
+			#set($documentation = $response)
 			#if($documentation)
 				##Conteudo da resposta do servidor
 				<div id="conteudo" class="p_c_prin">	

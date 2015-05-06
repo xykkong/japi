@@ -112,6 +112,7 @@
 				</div>
 			
 			##Conteudo da resposta do servidor
+			#set($documentation = $response.requests.get(0))
 			<div id="conteudo" class="p_c_prin">	
 				<!-- Header Div-->
 				<div id="header">					
