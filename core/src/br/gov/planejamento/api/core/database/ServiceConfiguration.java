@@ -66,5 +66,10 @@ public class ServiceConfiguration {
 	public void setPrimaryKeyEqualFilters(EqualFilter...primaryKeyEqualFilters) {
 		this.primaryKeyEqualFilters = primaryKeyEqualFilters;
 	}
+	public void appendSchemaDotTable(StringBuilder query) {
+		query.append(getSchema());
+		query.append(".");
+		query.append(getTable());
+	}
 	
 }

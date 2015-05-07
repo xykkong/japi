@@ -20,4 +20,8 @@ public class DatabaseAlias  {
 	public String getUriName() {
 		return uriName;
 	}
+	
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
 }

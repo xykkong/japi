@@ -17,7 +17,7 @@ import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service {
 
-	protected abstract ServiceConfiguration getServiceConfiguration();	
+	protected abstract ServiceConfiguration getServiceConfiguration();
 	protected ServiceConfiguration configs = getServiceConfiguration();
 
 	public DataRow getOne() throws ApiException{
@@ -216,9 +216,7 @@ public abstract class Service {
 
 	private StringBuilder generateGenericQuery(ArrayList<Filter> filters) {
 		StringBuilder sbQueryGeneric = new StringBuilder(" FROM ");
-		sbQueryGeneric.append(configs.getSchema());
-		sbQueryGeneric.append(".");
-		sbQueryGeneric.append(configs.getTable());
+		configs.appendSchemaDotTable(sbQueryGeneric);
 
 		sbQueryGeneric.append(" WHERE ");
 		sbQueryGeneric.append(getWhereStatement(filters));
