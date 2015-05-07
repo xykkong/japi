@@ -129,18 +129,18 @@ public class DocumentationResponse  extends Response{
 
 		public class Returns{
 			private String resource;
-			private Boolean isList;
+			private String response_type;
 			public String getResource() {
 				return resource;
 			}
 			public void setResource(String resource) {
 				this.resource = resource;
 			}
-			public boolean getIsList() {
-				return isList;
+			public String getResponse_type() {
+				return response_type;
 			}
-			public void setList(Boolean isList) {
-				this.isList = isList;
+			public void setResponse_type(String response_type) {
+				this.response_type = response_type;
 			}
 		}
 		

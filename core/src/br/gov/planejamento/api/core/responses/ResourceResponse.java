@@ -44,7 +44,7 @@ public class ResourceResponse<T extends Resource> extends Response {
 		ResourceResponse<T> response = new ResourceResponse<T>();
 		
 		try {
-			if(row.size() == 0){
+			if(row == null){
 				throw new CoreException("O resorce especificado não existe.", 404);
 			}
 			Resource object = (resourceType.getConstructor(DataRow.class).newInstance(row));

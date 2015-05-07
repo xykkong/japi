@@ -110,86 +110,16 @@
 						#end
 					</ul>
 				</div>
-			#set($documentation = $response)
-			#if($documentation)
-				##Conteudo da resposta do servidor
-				<div id="conteudo" class="p_c_prin">	
+			
+			<div id="conteudo" class="p_c_prin">	
 					<!-- Header Div-->
 					<div id="header">					
 						<hr class="barra" style="margin: 0px;"/>
 						<div id="header-content">
-							<h2 id="titulo" class="titulo-pagina">Métodos de $documentation.modulo</h2>
-							<hr class="barra" style="margin: 0px;"/>
-							<p class="met_descricao">Possibilita a obtenção de dados sobre $documentation.modulo realizados pelo Governo Federal</p>
-						</div>
-					</div>
-					#set($rootUrl = $session.rootUrl())
-					<table class="table">
-						<caption>
-							<strong>Métodos de Consultas Básicas</strong>
-						</caption>
-						<thead>
-							<tr>
-								<th class="col_metodo">Método</th>
-								<th>Descrição</th>
-							</tr>
-						</thead>
-						<tbody>
-							#foreach($request in $documentation.requests)
-								#if($request.returns.response_type == "ResourceListResponse")
-									#if($request.method_name)
-										<tr>
-											<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
-											<td>
-												<p>$request.description</p>
-											</td>
-										</tr>
-									#end
-								#end
-							#end
-						</tbody>								
-					</table>
-					<br>
-					<br>	
-	
-					<table class="table">
-						<caption>
-							<strong>Métodos de Consultas Detalhadas</strong>
-						</caption>
-						<thead>
-							<tr>
-								<th class="col_metodo">Método</th>
-								<th>Descrição</th>
-							</tr>
-						</thead>
-						<tbody>
-							#foreach($request in $documentation.requests)
-								#if($request.returns.response_type == "ResourceResponse")
-									<tr>
-										<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
-										<td>
-											<p>$request.description </p>
-										</td>
-									</tr>
-								#end
-							#end
-						</tbody>								
-					</table>	
-					<br><br>		
-				</div>
-			#else
-				<div id="conteudo" class="p_c_prin">	
-					<!-- Header Div-->
-					<div id="header">					
-						<hr class="barra" style="margin: 0px;"/>
-						<div id="header-content">
-							<h2 id="titulo" class="titulo-pagina">Documentação JAPI</h2>
-							<hr class="barra" style="margin: 0px;"/>
-							<p class="met_descricao">Seja bem vindo ao módulo de Documentação Automática da JAPI.</p>
+							$response.htmlCode
 						</div>
 					</div>
 				</div>
-			#end
 			
 			</div>
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->
