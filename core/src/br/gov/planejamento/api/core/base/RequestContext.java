@@ -12,7 +12,6 @@ import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderValueRequestException;
@@ -60,6 +59,16 @@ public class RequestContext {
 	 * URL raíz da aplicação
 	 */
 	private String rootURL;
+	
+	/**
+	 * Templates a serem carregados no preprocess
+	 */
+	private String resourceTemplate;	
+	private String docsModuloTemplate;
+	private String docsMetodoTemplate;
+	private String errorTemplate;
+	private String staticHtmlTemplate;
+
 
 	/**
 	 * Contrutor privado para o singleton
@@ -226,34 +235,48 @@ public class RequestContext {
 	public Boolean isCSV() {
 		return isCurrentFormat(RequestFormats.CSV);
 	}
+	
 
-	public String getResourceTemplate() throws ApiException {
-		if(JapiConfigLoader.getJapiConfig().getResourceTemplate() != null)
-			return (JapiConfigLoader.getJapiConfig().getResourceTemplate());
-		else throw new CoreException("Caminho do Template de Resource não configurado no japi_config.json (resourceTemplate)");
+	public void setResourceTemplate(String resourceTemplate) {
+		this.resourceTemplate = resourceTemplate;
+	}
+
+	public void setDocsModuloTemplate(String docsModuloTemplate) {
+		this.docsModuloTemplate = docsModuloTemplate;
+	}
+
+	public void setDocsMetodoTemplate(String docsMetodoTemplate) {
+		this.docsMetodoTemplate = docsMetodoTemplate;
+	}
+
+	public void setErrorTemplate(String errorTemplate) {
+		this.errorTemplate = errorTemplate;
+	}
+
+	public void setStaticHtmlTemplate(String staticHtmlTemplate) {
+		this.staticHtmlTemplate = staticHtmlTemplate;
 	}
 	
-	public String getDocsModuloTemplate() throws ApiException {
-		if(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate() != null)
-			return JapiConfigLoader.getJapiConfig().getDocsModuloTemplate();
-		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
-		throw new CoreException("Caminho do Template de Módulo do Docs não configurado no japi_config.json (docsModuloTemplate)");
+	public String getResourceTemplate() {
+		return resourceTemplate;
 	}
-	
-	public String getDocsMetodoTemplate() throws ApiException {
-		if(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate() != null)
-			return JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate();
-		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
-		throw new CoreException("Caminho do Template de Método do Docs não configurado no japi_config.json (docsMetodoTemplate)");
+
+	public String getDocsModuloTemplate() {
+		return docsModuloTemplate;
 	}
-	
-	public String getErrorTemplate() throws ApiException {
-		if(JapiConfigLoader.getJapiConfig().getErrorTemplate() != null)
-			return JapiConfigLoader.getJapiConfig().getErrorTemplate();
-		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
-		throw new CoreException("Caminho do Template de erro não configurado no japi_config.json (errorTemplate)");
+
+	public String getDocsMetodoTemplate() {
+		return docsMetodoTemplate;
 	}
-	
+
+	public String getErrorTemplate() {
+		return errorTemplate;
+	}
+
+	public String getStaticHtmlTemplate() {
+		return staticHtmlTemplate;
+	}
+
 	public String getRootURL() {		
 		return rootURL;
 	}
@@ -264,13 +287,6 @@ public class RequestContext {
 	
 	public String asset(String...asset) throws ApiException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
-	}
-
-	public String getStaticHtmlTemplate() throws ApiException {
-		if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
-			return JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate();
-		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
-		throw new CoreException("Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
 	}
 	
 }

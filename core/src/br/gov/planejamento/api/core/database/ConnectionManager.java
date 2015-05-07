@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
@@ -13,10 +12,18 @@ import br.gov.planejamento.api.core.exceptions.CoreException;
 public class ConnectionManager {
 
 	private static Connection connection = null;
+	private static JapiConfig.DatabaseProperties dbProperties;
 	
+	public JapiConfig.DatabaseProperties getDbProperties() {
+		return dbProperties;
+	}
+
+	public static void setDbProperties(JapiConfig.DatabaseProperties dbProperties) {
+		ConnectionManager.dbProperties = dbProperties;
+	}
+
 	public static Connection getConnection() throws ApiException {
 		if (connection == null){
-			JapiConfig.DatabaseProperties dbProperties = JapiConfigLoader.getJapiConfig().getDatabaseProperties();
 			Properties connectionProps = new Properties();
 			connectionProps.put("user", dbProperties.getUser());
 			connectionProps.put("password", dbProperties.getPassword());
