@@ -27,7 +27,7 @@
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
-      <param-value>br.gov.planejamento.api.licitacoes.module.LicitacoesModule</param-value>
+      <param-value>br.gov.planejamento.api.exemplos.module.ExemplosModule</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
@@ -37,7 +37,7 @@
   <servlet>
     <description>JAX-RS Tools Generated - Do not modify</description>
     <servlet-name>JAX-RS Servlet</servlet-name>
-    <servlet-class>hh</servlet-class>
+    <servlet-class>br.gov.planejamento.api.exemplos.module.ExemplosModule</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
