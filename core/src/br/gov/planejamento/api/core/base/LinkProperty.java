@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.core.base;
 
+import br.gov.planejamento.api.core.interfaces.IMask;
+
 
 public class LinkProperty extends Property {	
 	
@@ -18,6 +20,14 @@ public class LinkProperty extends Property {
 		this.link.setTitle(name);
 		this.link.setRel(rel);
 	}	
+	
+	public LinkProperty(String name, String value, String href, String rel, IMask mask) {
+		super(name, mask.apply(value));
+		this.link.setHref(href);
+		this.link.setTitle(name);
+		this.link.setRel(rel);
+		this.unmaskedValue = value;
+	}
 	
 	public void setLink(Link link) {
 		this.link = link;
