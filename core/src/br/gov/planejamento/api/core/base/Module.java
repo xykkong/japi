@@ -2,7 +2,6 @@ package br.gov.planejamento.api.core.base;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.Set;
 
@@ -11,7 +10,6 @@ import javax.ws.rs.core.Application;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.MethodParameterScanner;
 import org.reflections.util.ClasspathHelper;
 
 import br.gov.planejamento.api.core.annotations.About;
@@ -50,9 +48,8 @@ public abstract class Module extends Application {
 		for(Method requestMethod : methods) {
 			
 			//Validando método (Se possui annotation Path e se retorna ResourceResponse ou ResourceListResponse)
-			if(!Modifier.isPublic(requestMethod.getModifiers()) ||
-					!requestMethod.isAnnotationPresent(Path.class) ||
-						!(requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class) ||
+			if(!requestMethod.isAnnotationPresent(Path.class) ||
+					!(requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class) ||
 							requestMethod.getReturnType().isAssignableFrom(ResourceListResponse.class))) {
 				continue;
 			}
@@ -85,8 +82,9 @@ public abstract class Module extends Application {
 					}
 					else{
 						request.addProperty("example_url",root + classModule +examplePath+requestExampleQueryString);
-						request.addProperty("path_filterless", root + classModule + examplePath );
 					}
+
+					request.addProperty("path_filterless", root + classModule + examplePath );
 				}
 				
 				request.addProperty("method_name", requestMethodName);

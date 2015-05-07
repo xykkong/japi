@@ -16,7 +16,6 @@ import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderValueRequestException;
-import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class RequestContext {
@@ -265,6 +264,13 @@ public class RequestContext {
 	
 	public String asset(String...asset) throws ApiException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
+	}
+
+	public String getStaticHtmlTemplate() throws ApiException {
+		if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
+			return JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate();
+		//else return "br/gov/planejamento/api/docs/templates/docs.vm";
+		throw new CoreException("Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
 	}
 	
 }

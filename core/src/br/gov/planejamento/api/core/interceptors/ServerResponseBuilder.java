@@ -9,8 +9,6 @@ import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.ApiException;
-import br.gov.planejamento.api.core.responses.DocumentationResponse;
-import br.gov.planejamento.api.core.responses.SwaggerResponse;
 
 public class ServerResponseBuilder {
 	public static ServerResponse build(ServerResponse serverResponse, Response response) {

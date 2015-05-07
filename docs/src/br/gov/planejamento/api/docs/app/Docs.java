@@ -11,6 +11,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
+import br.gov.planejamento.api.core.responses.HTMLResponse;
 import br.gov.planejamento.api.core.serializers.SwaggerParser;
 
 @ApplicationPath("/")
@@ -19,19 +20,21 @@ public class Docs extends Application {
 	
 	@GET
 	@Path("/")
-	public String docsHome() throws ApiException{	
-		return "";		
+	public HTMLResponse docsHome() throws ApiException{	
+		HTMLResponse home = new HTMLResponse("<h2 id='titulo' class='titulo-pagina'>Documentação</h2><hr class='barra' style='margin: 0px;'/><p class='met_descricao'>Seja bem vindo ao módulo de Documentação</p>");
+		
+		return home;
 	}
 	
 	@GET
 	@Path("/{modulo}")
 	public DocumentationResponse docsModulo(@PathParam("modulo") String modulo) throws ApiException{
-		
 		modulo = RequestContext.getContext().getValue("modulo");
 		DocumentationResponse documentation = SwaggerParser.parse(docUrl(modulo));
 		documentation.setModulo(modulo);
 		documentation.setTemplate(RequestContext.getContext().getDocsModuloTemplate());
 		return documentation;
+		
 	}
 	
 	@GET

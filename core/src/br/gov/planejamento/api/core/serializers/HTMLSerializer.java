@@ -17,6 +17,7 @@ import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
+import br.gov.planejamento.api.core.responses.HTMLResponse;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 
@@ -32,9 +33,6 @@ public abstract class HTMLSerializer {
 	}
 	
 	public static String fromResourceResponse(ResourceResponse<?> response) throws ApiException {
-		//Afonso, aqui pode temporariamente só chamar o mesmo método acima, já que a lógica pra
-		//diferenciar ResourceResponse e ResourceListResponse vai ficar no template
-		//return "Temporariamente desabilitado.";
 			
 		String template = RequestContext.getContext().getResourceTemplate();
 		
@@ -43,15 +41,19 @@ public abstract class HTMLSerializer {
 	}
 	
 	public static String fromErrorResponse(ErrorResponse response) throws ApiException {
-		//Afonso, fiz isso aqui temporariamente, vê se tu consegue implementar o mesmo template
-		//da framework antiga pra esse caso aqui. (É um template bem simples, só com o cabeçalho
-		//e o rodapé verdes do layout e com o meio todo branco
 		String template = RequestContext.getContext().getErrorTemplate();
 		return render(response, template);
 	}
 	
 	public static String fromDocumentationResponse(DocumentationResponse docResponse) throws ApiException {
 		return render(docResponse, docResponse.getTemplate());
+	}
+	
+	public static String fromHtmlResponse(HTMLResponse htmlResponse) throws ApiException {
+		
+		String template =  RequestContext.getContext().getStaticHtmlTemplate();
+		
+		return render(htmlResponse, template);
 	}
 	
 	public static String render(Response response, String templateString) throws ApiException{

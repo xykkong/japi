@@ -1,0 +1,16 @@
+{
+    "databaseProperties":{
+        "url" : "localhost",
+        "port" : "5432",
+        "user": "postgres",
+        "password" : "123456",
+        "databaseName" : "teste"
+    },
+    "assetFolder" : "assets/resources",
+    "resourceTemplate" : "br/gov/planejamento/api/commons/templates/resource-template.vm",
+	"errorTemplate" : "br/gov/planejamento/api/commons/templates/error-template.vm",
+	"docsModuloTemplate" : "br/gov/planejamento/api/commons/templates/docs-modulo-template.vm",
+	"docsMetodoTemplate" : "br/gov/planejamento/api/commons/templates/docs-metodo-template.vm",
+	"staticHtmlTemplate" : "br/gov/planejamento/api/commons/templates/static-html-template.vm",
+	"rootUrl" : "http://localhost:8080/"
+}
