@@ -5,8 +5,8 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
-import br.gov.planejamento.api.core.annotations.About;
-import br.gov.planejamento.api.core.annotations.Module;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
+import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -26,7 +26,7 @@ import br.gov.planejamento.api.licitacoes.service.LicitacaoService;
 import br.gov.planejamento.api.licitacoes.service.TesteService;
 
 @Path("/")
-@Module(CommonConstants.Modules.LICITACOES)
+@ApiModule(CommonConstants.Modules.LICITACOES)
 public class LicitacaoRequest {
 
 	private TesteService tService = new TesteService();
@@ -34,7 +34,7 @@ public class LicitacaoRequest {
 	private LicitacaoService lService = new LicitacaoService();
 
 	@GET
-	@About(name = "licitacoes", description = "Lista de licitações", exampleQuery = "?uasg=70024")
+	@ApiRequest(name = "licitacoes", description = "Lista de licitações", exampleQuery = "?uasg=70024")
 	@Path(LicitacaoConstants.Requests.List.LICITACOES)
 	public ResourceListResponse<LicitacaoResource> licitacoes(
 			@Parameter(name = "uasg", description = "número UASG da Licitação") String uasg,
@@ -57,7 +57,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.List.LICITACOES + "teste")
-	@About(name = "licitacoesteste", description = "Lista de pessoas da tabela de testes", exampleQuery = "")
+	@ApiRequest(name = "licitacoesteste", description = "Lista de pessoas da tabela de testes", exampleQuery = "")
 	public ResourceListResponse<TesteResource> teste(
 			@Parameter(name = LicitacaoConstants.Properties.Names.IDADE, description = LicitacaoConstants.Properties.Description.IDADE) String testeInt,
 			@Parameter(name = LicitacaoConstants.Properties.Names.NOME, description = LicitacaoConstants.Properties.Description.NOME) String testeString,
@@ -82,7 +82,7 @@ public class LicitacaoRequest {
 
 	@GET
 	@Path(LicitacaoConstants.Requests.Document.LICITACAO + "teste/{idade}")
-	@About(name = "licitacaoteste", description = "Uma pessoa da tabela de testes", exampleId = "666")
+	@ApiRequest(name = "licitacaoteste", description = "Uma pessoa da tabela de testes", exampleId = "666")
 	public ResourceResponse<TesteResource> testeUnico(
 			@Parameter(name = "idade", required = true, description = "Idade da pessoa") String testeInt)
 			throws ApiException {

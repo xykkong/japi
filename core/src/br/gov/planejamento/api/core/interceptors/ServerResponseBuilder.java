@@ -3,7 +3,7 @@ package br.gov.planejamento.api.core.interceptors;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
 
-import br.gov.planejamento.api.core.annotations.About;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.constants.Constants;
@@ -16,8 +16,8 @@ public class ServerResponseBuilder {
 		serverResponse.setStatus(response.getHttpStatusCode());
 		
 		try {
-			response.setName(serverResponse.getResourceMethod().getAnnotation(About.class).name());
-			response.setDescription(serverResponse.getResourceMethod().getAnnotation(About.class).description());
+			response.setName(serverResponse.getResourceMethod().getAnnotation(ApiRequest.class).name());
+			response.setDescription(serverResponse.getResourceMethod().getAnnotation(ApiRequest.class).description());
 		} catch(Exception e) {
 			//O serverResponse.getResourceMethod() pode retornar nulo, implicando em uma NullPointerException
 			//TODO: Implementar verificação para evitar esse try/catch

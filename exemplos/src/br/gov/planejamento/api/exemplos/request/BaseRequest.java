@@ -5,8 +5,8 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.BaseConstants;
 import br.gov.planejamento.api.commons.constants.CommonConstants;
-import br.gov.planejamento.api.core.annotations.About;
-import br.gov.planejamento.api.core.annotations.Module;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
+import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
@@ -21,7 +21,7 @@ import br.gov.planejamento.api.exemplos.resource.BaseResource;
 import br.gov.planejamento.api.exemplos.service.BaseService;
 
 @Path("/")
-@Module(CommonConstants.Modules.LICITACOES)
+@ApiModule(CommonConstants.Modules.LICITACOES)
 public class BaseRequest {	
 	/*
 	 *  Criamos, primeiramente, uma instancia da classe BaseService para podermos requisitar os dados do banco
@@ -37,7 +37,7 @@ public class BaseRequest {
 	 */
 	
 	@GET
-	@About(name = "base", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?algum_retorno_do_banco=70024")
+	@ApiRequest(name = "base", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?algum_retorno_do_banco=70024")
 	@Path(BaseConstants.Requests.List.BASE)
 	
 	/*
