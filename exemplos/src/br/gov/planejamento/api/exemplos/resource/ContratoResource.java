@@ -1,6 +1,7 @@
 package br.gov.planejamento.api.exemplos.resource;
 
 import br.gov.planejamento.api.core.annotations.Type;
+import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -22,11 +23,11 @@ public class ContratoResource extends Resource {
 		this.data_termino = contrato.get("data_termino");
 		this.valor_inicial= contrato.get("valor_inicial");
 		/*JOIN*/
-		this.id_contratante = contrato.get("id_contratante");		
+		//this.id_contratante = contrato.get("id_contratante");		
 	}
 	
-	public String getDescricao() {
-		return descricao;
+	public Property getDescricao() {
+		return new Property("Descrição de um contrato", descricao);
 	}
 
 	public void setDescricao(String descricao) {
@@ -34,8 +35,8 @@ public class ContratoResource extends Resource {
 	}
 	
 	@Type("integer")
-	public String getId_contrato() {
-		return id_contrato;
+	public Property getId_contrato() {
+		return new Property("Chave única do contrato", id_contrato);
 	}
 
 	public void setId_contrato(String id_contrato) {
@@ -43,8 +44,8 @@ public class ContratoResource extends Resource {
 	}
 
 	@Type("boolean")
-	public String getStatus() {
-		return status;
+	public Property getStatus() {
+		return new Property("Fator booleano que determina se um contrato está ativo ou não", status);
 	}
 
 	public void setStatus(String status) {
@@ -52,8 +53,8 @@ public class ContratoResource extends Resource {
 	}
 	
 	@Type("datetime")
-	public String getData_termino() {
-		return data_termino;
+	public Property getData_termino() {
+		return new Property("Data de término do contrato", data_termino);
 	}
 
 	public void setData_termino(String data_termino) {
@@ -61,8 +62,8 @@ public class ContratoResource extends Resource {
 	}
 	
 	@Type("float")
-	public String getValor_inicial() {
-		return valor_inicial;
+	public Property getValor_inicial() {
+		return new Property("Valor inicial do contrato", valor_inicial);
 	}
 
 	public void setValor_inicial(String valor_inicial) {
@@ -71,15 +72,15 @@ public class ContratoResource extends Resource {
 
 	
 	//TODO: Acertar esse self-link;
-
-	public String getId_contratante() {
+	/*
+	public Property getId_contratante() {
 		return id_contratante;
 	}
 
 	public void setId_contratante(String id_contratante) {
 		this.id_contratante = id_contratante;
 	}
-
+*/
 	@Override
 	public SelfLink getSelfLink() {
 		 return new SelfLink("url para o meu resource", "nome do meu resource");
