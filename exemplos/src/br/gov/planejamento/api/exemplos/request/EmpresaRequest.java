@@ -3,15 +3,14 @@ package br.gov.planejamento.api.exemplos.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import br.gov.planejamento.api.commons.constants.BaseConstants;
 import br.gov.planejamento.api.commons.constants.CommonConstants;
+import br.gov.planejamento.api.commons.constants.ExemplosConstants;
 import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Module;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
-import br.gov.planejamento.api.exemplos.resource.BaseResource;
 import br.gov.planejamento.api.exemplos.resource.EmpresaResource;
 import br.gov.planejamento.api.exemplos.service.EmpresaService;
 
@@ -23,9 +22,9 @@ public class EmpresaRequest {
 	
 	@GET
 	@About(name = "empresas", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?representante_legal=Afrânio")
-	@Path(BaseConstants.Requests.List.BASE)
+	@Path(ExemplosConstants.Requests.List.EMPRESAS)
 	
-	public ResourceListResponse<BaseResource> contrato(
+	public ResourceListResponse<EmpresaResource> contrato(
 			@Parameter(name = "descricao", description = "Descrição breve da empresa") String descricao,
 			@Parameter(name = "id_empresa", description = "Numero identificador da empresa") String id_contrato,
 			@Parameter(name = "nome", description = "Nome maravilha da empresa") String status,

@@ -131,7 +131,7 @@ public abstract class Filter {
 		return parameters;
 	}
 	
-	public String getStatement(String tableAlias){
+	public String getStatement(String...tableAlias){
 		StringBuilder statement = new StringBuilder();
 		RequestContext context = RequestContext.getContext();
 		Boolean first = true;
@@ -150,10 +150,6 @@ public abstract class Filter {
 			}	
 		}
 		return statement.toString();
-	}
-	
-	public String getStatement() {
-		return getStatement(null);
 	}
 	
 	public List<DatabaseAlias> getParametersAliases() {

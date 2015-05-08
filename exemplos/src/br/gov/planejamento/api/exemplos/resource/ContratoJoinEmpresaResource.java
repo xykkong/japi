@@ -4,14 +4,16 @@ import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
 
-public class ContratoResource extends Resource {
+public class ContratoJoinEmpresaResource extends Resource {
 	private String descricao;
 	private String id_contrato;
 	private String status;
 	private String data_termino;
 	private String valor_inicial;
+	/*JOIN*/
+	private String id_contratante;
 	
-	public ContratoResource(DataRow contrato) {
+	public ContratoJoinEmpresaResource(DataRow contrato) {
 		super(contrato);
 		this.descricao = contrato.get("descricao");
 		this.id_contrato = contrato.get("id_contrato");
@@ -58,6 +60,17 @@ public class ContratoResource extends Resource {
 
 	public void setValor_inicial(String valor_inicial) {
 		this.valor_inicial = valor_inicial;
+	}
+
+	
+	//TODO: Acertar esse self-link;
+
+	public String getId_contratante() {
+		return id_contratante;
+	}
+
+	public void setId_contratante(String id_contratante) {
+		this.id_contratante = id_contratante;
 	}
 
 	@Override

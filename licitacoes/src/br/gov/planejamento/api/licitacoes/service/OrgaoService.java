@@ -6,7 +6,7 @@ import br.gov.planejamento.api.core.database.ServiceConfiguration;
 public class OrgaoService extends Service{
 
 	@Override
-	protected ServiceConfiguration getServiceConfiguration() {
+	public ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("dados_abertos");
 		configs.setTable("vw_orgao");

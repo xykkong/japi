@@ -6,7 +6,7 @@ import br.gov.planejamento.api.core.database.ServiceConfiguration;
 public class EmpresaService extends Service {
 
 	@Override
-	protected ServiceConfiguration getServiceConfiguration() {
+	public ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("teste_bd");
 		configs.setTable("empresas");

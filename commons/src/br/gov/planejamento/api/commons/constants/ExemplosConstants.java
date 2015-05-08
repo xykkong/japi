@@ -14,11 +14,13 @@ public abstract class ExemplosConstants {
 	public static final class Requests {
 		
 		public static final class List {
-			public static final String CONTRATOS = Prefixes.LIST + "/contratos";			
+			public static final String CONTRATOS = Prefixes.LIST + "/contratos";
+			public static final String CONTRATOS_JOIN_EMPRESAS = Prefixes.LIST + "/contratos-join-empresas";
+			public static final String EMPRESAS = Prefixes.LIST + "/empresas";
 		}
 		
 		public static final class Document {
-			public static final String BASE = Prefixes.DOCUMENT + "/contratos";
+			public static final String CONTRATO = Prefixes.DOCUMENT + "/contrato";
 		}
 		
 		public static final class Mirror {

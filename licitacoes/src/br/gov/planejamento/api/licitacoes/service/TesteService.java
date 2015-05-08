@@ -7,7 +7,7 @@ import br.gov.planejamento.api.core.filters.EqualFilter;
 public class TesteService extends Service {
 
 	@Override
-	protected ServiceConfiguration getServiceConfiguration() {
+	public ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("public");
 		configs.setTable("test_table");

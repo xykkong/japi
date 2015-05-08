@@ -14,7 +14,7 @@ public class BaseService extends Service {
      */
 
 	@Override
-	protected ServiceConfiguration getServiceConfiguration() {
+	public ServiceConfiguration getServiceConfiguration() {
 		ServiceConfiguration configs = new ServiceConfiguration();
 		configs.setSchema("nome_do_schema_do_banco");
 		configs.setTable("tabela_à_ser_acessada");

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
@@ -15,9 +16,8 @@ import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
-public abstract class Service {
+public abstract class Service implements ServiceConfigurationContainer{
 
-	protected abstract ServiceConfiguration getServiceConfiguration();
 	protected ServiceConfiguration configs = getServiceConfiguration();
 
 	public DataRow getOne() throws ApiException{
@@ -40,7 +40,6 @@ public abstract class Service {
 		for (Filter filter : equalFilters) {
 			RequestContext.getContext().addFilter(filter);
 		}
-		
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
 		
@@ -104,11 +103,6 @@ public abstract class Service {
 		
 		configValidation();
 		
-		// SETUP
-		Connection connection = ConnectionManager.getConnection();
-		ArrayList<Filter> filtersFromRequest = context.getFilters();
-
-		
 		// QUERYS
 		
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
@@ -117,27 +111,31 @@ public abstract class Service {
 		
 		StringBuilder sbCountQuery = new StringBuilder("SELECT COUNT(*) AS quantity ");
 
-		StringBuilder sbQueryGeneric = generateGenericQuery(filtersFromRequest);
+		StringBuilder sbQueryGeneric = generateGenericQuery(context.getFilters());
 
 		sbQuery.append(sbQueryGeneric);
 		sbCountQuery.append(sbQueryGeneric);
 		
-		sbQuery.append(" ORDER BY ");
-		sbQuery.append(orderByValue);
-		sbQuery.append(" ");
-		sbQuery.append(orderValue);
+		endPageQuery(orderByValue, orderValue, sbQuery);
+
+		return executeQuery(sbQuery.toString(), sbCountQuery.toString(), null, getServiceConfiguration());
+	}
+	
+	public static DatabaseData executeQuery(String query,
+			String countQuery,
+			Map<ServiceConfiguration, String> mapConfigsAlias,
+			ServiceConfiguration...serviceConfigurations) throws CoreException, ApiException {
 		
-		sbQuery.append(" OFFSET ?");
-
-		sbQuery.append(" LIMIT ");
-		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
-
+		// SETUP
+		RequestContext context = RequestContext.getContext();
+		Connection connection = ConnectionManager.getConnection();
+		ArrayList<Filter> filtersFromRequest = context.getFilters();
 		PreparedStatement pstQuery;
 		PreparedStatement pstCount;
 		
 		try {
-			pstQuery = connection.prepareStatement(sbQuery.toString());
-			pstCount = connection.prepareStatement(sbCountQuery.toString());
+			pstQuery = connection.prepareStatement(query);
+			pstCount = connection.prepareStatement(countQuery);
 		} catch (SQLException e) {
 			throw new CoreException("Houve um erro durante a prepara��o dos statements da query.", e);
 		}
@@ -159,9 +157,11 @@ public abstract class Service {
 			throw new CoreException("Houve um erro ao definir o valor de offset na construção da query.", e);
 		}
 
+		String orderByValue = context.getOrderByValue();
+		String orderValue = context.getOrderValue();
 		// DEBUG
 		System.out.println("Query executada:");
-		System.out.println("\t" + sbQuery.toString());
+		System.out.println("\t" + query.toString());
 		System.out.print("\tvalores ORDER BY: ");
 		System.out.print(orderByValue + " ");
 		System.out.println(orderValue);
@@ -179,7 +179,12 @@ public abstract class Service {
 		try {
 			ResultSet rs = pstQuery.executeQuery();
 	
-			data = new DatabaseData(rs, configs);
+			if(mapConfigsAlias==null){
+				data = new DatabaseData(rs, serviceConfigurations);
+			}else{
+				data = new DatabaseData(rs, mapConfigsAlias, serviceConfigurations);
+			}
+			
 			pstQuery.close();
 			
 			rs = pstCount.executeQuery();
@@ -197,6 +202,19 @@ public abstract class Service {
 			throw new CoreException("Houve um erro durante a execução das queries.", e);
 		}
 		return data;
+	}
+	
+	public static void endPageQuery(String orderByValue, String orderValue,
+			StringBuilder sbQuery) {
+		sbQuery.append(" ORDER BY ");
+		sbQuery.append(orderByValue);
+		sbQuery.append(" ");
+		sbQuery.append(orderValue);
+		
+		sbQuery.append(" OFFSET ?");
+
+		sbQuery.append(" LIMIT ");
+		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
 	}
 
 	private void configValidation() throws CoreException {
@@ -223,7 +241,7 @@ public abstract class Service {
 		return sbQueryGeneric;
 	}
 
-	private String getWhereStatement(ArrayList<Filter> filtersFromRequest) {
+	public static String getWhereStatement(ArrayList<Filter> filtersFromRequest) {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		for (Filter filter : filtersFromRequest) {
 			filtersQuery.append(" AND ");
@@ -231,8 +249,24 @@ public abstract class Service {
 		}
 		return filtersQuery.toString();
 	}
+	
+	public static String getWhereStatement(ArrayList<Filter> filtersFromRequest, Map<ServiceConfiguration, String> mapConfigAlias) {
+		StringBuilder filtersQuery = new StringBuilder("1 = 1");
+		
+		for (Filter filter : filtersFromRequest) {
+			for(ServiceConfiguration config : mapConfigAlias.keySet()){
+				for(String dbName : filter.getDbParameters()){
+					if(config.getResponseFields().contains(dbName)) {
+						filtersQuery.append(" AND ");
+						filtersQuery.append(filter.getStatement(mapConfigAlias.get(config)));
+					}
+				}
+			}
+		}
+		return filtersQuery.toString();
+	}
 
-	private ArrayList<String> getWhereValues(
+	private static ArrayList<String> getWhereValues(
 			ArrayList<Filter> filtersFromRequest) {
 		ArrayList<String> wheres = new ArrayList<String>();
 		for (Filter filter : filtersFromRequest) {
