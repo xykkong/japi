@@ -18,6 +18,8 @@ import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import br.gov.planejamento.api.core.annotations.ApiModule;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
@@ -39,6 +41,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		RequestContext.getContext().clear();
 		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
 		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
+		
 		
 		/**
 		 * Leitura de parâmetros da JapiConfig e inserção dos dados na RequestContext
@@ -110,6 +113,11 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		RequestContext.getContext().setPath(path);
 		RequestContext.getContext().setFullPath(fullPath);
 		System.out.println(RequestContext.getContext().getPath());
+		
+		if(method.getMethod().isAnnotationPresent(ApiRequest.class) && !method.getMethod().getDeclaringClass().isAnnotationPresent(ApiModule.class)) {
+			CoreException e = new CoreException("Toda classe de Request deve ser anotada por @ApiModule.", 404);
+			return new ServerResponse(e, 404, new Headers<Object>());
+		}
 		
 		try {	
 			validateURIParametersUsingAnotations(httpRequest, method);

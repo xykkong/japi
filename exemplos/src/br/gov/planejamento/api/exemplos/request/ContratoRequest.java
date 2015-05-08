@@ -5,8 +5,9 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.commons.constants.ExemplosConstants;
-import br.gov.planejamento.api.core.annotations.About;
-import br.gov.planejamento.api.core.annotations.Module;
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
+import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseData;
@@ -21,14 +22,14 @@ import br.gov.planejamento.api.exemplos.resource.ContratoResource;
 import br.gov.planejamento.api.exemplos.service.ContratoService;
 
 @Path("/")
-@Module(CommonConstants.Modules.EXEMPLOS)
+@ApiModule(CommonConstants.Modules.EXEMPLOS)
 public class ContratoRequest {	
 	
 	private static ContratoService cService = new ContratoService();
 		
 	@GET
-	@About(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
-	@Path(ExemplosConstants.Requests.List.CONTRATOS)
+	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
+	@Path(ExemplosRouter.CONTRATOS)
 	
 	public ResourceListResponse<ContratoResource> contrato(
 			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,

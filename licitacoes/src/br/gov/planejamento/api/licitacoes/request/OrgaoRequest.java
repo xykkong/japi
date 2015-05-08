@@ -4,7 +4,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
-import br.gov.planejamento.api.core.annotations.About;
+import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -21,8 +22,8 @@ public class OrgaoRequest {
 	private OrgaoService oService = new OrgaoService();
 	
 	@GET
-	@Path(LicitacaoConstants.Requests.List.ORGAOS)
-	@About(name="orgaos", description ="Lista de órgãos emissores de licitações", exampleQuery ="?tipo_adm=1")
+	@Path(LicitacoesRouter.ORGAOS)
+	@ApiRequest(name="orgaos", description ="Lista de órgãos emissores de licitações", exampleQuery ="?tipo_adm=1")
 	public ResourceListResponse<OrgaoResource> orgaos(
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo

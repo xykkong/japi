@@ -22,7 +22,7 @@ public class ExemplosModule extends Module {
      */
 	
 	@GET	
-	@Path(CommonConstants.DOCS)
+	@Path(CommonConstants.Modules.DOCS)
 	public SwaggerResponse getDocs() throws ApiException {
 		return extractDocumentation("br.gov.planejamento.api.exemplos.request");
 	}
