@@ -11,7 +11,7 @@ import br.gov.planejamento.api.core.responses.SwaggerResponse;
 
 @Path("/")
 @ApplicationPath("/")
-public class BaseModule extends Module {
+public class ExemplosModule extends Module {
 	
 	/*
      * Dentro da classe que define o módulo, devemos configurar o sistema de Documentação.

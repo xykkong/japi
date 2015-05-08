@@ -22,7 +22,9 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.database.ConnectionManager;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.URIParameterNotAcceptedRequestException;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
@@ -37,6 +39,37 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		RequestContext.getContext().clear();
 		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
 		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
+		
+		/**
+		 * Leitura de parâmetros da JapiConfig e inserção dos dados na RequestContext
+		 */
+		try {
+			if(JapiConfigLoader.getJapiConfig().getDatabaseProperties() != null)
+				ConnectionManager.setDbProperties(JapiConfigLoader.getJapiConfig().getDatabaseProperties());
+			else throw new CoreException("Propriedados de banco de dados não configuradas no japi_config.json (databaseProperties)");
+			
+			if(JapiConfigLoader.getJapiConfig().getResourceTemplate() != null)
+				RequestContext.getContext().setResourceTemplate(JapiConfigLoader.getJapiConfig().getResourceTemplate());
+			else throw new CoreException("Caminho do Template de Resource não configurado no japi_config.json (resourceTemplate)");
+			
+			if(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate() != null)
+				RequestContext.getContext().setDocsModuloTemplate(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate());
+			else throw new CoreException("Caminho do Template de Módulo do Docs não configurado no japi_config.json (docsModuloTemplate)");
+			
+			if(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate() != null)
+				RequestContext.getContext().setDocsMetodoTemplate(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate());
+			else throw new CoreException("Caminho do Template de Método do Docs não configurado no japi_config.json (docsMetodoTemplate)");
+			
+			if(JapiConfigLoader.getJapiConfig().getErrorTemplate() != null)
+				RequestContext.getContext().setErrorTemplate(JapiConfigLoader.getJapiConfig().getErrorTemplate());
+			else throw new CoreException("Caminho do Template de erro não configurado no japi_config.json (errorTemplate)");
+			
+			if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
+				RequestContext.getContext().setStaticHtmlTemplate(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate());
+			else throw new CoreException("Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
+		} catch (ApiException e1) {
+			return new ServerResponse(e1, 500, new Headers<Object>());
+		}
 		
 		try {
 			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
