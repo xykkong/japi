@@ -1,7 +1,10 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
+import java.util.HashMap;
+
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.commons.masks.HtmlOnlyDateMask;
+import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.LinkProperty;
@@ -9,9 +12,11 @@ import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.masks.CPFMask;
 import br.gov.planejamento.api.core.masks.MoneyMask;
 import br.gov.planejamento.api.core.masks.TimeMask;
+import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class TesteResource extends Resource {
 
@@ -21,6 +26,8 @@ public class TesteResource extends Resource {
 	private String testeDate;
 	private String testeTime;
 	private String testeBoolean;
+	
+	private LicitacoesRouter licitacoesRouter = new LicitacoesRouter();
 	
 	public TesteResource(DataRow teste) {
 		super(teste);
@@ -92,7 +99,7 @@ public class TesteResource extends Resource {
 	
 	@Description("Int que é uma idade")
 	public LinkProperty getTesteInt() {
-		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, LicitacaoConstants.Properties.Link.IDADE+testeInt, "licitacoes");
+		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, LicitacoesRouter.TESTE_UNICO+testeInt, "licitacoes");
 	}
 	
 	@Description("Numeric que é um preço")
@@ -139,14 +146,16 @@ public class TesteResource extends Resource {
 	@Override
 	@Description("")
 	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAOTESTE+this.testeInt, "Elemento de teste de nome "+this.getTesteString());
+		return new SelfLink(LicitacoesRouter.TESTE+this.testeInt, "Elemento de teste de nome "+this.getTesteString());
 	}
 	
 	
 	@Description("")
-	public Link getUasg()
+	public Link getUasg() throws ApiException
 	{
-		return new Link(LicitacaoConstants.URIConstants.List.LICITACOES+"?uasg=2000", "Todas as licitacoes uasg 2000", "uasg");
+		HashMap<String, String> params = StringUtils.jsonListToHashMap("uasg:2000");
+		String url = licitacoesRouter.urlTo("LICITACOES", params);
+		return new Link(url, "Todas as licitacoes uasg 2000", "uasg");
 	}
 	
  

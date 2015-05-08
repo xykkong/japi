@@ -14,7 +14,7 @@ import br.gov.planejamento.api.core.responses.SwaggerResponse;
 public class LicitacoesModule extends Module {
 	
 	@GET
-	@Path(CommonConstants.DOCS)
+	@Path(CommonConstants.Modules.DOCS)
 	public SwaggerResponse getDocs() throws ApiException {
 		return extractDocumentation("br.gov.planejamento.api.licitacoes.request");
 	}

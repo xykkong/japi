@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.commons.constants.ExemplosConstants;
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.Parameter;
@@ -28,7 +29,7 @@ public class ContratoRequest {
 		
 	@GET
 	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
-	@Path(ExemplosConstants.Requests.List.CONTRATOS)
+	@Path(ExemplosRouter.CONTRATOS)
 	
 	public ResourceListResponse<ContratoResource> contrato(
 			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,
