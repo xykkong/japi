@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -31,7 +32,8 @@ public class ContratoResource extends Resource {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	
+	@Type("integer")
 	public String getId_contrato() {
 		return id_contrato;
 	}
@@ -40,6 +42,7 @@ public class ContratoResource extends Resource {
 		this.id_contrato = id_contrato;
 	}
 
+	@Type("boolean")
 	public String getStatus() {
 		return status;
 	}
@@ -47,7 +50,8 @@ public class ContratoResource extends Resource {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+	
+	@Type("datetime")
 	public String getData_termino() {
 		return data_termino;
 	}
@@ -55,7 +59,8 @@ public class ContratoResource extends Resource {
 	public void setData_termino(String data_termino) {
 		this.data_termino = data_termino;
 	}
-
+	
+	@Type("float")
 	public String getValor_inicial() {
 		return valor_inicial;
 	}

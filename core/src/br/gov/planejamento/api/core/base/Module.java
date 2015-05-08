@@ -16,6 +16,7 @@ import br.gov.planejamento.api.core.annotations.About;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
+import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
@@ -130,13 +131,18 @@ public abstract class Module extends Application {
 											
 					String propertyName = ReflectionUtils.getterToPropertyName(propertyMethod.getName());
 					String propertyDescription = "";
+					String propertyType = "string";
 					if(propertyMethod.isAnnotationPresent(Description.class)) {
 						propertyDescription = propertyMethod.getAnnotation(Description.class).value();
+					}
+					if(propertyMethod.isAnnotationPresent(Type.class)) {
+						propertyType= propertyMethod.getAnnotation(Type.class).value();
 					}
 									
 					JsonObject property = new JsonObject();
 					property.addProperty("name", propertyName);
 					property.addProperty("description", propertyDescription);
+					property.addProperty("type", propertyType);
 					properties.add(property);
 				}					
 			}

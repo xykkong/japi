@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -36,7 +37,7 @@ public class EmpresaResource extends Resource {
 	}
 
 
-
+	@Type("integer")
 	public String getId_empresa() {
 		return id_empresa;
 	}
