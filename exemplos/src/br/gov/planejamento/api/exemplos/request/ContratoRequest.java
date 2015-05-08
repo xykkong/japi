@@ -14,6 +14,7 @@ import br.gov.planejamento.api.core.database.ServiceJoinner;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
+import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
@@ -24,17 +25,18 @@ import br.gov.planejamento.api.exemplos.resource.ContratoResource;
 import br.gov.planejamento.api.exemplos.service.ContratoService;
 
 @Path("/")
-@Module(CommonConstants.Modules.EXEMPLOS)
-public class ContratoRequest {
+@ApiModule(CommonConstants.Modules.EXEMPLOS)
+public class ContratoRequest {	
 	
 	private static ContratoService contratoService = new ContratoService();
 		
 	@GET
-	@About(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
-	@Path(ExemplosConstants.Requests.List.CONTRATOS)
+	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
+	@Path(ExemplosRouter.CONTRATOS)
 	
-	public ResourceListResponse<ContratoResource> contratos(
+	public ResourceListResponse<ContratoResource> contrato(
 			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,
+			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato,
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
@@ -44,6 +46,7 @@ public class ContratoRequest {
 			throws ApiException {
 	
 		RequestContext.getContext().addFilter(
+				new EqualFilter(Integer.class, "numero","id_contrato"),
 				new CaseInsensitiveLikeFilter(
 						"cnpj_contratante", "cnpj_contratada","valor_inicial"
 						),
@@ -89,5 +92,6 @@ public class ContratoRequest {
 		
 		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinResource.class);
 	}
+
 	
 }

@@ -3,6 +3,7 @@ package br.gov.planejamento.api.exemplos.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
+import br.gov.planejamento.api.commons.constants.BaseConstants;
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.commons.constants.ExemplosConstants;
 import br.gov.planejamento.api.core.annotations.About;
@@ -11,6 +12,7 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
+import br.gov.planejamento.api.exemplos.resource.BaseResource;
 import br.gov.planejamento.api.exemplos.resource.EmpresaResource;
 import br.gov.planejamento.api.exemplos.service.EmpresaService;
 
@@ -21,8 +23,8 @@ public class EmpresaRequest {
 	private EmpresaService eService = new EmpresaService();
 	
 	@GET
-	@About(name = "empresas", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?representante_legal=Afrânio")
-	@Path(ExemplosConstants.Requests.List.EMPRESAS)
+	@ApiRequest(name = "empresas", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?representante_legal=Afrânio")
+	@Path(ExemplosRouter.EMPRESAS)
 	
 	public ResourceListResponse<EmpresaResource> contrato(
 			@Parameter(name = "descricao", description = "Descrição breve da empresa") String descricao,

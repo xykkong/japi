@@ -1,6 +1,7 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
+import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
@@ -31,7 +32,7 @@ public class LicitacaoResource extends Resource {
 		this.uasg = licitacao.get("uasg");
 		this.dataAberturaProposta = licitacao.get("data_abertura_proposta");
 	}
-	
+	@Type("Datetime")
 	public Property getDataAberturaProposta(){
 		return new Property("Data de Abertura da Proposta", dataAberturaProposta);
 	}

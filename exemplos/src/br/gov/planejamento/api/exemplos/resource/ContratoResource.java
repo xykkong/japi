@@ -10,6 +10,8 @@ public class ContratoResource extends Resource {
 	private String status;
 	private String data_termino;
 	private String valor_inicial;
+	/*JOIN*/
+	private String id_contratante;
 	
 	public ContratoResource(DataRow contrato) {
 		super(contrato);
@@ -18,48 +20,65 @@ public class ContratoResource extends Resource {
 		this.status= contrato.get("status");
 		this.data_termino = contrato.get("data_termino");
 		this.valor_inicial= contrato.get("valor_inicial");
+		/*JOIN*/
+		//this.id_contratante = contrato.get("id_contratante");		
 	}
 	
-	public String getDescricao() {
-		return descricao;
+	public Property getDescricao() {
+		return new Property("Descrição de um contrato", descricao);
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
-	public String getId_contrato() {
-		return id_contrato;
+	
+	@Type("integer")
+	public Property getId_contrato() {
+		return new Property("Chave única do contrato", id_contrato);
 	}
 
 	public void setId_contrato(String id_contrato) {
 		this.id_contrato = id_contrato;
 	}
 
-	public String getStatus() {
-		return status;
+	@Type("boolean")
+	public Property getStatus() {
+		return new Property("Fator booleano que determina se um contrato está ativo ou não", status);
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	public String getData_termino() {
-		return data_termino;
+	
+	@Type("datetime")
+	public Property getData_termino() {
+		return new Property("Data de término do contrato", data_termino);
 	}
 
 	public void setData_termino(String data_termino) {
 		this.data_termino = data_termino;
 	}
-
-	public String getValor_inicial() {
-		return valor_inicial;
+	
+	@Type("float")
+	public Property getValor_inicial() {
+		return new Property("Valor inicial do contrato", valor_inicial);
 	}
 
 	public void setValor_inicial(String valor_inicial) {
 		this.valor_inicial = valor_inicial;
 	}
 
+	
+	//TODO: Acertar esse self-link;
+	/*
+	public Property getId_contratante() {
+		return id_contratante;
+	}
+
+	public void setId_contratante(String id_contratante) {
+		this.id_contratante = id_contratante;
+	}
+*/
 	@Override
 	public SelfLink getSelfLink() {
 		 return new SelfLink("url para o meu resource", "nome do meu resource");

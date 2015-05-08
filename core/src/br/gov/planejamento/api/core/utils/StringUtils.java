@@ -1,6 +1,10 @@
 package br.gov.planejamento.api.core.utils;
 
+import java.util.HashMap;
 import java.util.List;
+
+import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.exceptions.CoreException;
 
 public class StringUtils {
 
@@ -41,5 +45,21 @@ public class StringUtils {
 
 	public static String capitalize(String word) {
 		return Character.toUpperCase(word.charAt(0)) + word.substring(1);
+	}
+	
+	public static HashMap<String, String> jsonListToHashMap(String jsonList) throws ApiException {
+		try {
+			HashMap<String, String> map = new HashMap<String,String>();
+			String[] entries = jsonList.split(",");
+			
+			for(String entry : entries) {
+				String[] property = entry.split(":");
+				map.put(property[0], property[1]);
+			}
+			
+			return map;
+		} catch(Exception e) {
+			throw new CoreException("Houve um erro ao parsear a string json informada em HashMap", e);
+		}
 	}
 }

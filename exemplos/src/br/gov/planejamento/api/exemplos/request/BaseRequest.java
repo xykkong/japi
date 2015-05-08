@@ -3,10 +3,10 @@ package br.gov.planejamento.api.exemplos.request;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import br.gov.planejamento.api.commons.constants.BaseConstants;
 import br.gov.planejamento.api.commons.constants.CommonConstants;
-import br.gov.planejamento.api.core.annotations.About;
-import br.gov.planejamento.api.core.annotations.Module;
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
+import br.gov.planejamento.api.core.annotations.ApiModule;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
@@ -21,7 +21,7 @@ import br.gov.planejamento.api.exemplos.resource.BaseResource;
 import br.gov.planejamento.api.exemplos.service.BaseService;
 
 @Path("/")
-@Module(CommonConstants.Modules.LICITACOES)
+@ApiModule(CommonConstants.Modules.EXEMPLOS)
 public class BaseRequest {	
 	/*
 	 *  Criamos, primeiramente, uma instancia da classe BaseService para podermos requisitar os dados do banco
@@ -31,14 +31,14 @@ public class BaseRequest {
 	private BaseService bService = new BaseService();
 	
 	/*
-	 * Dentro da annotation @About nós preciamos setar o nome do módulo assim como a sua descrição
+	 * Dentro da annotation @ApiRequest nós preciamos setar o nome do módulo assim como a sua descrição
 	 * podemos, se for interessante, setar uma query de exemplo do método ainda dentro da annotation @About
 	 * 
 	 */
 	
 	@GET
-	@About(name = "base", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?algum_retorno_do_banco=70024")
-	@Path(BaseConstants.Requests.List.BASE)
+	@ApiRequest(name = "base", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?algum_retorno_do_banco=70024")
+	@Path(ExemplosRouter.LISTA_BASE)
 	
 	/*
 	 * O método abaixo retorno uma Response que será exibida para o cliente.

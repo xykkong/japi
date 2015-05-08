@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import br.gov.planejamento.api.core.annotations.Type;
+import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -25,8 +27,8 @@ public class EmpresaResource extends Resource {
 
 
 
-	public String getNome() {
-		return nome;
+	public Property getNome() {
+		return new Property("Nome da empresa",nome);
 	}
 
 
@@ -36,9 +38,9 @@ public class EmpresaResource extends Resource {
 	}
 
 
-
-	public String getId_empresa() {
-		return id_empresa;
+	@Type("integer")
+	public Property getId_empresa() {
+		return new Property("identificador único",id_empresa);
 	}
 
 
@@ -49,8 +51,8 @@ public class EmpresaResource extends Resource {
 
 
 
-	public String getDescricao() {
-		return descricao;
+	public Property getDescricao() {
+		return new Property("Descricao da empresa",descricao);
 	}
 
 
@@ -61,8 +63,8 @@ public class EmpresaResource extends Resource {
 
 
 
-	public String getRepresentante_legal() {
-		return representante_legal;
+	public Property getRepresentante_legal() {
+		return new Property("nome do representante legal",representante_legal);
 	}
 
 
@@ -73,8 +75,8 @@ public class EmpresaResource extends Resource {
 
 
 
-	public String getCnpj() {
-		return cnpj;
+	public Property getCnpj() {
+		return new Property("cnpj da empresa",cnpj);
 	}
 
 

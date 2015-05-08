@@ -58,6 +58,6 @@ public class Docs extends Application {
 	}
 	
 	private static String docUrl(String modulo){
-		return  CommonConstants.URIConstants.BASE_URL + modulo + "/" + CommonConstants.DOCS + ".json";
+		return  RequestContext.getContext().getRootURL() + modulo + "/" + CommonConstants.Modules.DOCS + ".json";
 	}
 }	

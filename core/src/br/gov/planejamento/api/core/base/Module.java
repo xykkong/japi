@@ -12,10 +12,11 @@ import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 
-import br.gov.planejamento.api.core.annotations.About;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
+import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
@@ -40,7 +41,7 @@ public abstract class Module extends Application {
 	 */
 	protected SwaggerResponse extractDocumentation(String packageName) throws ApiException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodAnnotationsScanner());
-		Set<Method> methods = reflections.getMethodsAnnotatedWith(About.class);
+		Set<Method> methods = reflections.getMethodsAnnotatedWith(ApiRequest.class);
 		
 		JsonObject json = new JsonObject();
 		JsonArray requests = new JsonArray();
@@ -62,18 +63,18 @@ public abstract class Module extends Application {
 			String requestExampleQueryString = "";
 			String requestExampleId = "";
 			
-			if(requestMethod.isAnnotationPresent(About.class)) {
-				requestDescription = requestMethod.getAnnotation(About.class).description();
-				requestMethodName = requestMethod.getAnnotation(About.class).name();
+			if(requestMethod.isAnnotationPresent(ApiRequest.class)) {
+				requestDescription = requestMethod.getAnnotation(ApiRequest.class).description();
+				requestMethodName = requestMethod.getAnnotation(ApiRequest.class).name();
 				
 				//Só insere uma example_query_string caso a @Module for definida no Request
-				if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.Module.class)){
+				if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.ApiModule.class)){
 					String root = RequestContext.getContext().getRootURL();
-					String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.Module.class).value();
+					String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.ApiModule.class).value();
 					String examplePath = requestMethod.getAnnotation(Path.class).value();
 					
-					requestExampleQueryString = requestMethod.getAnnotation(About.class).exampleQuery();
-					requestExampleId = requestMethod.getAnnotation(About.class).exampleId();
+					requestExampleQueryString = requestMethod.getAnnotation(ApiRequest.class).exampleQuery();
+					requestExampleId = requestMethod.getAnnotation(ApiRequest.class).exampleId();
 											
 					
 					if(!requestExampleId.equals("")){
@@ -130,13 +131,18 @@ public abstract class Module extends Application {
 											
 					String propertyName = ReflectionUtils.getterToPropertyName(propertyMethod.getName());
 					String propertyDescription = "";
+					String propertyType = "string";
 					if(propertyMethod.isAnnotationPresent(Description.class)) {
 						propertyDescription = propertyMethod.getAnnotation(Description.class).value();
+					}
+					if(propertyMethod.isAnnotationPresent(Type.class)) {
+						propertyType= propertyMethod.getAnnotation(Type.class).value();
 					}
 									
 					JsonObject property = new JsonObject();
 					property.addProperty("name", propertyName);
 					property.addProperty("description", propertyDescription);
+					property.addProperty("type", propertyType);
 					properties.add(property);
 				}					
 			}
