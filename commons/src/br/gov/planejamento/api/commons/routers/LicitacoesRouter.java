@@ -19,5 +19,6 @@ public class LicitacoesRouter extends Router {
 	public static final String ORGAOS = Prefixes.LIST + "orgaos";
 	
 	public static final String TESTE_UNICO = Prefixes.RESOURCE + "licitacaoteste/{idade}";
+	public static final String LICITACAO = Prefixes.RESOURCE + "licitacao/";
 	
 }

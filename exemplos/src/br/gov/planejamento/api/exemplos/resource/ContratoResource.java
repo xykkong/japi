@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import br.gov.planejamento.api.core.annotations.Type;
+import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -10,8 +12,6 @@ public class ContratoResource extends Resource {
 	private String status;
 	private String data_termino;
 	private String valor_inicial;
-	/*JOIN*/
-	private String id_contratante;
 	
 	public ContratoResource(DataRow contrato) {
 		super(contrato);
@@ -20,8 +20,6 @@ public class ContratoResource extends Resource {
 		this.status= contrato.get("status");
 		this.data_termino = contrato.get("data_termino");
 		this.valor_inicial= contrato.get("valor_inicial");
-		/*JOIN*/
-		//this.id_contratante = contrato.get("id_contratante");		
 	}
 	
 	public Property getDescricao() {

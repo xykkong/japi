@@ -1,6 +1,6 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
+import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
 import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
@@ -83,7 +83,7 @@ public class LicitacaoResource extends Resource {
 	
 	@Override
 	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
+		return new SelfLink(LicitacoesRouter.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
 	}
 	
 

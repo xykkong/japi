@@ -4,9 +4,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
-import br.gov.planejamento.api.commons.constants.ExemplosConstants;
-import br.gov.planejamento.api.core.annotations.About;
-import br.gov.planejamento.api.core.annotations.Module;
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
+import br.gov.planejamento.api.core.annotations.ApiModule;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseData;
@@ -58,9 +58,8 @@ public class ContratoRequest {
 	}
 	
 	@GET
-	@About(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
-	@Path(ExemplosConstants.Requests.Document.CONTRATO)
-	
+	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
+	@Path(ExemplosRouter.CONTRATO)
 	public ResourceResponse<ContratoResource> contrato(
 			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato
 		)
@@ -69,8 +68,8 @@ public class ContratoRequest {
 	}
 	
 	@GET
-	@About(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
-	@Path(ExemplosConstants.Requests.List.CONTRATOS_JOIN_EMPRESAS)
+	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
+	@Path(ExemplosRouter.CONTRATOS_JOIN_EMPRESAS)
 	public ResourceListResponse<ContratoJoinEmpresaResource> contratoJoinEmpresa(
 			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,
 			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato,
