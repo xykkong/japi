@@ -2,6 +2,7 @@ package br.gov.planejamento.api.core.filters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
@@ -46,8 +47,9 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	@Override
 	public List<String> getValues(DatabaseAlias parameterAlias) {
 		List<String> values = new ArrayList<String>();
-		for(String value : this.values.get(parameterAlias.getUriName()))
-			values.add("%" + value.toLowerCase().trim() + "%");
+		for(Entry<String, List<String>> value : this.values.entrySet())
+			if(value.getKey().equals(parameterAlias.getUriName()))
+				values.add("%" + value.getValue().get(0).toLowerCase().trim() + "%");
 		return values;
 	}
 	
