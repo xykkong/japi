@@ -1,8 +1,11 @@
 package br.gov.planejamento.api.core.base;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.Path;
@@ -43,8 +46,20 @@ public abstract class Module extends Application {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodAnnotationsScanner());
 		Set<Method> methods = reflections.getMethodsAnnotatedWith(ApiRequest.class);
 		
-		JsonObject json = new JsonObject();
+		
+		JsonObject swaggerJson = new JsonObject();
 		JsonArray requests = new JsonArray();
+		
+		swaggerJson.addProperty("apiVersion", "1.2.0: The Great Bug of Docs");
+		swaggerJson.addProperty("swaggerVersion", "1.2: pois é o que estava escrito na antiga");
+		
+		String root = RequestContext.getContext().getRootURL();
+		List<Method> lm = new ArrayList<>(methods);
+		String classModule = lm.get(0).getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.ApiModule.class).value();
+		
+		swaggerJson.addProperty("basePath", root+classModule);
+		
+		
 		
 		for(Method requestMethod : methods) {
 			
@@ -151,9 +166,10 @@ public abstract class Module extends Application {
 			requests.add(request);
 		}
 		
-		json.add("requests", requests);
+		swaggerJson.add("requests", requests);
 		
-		return new SwaggerResponse(json);
+		
+		return new SwaggerResponse(swaggerJson);
 	}
 	
 	public abstract SwaggerResponse getDocs() throws ApiException;

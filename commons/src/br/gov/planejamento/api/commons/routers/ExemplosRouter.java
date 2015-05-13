@@ -16,5 +16,5 @@ public class ExemplosRouter extends Router {
 	
 	public static final String LISTA_BASE = Prefixes.LIST + "listabase";
 	public static final String CONTRATOS = Prefixes.LIST + "contratos";
-	public static final String EMPRESAS = Prefixes.RESOURCE + "empresas";
+	public static final String EMPRESAS = Prefixes.LIST + "empresas";
 }

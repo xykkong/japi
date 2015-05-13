@@ -4,10 +4,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
-import br.gov.planejamento.api.commons.constants.ExemplosConstants;
 import br.gov.planejamento.api.commons.routers.ExemplosRouter;
-import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.ApiModule;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseData;
