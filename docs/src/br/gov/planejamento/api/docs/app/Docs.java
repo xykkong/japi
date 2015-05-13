@@ -38,7 +38,7 @@ public class Docs extends Application {
 	}
 	
 	@GET
-	@Path("/doc/{modulo}/{consulta}")
+	@Path("/docs/{modulo}/{consulta}")
 	public DocumentationResponse docsMetodo(
 		@PathParam("consulta") String method,
 		@PathParam("modulo") String modulo) throws ApiException{

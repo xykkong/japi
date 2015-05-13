@@ -1,10 +1,14 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import java.util.HashMap;
+
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
 import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.exceptions.ApiException;
 
 public class ContratoResource extends Resource {
 	private String descricao;
@@ -13,7 +17,9 @@ public class ContratoResource extends Resource {
 	private String data_termino;
 	private String valor_inicial;
 	/*JOIN*/
-	private String id_contratante;
+	//private String id_contratante;
+	
+	private ExemplosRouter contratosRouter = new ExemplosRouter();
 	
 	public ContratoResource(DataRow contrato) {
 		super(contrato);
@@ -82,8 +88,11 @@ public class ContratoResource extends Resource {
 	}
 */
 	@Override
-	public SelfLink getSelfLink() {
-		 return new SelfLink("url para o meu resource", "nome do meu resource");
+	public SelfLink getSelfLink() throws ApiException {		
+		HashMap<String, String> meuMap = new HashMap<String, String>();
+		meuMap.put("id",this.id_contrato);
+		
+		return new SelfLink(contratosRouter.urlTo(ExemplosRouter.CONTRATOS, meuMap), "Contrato de numero: " + this.getId_contrato());
 	}
 	
 
