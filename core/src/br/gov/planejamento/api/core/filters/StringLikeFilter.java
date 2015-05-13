@@ -12,16 +12,18 @@ import br.gov.planejamento.api.core.database.Filter;
  * 
  * Ocorre uma comparação do valor da String informada no filtro com todas as ocorrências no banco de dados.
  * 
- * O retorno é formado por todos os resources cujo valor desse campo CONTÉM o valor informado, ignorando caixas altas.
+ * O retorno é formado por todos os resources cujo valor desse campo CONTÉM o valor informado.
+ * 
+ * Esse filtro é case sensitive. Para comparações case insensitive, utilize CaseInsensitiveLikeFilter.
  *
  */
-public class CaseInsensitiveLikeFilter extends Filter {
-
-	private CaseInsensitiveLikeFilter(DatabaseAlias...databaseAliases) {
+public class StringLikeFilter extends Filter {
+	
+	private StringLikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
 	
-	private CaseInsensitiveLikeFilter(String...parameters) {
+	private StringLikeFilter(String...parameters) {
 		super(parameters);
 	}
 	
@@ -30,7 +32,7 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	 *
 	 */
 	public static Filter factory(String... parameters) {
-		return new CaseInsensitiveLikeFilter(parameters);
+		return new StringLikeFilter(parameters);
 	}
 
 	/**
@@ -40,31 +42,28 @@ public class CaseInsensitiveLikeFilter extends Filter {
 	 */
 	
 	public static Filter factory(DatabaseAlias... databaseAliases) {
-		return new CaseInsensitiveLikeFilter(databaseAliases);
-	}
-
-	@Override
-	public List<String> getValues(DatabaseAlias parameterAlias) {
-		List<String> values = new ArrayList<String>();
-		for(String value : this.values.get(parameterAlias.getUriName()))
-			values.add("%" + value.toLowerCase().trim() + "%");
-		return values;
+		return new StringLikeFilter(databaseAliases);
 	}
 	
 	@Override
 	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
 		StringBuilder statement = new StringBuilder();
 		int numberOfValues = getValues(parameterAlias).size();
-		statement.append("LOWER( ");
 		statement.append(parameterAlias.getDbName());
-		statement.append(" )");
 		statement.append(" like ? ");
 		for (int i=1; i<numberOfValues; i++) {
-			statement.append(" AND LOWER( ");
+			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			statement.append(" ) like ? ");
+			statement.append(" like ? ");				
 		}
 		return statement;
+	}
+	@Override
+	public List<String> getValues(DatabaseAlias parameterAlias) {
+		List<String> values = new ArrayList<String>();
+		for(String value : this.values.get(parameterAlias.getUriName()))
+			values.add("%" + value + "%");
+		return values;
 	}
 
 }

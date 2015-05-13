@@ -3,13 +3,14 @@ package br.gov.planejamento.api.core.database;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
+import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
 
 public class ServiceConfiguration {
 	
 	private String schema = "public";
 	private String table = "";
-	private EqualFilter[] primaryKeyEqualFilters = null;
+	private BasicEqualFilter[] primaryKeyEqualFilters = null;
 	private ArrayList<String> responseFields = new ArrayList<String>();
 	private ArrayList<String> requiredParameters = new ArrayList<String>();
 	private ArrayList<String> optionalParameters = new ArrayList<String>();
@@ -60,11 +61,15 @@ public class ServiceConfiguration {
 			validOrderByValues.add(value);
 		}
 	}
-	public EqualFilter[] getPrimaryKeyEqualFilters() {
+	public BasicEqualFilter[] getPrimaryKeyEqualFilters() {
 		return primaryKeyEqualFilters;
 	}
-	public void setPrimaryKeyEqualFilters(EqualFilter...primaryKeyEqualFilters) {
+	public void setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter primaryKeyEqualFilter) {
+		this.primaryKeyEqualFilters[0] = primaryKeyEqualFilter;
+	}
+	public void setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter...primaryKeyEqualFilters) {
 		this.primaryKeyEqualFilters = primaryKeyEqualFilters;
 	}
+	
 	
 }
