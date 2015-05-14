@@ -18,20 +18,12 @@ public class OrgaoResource extends Resource {
 	}
 
 
-	public Property getTipoAdm() {
-		return new Property("Codigo do Tipo Administrativo", tipoAdm);
-	}
-
-	public void setTipoAdm(String tipoAdm) {
-		this.tipoAdm = tipoAdm;
+	public Property<Integer> getTipoAdm() {
+		return new Property<Integer>("Codigo do Tipo Administrativo", tipoAdm);
 	}
 	
-	public Property getAtivo(){		
-		return new Property("Ativo", ativo);
-	}
-	
-	public void setAtivo(String ativo){
-		this.ativo = ativo;
+	public Property<Boolean> getAtivo(){		
+		return new Property<Boolean>("Ativo", ativo);
 	}
 
 	@Override

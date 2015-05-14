@@ -3,7 +3,7 @@ package br.gov.planejamento.api.core.base;
 import br.gov.planejamento.api.core.interfaces.IMask;
 
 
-public class Property {
+public class Property<T extends Object> {
 	
 	protected String id;
 	protected String name;	

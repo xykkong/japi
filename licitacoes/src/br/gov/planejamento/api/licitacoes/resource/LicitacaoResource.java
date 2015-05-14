@@ -1,12 +1,11 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
-import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
+import br.gov.planejamento.api.core.parameters.DateParam;
 
 public class LicitacaoResource extends Resource {
 
@@ -32,52 +31,32 @@ public class LicitacaoResource extends Resource {
 		this.uasg = licitacao.get("uasg");
 		this.dataAberturaProposta = licitacao.get("data_abertura_proposta");
 	}
-	@Type("Datetime")
-	public Property getDataAberturaProposta(){
-		return new Property("Data de Abertura da Proposta", dataAberturaProposta);
-	}
 	
-	public void setDataAberturaProposta(String dtAbertura){
-		this.dataAberturaProposta = dtAbertura;
+	public Property<DateParam> getDataAberturaProposta(){
+		return new Property<DateParam>("Data de Abertura da Proposta", dataAberturaProposta);
 	}
 
-	public Property getUasg() {
-		return new LinkProperty("UASG","http://google.com",uasg, "uasg");
+	public Property<String> getUasg() {
+		return new LinkProperty<String>("UASG","http://google.com",uasg, "uasg");
 	}
 
-	public void setUasg(String uasg) {
-		this.uasg = uasg;
-	}
-
-	public Property getNomeUasg() {
-		return new Property("Nome UASG", nomeUasg);
+	public Property<String> getNomeUasg() {
+		return new Property<String>("Nome UASG", nomeUasg);
 	}
 
 	public void setNomeUasg(String nomeUasg) {
 		this.nomeUasg = nomeUasg;
 	}
 
-	public Property getModalidade() {
+	public Property<String> getModalidade() {
 		StringBuilder valueBuilder = new StringBuilder(this.modalidade);
 		valueBuilder.append(" - ");
 		valueBuilder.append(this.nomeModalidade);
-		return new Property("Modalidade", valueBuilder.toString());
+		return new Property<String>("Modalidade", valueBuilder.toString());
 	}
 
-	public void setModalidade(String modalidade) {
-		this.modalidade = modalidade;
-	}
-
-	public void setNomeModalidade(String nomeModalidade) {
-		this.nomeModalidade = nomeModalidade;
-	}
-
-	public Property getNumeroAviso() {
-		return new Property("Número Aviso", numeroAviso);
-	}
-
-	public void setNumeroAviso(String numeroAviso) {
-		this.numeroAviso = numeroAviso;
+	public Property<Integer> getNumeroAviso() {
+		return new Property<Integer>("Número Aviso", numeroAviso);
 	}
 
 	
