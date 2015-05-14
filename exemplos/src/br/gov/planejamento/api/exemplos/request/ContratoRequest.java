@@ -8,7 +8,6 @@ import br.gov.planejamento.api.commons.routers.ExemplosRouter;
 import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
@@ -40,7 +39,7 @@ public class ContratoRequest {
 			@Parameter(name = "cnpj_contratada", description = "Numero do CNPJ da empresa contratada") String cnpjContratada)
 			throws ApiException {
 	
-		RequestContext.getContext().addFilter(
+		cService.addFilter(
 				BasicEqualFilter.factory(Integer.class, "numero","id_contrato"),
 				CaseInsensitiveLikeFilter.factory(
 						"cnpj_contratante", "cnpj_contratada","valor_inicial"

@@ -1,7 +1,5 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
-import java.util.HashMap;
-
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.commons.masks.HtmlOnlyDateMask;
 import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
@@ -17,7 +15,6 @@ import br.gov.planejamento.api.core.masks.CPFMask;
 import br.gov.planejamento.api.core.masks.MoneyMask;
 import br.gov.planejamento.api.core.masks.TimeMask;
 import br.gov.planejamento.api.core.parameters.DateParam;
-import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class TesteResource extends Resource {
 

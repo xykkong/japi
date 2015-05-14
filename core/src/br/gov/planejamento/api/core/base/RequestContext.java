@@ -10,7 +10,6 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
-import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.InvalidOffsetValueRequestException;
 import br.gov.planejamento.api.core.exceptions.InvalidOrderByValueRequestException;
@@ -29,11 +28,6 @@ public class RequestContext {
 	 * Parâmetros enviados na query string
 	 */
 	private Map<String, List<String>> parameters = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
-
-	/**
-	 * Filtros inseridos pela camada de Request
-	 */
-	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
 	/**
 	 * Colunas permitidas no order by do service requisitado
@@ -84,35 +78,6 @@ public class RequestContext {
 		if (context == null)
 			context = new RequestContext();
 		return context;
-	}
-
-	/**
-	 * Retorna os filtros de consulta ao banco adicionados na camada de Request
-	 * @return
-	 */
-	public ArrayList<Filter> getFilters() {
-		return filters;
-	}
-
-	/**
-	 * Adiciona à filtragem da consulta os filtros que tenham seus respectivos query parameters
-	 * presentes na query string da requisição 
-	 * @param filters Filtros a serem inseridos
-	 */
-	public void addFilter(Filter...filters) {
-		for(Filter filter : filters){
-			Boolean addThisFilter = false;
-			for(String parameter : filter.getUriParameters()){
-				if (hasParameter(parameter)) {
-					addThisFilter = true;
-					filter.putValues(parameter, context.getValues(parameter));
-					System.out.println("\n\tFilter added: "+ parameter+" with "+
-							context.getValues(parameter).size()+" values.");
-				}
-			}
-			if(addThisFilter)
-				this.filters.add(filter);
-		}
 	}
 
 	public void putValues(MultivaluedMap<String, String> multivaluedMap) {

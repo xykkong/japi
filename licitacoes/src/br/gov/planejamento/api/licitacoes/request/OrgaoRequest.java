@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
@@ -27,8 +26,7 @@ public class OrgaoRequest {
 				@Parameter(name = "tipo_adm", required = false, description ="Código do tipo da administração do órgão") String tipo_adm,
 				@Parameter(name = "ativo", required = false, description ="Se o órgão está ativo.") String ativo
 			) throws ApiException {
-		RequestContext context = RequestContext.getContext();
-		context.addFilter(
+		oService.addFilter(
 				BasicEqualFilter.factory(Integer.class, "codigo_tipo_adm as tipo_adm"),
 				BasicEqualFilter.factory(BooleanParam.class, "ativo")
 				);

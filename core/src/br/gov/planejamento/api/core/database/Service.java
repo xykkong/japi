@@ -19,6 +19,11 @@ public abstract class Service {
 
 	protected abstract ServiceConfiguration getServiceConfiguration();	
 	protected ServiceConfiguration configs = getServiceConfiguration();
+	
+	/**
+	 * Filtros inseridos pela camada de Request
+	 */
+	private ArrayList<Filter> filters = new ArrayList<Filter>();
 
 	public DataRow getOne() throws ApiException{
 		BasicEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
@@ -38,7 +43,7 @@ public abstract class Service {
 		configValidation();
 		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(equalFilters));
 		for (Filter filter : equalFilters) {
-			RequestContext.getContext().addFilter(filter);
+			this.addFilter(filter);
 		}
 		
 		// SETUP
@@ -94,6 +99,35 @@ public abstract class Service {
 		return row;
 	}
 	
+	/**
+	 * Retorna os filtros de consulta ao banco adicionados na camada de Request
+	 * @return
+	 */
+	public ArrayList<Filter> getFilters() {
+		return filters;
+	}
+	
+	/**
+	 * Adiciona à filtragem da consulta os filtros que tenham seus respectivos query parameters
+	 * presentes na query string da requisição 
+	 * @param filters Filtros a serem inseridos
+	 */
+	public void addFilter(Filter...filters) {
+		for(Filter filter : filters){
+			Boolean addThisFilter = false;
+			for(String parameter : filter.getUriParameters()){
+				if (RequestContext.getContext().hasParameter(parameter)) {
+					addThisFilter = true;
+					filter.putValues(parameter, RequestContext.getContext().getValues(parameter));
+					System.out.println("\n\tFilter added: "+ parameter+" with "+
+							RequestContext.getContext().getValues(parameter).size()+" values.");
+				}
+			}
+			if(addThisFilter)
+				this.filters.add(filter);
+		}
+	}
+	
 	public DatabaseData getAllFiltered() throws ApiException {
 
 		RequestContext context = RequestContext.getContext();
@@ -106,7 +140,7 @@ public abstract class Service {
 		
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
-		ArrayList<Filter> filtersFromRequest = context.getFilters();
+		ArrayList<Filter> filtersFromRequest = getFilters();
 
 		
 		// QUERYS
