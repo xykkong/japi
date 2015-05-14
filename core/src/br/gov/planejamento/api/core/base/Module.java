@@ -1,7 +1,6 @@
 package br.gov.planejamento.api.core.base;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.responses.SwaggerResponse;
-import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 import com.google.gson.JsonArray;
@@ -84,8 +83,6 @@ public abstract class Module extends Application {
 				
 				//Só insere uma example_query_string caso a @Module for definida no Request
 				if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.ApiModule.class)){
-					String root = RequestContext.getContext().getRootURL();
-					String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.ApiModule.class).value();
 					String examplePath = requestMethod.getAnnotation(Path.class).value();
 					
 					requestExampleQueryString = requestMethod.getAnnotation(ApiRequest.class).exampleQuery();

@@ -27,8 +27,6 @@ public class TesteResource extends Resource {
 	private String testeTime;
 	private String testeBoolean;
 	
-	private LicitacoesRouter licitacoesRouter = new LicitacoesRouter();
-	
 	public TesteResource(DataRow teste) {
 		super(teste);
 		setTesteDate(teste.get("teste_date"));
@@ -98,8 +96,9 @@ public class TesteResource extends Resource {
 	 */
 	
 	@Description("Int que é uma idade")
-	public LinkProperty getTesteInt() {
-		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, LicitacoesRouter.TESTE_UNICO+testeInt, "licitacoes");
+	public LinkProperty getTesteInt() throws ApiException {
+		String url = LicitacoesRouter.getRouter().urlTo(LicitacoesRouter.TESTE_UNICO, "idade", testeInt);
+		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, url, "licitacoes");
 	}
 	
 	@Description("Numeric que é um preço")
@@ -145,16 +144,16 @@ public class TesteResource extends Resource {
 	
 	@Override
 	@Description("")
-	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacoesRouter.TESTE+this.testeInt, "Elemento de teste de nome "+this.getTesteString());
+	public SelfLink getSelfLink() throws ApiException {
+		String url = LicitacoesRouter.getRouter().urlTo(LicitacoesRouter.TESTE, "idade", testeInt);
+		return new SelfLink(url, "Elemento de teste de nome "+this.getTesteString());
 	}
 	
 	
 	@Description("")
 	public Link getUasg() throws ApiException
 	{
-		HashMap<String, String> params = StringUtils.jsonListToHashMap("uasg:2000");
-		String url = licitacoesRouter.urlTo("LICITACOES", params);
+		String url = LicitacoesRouter.getRouter().urlTo("LICITACOES", "uasg", "2000");
 		return new Link(url, "Todas as licitacoes uasg 2000", "uasg");
 	}
 	

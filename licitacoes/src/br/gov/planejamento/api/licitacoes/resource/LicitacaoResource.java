@@ -83,7 +83,9 @@ public class LicitacaoResource extends Resource {
 	
 	@Override
 	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
+		//return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
+		//Foi comentado pois, como não há nenhum método que use esse Resource, não há Path definido ainda.
+		return null;
 	}
 	
 
