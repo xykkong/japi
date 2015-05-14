@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import br.gov.planejamento.api.core.annotations.Type;
+import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -22,40 +24,44 @@ public class ContratoJoinEmpresaResource extends Resource {
 		this.valor_inicial= contrato.get("valor_inicial");
 	}
 	
-	public String getDescricao() {
-		return descricao;
+	public Property getDescricao() {
+		return new Property("Descrição de um contrato", descricao);
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
-	public String getId_contrato() {
-		return id_contrato;
+	
+	@Type("integer")
+	public Property getId_contrato() {
+		return new Property("Chave única do contrato", id_contrato);
 	}
 
 	public void setId_contrato(String id_contrato) {
 		this.id_contrato = id_contrato;
 	}
 
-	public String getStatus() {
-		return status;
+	@Type("boolean")
+	public Property getStatus() {
+		return new Property("Fator booleano que determina se um contrato está ativo ou não", status);
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	public String getData_termino() {
-		return data_termino;
+	
+	@Type("datetime")
+	public Property getData_termino() {
+		return new Property("Data de término do contrato", data_termino);
 	}
 
 	public void setData_termino(String data_termino) {
 		this.data_termino = data_termino;
 	}
-
-	public String getValor_inicial() {
-		return valor_inicial;
+	
+	@Type("float")
+	public Property getValor_inicial() {
+		return new Property("Valor inicial do contrato", valor_inicial);
 	}
 
 	public void setValor_inicial(String valor_inicial) {
