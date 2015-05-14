@@ -11,5 +11,5 @@ public interface IProperties {
 	 * Obtém a lista de Properties associadas ao objeto em questão	
 	 * @return Lista de Properties
 	 */
-	public ArrayList<Property> getProperties() throws ApiException;
+	public ArrayList<Property<?>> getProperties() throws ApiException;
 }

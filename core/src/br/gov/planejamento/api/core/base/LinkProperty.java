@@ -3,7 +3,7 @@ package br.gov.planejamento.api.core.base;
 import br.gov.planejamento.api.core.interfaces.IMask;
 
 
-public class LinkProperty extends Property {	
+public class LinkProperty<T extends Object> extends Property<T> {	
 	
 	protected Link link = new Link();
 	

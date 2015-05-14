@@ -16,6 +16,7 @@ import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.masks.CPFMask;
 import br.gov.planejamento.api.core.masks.MoneyMask;
 import br.gov.planejamento.api.core.masks.TimeMask;
+import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class TesteResource extends Resource {
@@ -26,8 +27,6 @@ public class TesteResource extends Resource {
 	private String testeDate;
 	private String testeTime;
 	private String testeBoolean;
-	
-	private LicitacoesRouter licitacoesRouter = new LicitacoesRouter();
 	
 	public TesteResource(DataRow teste) {
 		super(teste);
@@ -87,8 +86,8 @@ public class TesteResource extends Resource {
 	 */
 	
 	@Description("String que é um CPF")
-	public Property getTesteString() {
-		return new Property("CPF", testeString, new CPFMask());
+	public Property<String> getTesteString() {
+		return new Property<String>("CPF", testeString, new CPFMask());
 	}
 	
 	/*@Description("String que é um CPF")
@@ -98,28 +97,29 @@ public class TesteResource extends Resource {
 	 */
 	
 	@Description("Int que é uma idade")
-	public LinkProperty getTesteInt() {
-		return new LinkProperty(LicitacaoConstants.Properties.Names.IDADE, testeInt, LicitacoesRouter.TESTE_UNICO+testeInt, "licitacoes");
+	public LinkProperty<Integer> getTesteInt() throws ApiException {
+		String url = LicitacoesRouter.getRouter().urlTo(LicitacoesRouter.TESTE_UNICO, "idade", testeInt);
+		return new LinkProperty<Integer>(LicitacaoConstants.Properties.Names.IDADE, testeInt, url, "licitacoes");
 	}
 	
 	@Description("Numeric que é um preço")
-	public Property getTesteNumeric() {
-		return new Property("Preço", testeNumeric, new MoneyMask("US$")); //O argumento na mask é opicional. Padrão é R$.
+	public Property<Double> getTesteNumeric() {
+		return new Property<Double>("Preço", testeNumeric, new MoneyMask("US$")); //O argumento na mask é opicional. Padrão é R$.
 	}
 	
 	@Description("Date que é um nascimento")
-	public Property getTesteDate() {
-		return new Property("Data de nascimento", testeDate, new HtmlOnlyDateMask());
+	public Property<DateParam> getTesteDate() {
+		return new Property<DateParam>("Data de nascimento", testeDate, new HtmlOnlyDateMask());
 	}	
 	
 	@Description("Boolean de Teste")
-	public Property getTesteBoolean(){
-		return new Property("Ativo", (Boolean.valueOf(this.testeBoolean) ? "Sim" : "Não"));
+	public Property<Boolean> getTesteBoolean(){
+		return new Property<Boolean>("Ativo", (Boolean.valueOf(this.testeBoolean) ? "Sim" : "Não"));
 	}	
 
 	@Description("Time que é uma hora preferida")
-	public Property getTesteTime() {
-		return new Property("Hora Preferida", testeTime, new TimeMask("horas, ", "minutos, ", "segundos")); //Argumentos não obrigatórios. Padrão: HHhMMminSSs
+	public Property<String> getTesteTime() {
+		return new Property<String>("Hora Preferida", testeTime, new TimeMask("horas, ", "minutos, ", "segundos")); //Argumentos não obrigatórios. Padrão: HHhMMminSSs
 	}
 	
 	
@@ -145,16 +145,16 @@ public class TesteResource extends Resource {
 	
 	@Override
 	@Description("")
-	public SelfLink getSelfLink() {
-		return new SelfLink(LicitacoesRouter.TESTE+this.testeInt, "Elemento de teste de nome "+this.getTesteString());
+	public SelfLink getSelfLink() throws ApiException {
+		String url = LicitacoesRouter.getRouter().urlTo(LicitacoesRouter.TESTE, "idade", testeInt);
+		return new SelfLink(url, "Elemento de teste de nome "+this.getTesteString());
 	}
 	
 	
 	@Description("")
 	public Link getUasg() throws ApiException
 	{
-		HashMap<String, String> params = StringUtils.jsonListToHashMap("uasg:2000");
-		String url = licitacoesRouter.urlTo("LICITACOES", params);
+		String url = LicitacoesRouter.getRouter().urlTo("LICITACOES", "uasg", "2000");
 		return new Link(url, "Todas as licitacoes uasg 2000", "uasg");
 	}
 	

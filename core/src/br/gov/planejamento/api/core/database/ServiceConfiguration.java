@@ -64,9 +64,6 @@ public class ServiceConfiguration {
 	public BasicEqualFilter[] getPrimaryKeyEqualFilters() {
 		return primaryKeyEqualFilters;
 	}
-	public void setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter primaryKeyEqualFilter) {
-		this.primaryKeyEqualFilters[0] = primaryKeyEqualFilter;
-	}
 	public void setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter...primaryKeyEqualFilters) {
 		this.primaryKeyEqualFilters = primaryKeyEqualFilters;
 	}

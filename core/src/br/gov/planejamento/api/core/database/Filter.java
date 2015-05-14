@@ -66,10 +66,8 @@ public abstract class Filter {
 			throws ApiException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
-			System.out.println(parameter.getUriName());
 			List<String> values = getValues(parameter);
 			if(values!=null){
-				System.out.println("oi oi oi");
 				for (String value : values) {
 					try {
 						if (valueType.equals(Integer.class)) {

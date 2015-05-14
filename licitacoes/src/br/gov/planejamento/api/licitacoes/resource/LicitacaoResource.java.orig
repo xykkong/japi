@@ -1,5 +1,10 @@
 package br.gov.planejamento.api.licitacoes.resource;
 
+<<<<<<< HEAD
+import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
+import br.gov.planejamento.api.core.annotations.Type;
+=======
+>>>>>>> 68c282b50fb98b9ed63e7047b9f20a9ea2ac66ed
 import br.gov.planejamento.api.core.base.LinkProperty;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
@@ -62,9 +67,13 @@ public class LicitacaoResource extends Resource {
 	
 	@Override
 	public SelfLink getSelfLink() {
+<<<<<<< HEAD
+		return new SelfLink(LicitacoesRouter.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
+=======
 		//return new SelfLink(LicitacaoConstants.URIConstants.Mirror.LICITACAO+this.uasg+this.modalidade+this.numeroAviso ,"Licitação de numero "+this.uasg+this.modalidade+this.numeroAviso);
 		//Foi comentado pois, como não há nenhum método que use esse Resource, não há Path definido ainda.
 		return null;
+>>>>>>> 68c282b50fb98b9ed63e7047b9f20a9ea2ac66ed
 	}
 	
 
