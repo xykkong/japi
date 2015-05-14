@@ -59,20 +59,19 @@ public class BasicEqualFilter extends Filter {
 			DatabaseAlias... databaseAliases) throws CoreException {
 		if(type.equals(Integer.class) || type.equals(Float.class) || type.equals(Double.class) || type.equals(String.class) || type.equals(BooleanParam.class))
 			return new BasicEqualFilter(type, databaseAliases);
-		else throw new CoreException("O tipo passado para o EqualFilter não é compatível. Consulte a documentação para mais informações.");
+		else throw new CoreException("O tipo passado para o BasicEqualFilter não é compatível. Consulte a documentação para mais informações.");
 	}
 	
 	/**
 	 * 
 	 * @param type Tipo do parâmetro a ser comparado. Devem ser Integer, Float, Double, String ou BooleanParam.
-	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula.
-	 * @throws CoreException 
+	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. 
 	 * 
 	 */
 	public static Filter factory(Class<? extends Object> type, String... parameters) throws CoreException {
 		if(type.equals(Integer.class) || type.equals(Float.class) || type.equals(Double.class) || type.equals(String.class) || type.equals(BooleanParam.class))
 			return new BasicEqualFilter(type, parameters);
-		else throw new CoreException("O tipo passado para o EqualFilter não é compatível. Consulte a documentação para mais informações.");
+		else throw new CoreException("O tipo passado para o BasicEqualFilter não é compatível. Consulte a documentação para mais informações.");
 	}
 	
 	@Override
