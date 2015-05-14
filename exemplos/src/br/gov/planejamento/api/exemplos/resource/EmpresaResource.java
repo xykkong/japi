@@ -1,5 +1,6 @@
 package br.gov.planejamento.api.exemplos.resource;
 
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
 import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
@@ -22,13 +23,13 @@ public class EmpresaResource extends Resource {
 
 	@Override
 	public SelfLink getSelfLink() {
-		 return new SelfLink("url para o meu resource", "nome do meu resource");
+		 return new SelfLink(ExemplosRouter.EMPRESAS + this.id_empresa, ""+ this.getNome());
 	}
 
 
 
 	public Property getNome() {
-		return new Property("Nome da empresa",nome);
+		return new Property("Nome da empresa", nome);
 	}
 
 
@@ -40,7 +41,7 @@ public class EmpresaResource extends Resource {
 
 	@Type("integer")
 	public Property getId_empresa() {
-		return new Property("identificador único",id_empresa);
+		return new Property("Identificador único",id_empresa);
 	}
 
 
@@ -64,7 +65,7 @@ public class EmpresaResource extends Resource {
 
 
 	public Property getRepresentante_legal() {
-		return new Property("nome do representante legal",representante_legal);
+		return new Property("Nome do representante legal",representante_legal);
 	}
 
 
@@ -76,7 +77,7 @@ public class EmpresaResource extends Resource {
 
 
 	public Property getCnpj() {
-		return new Property("cnpj da empresa",cnpj);
+		return new Property("CNPJ da empresa",cnpj);
 	}
 
 

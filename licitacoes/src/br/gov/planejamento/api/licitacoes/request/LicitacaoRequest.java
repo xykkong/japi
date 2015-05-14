@@ -16,7 +16,7 @@ import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
-import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
@@ -46,11 +46,11 @@ public class LicitacaoRequest {
 			throws ApiException {
 
 		RequestContext.getContext().addFilter(
-				new EqualFilter(Integer.class, "uasg as uasg", "modalidade",
+				BasicEqualFilter.factory(Integer.class, "uasg as uasg", "modalidade",
 						"numero_aviso"),
-				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_uasg")),
-				new DateEqualFilter(DateParam.class, new DatabaseAlias(
-						"data_abertura_proposta", "data_abertura")));
+				CaseInsensitiveLikeFilter.factory(new DatabaseAlias("nome_uasg")),
+				DateEqualFilter.factory(new DatabaseAlias(
+						"data_abertura_proposta as data_abertura")));
 
 		DatabaseData dados = lService.getAllFiltered();
 		return ResourceListResponse.factory(dados, LicitacaoResource.class);
@@ -69,12 +69,12 @@ public class LicitacaoRequest {
 		// tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName",
 		// "uriName")
 		RequestContext.getContext().addFilter(
-				new EqualFilter(Integer.class, "teste_int as idade"));
+				BasicEqualFilter.factory(Integer.class, "teste_int as idade"));
 		RequestContext.getContext().addFilter(
-				new DateEqualFilter(DateParam.class, new DatabaseAlias(
+				DateEqualFilter.factory(new DatabaseAlias(
 						"teste_date", "nascimento")));
 		RequestContext.getContext().addFilter(
-				new EqualFilter(Boolean.class, new DatabaseAlias(
+				BasicEqualFilter.factory(Boolean.class, new DatabaseAlias(
 						"teste_boolean", "boolean")));
 
 		DatabaseData dados = tService.getAllFiltered();

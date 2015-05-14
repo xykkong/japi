@@ -8,8 +8,11 @@ import br.gov.planejamento.api.commons.routers.ExemplosRouter;
 import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
+import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
+import br.gov.planejamento.api.core.filters.StringLikeFilter;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.exemplos.resource.EmpresaResource;
 import br.gov.planejamento.api.exemplos.service.EmpresaService;
@@ -32,6 +35,9 @@ public class EmpresaRequest {
 			@Parameter(name = "representante_legal", description = " nome do representante legal da empresa") String representanteLegal
 			)throws ApiException {
 			
+		RequestContext.getContext().addFilter(
+				StringLikeFilter.factory("cnpj", "representante_legal")
+				);
 		DatabaseData dados = eService.getAllFiltered();
 		return ResourceListResponse.factory(dados, EmpresaResource.class);
 	

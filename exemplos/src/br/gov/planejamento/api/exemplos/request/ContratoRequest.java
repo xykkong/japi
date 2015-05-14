@@ -12,11 +12,10 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.database.ServiceJoinner;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
-import br.gov.planejamento.api.core.filters.EqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
-import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.exemplos.resource.ContratoJoinEmpresaResource;
@@ -46,12 +45,12 @@ public class ContratoRequest {
 			throws ApiException {
 	
 		RequestContext.getContext().addFilter(
-				new EqualFilter(Integer.class, "numero","id_contrato"),
-				new CaseInsensitiveLikeFilter(
+				BasicEqualFilter.factory(Integer.class, "numero","id_contrato"),
+				CaseInsensitiveLikeFilter.factory(
 						"cnpj_contratante", "cnpj_contratada","valor_inicial"
 						),
-				new DateEqualFilter(DateParam.class, "data_termino"),
-				new DateEqualFilter(BooleanParam.class, "status")
+				DateEqualFilter.factory( "data_termino"),
+				BasicEqualFilter.factory(BooleanParam.class, "status")
 				);
 		DatabaseData dados = contratoService.getAllFiltered();
 		return ResourceListResponse.factory(dados, ContratoResource.class);

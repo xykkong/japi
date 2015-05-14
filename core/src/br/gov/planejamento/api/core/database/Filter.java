@@ -40,21 +40,21 @@ public abstract class Filter {
 		return aliases;
 	}
 	
-	public Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
+	protected Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
 		for(DatabaseAlias databaseAlias : databaseAliases ){
 			parametersAliases.add(databaseAlias);
 		}
 		this.valueType = valueType;
 	}
-	public Filter(DatabaseAlias...databaseAliases){
+	protected Filter(DatabaseAlias...databaseAliases){
 		this(String.class, databaseAliases);
 	}
 	
-	public Filter(String...parameters) {
+	protected Filter(String...parameters) {
 		this(String.class, parameters);
 	}
 	
-	public Filter(Class<? extends Object> type, String...parameters) {
+	protected Filter(Class<? extends Object> type, String...parameters) {
 		this(type, stringsToAliases(parameters));
 	}
 

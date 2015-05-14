@@ -13,7 +13,7 @@ import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service implements ServiceConfigurationContainer{
@@ -21,7 +21,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 	protected ServiceConfiguration configs = getServiceConfiguration();
 
 	public DataRow getOne() throws ApiException{
-		EqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
+		BasicEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
 		if(equalFilters==null){
 			throw new CoreException("Nenhuma chave primária encontrada na configuração deste service "
 					+this.getClass().getCanonicalName());
@@ -34,7 +34,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 	 * @return a dataRow encontrada, nulo caso não encontre nenhuma
 	 * @throws ApiException
 	 */
-	public DataRow getOne(EqualFilter...equalFilters) throws ApiException{
+	public DataRow getOne(BasicEqualFilter...equalFilters) throws ApiException{
 		configValidation();
 		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(equalFilters));
 		for (Filter filter : equalFilters) {

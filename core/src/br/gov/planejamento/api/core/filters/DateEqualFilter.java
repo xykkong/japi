@@ -5,20 +5,23 @@ import java.util.List;
 
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
-
+import br.gov.planejamento.api.core.parameters.DateParam;
+/**
+ * 
+ * Esse filtro deve ser utilizado unicamente para comparação de datas.
+ * 
+ * A comparação do tipo DateParam é feita exclusivamente por este filtro.
+ * 
+ * O retorno é formado por todos os resources cuja data é exatamente igual (em dia, mês e ano) ao parâmetro recebido.
+ *
+ */
 public class DateEqualFilter extends Filter {
 
-	public DateEqualFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+	private DateEqualFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
 		super(type, databaseAliases);
 	}
-	public DateEqualFilter(DatabaseAlias...databaseAliases) {
-		super(databaseAliases);
-	}
-	public DateEqualFilter(String...parameters) {
-		super(parameters);
-	}
 	
-	public DateEqualFilter(Class<? extends Object> type, String...parameters) {
+	private DateEqualFilter(Class<? extends Object> type, String...parameters) {
 		super(type, parameters);
 	}
 
@@ -44,6 +47,25 @@ public class DateEqualFilter extends Filter {
 			values.add(value);
 		}
 		return values;
+	}
+	
+	/**
+	 * 
+	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula.
+	 * 
+	 */
+	public static Filter factory(String... parameters) {
+		return new DateEqualFilter(DateParam.class, parameters);
+	}
+	
+	/**
+	 * 
+	 * @param databaseAliases DatabaseAliases que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. 
+	 * O padrão de escrita de DatabaseAlias é a seguinte: "nome_do_campo_no_banco as name_do_parametro_da_request". 
+	 * 
+	 */
+	public static Filter factory(DatabaseAlias... databaseAliases){
+		return new DateEqualFilter(DateParam.class, databaseAliases);
 	}
 
 }
