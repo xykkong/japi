@@ -18,13 +18,13 @@ import br.gov.planejamento.api.core.database.Filter;
  * Esse filtro é case sensitive. Para comparações case insensitive, utilize CaseInsensitiveLikeFilter.
  *
  */
-public class StringLikeFilter extends Filter {
+public class LikeFilter extends Filter {
 	
-	private StringLikeFilter(DatabaseAlias...databaseAliases) {
+	private LikeFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
 	
-	private StringLikeFilter(String...parameters) {
+	private LikeFilter(String...parameters) {
 		super(parameters);
 	}
 	
@@ -33,7 +33,7 @@ public class StringLikeFilter extends Filter {
 	 *
 	 */
 	public static Filter factory(String... parameters) {
-		return new StringLikeFilter(parameters);
+		return new LikeFilter(parameters);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class StringLikeFilter extends Filter {
 	 */
 	
 	public static Filter factory(DatabaseAlias... databaseAliases) {
-		return new StringLikeFilter(databaseAliases);
+		return new LikeFilter(databaseAliases);
 	}
 	
 	@Override
