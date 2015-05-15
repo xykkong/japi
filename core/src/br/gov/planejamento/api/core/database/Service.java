@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import br.gov.planejamento.api.core.base.RequestContext;
@@ -18,7 +19,13 @@ import br.gov.planejamento.api.core.utils.StringUtils;
 
 public abstract class Service implements ServiceConfigurationContainer{
 
+	public abstract ServiceConfiguration getServiceConfiguration();	
 	protected ServiceConfiguration configs = getServiceConfiguration();
+	
+	/**
+	 * Filtros inseridos pela camada de Request
+	 */
+	private ArrayList<Filter> filters = new ArrayList<Filter>();
 
 	public DataRow getOne() throws ApiException{
 		BasicEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
@@ -37,9 +44,6 @@ public abstract class Service implements ServiceConfigurationContainer{
 	public DataRow getOne(BasicEqualFilter...equalFilters) throws ApiException{
 		configValidation();
 		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(equalFilters));
-		for (Filter filter : equalFilters) {
-			RequestContext.getContext().addFilter(filter);
-		}
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
 		
@@ -93,6 +97,35 @@ public abstract class Service implements ServiceConfigurationContainer{
 		return row;
 	}
 	
+	/**
+	 * Retorna os filtros de consulta ao banco adicionados na camada de Request
+	 * @return
+	 */
+	public ArrayList<Filter> getFilters() {
+		return filters;
+	}
+	
+	/**
+	 * Adiciona à filtragem da consulta os filtros que tenham seus respectivos query parameters
+	 * presentes na query string da requisição 
+	 * @param filters Filtros a serem inseridos
+	 */
+	public void addFilter(Filter...filters) {
+		for(Filter filter : filters){
+			Boolean addThisFilter = false;
+			for(String parameter : filter.getUriParameters()){
+				if (RequestContext.getContext().hasParameter(parameter)) {
+					addThisFilter = true;
+					filter.putValues(parameter, RequestContext.getContext().getValues(parameter));
+					System.out.println("\n\tFilter added: "+ parameter+" with "+
+							RequestContext.getContext().getValues(parameter).size()+" values.");
+				}
+			}
+			if(addThisFilter)
+				this.filters.add(filter);
+		}
+	}
+	
 	public DatabaseData getAllFiltered() throws ApiException {
 
 		RequestContext context = RequestContext.getContext();
@@ -103,6 +136,9 @@ public abstract class Service implements ServiceConfigurationContainer{
 		
 		configValidation();
 		
+		// SETUP
+		ArrayList<Filter> filtersFromRequest = getFilters();
+		
 		// QUERYS
 		
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
@@ -111,17 +147,17 @@ public abstract class Service implements ServiceConfigurationContainer{
 		
 		StringBuilder sbCountQuery = new StringBuilder("SELECT COUNT(*) AS quantity ");
 
-		StringBuilder sbQueryGeneric = generateGenericQuery(context.getFilters());
+		StringBuilder sbQueryGeneric = generateGenericQuery(filtersFromRequest);
 
 		sbQuery.append(sbQueryGeneric);
 		sbCountQuery.append(sbQueryGeneric);
 		
 		endPageQuery(orderByValue, orderValue, sbQuery);
 
-		return executeQuery(sbQuery.toString(), sbCountQuery.toString(), null, getServiceConfiguration());
+		return executeQuery(getFilters(), sbQuery.toString(), sbCountQuery.toString(), null, getServiceConfiguration());
 	}
 	
-	public static DatabaseData executeQuery(String query,
+	public static DatabaseData executeQuery(List<Filter> filters, String query,
 			String countQuery,
 			Map<ServiceConfiguration, String> mapConfigsAlias,
 			ServiceConfiguration...serviceConfigurations) throws CoreException, ApiException {
@@ -129,7 +165,6 @@ public abstract class Service implements ServiceConfigurationContainer{
 		// SETUP
 		RequestContext context = RequestContext.getContext();
 		Connection connection = ConnectionManager.getConnection();
-		ArrayList<Filter> filtersFromRequest = context.getFilters();
 		PreparedStatement pstQuery;
 		PreparedStatement pstCount;
 		
@@ -141,9 +176,9 @@ public abstract class Service implements ServiceConfigurationContainer{
 		}
 		
 
-		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
+		ArrayList<String> whereValues = getWhereValues(filters);
 		int index = 1;
-		for (Filter filter : filtersFromRequest) {
+		for (Filter filter : filters) {
 			int previousIndex = index;
 			index = filter.setPreparedStatementValues(pstQuery, index);
 			filter.setPreparedStatementValues(pstCount, previousIndex);
@@ -250,10 +285,10 @@ public abstract class Service implements ServiceConfigurationContainer{
 		return filtersQuery.toString();
 	}
 	
-	public static String getWhereStatement(ArrayList<Filter> filtersFromRequest, Map<ServiceConfiguration, String> mapConfigAlias) {
+	public static String getWhereStatement(List<Filter> filters, Map<ServiceConfiguration, String> mapConfigAlias) {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		
-		for (Filter filter : filtersFromRequest) {
+		for (Filter filter : filters) {
 			for(ServiceConfiguration config : mapConfigAlias.keySet()){
 				for(String dbName : filter.getDbParameters()){
 					if(config.getResponseFields().contains(dbName)) {
@@ -267,9 +302,9 @@ public abstract class Service implements ServiceConfigurationContainer{
 	}
 
 	private static ArrayList<String> getWhereValues(
-			ArrayList<Filter> filtersFromRequest) {
+			List<Filter> filters) {
 		ArrayList<String> wheres = new ArrayList<String>();
-		for (Filter filter : filtersFromRequest) {
+		for (Filter filter : filters) {
 			for(DatabaseAlias dbAlias : filter.getParametersAliases()){
 				if(RequestContext.getContext().hasParameter(dbAlias.getUriName()))
 					wheres.addAll(filter.getValues(dbAlias));

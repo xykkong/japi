@@ -2,6 +2,7 @@ package br.gov.planejamento.api.core.database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.gov.planejamento.api.core.base.RequestContext;
@@ -18,8 +19,11 @@ public class ServiceJoinner {
 	public DatabaseData getAllFiltered() throws ApiException{
 		StringBuilder query = new StringBuilder("SELECT ");
 		StringBuilder queryCount = new StringBuilder("SELECT count(*) AS quantity ");
+		List<Filter> filters = new ArrayList<>();
 		int cont=0;
 		for(Joinable joinable : joinables){
+			filters.addAll(joinable.getService().getFilters());
+			filters.addAll(joinable.getFilters());
 			cont++;
 			if(cont==1) query.append("generated_alias_"+cont+".");
 			query.append(StringUtils.join(", generated_alias_"+cont+".", joinable.getServiceConfiguration().getResponseFields()));
@@ -31,9 +35,8 @@ public class ServiceJoinner {
 		queryJoin(queryCount);
 		
 		RequestContext context = RequestContext.getContext();
-		ArrayList<Filter> filtersFromRequest = context.getFilters();
-		query.append(Service.getWhereStatement(filtersFromRequest, mapConfigAlias));
-		queryCount.append(Service.getWhereStatement(filtersFromRequest, mapConfigAlias));
+		query.append(Service.getWhereStatement(filters, mapConfigAlias));
+		queryCount.append(Service.getWhereStatement(filters, mapConfigAlias));
 		
 		
 		String orderByValue = context.getOrderByValue();
@@ -46,7 +49,7 @@ public class ServiceJoinner {
 			configs[i] = joinables[i].getServiceConfiguration();
 			configs[i+joinables.length-1] = joinables[i].getService().getServiceConfiguration();
 		}
-		return Service.executeQuery(query.toString(), queryCount.toString(), mapConfigAlias, configs);
+		return Service.executeQuery(filters, query.toString(), queryCount.toString(), mapConfigAlias, configs);
 		
 	}
 

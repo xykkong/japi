@@ -6,17 +6,16 @@ import javax.ws.rs.Path;
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.commons.constants.LicitacaoConstants;
 import br.gov.planejamento.api.commons.routers.LicitacoesRouter;
-import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.ApiModule;
+import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
-import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
@@ -45,7 +44,7 @@ public class LicitacaoRequest {
 			@Parameter(name = "data_abertura", required = false, description = "Data de abertuda da proposta") String dataAbertura)
 			throws ApiException {
 
-		RequestContext.getContext().addFilter(
+		lService.addFilter(
 				BasicEqualFilter.factory(Integer.class, "uasg as uasg", "modalidade",
 						"numero_aviso"),
 				CaseInsensitiveLikeFilter.factory(new DatabaseAlias("nome_uasg")),
@@ -68,12 +67,12 @@ public class LicitacaoRequest {
 
 		// tanto faz usar "dbName as uriName" e new DatabaseAlias("dbName",
 		// "uriName")
-		RequestContext.getContext().addFilter(
+		lService.addFilter(
 				BasicEqualFilter.factory(Integer.class, "teste_int as idade"));
-		RequestContext.getContext().addFilter(
+		lService.addFilter(
 				DateEqualFilter.factory(new DatabaseAlias(
 						"teste_date", "nascimento")));
-		RequestContext.getContext().addFilter(
+		lService.addFilter(
 				BasicEqualFilter.factory(Boolean.class, new DatabaseAlias(
 						"teste_boolean", "boolean")));
 

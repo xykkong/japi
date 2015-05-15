@@ -242,8 +242,11 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 			return arraySelf[0]+"offset="+arraySelf[1];
 		}
 		else{
-			if(RequestContext.getContext().getFilters().isEmpty()) return arraySelf[0]+"?offset="+nextOffset;
-			else return arraySelf[0]+"&offset="+nextOffset;
+			System.out.println("oi"+RequestContext.getContext().getFullPath());
+			if(RequestContext.getContext().getFullPath().matches("^(.*)(\\?)(.*)(\\=)(.*)$")) 
+				return arraySelf[0]+"&offset="+nextOffset;
+			else return arraySelf[0]+"?offset="+nextOffset;
+			
 		}
 			
 		
@@ -258,8 +261,10 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 			return arraySelf[0]+"offset="+arraySelf[1];
 		}
 		else{
-			if(RequestContext.getContext().getFilters().isEmpty()) return arraySelf[0]+"?offset="+prevOffset;
-			else return arraySelf[0]+"&offset="+prevOffset;
+			if(RequestContext.getContext().getPath().matches("^(.*)(\\?)(.*)(\\=)(.*)$"))
+				return arraySelf[0]+"&offset="+prevOffset;
+			else return arraySelf[0]+"?offset="+prevOffset;
+			
 		}
 	}
 }
