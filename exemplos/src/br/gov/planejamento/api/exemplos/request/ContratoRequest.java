@@ -19,7 +19,6 @@ import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.exemplos.resource.ContratoJoinEmpresaResource;
-import br.gov.planejamento.api.exemplos.resource.ContratoJoinResource;
 import br.gov.planejamento.api.exemplos.resource.ContratoResource;
 import br.gov.planejamento.api.exemplos.service.ContratoService;
 
@@ -79,16 +78,11 @@ public class ContratoRequest {
 			@Parameter(name = "cnpj_contratante", description = "Numero do CNPJ da empresa contratante") String cnpjContratante,
 			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante
 			) throws ApiException{
-		RequestContext.getContext().addFilter(
-				new DateEqualFilter(DateParam.class, "data_termino"),
-				new DateEqualFilter(BooleanParam.class, "status"),
-				new CaseInsensitiveLikeFilter(
-						"cnpj_contratante", "cnpj_contratada","valor_inicial")
-				);
+		
 		
 		ServiceJoinner serviceJoinner = new ServiceJoinner(contratoService);
 		
-		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinResource.class);
+		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinEmpresaResource.class);
 	}
 
 	

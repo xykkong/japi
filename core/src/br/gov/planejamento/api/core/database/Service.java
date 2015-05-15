@@ -182,7 +182,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 			if(mapConfigsAlias==null){
 				data = new DatabaseData(rs, serviceConfigurations);
 			}else{
-				data = new DatabaseData(rs, mapConfigsAlias, serviceConfigurations);
+				data = new DatabaseData(rs, mapConfigsAlias);
 			}
 			
 			pstQuery.close();

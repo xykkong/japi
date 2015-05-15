@@ -108,7 +108,6 @@ public abstract class Module extends Application {
 			String requestPath = requestMethod.getAnnotation(Path.class).value();
 			request.addProperty("path", requestPath);
 			
-			@SuppressWarnings("unchecked") //Nunca pode acontecer, já que os Responses são do tipo ResourceResponse ou ResourceListResponse e por definição das classes possuem argumentos que estendem Resource
 			Class<? extends Resource> returnType = ((Class<? extends Resource>)((ParameterizedType)requestMethod.getGenericReturnType()).getActualTypeArguments()[0]);
 			
 			JsonObject returns = new JsonObject();

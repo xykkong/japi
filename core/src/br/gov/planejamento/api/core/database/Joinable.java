@@ -1,7 +1,7 @@
 package br.gov.planejamento.api.core.database;
 
 public interface Joinable extends ServiceConfigurationContainer{
-	Service joinnable();
+	Service getService();
 	String joinField();
 	String joinFieldReference();
 }

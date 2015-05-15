@@ -18,7 +18,7 @@ public class ContratoService extends Service implements Joinable {
 	}
 
 	@Override
-	public Service joinnable() {
+	public Service getService() {
 		return new EmpresaService();
 	}
 

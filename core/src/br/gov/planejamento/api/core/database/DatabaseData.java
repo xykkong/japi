@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
@@ -36,13 +37,13 @@ public class DatabaseData implements Iterable<DataRow> {
 	}
 
 	public DatabaseData(ResultSet resultSet,
-			Map<ServiceConfiguration, String> mapConfigsAlias,
-			ServiceConfiguration[] serviceConfigurations) throws CoreException {
+			Map<ServiceConfiguration, String> mapConfigsAlias) throws CoreException {
 		try {
 			while (resultSet.next()) {
 				DataRow row = new DataRow();
-				for(ServiceConfiguration configs : serviceConfigurations){
-					String alias = mapConfigsAlias.get(configs);
+				for(Entry<ServiceConfiguration, String> set : mapConfigsAlias.entrySet()){
+					String alias = set.getValue();
+					ServiceConfiguration configs = set.getKey();
 					for (String column : configs.getResponseFields()) {
 						row.put(column, resultSet.getString(alias+"."+column));
 					}
