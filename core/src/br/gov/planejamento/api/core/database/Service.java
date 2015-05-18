@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
@@ -159,7 +160,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 	
 	public static DatabaseData executeQuery(List<Filter> filters, String query,
 			String countQuery,
-			Map<ServiceConfiguration, String> mapConfigsAlias,
+			Map<String, ServiceConfiguration> mapConfigsAlias,
 			ServiceConfiguration...serviceConfigurations) throws CoreException, ApiException {
 		
 		// SETUP
@@ -285,15 +286,17 @@ public abstract class Service implements ServiceConfigurationContainer{
 		return filtersQuery.toString();
 	}
 	
-	public static String getWhereStatement(List<Filter> filters, Map<ServiceConfiguration, String> mapConfigAlias) {
+	public static String getWhereStatement(List<Filter> filters, Map<String, ServiceConfiguration> mapConfigAlias) {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		
 		for (Filter filter : filters) {
-			for(ServiceConfiguration config : mapConfigAlias.keySet()){
+			for(Entry<String, ServiceConfiguration> entry : mapConfigAlias.entrySet()){
+				ServiceConfiguration config = entry.getValue();
+				String tableAlias = entry.getKey();
 				for(String dbName : filter.getDbParameters()){
 					if(config.getResponseFields().contains(dbName)) {
 						filtersQuery.append(" AND ");
-						filtersQuery.append(filter.getStatement(mapConfigAlias.get(config)));
+						filtersQuery.append(filter.getStatement(tableAlias));
 					}
 				}
 			}

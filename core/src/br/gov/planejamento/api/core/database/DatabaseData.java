@@ -37,15 +37,14 @@ public class DatabaseData implements Iterable<DataRow> {
 	}
 
 	public DatabaseData(ResultSet resultSet,
-			Map<ServiceConfiguration, String> mapConfigsAlias) throws CoreException {
+			Map<String, ServiceConfiguration> mapConfigsAlias) throws CoreException {
 		try {
 			while (resultSet.next()) {
 				DataRow row = new DataRow();
-				for(Entry<ServiceConfiguration, String> set : mapConfigsAlias.entrySet()){
-					String alias = set.getValue();
-					ServiceConfiguration configs = set.getKey();
+				for(Entry<String, ServiceConfiguration> set : mapConfigsAlias.entrySet()){
+					ServiceConfiguration configs = set.getValue();
 					for (String column : configs.getResponseFields()) {
-						row.put(column, resultSet.getString(alias+"."+column));
+						row.put(column, resultSet.getString(column));
 					}
 					data.add(row);
 				}

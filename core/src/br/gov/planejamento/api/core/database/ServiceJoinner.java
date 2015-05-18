@@ -31,7 +31,7 @@ public class ServiceJoinner {
 			query.append(StringUtils.join(", generated_secondary_alias_"+cont+".", joinable.getService().getServiceConfiguration().getResponseFields()));
 			cont++;
 		}
-		Map<ServiceConfiguration, String> mapConfigAlias = queryJoin(query);
+		Map<String, ServiceConfiguration> mapConfigAlias = queryJoin(query);
 		queryJoin(queryCount);
 		
 		RequestContext context = RequestContext.getContext();
@@ -53,8 +53,8 @@ public class ServiceJoinner {
 		
 	}
 
-	private Map<ServiceConfiguration, String> queryJoin(StringBuilder query) {
-		Map<ServiceConfiguration, String> retorno = new HashMap<ServiceConfiguration, String>();
+	private Map<String, ServiceConfiguration> queryJoin(StringBuilder query) {
+		Map<String, ServiceConfiguration> retorno = new HashMap<String, ServiceConfiguration>();
 		int cont=0;
 		query.append(" FROM ");
 		for(Joinable joinable : joinables){
@@ -64,12 +64,12 @@ public class ServiceJoinner {
 			config.appendSchemaDotTable(query);
 			query.append(" AS generated_alias_");
 			query.append(cont);
-			retorno.put(config, "generated_alias_"+cont);
+			retorno.put("generated_alias_"+cont, config);
 			
 			
 			query.append(" JOIN ");			
 			joinable.getService().getServiceConfiguration().appendSchemaDotTable(query);
-			retorno.put(joinable.getService().getServiceConfiguration(), "generated_secondary_alias_"+cont);
+			retorno.put("generated_secondary_alias_"+cont, joinable.getService().getServiceConfiguration());
 			query.append(" AS generated_secondary_alias_");
 			query.append(cont);
 			query.append(" ON generated_alias_");
