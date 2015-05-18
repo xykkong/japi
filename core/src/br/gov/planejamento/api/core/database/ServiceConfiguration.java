@@ -2,6 +2,7 @@ package br.gov.planejamento.api.core.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
@@ -15,7 +16,7 @@ public class ServiceConfiguration {
 	private ArrayList<String> requiredParameters = new ArrayList<String>();
 	private ArrayList<String> optionalParameters = new ArrayList<String>();
 	private ArrayList<String> availableFilters = new ArrayList<String>();
-	private ArrayList<String> validOrderByValues = new ArrayList<String>();
+	private List<DatabaseAlias> validOrderByValues = new ArrayList<>();
 		
 	public String getSchema(){
 		return schema;
@@ -53,12 +54,16 @@ public class ServiceConfiguration {
 	public void setAvailableFilters(ArrayList<String> availableFilters) {
 		this.availableFilters = availableFilters;
 	}
-	public ArrayList<String> getValidOrderByValues() {
-		return this.validOrderByValues;
+	public List<String> getValidOrderByValues() {
+		List<String> list = new ArrayList<>();
+		for(DatabaseAlias alias : this.validOrderByValues){
+			list.add(alias.getUriName());
+		}
+		return list;
 	}
 	public void setValidOrderByValues(String... values) {
 		for(String value : values) {
-			validOrderByValues.add(value);
+			validOrderByValues.add(DatabaseAlias.fromSpecialString(value));
 		}
 	}
 	public BasicEqualFilter[] getPrimaryKeyEqualFilters() {
