@@ -5,7 +5,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.core.ServerResponse;
-
 import org.jboss.resteasy.core.Headers;
 
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
@@ -30,6 +29,12 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	@Override
 	public Response toResponse(Exception exception) {
 		
+		if(exception instanceof ApiException) {
+			if(((ApiException)exception).getOriginalException() instanceof ApiException) {
+				exception = (new CoreException("Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)exception));
+			}
+		}
+		
 		ApiException apiException;
 		//TODO: Pensar se existe uma forma melhor de trabalhar isso. É necessário, para carregar os resources no 
 		//template de erro, que eu saiba a rootURL, mas ela é setada apenas no pre-process e não chega até lá quando
@@ -48,6 +53,17 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		} else {
 			apiException = (ApiException) exception;
 		}
+		
+		//Printando stackstrace
+		System.out.println("-----------------------------------------------------------------");
+		System.out.println("API EXCEPTION:");
+		apiException.printStackTrace();
+		if(apiException.getOriginalException() != null) {
+			System.out.println("-----------------------------------------------------------------");
+			System.out.println("ORIGINAL EXCEPTION:");
+			apiException.getOriginalException().printStackTrace();
+		}
+		System.out.println("-----------------------------------------------------------------");
 		
 		ErrorResponse error = new ErrorResponse(apiException);
 		return ServerResponseBuilder.build(new ServerResponse(), error);

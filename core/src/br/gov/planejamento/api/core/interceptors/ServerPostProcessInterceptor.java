@@ -18,6 +18,12 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 	@Override
 	public void postProcess(ServerResponse serverResponse) {
 		
+		if(serverResponse.getEntity() instanceof ApiException) {
+			if(((ApiException)serverResponse.getEntity()).getOriginalException() instanceof ApiException) {
+				serverResponse.setEntity(new CoreException("Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)serverResponse.getEntity()));
+			}
+		}
+		
 		if(serverResponse.getEntity() instanceof Exception) {
 			if(!(serverResponse.getEntity() instanceof ApiException)) {
 				serverResponse.setEntity(new CoreException("Houve um erro interno desconhecido.", (Exception) serverResponse.getEntity()));

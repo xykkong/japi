@@ -32,7 +32,7 @@ public abstract class Module extends Application {
 	
 	/**
 	 * Extrai a documentação de um dado package através de Reflection, procurando por todos os métodos
-	 * de todas as classes deste package que retornem um Response e estejam anotados por @Path e @ResourceType.
+	 * de todas as classes deste package que retornem um Response e estejam anotados por @Path e @ApiRequest.
 	 * 
 	 * é aconselhável que o package informado seja aquele que contém as classes de Request, ou seja,
 	 * a camada mais externa que mapeia cada URL para seu método correspondente. 
