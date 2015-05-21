@@ -55,7 +55,7 @@ public class ContratoRequest {
 	}
 	
 	@GET
-	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
+	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleId = "1392")
 	@Path(ExemplosRouter.CONTRATO)
 	public ResourceResponse<ContratoResource> contrato(
 			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato
