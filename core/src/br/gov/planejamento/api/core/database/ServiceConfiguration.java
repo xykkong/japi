@@ -54,12 +54,15 @@ public class ServiceConfiguration {
 	public void setAvailableFilters(ArrayList<String> availableFilters) {
 		this.availableFilters = availableFilters;
 	}
-	public List<String> getValidOrderByValues() {
+	public List<String> getValidOrderByStringValues() {
 		List<String> list = new ArrayList<>();
 		for(DatabaseAlias alias : this.validOrderByValues){
 			list.add(alias.getUriName());
 		}
 		return list;
+	}
+	public List<DatabaseAlias> getValidOrderByValues() {
+		return validOrderByValues;
 	}
 	public void setValidOrderByValues(String... values) {
 		for(String value : values) {

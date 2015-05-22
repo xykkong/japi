@@ -130,9 +130,15 @@ public abstract class Service implements ServiceConfigurationContainer{
 	public DatabaseData getAllFiltered() throws ApiException {
 
 		RequestContext context = RequestContext.getContext();
-		context.addAvailableOrderByValues(configs.getValidOrderByValues());
+		context.addAvailableOrderByValues(configs.getValidOrderByStringValues());
 
 		String orderByValue = context.getOrderByValue();
+		for(DatabaseAlias alias : getServiceConfiguration().getValidOrderByValues()){
+			if(alias.getUriName().equalsIgnoreCase(orderByValue)){
+				orderByValue = alias.getDbName();
+				break;
+			}
+		}
 		String orderValue = context.getOrderValue();
 		
 		configValidation();

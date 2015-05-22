@@ -13,7 +13,7 @@ public class ContratoService extends Service implements Joinable {
 		configs.setTable("contratos");
 		configs.setResponseFields("descricao","id_contrato","status","data_termino",
 				"valor_inicial","id_contratante");
-		configs.setValidOrderByValues("id_contrato","valor_inicial","data_termino");
+		configs.setValidOrderByValues("id_contrato as id","valor_inicial","data_termino");
 		return configs;
 	}
 

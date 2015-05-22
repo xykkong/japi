@@ -104,13 +104,12 @@ public class RequestContext {
 	}
 
 	/**
-	 * Teste testaaaa
 	 * @return valor de order_by da URI ou "1", se não existir
 	 * @throws InvalidOrderByValueRequestException 
 	 */
 	public String getOrderByValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
-			String value = getValue(Constants.FixedParameters.ORDER_BY);
+			String value = getValue(Constants.FixedParameters.ORDER_BY).toUpperCase();
 			if(!availableOrderByValues.contains(value))
 				throw new InvalidOrderByValueRequestException(value, availableOrderByValues);
 			return value;
