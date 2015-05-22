@@ -20,28 +20,34 @@ public class ServiceJoinner {
 		StringBuilder query = new StringBuilder("SELECT ");
 		StringBuilder queryCount = new StringBuilder("SELECT count(*) AS quantity ");
 		List<Filter> filters = new ArrayList<>();
+		RequestContext context = RequestContext.getContext();
 		int cont=0;
 		for(Joinable joinable : joinables){
 			filters.addAll(joinable.getService().getFilters());
 			filters.addAll(joinable.getFilters());
+			ServiceConfiguration jServiceConfiguration = joinable.getServiceConfiguration();
+			ServiceConfiguration jSServiceConfiguration = joinable.getService().getServiceConfiguration();
+			List<String> values = jServiceConfiguration.getValidOrderByStringValues();
+			values.addAll(jSServiceConfiguration.getValidOrderByStringValues());
+			context.addAvailableOrderByValues(values);
+			
 			cont++;
 			if(cont==1) query.append("generated_alias_"+cont+".");
-			query.append(StringUtils.join(", generated_alias_"+cont+".", joinable.getServiceConfiguration().getResponseFields()));
+			
+			query.append(StringUtils.join(", generated_alias_"+cont+".", jServiceConfiguration.getResponseFields()));
 			query.append(", generated_secondary_alias_"+cont+".");
-			query.append(StringUtils.join(", generated_secondary_alias_"+cont+".", joinable.getService().getServiceConfiguration().getResponseFields()));
+			query.append(StringUtils.join(", generated_secondary_alias_"+cont+".", jSServiceConfiguration.getResponseFields()));
 			cont++;
 		}
 		Map<String, ServiceConfiguration> mapConfigAlias = queryJoin(query);
 		queryJoin(queryCount);
-		
-		RequestContext context = RequestContext.getContext();
+
 		query.append(Service.getWhereStatement(filters, mapConfigAlias));
 		queryCount.append(Service.getWhereStatement(filters, mapConfigAlias));
 		
 		
-		String orderByValue = context.getOrderByValue();
 		String orderValue = context.getOrderValue();
-		Service.endPageQuery(orderByValue, orderValue, query);
+		Service.endPageQuery(orderValue, query, mapConfigAlias.values());
 		
 		ServiceConfiguration[] configs = new ServiceConfiguration[joinables.length];
 		

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -132,13 +133,6 @@ public abstract class Service implements ServiceConfigurationContainer{
 		RequestContext context = RequestContext.getContext();
 		context.addAvailableOrderByValues(configs.getValidOrderByStringValues());
 
-		String orderByValue = context.getOrderByValue();
-		for(DatabaseAlias alias : getServiceConfiguration().getValidOrderByValues()){
-			if(alias.getUriName().equalsIgnoreCase(orderByValue)){
-				orderByValue = alias.getDbName();
-				break;
-			}
-		}
 		String orderValue = context.getOrderValue();
 		
 		configValidation();
@@ -159,7 +153,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 		sbQuery.append(sbQueryGeneric);
 		sbCountQuery.append(sbQueryGeneric);
 		
-		endPageQuery(orderByValue, orderValue, sbQuery);
+		endPageQuery(orderValue, sbQuery, getServiceConfiguration());
 
 		return executeQuery(getFilters(), sbQuery.toString(), sbCountQuery.toString(), null, getServiceConfiguration());
 	}
@@ -246,8 +240,24 @@ public abstract class Service implements ServiceConfigurationContainer{
 		return data;
 	}
 	
-	public static void endPageQuery(String orderByValue, String orderValue,
-			StringBuilder sbQuery) {
+	public static void endPageQuery(String orderValue,
+			StringBuilder sbQuery, ServiceConfiguration serviceConfiguration) throws ApiException{
+		List<ServiceConfiguration> serviceConfigurations = new ArrayList<ServiceConfiguration>();
+		serviceConfigurations.add(serviceConfiguration);
+		endPageQuery(orderValue, sbQuery, serviceConfigurations);
+	}
+	
+	public static void endPageQuery(String orderValue,
+			StringBuilder sbQuery, Collection<ServiceConfiguration> serviceConfigurations) throws ApiException {
+		String orderByValue = RequestContext.getContext().getOrderByValue();
+		for(ServiceConfiguration config : serviceConfigurations){
+			for(DatabaseAlias alias : config.getValidOrderByValues()){
+				if(alias.getUriName().equalsIgnoreCase(orderByValue)){
+					orderByValue = alias.getDbName();
+					break;
+				}
+			}
+		}
 		sbQuery.append(" ORDER BY ");
 		sbQuery.append(orderByValue);
 		sbQuery.append(" ");
