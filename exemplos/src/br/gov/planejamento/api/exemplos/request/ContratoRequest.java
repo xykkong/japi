@@ -32,14 +32,9 @@ public class ContratoRequest {
 	@Path(ExemplosRouter.CONTRATOS)
 	
 	public ResourceListResponse<ContratoResource> contrato(
-			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,
-			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato,
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
-			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
-			/*JOIN*/
-			@Parameter(name = "cnpj_contratante", description = "Numero do CNPJ da empresa contratante") String cnpjContratante,
-			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante)
+			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial)
 			throws ApiException {
 	
 		contratoService.addFilter(
@@ -55,7 +50,7 @@ public class ContratoRequest {
 	}
 	
 	@GET
-	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleId = "1392")
+	@ApiRequest(name = "contrato", description = "Pega um contrato pelo identificador único do mesmo.", exampleId = "1392")
 	@Path(ExemplosRouter.CONTRATO)
 	public ResourceResponse<ContratoResource> contrato(
 			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato

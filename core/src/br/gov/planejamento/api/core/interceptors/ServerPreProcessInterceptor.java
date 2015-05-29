@@ -39,6 +39,11 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 			ResourceMethod method) throws Failure, WebApplicationException {	
 		
 		RequestContext.getContext().clear();
+//		RequestContext context = RequestContext.getContext();
+//		MultivaluedMap<String, String> map = httpRequest.getUri().getQueryParameters();
+//		context.putValues(map);
+//		map = httpRequest.getUri().getPathParameters();
+//		context.putValues(map);
 		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
 		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
 		
