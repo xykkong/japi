@@ -30,18 +30,16 @@ public class ContratoRequest {
 	@GET
 	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
 	@Path(ExemplosRouter.CONTRATOS)
-	
 	public ResourceListResponse<ContratoResource> contrato(
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
-			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial)
+			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
+			@Parameter(name = "descricao", description = "Breve descrição do contrato.") String descicao)
 			throws ApiException {
+		contratoService = new ContratoService();
 	
 		contratoService.addFilter(
-				BasicEqualFilter.factory(Integer.class, "numero","id_contrato"),
-				CaseInsensitiveLikeFilter.factory(
-						"cnpj_contratante", "cnpj_contratada","valor_inicial"
-						),
+				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
 				DateEqualFilter.factory( "data_termino"),
 				BasicEqualFilter.factory(BooleanParam.class, "status")
 				);
@@ -56,6 +54,7 @@ public class ContratoRequest {
 			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato
 		)
 			throws ApiException {
+		contratoService = new ContratoService();
 		return ResourceResponse.factory(contratoService.getOne(), ContratoResource.class);
 	}
 	
@@ -64,7 +63,6 @@ public class ContratoRequest {
 	@Path(ExemplosRouter.CONTRATOS_JOIN_EMPRESAS)
 	public ResourceListResponse<ContratoJoinEmpresaResource> contratoJoinEmpresa(
 			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,
-			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato,
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
@@ -73,7 +71,13 @@ public class ContratoRequest {
 			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante
 			) throws ApiException{
 		
+		contratoService = new ContratoService();
 		
+		contratoService.addFilter(
+				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
+				DateEqualFilter.factory( "data_termino"),
+				BasicEqualFilter.factory(BooleanParam.class, "status")
+				);
 		ServiceJoinner serviceJoinner = new ServiceJoinner(contratoService);
 		
 		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinEmpresaResource.class);
