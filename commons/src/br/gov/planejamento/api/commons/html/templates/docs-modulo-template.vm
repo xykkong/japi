@@ -165,7 +165,7 @@
 							#foreach($request in $documentation.requests)
 								#if($request.returns.response_type == "ResourceResponse")
 									<tr>
-										<td><a href="$session.RootURL.concat('docs/doc/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
+										<td><a href="$session.RootURL.concat('docs/')$documentation.modulo/$request.method_name">$request.method_name</a></td>
 										<td>
 											<p>$request.description </p>
 										</td>

@@ -7,10 +7,10 @@
         "databaseName" : "japi_exemplos"
     },
     "assetFolder" : "assets/resources",
-    "resourceTemplate" : "br/gov/planejamento/api/commons/templates/resource-template.vm",
-	"errorTemplate" : "br/gov/planejamento/api/commons/templates/error-template.vm",
-	"docsModuloTemplate" : "br/gov/planejamento/api/commons/templates/docs-modulo-template.vm",
-	"docsMetodoTemplate" : "br/gov/planejamento/api/commons/templates/docs-metodo-template.vm",
-	"staticHtmlTemplate" : "br/gov/planejamento/api/commons/templates/static-html-template.vm",
+    "resourceTemplate" : "br/gov/planejamento/api/commons/html/templates/resource-template.vm",
+	"errorTemplate" : "br/gov/planejamento/api/commons/html/templates/error-template.vm",
+	"docsModuloTemplate" : "br/gov/planejamento/api/commons/html/templates/docs-modulo-template.vm",
+	"docsMetodoTemplate" : "br/gov/planejamento/api/commons/html/templates/docs-metodo-template.vm",
+	"staticHtmlTemplate" : "br/gov/planejamento/api/commons/html/templates/static-html-template.vm",
 	"rootUrl" : "http://localhost:8080/"
 }

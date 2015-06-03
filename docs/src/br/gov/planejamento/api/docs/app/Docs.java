@@ -7,6 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Application;
 
 import br.gov.planejamento.api.commons.constants.CommonConstants;
+import br.gov.planejamento.api.core.base.HtmlResourceLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
@@ -21,7 +22,8 @@ public class Docs extends Application {
 	@GET
 	@Path("/")
 	public HTMLResponse docsHome() throws ApiException{	
-		HTMLResponse home = new HTMLResponse("<h2 id='titulo' class='titulo-pagina'>Documentação</h2><hr class='barra' style='margin: 0px;'/><p class='met_descricao'>Seja bem vindo ao módulo de Documentação</p>");
+		//HTMLResponse home = new HTMLResponse("");
+		HTMLResponse home = new HTMLResponse(new HtmlResourceLoader("docs-home.html"));
 		
 		return home;
 	}
