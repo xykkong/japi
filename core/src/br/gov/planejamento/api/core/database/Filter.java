@@ -127,10 +127,11 @@ public abstract class Filter {
 		StringBuilder statement = new StringBuilder();
 		RequestContext context = RequestContext.getContext();
 		Boolean first = true;
+		int i=0;
 		for (DatabaseAlias parameterAlias : parametersAliases) {
-			if(tableAlias!=null){
+			if(tableAlias!=null && tableAlias.length>i){
 				String dbName = parameterAlias.getDbName();
-				parameterAlias.setDbName(tableAlias+"."+dbName);
+				parameterAlias.setDbName(tableAlias[i++]+"."+dbName);
 			}
 			
 			if(context.hasParameter(parameterAlias.getUriName())){
