@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
@@ -22,7 +23,7 @@ public class SwaggerParser {
 		try {
 			reader = new InputStreamReader(new URL(docUrl).openStream());
 		} catch (IOException e) {
-			throw new CoreException("Houve um erro ao criar o arquivo JSON do SwaggerParser.", e);
+			throw new CoreException(Errors.SWAGGER_PARSER_ERRO_CRIACAO_JSON, "Houve um erro ao criar o arquivo JSON do SwaggerParser.", e);
 		} //Read the json output
         Gson gson = new GsonBuilder().create();
         DocumentationResponse obj = gson.fromJson(reader, DocumentationResponse.class);

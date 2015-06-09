@@ -7,6 +7,7 @@ import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
 import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -20,7 +21,7 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 		
 		if(serverResponse.getEntity() instanceof Exception) {
 			if(!(serverResponse.getEntity() instanceof ApiException)) {
-				serverResponse.setEntity(new CoreException("Houve um erro interno desconhecido.", (Exception) serverResponse.getEntity()));
+				serverResponse.setEntity(new CoreException(Errors.POST_PROCESS_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", (Exception) serverResponse.getEntity()));
 			}
 			
 			//Convertendo para ApiException

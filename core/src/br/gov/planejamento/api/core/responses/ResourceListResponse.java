@@ -13,6 +13,7 @@ import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -57,7 +58,7 @@ public class ResourceListResponse<T extends Resource> extends Response implement
 			} catch (InstantiationException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException
 					| NoSuchMethodException | SecurityException e) {
-				throw new CoreException("Houve um erro ao criar os Resources a partir da DatabaseData", e);
+				throw new CoreException(Errors.RESOURCE_LIST_RESPONSE_ERRO_CONSTRUCAO_RESOURCES, "Houve um erro ao criar os Resources a partir da DatabaseData", e);
 			}
 		}
 		

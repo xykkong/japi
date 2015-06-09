@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -30,7 +31,7 @@ public class JapiConfigLoader {
 		try {
 			return gson.fromJson(new FileReader(f), JapiConfig.class);
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			throw new CoreException("Erro na leitura do arquivo .json de configuração da API. Verifique se o caminho do arquivo está configurado corretamente, se ele existe e se está em um formato válido.", e);
+			throw new CoreException(Errors.CONFIG_LOADER_ERRO_LEITURA, "Erro na leitura do arquivo .json de configuração da API. Verifique se o caminho do arquivo está configurado corretamente, se ele existe e se está em um formato válido.", e);
 		}
 	}
 

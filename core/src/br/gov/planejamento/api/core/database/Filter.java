@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
@@ -87,7 +88,7 @@ public abstract class Filter {
 									| IllegalArgumentException
 									| InvocationTargetException
 									| NoSuchMethodException | SecurityException e) {
-								throw new CoreException("Houve um erro na instanciação do Filtro", e);
+								throw new CoreException(Errors.FILTER_ERRO_INSTANCIACAO, "Houve um erro na instanciação do Filtro", e);
 							}
 							param.setPreparedStatementValue(i++, pst);
 						}

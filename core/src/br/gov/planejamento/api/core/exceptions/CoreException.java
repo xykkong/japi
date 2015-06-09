@@ -8,20 +8,20 @@ public class CoreException extends ApiException {
 	
 	private static int defaultHttpStatusCode = Constants.HttpStatusCodes.INTERNAL_ERROR;
 	
-	public CoreException(String message, int httpStatusCode,
+	public CoreException(int errorCode, String message, int httpStatusCode,
 			Exception originalException) {
-		super(message, httpStatusCode, originalException);
+		super(errorCode, message, httpStatusCode, originalException);
 	}
 	
-	public CoreException(String message, int httpStatusCode) {
-		this(message, httpStatusCode, null);
+	public CoreException(int errorCode, String message, int httpStatusCode) {
+		this(errorCode, message, httpStatusCode, null);
 	}
 	
-	public CoreException(String message) {
-		this(message, defaultHttpStatusCode);
+	public CoreException(int errorCode, String message) {
+		this(errorCode, message, defaultHttpStatusCode);
 	}
 
-	public CoreException(String message, Exception originalException) {
-		this(message, defaultHttpStatusCode, originalException);
+	public CoreException(int errorCode, String message, Exception originalException) {
+		this(errorCode, message, defaultHttpStatusCode, originalException);
 	}	
 }

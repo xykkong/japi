@@ -11,8 +11,9 @@ import br.gov.planejamento.api.core.annotations.JSONIgnore;
 import br.gov.planejamento.api.core.annotations.XMLIgnore;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Property;
-import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.base.SelfLink;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -70,7 +71,7 @@ public abstract class ReflectionUtils {
 					property = (Property) method.invoke(object);
 				} catch (IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					throw new CoreException("Houve um erro ao obter as propriedades do resource.", e);
+					throw new CoreException(Errors.REFLECTION_ERRO_OBTENCAO_PROPRIEDADES_RESOURCE, "Houve um erro ao obter as propriedades do resource.", e);
 				}
 				
 				//Setting id for the properties, based on getter name (getPropertyName => property_name)
@@ -95,7 +96,7 @@ public abstract class ReflectionUtils {
 						links.add((Link) method.invoke(object));
 					} catch (IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
-						throw new CoreException("Houve um erro ao obter os links do resource.", e);
+						throw new CoreException(Errors.REFLECTION_ERRO_OBTENCAO_LINKS_RESOURCE, "Houve um erro ao obter os links do resource.", e);
 					}
 				}
 			}

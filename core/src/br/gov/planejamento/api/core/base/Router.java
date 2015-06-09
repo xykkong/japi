@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -38,12 +39,12 @@ public abstract class Router {
 			}
 			
 			if(urlBuilder.indexOf("{") != -1) {
-				throw new CoreException("Não foi possível criar a URL para o path informado pois não foram passados os path params necessários para sua construção.");
+				throw new CoreException(Errors.ROUTER_PARAMS_NAO_INFORMADOS,"Não foi possível criar a URL para o path informado pois não foram passados os path params necessários para sua construção.");
 			}
 			
 			return urlBuilder.toString();
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			throw new CoreException("Não foi possível acessar o path desejado na construção URL. Verifique se o pathName passado está correto.", e);
+			throw new CoreException(Errors.ROUTER_PATH_NAME_INCORRETO, "Não foi possível acessar o path desejado na construção URL. Verifique se o pathName passado está correto.", e);
 		}
 	}
 }

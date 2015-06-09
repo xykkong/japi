@@ -154,7 +154,7 @@ public class TesteResource extends Resource {
 	public Link getUasg() throws ApiException
 	{
 		HashMap<String, String> params = StringUtils.jsonListToHashMap("uasg:2000");
-		String url = licitacoesRouter.urlTo("LICITACOES", params);
+		String url = licitacoesRouter.urlTo(LicitacoesRouter.LICITACOES, params);
 		return new Link(url, "Todas as licitacoes uasg 2000", "uasg");
 	}
 	

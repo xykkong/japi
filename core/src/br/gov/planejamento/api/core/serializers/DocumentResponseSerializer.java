@@ -12,6 +12,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
@@ -37,7 +38,7 @@ public class DocumentResponseSerializer {
 		try {
 			Velocity.init();
 		} catch (Exception e) {
-			throw new CoreException("Houve um erro ao inicializar o Velocity.", e);
+			throw new CoreException(Errors.DOCUMENT_RESPONSE_SERIALIZER_ERRO_INICIALIZAR_VELOCITY, "Houve um erro ao inicializar o Velocity.", e);
 		}
 		
 		Template template = new Template();
@@ -47,14 +48,14 @@ public class DocumentResponseSerializer {
 				template = Velocity.getTemplate(RequestContext
 						.getContext().getDocsModuloTemplate(), "UTF-8");
 			} catch (Exception e) {
-				throw new CoreException("Houve um erro ao definir o template do Velocity.", e);
+				throw new CoreException(Errors.DOCUMENT_RESPONSE_SERIALIZER_ERRO_DEFINIR_TEMPLATE, "Houve um erro ao definir o template do Velocity.", e);
 			}
 		}
 		else{
 			try {
 				template = Velocity.getTemplate(templateName, "UTF-8");
 			} catch (Exception e) {
-				throw new CoreException("Houve um erro ao definir o template do Velocity.", e);
+				throw new CoreException(Errors.DOCUMENT_RESPONSE_SERIALIZER_ERRO_DEFINIR_TEMPLATE, "Houve um erro ao definir o template do Velocity.", e);
 			}
 		}
 		VelocityContext context = new VelocityContext();
@@ -68,7 +69,7 @@ public class DocumentResponseSerializer {
 			template.merge(context, writer);
 		} catch (ResourceNotFoundException | ParseErrorException
 				| MethodInvocationException | IOException e) {
-			throw new CoreException("Houve um erro ao processar o template do Velocity.", e);
+			throw new CoreException(Errors.DOCUMENT_RESPONSE_SERIALIZER_ERRO_PROCESSAR_TEMPLATE, "Houve um erro ao processar o template do Velocity.", e);
 		}
 		return writer.toString();
 	}

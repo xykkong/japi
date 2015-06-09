@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.serializers.HTMLSerializer;
@@ -46,17 +47,17 @@ public class HTMLResponse extends Response {
 
 	@Override
 	public String toXML() throws ApiException {
-		throw new CoreException("Não é possível converter para XML. Uma response do tipo SwaggerResponse só pode ser serializada no formato HTML.");
+		throw new CoreException(Errors.HTML_RESPONSE_SERIALIZER_INVALIDO, "Não é possível converter para XML. Uma response do tipo HTMLResponse só pode ser serializada no formato HTML.");
 	}
 
 	@Override
 	public String toCSV() throws ApiException {
-		throw new CoreException("Não é possível converter para CSV. Uma response do tipo SwaggerResponse só pode ser serializada no formato HTML.");
+		throw new CoreException(Errors.HTML_RESPONSE_SERIALIZER_INVALIDO, "Não é possível converter para CSV. Uma response do tipo HTMLResponse só pode ser serializada no formato HTML.");
 	}
 
 	@Override
 	public String toJSON() throws ApiException {
-		throw new CoreException("Não é possível converter para JSON. Uma response do tipo SwaggerResponse só pode ser serializada no formato HTML.");
+		throw new CoreException(Errors.HTML_RESPONSE_SERIALIZER_INVALIDO, "Não é possível converter para JSON. Uma response do tipo HTMLResponse só pode ser serializada no formato HTML.");
 	}
 
 	@Override

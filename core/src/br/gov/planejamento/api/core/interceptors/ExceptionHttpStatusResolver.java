@@ -4,12 +4,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.jboss.resteasy.core.ServerResponse;
-
 import org.jboss.resteasy.core.Headers;
+import org.jboss.resteasy.core.ServerResponse;
 
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -44,10 +44,21 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		if(!(exception instanceof ApiException)) {
-			apiException = new CoreException("Houve um erro interno desconhecido.", exception);
+			apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
 		} else {
 			apiException = (ApiException) exception;
 		}
+		
+		//Printando stackstrace
+		System.out.println("-----------------------------------------------------------------");
+		System.out.println("API EXCEPTION:");
+		apiException.printStackTrace();
+		if(apiException.getOriginalException() != null) {
+			System.out.println("-----------------------------------------------------------------");
+			System.out.println("ORIGINAL EXCEPTION:");
+			apiException.getOriginalException().printStackTrace();
+		}
+		System.out.println("-----------------------------------------------------------------");
 		
 		ErrorResponse error = new ErrorResponse(apiException);
 		return ServerResponseBuilder.build(new ServerResponse(), error);
