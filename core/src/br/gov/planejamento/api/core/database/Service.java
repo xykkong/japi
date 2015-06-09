@@ -6,23 +6,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
-public abstract class Service {
+public abstract class Service implements ServiceConfigurationContainer{
 
-	protected abstract ServiceConfiguration getServiceConfiguration();	
+	public abstract ServiceConfiguration getServiceConfiguration();	
 	protected ServiceConfiguration configs = getServiceConfiguration();
+	
+	/**
+	 * Filtros inseridos pela camada de Request
+	 */
+	private ArrayList<Filter> filters = new ArrayList<Filter>();
 
 	public DataRow getOne() throws ApiException{
-		EqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
+		BasicEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
 		if(equalFilters==null){
 			throw new CoreException(Errors.SERVICE_CHAVE_PRIMARIA_NAO_ENCONTRADA, "Nenhuma chave primária encontrada na configuração deste service "
 					+this.getClass().getCanonicalName());
@@ -35,13 +44,9 @@ public abstract class Service {
 	 * @return a dataRow encontrada, nulo caso não encontre nenhuma
 	 * @throws ApiException
 	 */
-	public DataRow getOne(EqualFilter...equalFilters) throws ApiException{
+	public DataRow getOne(BasicEqualFilter...equalFilters) throws ApiException{
 		configValidation();
 		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(equalFilters));
-		for (Filter filter : equalFilters) {
-			RequestContext.getContext().addFilter(filter);
-		}
-		
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
 		
@@ -95,20 +100,46 @@ public abstract class Service {
 		return row;
 	}
 	
+	/**
+	 * Retorna os filtros de consulta ao banco adicionados na camada de Request
+	 * @return
+	 */
+	public ArrayList<Filter> getFilters() {
+		return filters;
+	}
+	
+	/**
+	 * Adiciona à filtragem da consulta os filtros que tenham seus respectivos query parameters
+	 * presentes na query string da requisição 
+	 * @param filters Filtros a serem inseridos
+	 */
+	public void addFilter(Filter...filters) {
+		for(Filter filter : filters){
+			Boolean addThisFilter = false;
+			for(String parameter : filter.getUriParameters()){
+				if (RequestContext.getContext().hasParameter(parameter)) {
+					addThisFilter = true;
+					filter.putValues(parameter, RequestContext.getContext().getValues(parameter));
+					System.out.println("\n\tFilter added: "+ parameter+" with "+
+							RequestContext.getContext().getValues(parameter).size()+" values.");
+				}
+			}
+			if(addThisFilter)
+				this.filters.add(filter);
+		}
+	}
+	
 	public DatabaseData getAllFiltered() throws ApiException {
 
 		RequestContext context = RequestContext.getContext();
-		context.addAvailableOrderByValues(configs.getValidOrderByValues());
+		context.addAvailableOrderByValues(configs.getValidOrderByStringValues());
 
-		String orderByValue = context.getOrderByValue();
 		String orderValue = context.getOrderValue();
 		
 		configValidation();
 		
 		// SETUP
-		Connection connection = ConnectionManager.getConnection();
-		ArrayList<Filter> filtersFromRequest = context.getFilters();
-
+		ArrayList<Filter> filtersFromRequest = getFilters();
 		
 		// QUERYS
 		
@@ -123,30 +154,33 @@ public abstract class Service {
 		sbQuery.append(sbQueryGeneric);
 		sbCountQuery.append(sbQueryGeneric);
 		
-		sbQuery.append(" ORDER BY ");
-		sbQuery.append(orderByValue);
-		sbQuery.append(" ");
-		sbQuery.append(orderValue);
+		endPageQuery(orderValue, sbQuery, getServiceConfiguration());
+
+		return executeQuery(getFilters(), sbQuery.toString(), sbCountQuery.toString(), null, getServiceConfiguration());
+	}
+	
+	public static DatabaseData executeQuery(List<Filter> filters, String query,
+			String countQuery,
+			Map<String, ServiceConfiguration> mapConfigsAlias,
+			ServiceConfiguration...serviceConfigurations) throws CoreException, ApiException {
 		
-		sbQuery.append(" OFFSET ?");
-
-		sbQuery.append(" LIMIT ");
-		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
-
+		// SETUP
+		RequestContext context = RequestContext.getContext();
+		Connection connection = ConnectionManager.getConnection();
 		PreparedStatement pstQuery;
 		PreparedStatement pstCount;
 		
 		try {
-			pstQuery = connection.prepareStatement(sbQuery.toString());
-			pstCount = connection.prepareStatement(sbCountQuery.toString());
+			pstQuery = connection.prepareStatement(query);
+			pstCount = connection.prepareStatement(countQuery);
 		} catch (SQLException e) {
 			throw new CoreException(Errors.SERVICE_ERRO_STATEMENTS, "Houve um erro durante a preparação dos statements da query.", e);
 		}
 		
 
-		ArrayList<String> whereValues = getWhereValues(filtersFromRequest);
+		ArrayList<String> whereValues = getWhereValues(filters);
 		int index = 1;
-		for (Filter filter : filtersFromRequest) {
+		for (Filter filter : filters) {
 			int previousIndex = index;
 			index = filter.setPreparedStatementValues(pstQuery, index);
 			filter.setPreparedStatementValues(pstCount, previousIndex);
@@ -160,9 +194,11 @@ public abstract class Service {
 			throw new CoreException(Errors.SERVICE_ERRO_OFFSET, "Houve um erro ao definir o valor de offset na construção da query.", e);
 		}
 
+		String orderByValue = context.getOrderByValue();
+		String orderValue = context.getOrderValue();
 		// DEBUG
 		System.out.println("Query executada:");
-		System.out.println("\t" + sbQuery.toString());
+		System.out.println("\t" + query.toString());
 		System.out.print("\tvalores ORDER BY: ");
 		System.out.print(orderByValue + " ");
 		System.out.println(orderValue);
@@ -180,7 +216,12 @@ public abstract class Service {
 		try {
 			ResultSet rs = pstQuery.executeQuery();
 	
-			data = new DatabaseData(rs, configs);
+			if(mapConfigsAlias==null){
+				data = new DatabaseData(rs, serviceConfigurations);
+			}else{
+				data = new DatabaseData(rs, mapConfigsAlias);
+			}
+			
 			pstQuery.close();
 			
 			rs = pstCount.executeQuery();
@@ -198,6 +239,35 @@ public abstract class Service {
 			throw new CoreException(Errors.SERVICE_ERRO_QUERY, "Houve um erro durante a execução das queries.", e);
 		}
 		return data;
+	}
+	
+	public static void endPageQuery(String orderValue,
+			StringBuilder sbQuery, ServiceConfiguration serviceConfiguration) throws ApiException{
+		List<ServiceConfiguration> serviceConfigurations = new ArrayList<ServiceConfiguration>();
+		serviceConfigurations.add(serviceConfiguration);
+		endPageQuery(orderValue, sbQuery, serviceConfigurations);
+	}
+	
+	public static void endPageQuery(String orderValue,
+			StringBuilder sbQuery, Collection<ServiceConfiguration> serviceConfigurations) throws ApiException {
+		String orderByValue = RequestContext.getContext().getOrderByValue();
+		for(ServiceConfiguration config : serviceConfigurations){
+			for(DatabaseAlias alias : config.getValidOrderByValues()){
+				if(alias.getUriName().equalsIgnoreCase(orderByValue)){
+					orderByValue = alias.getDbName();
+					break;
+				}
+			}
+		}
+		sbQuery.append(" ORDER BY ");
+		sbQuery.append(orderByValue);
+		sbQuery.append(" ");
+		sbQuery.append(orderValue);
+		
+		sbQuery.append(" OFFSET ?");
+
+		sbQuery.append(" LIMIT ");
+		sbQuery.append(Constants.FixedParameters.VALUES_PER_PAGE);
 	}
 
 	private void configValidation() throws CoreException {
@@ -217,16 +287,14 @@ public abstract class Service {
 
 	private StringBuilder generateGenericQuery(ArrayList<Filter> filters) {
 		StringBuilder sbQueryGeneric = new StringBuilder(" FROM ");
-		sbQueryGeneric.append(configs.getSchema());
-		sbQueryGeneric.append(".");
-		sbQueryGeneric.append(configs.getTable());
+		configs.appendSchemaDotTable(sbQueryGeneric);
 
 		sbQueryGeneric.append(" WHERE ");
 		sbQueryGeneric.append(getWhereStatement(filters));
 		return sbQueryGeneric;
 	}
 
-	private String getWhereStatement(ArrayList<Filter> filtersFromRequest) {
+	public static String getWhereStatement(ArrayList<Filter> filtersFromRequest) {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		for (Filter filter : filtersFromRequest) {
 			filtersQuery.append(" AND ");
@@ -234,11 +302,29 @@ public abstract class Service {
 		}
 		return filtersQuery.toString();
 	}
+	
+	public static String getWhereStatement(List<Filter> filters, Map<String, ServiceConfiguration> mapConfigAlias) {
+		StringBuilder filtersQuery = new StringBuilder("1 = 1");
+		
+		for (Filter filter : filters) {
+			for(Entry<String, ServiceConfiguration> entry : mapConfigAlias.entrySet()){
+				ServiceConfiguration config = entry.getValue();
+				String tableAlias = entry.getKey();
+				for(String dbName : filter.getDbParameters()){
+					if(config.getResponseFields().contains(dbName)) {
+						filtersQuery.append(" AND ");
+						filtersQuery.append(filter.getStatement(tableAlias));
+					}
+				}
+			}
+		}
+		return filtersQuery.toString();
+	}
 
-	private ArrayList<String> getWhereValues(
-			ArrayList<Filter> filtersFromRequest) {
+	private static ArrayList<String> getWhereValues(
+			List<Filter> filters) {
 		ArrayList<String> wheres = new ArrayList<String>();
-		for (Filter filter : filtersFromRequest) {
+		for (Filter filter : filters) {
 			for(DatabaseAlias dbAlias : filter.getParametersAliases()){
 				if(RequestContext.getContext().hasParameter(dbAlias.getUriName()))
 					wheres.addAll(filter.getValues(dbAlias));

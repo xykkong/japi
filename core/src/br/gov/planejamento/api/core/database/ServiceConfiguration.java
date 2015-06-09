@@ -2,19 +2,21 @@ package br.gov.planejamento.api.core.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import br.gov.planejamento.api.core.filters.EqualFilter;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
+import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
 
 public class ServiceConfiguration {
 	
 	private String schema = "public";
 	private String table = "";
-	private EqualFilter[] primaryKeyEqualFilters = null;
+	private BasicEqualFilter[] primaryKeyEqualFilters = null;
 	private ArrayList<String> responseFields = new ArrayList<String>();
 	private ArrayList<String> requiredParameters = new ArrayList<String>();
 	private ArrayList<String> optionalParameters = new ArrayList<String>();
 	private ArrayList<String> availableFilters = new ArrayList<String>();
-	private ArrayList<String> validOrderByValues = new ArrayList<String>();
+	private List<DatabaseAlias> validOrderByValues = new ArrayList<>();
 		
 	public String getSchema(){
 		return schema;
@@ -52,19 +54,32 @@ public class ServiceConfiguration {
 	public void setAvailableFilters(ArrayList<String> availableFilters) {
 		this.availableFilters = availableFilters;
 	}
-	public ArrayList<String> getValidOrderByValues() {
-		return this.validOrderByValues;
+	public List<String> getValidOrderByStringValues() {
+		List<String> list = new ArrayList<>();
+		for(DatabaseAlias alias : this.validOrderByValues){
+			list.add(alias.getUriName());
+		}
+		return list;
+	}
+	public List<DatabaseAlias> getValidOrderByValues() {
+		return validOrderByValues;
 	}
 	public void setValidOrderByValues(String... values) {
 		for(String value : values) {
-			validOrderByValues.add(value);
+			validOrderByValues.add(DatabaseAlias.fromSpecialString(value));
 		}
 	}
-	public EqualFilter[] getPrimaryKeyEqualFilters() {
+	public BasicEqualFilter[] getPrimaryKeyEqualFilters() {
 		return primaryKeyEqualFilters;
 	}
-	public void setPrimaryKeyEqualFilters(EqualFilter...primaryKeyEqualFilters) {
+	public void setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter...primaryKeyEqualFilters) {
 		this.primaryKeyEqualFilters = primaryKeyEqualFilters;
 	}
+	public void appendSchemaDotTable(StringBuilder query) {
+		query.append(getSchema());
+		query.append(".");
+		query.append(getTable());
+	}
+	
 	
 }

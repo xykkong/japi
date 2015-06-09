@@ -17,7 +17,7 @@ public abstract class JSONSerializer {
 		if(resource == null) return null;
 		JsonObject item = new JsonObject();
 		item.add("_links", SerializeUtils.linksToJSON(resource.getLinks()));
-		for(Property property : resource.getProperties()) {
+		for(Property<?> property : resource.getProperties()) {
 			if(property == null) continue;
 			item.addProperty(property.getId(), property.getValue());
 		}

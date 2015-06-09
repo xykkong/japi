@@ -10,8 +10,9 @@ import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
+import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
-import br.gov.planejamento.api.exemplos.resource.BaseResource;
 import br.gov.planejamento.api.exemplos.resource.EmpresaResource;
 import br.gov.planejamento.api.exemplos.service.EmpresaService;
 
@@ -25,7 +26,7 @@ public class EmpresaRequest {
 	@ApiRequest(name = "empresas", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?representante_legal=Afrânio")
 	@Path(ExemplosRouter.EMPRESAS)
 	
-	public ResourceListResponse<BaseResource> empresas(
+	public ResourceListResponse<EmpresaResource> contrato(
 			@Parameter(name = "descricao", description = "Descrição breve da empresa") String descricao,
 			@Parameter(name = "id_empresa", description = "Numero identificador da empresa") String id_contrato,
 			@Parameter(name = "nome", description = "Nome maravilha da empresa") String status,
@@ -33,6 +34,10 @@ public class EmpresaRequest {
 			@Parameter(name = "representante_legal", description = " nome do representante legal da empresa") String representanteLegal
 			)throws ApiException {
 			
+		eService.addFilter(
+				BasicEqualFilter.factory(Integer.class,"id_empresa"),
+				CaseInsensitiveLikeFilter.factory("cnpj", "representante_legal")
+				);
 		DatabaseData dados = eService.getAllFiltered();
 		return ResourceListResponse.factory(dados, EmpresaResource.class);
 	

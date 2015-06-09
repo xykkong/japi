@@ -6,7 +6,6 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
-
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Errors;
@@ -29,6 +28,12 @@ import br.gov.planejamento.api.core.responses.ErrorResponse;
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	@Override
 	public Response toResponse(Exception exception) {
+		
+		if(exception instanceof ApiException) {
+			if(((ApiException)exception).getOriginalException() instanceof ApiException) {
+				exception = (new CoreException(Errors.API_EXCEPTION_COMO_ORIGINAL_EXCEPTION, "Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)exception));
+			}
+		}
 		
 		ApiException apiException;
 		//TODO: Pensar se existe uma forma melhor de trabalhar isso. É necessário, para carregar os resources no 

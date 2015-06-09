@@ -52,6 +52,10 @@ public abstract class Errors {
 	public static final int STRING_UTILS_ERRO_CONVERSAO_HASHMAP_JSON = 545;
 	public static final int DOCS_URL_INCORRETA = 546;
 	public static final int DOCS_DOCUMENTACAO_INEXISTENTE = 547;
+	public static final int ROUTER_CHAVES_VALORES_INCONGRUENTES = 548;
+	public static final int ROUTER_PARAMETROS_DUPLICADOS = 549;
+	public static final int API_EXCEPTION_COMO_ORIGINAL_EXCEPTION = 550;
+	public static final int HTML_RESPONSE_FALHA_CARREGAMENTO_ARQUIVO = 551;
 
 	
 	/* Request Errors - Starting in 1000 */

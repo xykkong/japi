@@ -8,14 +8,12 @@ import br.gov.planejamento.api.commons.routers.ExemplosRouter;
 import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
+import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
-import br.gov.planejamento.api.core.filters.EqualFilter;
-import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.exemplos.resource.BaseResource;
 import br.gov.planejamento.api.exemplos.service.BaseService;
@@ -60,10 +58,10 @@ public class BaseRequest {
      *
      */
 
-		RequestContext.getContext().addFilter(
-				new EqualFilter(Integer.class, "nome_da_coluna_1_na_tabela as filtro"),
-				new CaseInsensitiveLikeFilter(new DatabaseAlias("nome_da_coluna_2_na_tabela")),
-				new DateEqualFilter(DateParam.class, new DatabaseAlias("nome_da_coluna_x_na_tabela")));
+		bService.addFilter(
+				BasicEqualFilter.factory(Integer.class, "nome_da_coluna_1_na_tabela as filtro"),
+				CaseInsensitiveLikeFilter.factory(new DatabaseAlias("nome_da_coluna_2_na_tabela")),
+				DateEqualFilter.factory(new DatabaseAlias("nome_da_coluna_x_na_tabela")));
 
 		DatabaseData dados = bService.getAllFiltered();
 		return ResourceListResponse.factory(dados, BaseResource.class);

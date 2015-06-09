@@ -35,7 +35,7 @@ public abstract class Resource implements ISelfLink, ILinks, IProperties {
 	
 	
 	@Override
-	public ArrayList<Property> getProperties() throws ApiException {
+	public ArrayList<Property<?>> getProperties() throws ApiException {
 		return ReflectionUtils.getProperties(this);
 	}
 	

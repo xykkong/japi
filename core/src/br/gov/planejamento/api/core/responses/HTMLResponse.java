@@ -1,7 +1,12 @@
 package br.gov.planejamento.api.core.responses;
 
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
+import org.apache.commons.io.IOUtils;
+
+import br.gov.planejamento.api.core.base.HtmlResourceLoader;
 import br.gov.planejamento.api.core.base.Link;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
@@ -13,13 +18,26 @@ import br.gov.planejamento.api.core.serializers.HTMLSerializer;
 public class HTMLResponse extends Response {
 	
 	private String htmlCode;
-	
-	//TODO: No futuro, implementar para parsear um arquivo HTML
-	//private String htmlUrl;
 
 	public HTMLResponse(String htmlCode) {
 		super();
 		this.htmlCode = htmlCode;
+	}
+	
+	public HTMLResponse(HtmlResourceLoader resourceLoarder) throws CoreException{
+		try {
+			String fileName = resourceLoarder.getPath();
+			
+			InputStream is = HTMLResponse.class.getResourceAsStream(fileName);
+			
+			StringWriter writer = new StringWriter();
+			
+			IOUtils.copy(is, writer, "UTF-8");
+
+			this.htmlCode = writer.toString();
+		} catch (Exception e) {
+			throw new CoreException(Errors.HTML_RESPONSE_FALHA_CARREGAMENTO_ARQUIVO, "Não foi possível carregar as informações do arquivo "+resourceLoarder.getPath(), 404, e);
+		}
 	}
 	
 	

@@ -3,6 +3,8 @@ package br.gov.planejamento.api.core.base;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.Path;
@@ -16,12 +18,11 @@ import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
-import br.gov.planejamento.api.core.annotations.Type;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.responses.SwaggerResponse;
-import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
 
 import com.google.gson.JsonArray;
@@ -31,7 +32,7 @@ public abstract class Module extends Application {
 	
 	/**
 	 * Extrai a documentação de um dado package através de Reflection, procurando por todos os métodos
-	 * de todas as classes deste package que retornem um Response e estejam anotados por @Path e @ResourceType.
+	 * de todas as classes deste package que retornem um Response e estejam anotados por @Path e @ApiRequest.
 	 * 
 	 * é aconselhável que o package informado seja aquele que contém as classes de Request, ou seja,
 	 * a camada mais externa que mapeia cada URL para seu método correspondente. 
@@ -39,12 +40,26 @@ public abstract class Module extends Application {
 	 * @return
 	 * @throws CoreException 
 	 */
+	
+	@SuppressWarnings("unchecked") //Não pode acontecer
 	protected SwaggerResponse extractDocumentation(String packageName) throws ApiException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodAnnotationsScanner());
 		Set<Method> methods = reflections.getMethodsAnnotatedWith(ApiRequest.class);
 		
-		JsonObject json = new JsonObject();
+		
+		JsonObject swaggerJson = new JsonObject();
 		JsonArray requests = new JsonArray();
+		
+		swaggerJson.addProperty("apiVersion", "1.2.0: The Great Bug of Docs");
+		swaggerJson.addProperty("swaggerVersion", "1.2: pois é o que estava escrito na antiga");
+		
+		String root = RequestContext.getContext().getRootURL();
+		List<Method> lm = new ArrayList<>(methods);
+		String classModule = lm.get(0).getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.ApiModule.class).value();
+		
+		swaggerJson.addProperty("basePath", root+classModule);
+		
+		
 		
 		for(Method requestMethod : methods) {
 			
@@ -69,8 +84,6 @@ public abstract class Module extends Application {
 				
 				//Só insere uma example_query_string caso a @Module for definida no Request
 				if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.ApiModule.class)){
-					String root = RequestContext.getContext().getRootURL();
-					String classModule = requestMethod.getDeclaringClass().getAnnotation(br.gov.planejamento.api.core.annotations.ApiModule.class).value();
 					String examplePath = requestMethod.getAnnotation(Path.class).value();
 					
 					requestExampleQueryString = requestMethod.getAnnotation(ApiRequest.class).exampleQuery();
@@ -95,7 +108,6 @@ public abstract class Module extends Application {
 			String requestPath = requestMethod.getAnnotation(Path.class).value();
 			request.addProperty("path", requestPath);
 			
-			@SuppressWarnings("unchecked") //Nunca pode acontecer, já que os Responses são do tipo ResourceResponse ou ResourceListResponse e por definição das classes possuem argumentos que estendem Resource
 			Class<? extends Resource> returnType = ((Class<? extends Resource>)((ParameterizedType)requestMethod.getGenericReturnType()).getActualTypeArguments()[0]);
 			
 			JsonObject returns = new JsonObject();
@@ -131,18 +143,22 @@ public abstract class Module extends Application {
 											
 					String propertyName = ReflectionUtils.getterToPropertyName(propertyMethod.getName());
 					String propertyDescription = "";
-					String propertyType = "string";
+					Class<? extends Object> propertyType;
+					
 					if(propertyMethod.isAnnotationPresent(Description.class)) {
 						propertyDescription = propertyMethod.getAnnotation(Description.class).value();
 					}
-					if(propertyMethod.isAnnotationPresent(Type.class)) {
-						propertyType= propertyMethod.getAnnotation(Type.class).value();
+					
+					try {
+						propertyType = ((Class<? extends Object>)((ParameterizedType)propertyMethod.getGenericReturnType()).getActualTypeArguments()[0]);
+					} catch(Exception e) {
+						propertyType = String.class;
 					}
 									
 					JsonObject property = new JsonObject();
 					property.addProperty("name", propertyName);
 					property.addProperty("description", propertyDescription);
-					property.addProperty("type", propertyType);
+					property.addProperty("type", propertyType.getSimpleName());
 					properties.add(property);
 				}					
 			}
@@ -151,9 +167,10 @@ public abstract class Module extends Application {
 			requests.add(request);
 		}
 		
-		json.add("requests", requests);
+		swaggerJson.add("requests", requests);
 		
-		return new SwaggerResponse(json);
+		
+		return new SwaggerResponse(swaggerJson);
 	}
 	
 	public abstract SwaggerResponse getDocs() throws ApiException;

@@ -1,6 +1,7 @@
 package br.gov.planejamento.api.exemplos.resource;
 
-import br.gov.planejamento.api.core.annotations.Type;
+import br.gov.planejamento.api.commons.routers.ExemplosRouter;
+import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.database.DataRow;
@@ -21,68 +22,27 @@ public class EmpresaResource extends Resource {
 
 	@Override
 	public SelfLink getSelfLink() {
-		 return new SelfLink("url para o meu resource", "nome do meu resource");
+		 return new SelfLink(ExemplosRouter.EMPRESAS + this.id_empresa, ""+ this.getNome());
+	}
+
+	public Property<String> getNome() {
+		return new Property<String>("Nome da empresa", nome);
 	}
 
 
-
-	public String getNome() {
-		return nome;
+	public Property<String> getId_empresa() {
+		return new Property<String>("Identificador único",id_empresa);
 	}
 
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	public Property<String> getDescricao() {
+		return new Property<String>("Descricao da empresa",descricao);
 	}
 
-
-	@Type("integer")
-	public String getId_empresa() {
-		return id_empresa;
+	public Property<String> getRepresentante_legal() {
+		return new Property<String>("Nome do representante legal",representante_legal);
 	}
 
-
-
-	public void setId_empresa(String id_empresa) {
-		this.id_empresa = id_empresa;
+	public Property<String> getCnpj() {
+		return new Property<String>("CNPJ da empresa",cnpj);
 	}
-
-
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-
-
-	public String getRepresentante_legal() {
-		return representante_legal;
-	}
-
-
-
-	public void setRepresentante_legal(String representante_legal) {
-		this.representante_legal = representante_legal;
-	}
-
-
-
-	public String getCnpj() {
-		return cnpj;
-	}
-
-
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-	
-
 }

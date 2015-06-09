@@ -30,32 +30,26 @@ public abstract class Filter {
 		DatabaseAlias aliases[] = new DatabaseAlias[parameters.length];
 		for(int i = 0; i < parameters.length; i++) {
 			String parameter = parameters[i];
-			String[] explodedString = parameter.toUpperCase().split(" AS ");
-			if(explodedString.length==1)
-				aliases[i] = new DatabaseAlias(parameter.trim());
-			else if(explodedString.length==2)
-				aliases[i] = new DatabaseAlias(explodedString[0].trim(), explodedString[1].trim());
-			else
-				throw new IllegalArgumentException("Para criar um filtro é esperado um parâmetro ou uma string 'dbName as uriName', encontrado "+parameter);
+			aliases[i] = DatabaseAlias.fromSpecialString(parameter);
 		}
 		return aliases;
 	}
 	
-	public Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
+	protected Filter(Class<? extends Object> valueType, DatabaseAlias...databaseAliases) {
 		for(DatabaseAlias databaseAlias : databaseAliases ){
 			parametersAliases.add(databaseAlias);
 		}
 		this.valueType = valueType;
 	}
-	public Filter(DatabaseAlias...databaseAliases){
+	protected Filter(DatabaseAlias...databaseAliases){
 		this(String.class, databaseAliases);
 	}
 	
-	public Filter(String...parameters) {
+	protected Filter(String...parameters) {
 		this(String.class, parameters);
 	}
 	
-	public Filter(Class<? extends Object> type, String...parameters) {
+	protected Filter(Class<? extends Object> type, String...parameters) {
 		this(type, stringsToAliases(parameters));
 	}
 
@@ -67,10 +61,8 @@ public abstract class Filter {
 			throws ApiException {
 		int i=index;
 		for(DatabaseAlias parameter : parametersAliases){
-			System.out.println(parameter.getUriName());
 			List<String> values = getValues(parameter);
 			if(values!=null){
-				System.out.println("oi oi oi");
 				for (String value : values) {
 					try {
 						if (valueType.equals(Integer.class)) {
@@ -132,11 +124,17 @@ public abstract class Filter {
 		return parameters;
 	}
 	
-	public String getStatement() {
+	public String getStatement(String...tableAlias){
 		StringBuilder statement = new StringBuilder();
 		RequestContext context = RequestContext.getContext();
 		Boolean first = true;
+		int i=0;
 		for (DatabaseAlias parameterAlias : parametersAliases) {
+			if(tableAlias!=null && tableAlias.length>i){
+				String dbName = parameterAlias.getDbName();
+				parameterAlias.setDbName(tableAlias[i++]+"."+dbName);
+			}
+			
 			if(context.hasParameter(parameterAlias.getUriName())){
 				if(first)
 					first = false;

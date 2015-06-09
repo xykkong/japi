@@ -60,15 +60,15 @@ public abstract class ReflectionUtils {
 		return methods;
 	}
 	
-	public static ArrayList<Property> getProperties(Object object) throws ApiException {
-		ArrayList<Property> properties = new ArrayList<Property>();
+	public static ArrayList<Property<?>> getProperties(Object object) throws ApiException {
+		ArrayList<Property<?>> properties = new ArrayList<Property<?>>();
 		
 		for(Method method : ReflectionUtils.getFilteredMethods(object)) {
 			if(Property.class.isAssignableFrom(method.getReturnType())) {
 				//TODO testar se o metodo possui argumento(s), se sim, retornar uma getterNoResourceJapiExcepton, por exemplo
-				Property property;
+				Property<?> property;
 				try {
-					property = (Property) method.invoke(object);
+					property = (Property<?>) method.invoke(object);
 				} catch (IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
 					throw new CoreException(Errors.REFLECTION_ERRO_OBTENCAO_PROPRIEDADES_RESOURCE, "Houve um erro ao obter as propriedades do resource.", e);

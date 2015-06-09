@@ -26,8 +26,8 @@ public class ErrorResource extends Resource {
 		this.mensagem = mensagem;
 	}
 	
-	public Property getMensagem() {
-		return new Property("Mensagem", mensagem);
+	public Property<String> getMensagem() {
+		return new Property<String>("Mensagem", mensagem);
 	}
 	
 	@Override

@@ -69,7 +69,7 @@ public abstract class XMLSerializer {
 			links.appendChild(link);
 		}
 		item.appendChild(links);
-		for(Property property : resource.getProperties()) {
+		for(Property<?> property : resource.getProperties()) {
 			if(property == null) continue;
 			Element element = xml.createElement(property.getId());
 			element.setTextContent(property.getValue());

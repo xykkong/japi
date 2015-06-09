@@ -18,7 +18,7 @@ public abstract class CSVSerializer {
 	private static String[] resourceToLinha(Resource resource) throws ApiException {
 		String[] linha = new String[resource.getProperties().size()];
 		int counter = 0;
-		for(Property p : resource.getProperties()) {
+		for(Property<?> p : resource.getProperties()) {
 			linha[counter] = p.getValue();
 			counter++;
 		}
