@@ -3,6 +3,7 @@ package br.gov.planejamento.api.core.utils;
 import java.util.HashMap;
 import java.util.List;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -59,7 +60,7 @@ public class StringUtils {
 			
 			return map;
 		} catch(Exception e) {
-			throw new CoreException("Houve um erro ao parsear a string json informada em HashMap", e);
+			throw new CoreException(Errors.STRING_UTILS_ERRO_CONVERSAO_HASHMAP_JSON, "Houve um erro ao parsear a string json informada em HashMap", e);
 		}
 	}
 	

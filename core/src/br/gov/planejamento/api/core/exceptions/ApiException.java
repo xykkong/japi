@@ -4,18 +4,23 @@ public class ApiException extends Exception {
 	
 	private static final long serialVersionUID = 7744204513648250685L;
 	
+	private int errorCode;
 	private int httpStatusCode;
 	private String message;
 	private Exception originalException;
 	
-	public ApiException(String message, int httpStatusCode, Exception originalException) {
+	public ApiException(int errorCode, String message, int httpStatusCode, Exception originalException) {
 		if(message!=null) this.message = message;
 		if(httpStatusCode!=0) this.httpStatusCode = httpStatusCode;
 		if(originalException!=null) this.originalException = originalException;
-		if(originalException!=null)
-			originalException.printStackTrace();
 	}
 	
+	public int getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
 	public int getHttpStatusCode() {
 		return httpStatusCode;
 	}

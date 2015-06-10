@@ -3,6 +3,7 @@ package br.gov.planejamento.api.core.parameters;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -38,11 +39,10 @@ public class BooleanParam extends Param{
 	
 	@Override
 	public void setPreparedStatementValue(int i, PreparedStatement pst) throws ApiException {
-		System.out.println("IT'S ALIVE");
 		try {
 			pst.setBoolean(i, Boolean.parseBoolean(getValue()));
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao processar o parâmetro recebido.", e);
+			throw new CoreException(Errors.BOOLEAN_PARAM_ERRO_PROCESSAMENTO, "Houve um erro ao processar o parâmetro recebido.", e);
 		}
 	}
 }

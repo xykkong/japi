@@ -14,19 +14,19 @@ import br.gov.planejamento.api.core.parameters.BooleanParam;
  * O retorno é formado por todos os resources cujo valor desse campo é IGUAL ao valor informado.
  *
  */
-public class BasicEqualFilter extends Filter {
+public class BasicDifferentThanFilter extends Filter {
 	
 	//TODO TODAS ASS FILHAS DE Filter DEVEM ter os construtores dessa maneira:
-	protected BasicEqualFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+	protected BasicDifferentThanFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
 		super(type, databaseAliases);
 	}
-	protected BasicEqualFilter(DatabaseAlias...databaseAliases) {
+	protected BasicDifferentThanFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
-	protected BasicEqualFilter(Class<? extends Object> type, String...parameters) {
+	protected BasicDifferentThanFilter(Class<? extends Object> type, String...parameters) {
 		super(type, parameters);
 	}
-	protected BasicEqualFilter(String...parameters) {
+	protected BasicDifferentThanFilter(String...parameters) {
 		super(parameters);
 	}
 	
@@ -36,7 +36,7 @@ public class BasicEqualFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(String... parameters) {
-		return new BasicEqualFilter(parameters);
+		return new BasicDifferentThanFilter(parameters);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class BasicEqualFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(DatabaseAlias... databaseAliases) {
-		return new BasicEqualFilter(databaseAliases);	
+		return new BasicDifferentThanFilter(databaseAliases);	
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class BasicEqualFilter extends Filter {
 	public static Filter factory(Class<? extends Object> type,
 			DatabaseAlias... databaseAliases) throws CoreException {
 		if(type.equals(Integer.class) || type.equals(Float.class) || type.equals(Double.class) || type.equals(String.class) || type.equals(BooleanParam.class))
-			return new BasicEqualFilter(type, databaseAliases);
+			return new BasicDifferentThanFilter(type, databaseAliases);
 		else throw new CoreException(Errors.FILTER_TIPO_INVALIDO, "O tipo passado para o BasicEqualFilter não é compatível. Consulte a documentação para mais informações.");
 	}
 	
@@ -71,7 +71,7 @@ public class BasicEqualFilter extends Filter {
 	 */
 	public static Filter factory(Class<? extends Object> type, String... parameters) throws CoreException {
 		if(type.equals(Integer.class) || type.equals(Float.class) || type.equals(Double.class) || type.equals(String.class) || type.equals(BooleanParam.class))
-			return new BasicEqualFilter(type, parameters);
+			return new BasicDifferentThanFilter(type, parameters);
 		else throw new CoreException(Errors.FILTER_TIPO_INVALIDO, "O tipo passado para o BasicEqualFilter não é compatível. Consulte a documentação para mais informações.");
 	}
 	
@@ -80,11 +80,11 @@ public class BasicEqualFilter extends Filter {
 		StringBuilder statement = new StringBuilder();
 		int numberOfValues = getValues(parameterAlias).size();
 		statement.append(parameterAlias.getDbName());
-		statement.append(" = ?");
+		statement.append(" <> ?");
 		for (int i = 1; i < numberOfValues; i++) {
 			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			statement.append(" = ?");
+			statement.append(" <> ?");
 		}
 		return statement;
 	}

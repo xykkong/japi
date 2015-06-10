@@ -24,6 +24,7 @@ import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.database.ConnectionManager;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
@@ -54,27 +55,27 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		try {
 			if(JapiConfigLoader.getJapiConfig().getDatabaseProperties() != null)
 				ConnectionManager.setDbProperties(JapiConfigLoader.getJapiConfig().getDatabaseProperties());
-			else throw new CoreException("Propriedados de banco de dados não configuradas no japi_config.json (databaseProperties)");
+			else throw new CoreException(Errors.CONFIG_LOADER_DATABASE_NAO_ENCONTRADO, "Propriedados de banco de dados não configuradas no japi_config.json (databaseProperties)");
 			
 			if(JapiConfigLoader.getJapiConfig().getResourceTemplate() != null)
 				RequestContext.getContext().setResourceTemplate(JapiConfigLoader.getJapiConfig().getResourceTemplate());
-			else throw new CoreException("Caminho do Template de Resource não configurado no japi_config.json (resourceTemplate)");
+			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_RESOURCE_NAO_ENCONTRADO, "Caminho do Template de Resource não configurado no japi_config.json (resourceTemplate)");
 			
 			if(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate() != null)
 				RequestContext.getContext().setDocsModuloTemplate(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate());
-			else throw new CoreException("Caminho do Template de Módulo do Docs não configurado no japi_config.json (docsModuloTemplate)");
+			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_MODULO_DOCS_NAO_ENCONTRADO, "Caminho do Template de Módulo do Docs não configurado no japi_config.json (docsModuloTemplate)");
 			
 			if(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate() != null)
 				RequestContext.getContext().setDocsMetodoTemplate(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate());
-			else throw new CoreException("Caminho do Template de Método do Docs não configurado no japi_config.json (docsMetodoTemplate)");
+			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_METODO_DOCS_NAO_ENCONTRADO, "Caminho do Template de Método do Docs não configurado no japi_config.json (docsMetodoTemplate)");
 			
 			if(JapiConfigLoader.getJapiConfig().getErrorTemplate() != null)
 				RequestContext.getContext().setErrorTemplate(JapiConfigLoader.getJapiConfig().getErrorTemplate());
-			else throw new CoreException("Caminho do Template de erro não configurado no japi_config.json (errorTemplate)");
+			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_ERRO_NAO_ENCONTRADO, "Caminho do Template de erro não configurado no japi_config.json (errorTemplate)");
 			
 			if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
 				RequestContext.getContext().setStaticHtmlTemplate(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate());
-			else throw new CoreException("Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
+			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_PAGINA_ESTATICA_NAO_ENCONTRADO, "Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
 		} catch (ApiException e1) {
 			return new ServerResponse(e1, 500, new Headers<Object>());
 		}
@@ -120,7 +121,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		System.out.println(RequestContext.getContext().getPath());
 		
 		if(method.getMethod().isAnnotationPresent(ApiRequest.class) && !method.getMethod().getDeclaringClass().isAnnotationPresent(ApiModule.class)) {
-			CoreException e = new CoreException("Toda classe de Request deve ser anotada por @ApiModule.", 404);
+			CoreException e = new CoreException(Errors.PRE_PROCESS_REQUEST_NAO_ANOTADA_APIMODULE, "Toda classe de Request deve ser anotada por @ApiModule.", 404);
 			return new ServerResponse(e, 404, new Headers<Object>());
 		}
 		

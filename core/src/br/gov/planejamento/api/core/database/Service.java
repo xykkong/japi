@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
@@ -32,7 +33,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 	public DataRow getOne() throws ApiException{
 		BasicEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
 		if(equalFilters==null){
-			throw new CoreException("Nenhuma chave primária encontrada na configuração deste service "
+			throw new CoreException(Errors.SERVICE_CHAVE_PRIMARIA_NAO_ENCONTRADA, "Nenhuma chave primária encontrada na configuração deste service "
 					+this.getClass().getCanonicalName());
 		}
 		return getOne(equalFilters);
@@ -60,7 +61,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 		try {
 			pstQuery = connection.prepareStatement(sbQuery.toString());
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro durante a preparação dos statements da query.", e);
+			throw new CoreException(Errors.SERVICE_ERRO_STATEMENTS, "Houve um erro durante a preparação dos statements da query.", e);
 		}
 		
 
@@ -89,12 +90,12 @@ public abstract class Service implements ServiceConfigurationContainer{
 			if(iterator.hasNext()){
 				row = iterator.next();
 				if(iterator.hasNext())
-					throw new CoreException("Mais de duas ocorrências no banco de dados para o service.getOne(). Verifique sua chave primária.");
+					throw new CoreException(Errors.SERVICE_GET_ONE_RETORNANDO_VARIOS, "Mais de duas ocorrências no banco de dados para o service.getOne(). Verifique sua chave primária.");
 			}
 			pstQuery.close();
 			
 		} catch(SQLException e) {
-			throw new CoreException("Houve um erro durante a execução das queries.", e);
+			throw new CoreException(Errors.SERVICE_ERRO_QUERY, "Houve um erro durante a execução das queries.", e);
 		}
 		return row;
 	}
@@ -173,7 +174,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 			pstQuery = connection.prepareStatement(query);
 			pstCount = connection.prepareStatement(countQuery);
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro durante a prepara��o dos statements da query.", e);
+			throw new CoreException(Errors.SERVICE_ERRO_STATEMENTS, "Houve um erro durante a preparação dos statements da query.", e);
 		}
 		
 
@@ -190,7 +191,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 		try {
 			pstQuery.setInt(index++, offsetValue);
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao definir o valor de offset na construção da query.", e);
+			throw new CoreException(Errors.SERVICE_ERRO_OFFSET, "Houve um erro ao definir o valor de offset na construção da query.", e);
 		}
 
 		String orderByValue = context.getOrderByValue();
@@ -235,7 +236,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 			data.setCount(count);
 			pstCount.close();
 		} catch(SQLException e) {
-			throw new CoreException("Houve um erro durante a execução das queries.", e);
+			throw new CoreException(Errors.SERVICE_ERRO_QUERY, "Houve um erro durante a execução das queries.", e);
 		}
 		return data;
 	}
@@ -271,16 +272,16 @@ public abstract class Service implements ServiceConfigurationContainer{
 
 	private void configValidation() throws CoreException {
 		if(configs == null) {
-			throw new CoreException("O método getServiceConfiguration retornou null. Verifique sua implementação na classe de Service utilizada.");
+			throw new CoreException(Errors.SERVICE_NULL_SERVICE_CONFIGURATION, "O método getServiceConfiguration retornou null. Verifique sua implementação na classe de Service utilizada.");
 		}
 		if(configs.getResponseFields() == null || configs.getResponseFields().size() == 0) {
-			throw new CoreException("Nenhum campo de retorno foi configurado para este Service. Verifique se o método getServiceConfiguration está implementado corretamente no Service em questão.");
+			throw new CoreException(Errors.SERVICE_RESPONSE_FIELDS_INVALIDO, "Nenhum campo de retorno foi configurado para este Service. Verifique se o método getServiceConfiguration está implementado corretamente no Service em questão.");
 		}
 		if(configs.getSchema() == null || configs.getSchema() == "") {
-			throw new CoreException("O schema informado é inválido. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
+			throw new CoreException(Errors.SERVICE_SCHEMA_INVALIDO, "O schema informado é inválido. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
 		}
 		if(configs.getTable() == null || configs.getTable() == "") {
-			throw new CoreException("A table informada é inválida. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
+			throw new CoreException(Errors.SERVICE_TABELA_INVALIDA, "A table informada é inválida. Verifique a implementação do método getServiceConfiguration na classe Service utilizada.");
 		}
 	}
 

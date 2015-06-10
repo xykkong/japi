@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -32,7 +33,7 @@ public class DatabaseData implements Iterable<DataRow> {
 				}
 			}
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao processar o retorno do banco de dados. Verifique sua query.",e);
+			throw new CoreException(Errors.DATABASE_ERRO_QUERY, "Houve um erro ao processar o retorno do banco de dados. Verifique sua query.",e);
 		}
 	}
 
@@ -50,7 +51,7 @@ public class DatabaseData implements Iterable<DataRow> {
 				}
 			}
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao processar o retorno do banco de dados. Verifique sua query.",e);
+			throw new CoreException(Errors.DATABASE_ERRO_QUERY,"Houve um erro ao processar o retorno do banco de dados. Verifique sua query.",e);
 		}
 	}
 

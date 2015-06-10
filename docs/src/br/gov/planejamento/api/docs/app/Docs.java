@@ -9,6 +9,7 @@ import javax.ws.rs.core.Application;
 import br.gov.planejamento.api.commons.constants.CommonConstants;
 import br.gov.planejamento.api.core.base.HtmlResourceLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
@@ -46,7 +47,7 @@ public class Docs extends Application {
 		@PathParam("modulo") String modulo) throws ApiException{
 			modulo = RequestContext.getContext().getValue("modulo");
 			method = RequestContext.getContext().getValue("consulta");
-			if(modulo == null || method == null) throw new RequestException("A Url está incorreta. São esperados os parâmetros modulo e consulta.");
+			if(modulo == null || method == null) throw new RequestException(Errors.DOCS_URL_INCORRETA, "A Url está incorreta. São esperados os parâmetros modulo e consulta.");
 			DocumentationResponse documentation = SwaggerParser.parse(docUrl(modulo));
 			documentation.setModulo(modulo);
 			for (DocumentationResponse.Request request : documentation.getRequests()) {
@@ -55,7 +56,7 @@ public class Docs extends Application {
 					return documentation;
 				}
 			}
-			throw new RequestException("Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
+			throw new RequestException(Errors.DOCS_DOCUMENTACAO_INEXISTENTE, "Documentação inexistente. O módulo ou a consulta passados estão incorretos.");
 		
 	}
 	

@@ -9,6 +9,7 @@ import br.gov.planejamento.api.core.base.Resource;
 import br.gov.planejamento.api.core.base.Response;
 import br.gov.planejamento.api.core.base.SelfLink;
 import br.gov.planejamento.api.core.constants.Constants;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.database.DataRow;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
@@ -45,14 +46,14 @@ public class ResourceResponse<T extends Resource> extends Response {
 		
 		try {
 			if(row == null){
-				throw new CoreException("O resorce especificado não existe.", 404);
+				throw new CoreException(Errors.RESOURCE_RESPONSE_RESOURCE_INEXISTENTE, "O resource especificado não existe.", 404);
 			}
 			Resource object = (resourceType.getConstructor(DataRow.class).newInstance(row));
 			response.setResource(object);
 		} catch (InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
-			throw new CoreException("Houve um erro ao criar os Resources a partir da DataRow", e);
+			throw new CoreException(Errors.RESOURCE_RESPONSE_ERRO_CONSTRUCAO_RESOURCE, "Houve um erro ao criar os Resources a partir da DataRow", e);
 		}
 		
 		return response;

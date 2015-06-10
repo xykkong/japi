@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import au.com.bytecode.opencsv.CSVWriter;
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -28,7 +29,7 @@ public abstract class CSVSerializer {
 		try {
 			writer.close();
 		} catch (IOException e) {
-			throw new CoreException("Houve um erro ao serializar os dados para o formato CSV.", e);
+			throw new CoreException(Errors.CSV_SERIALIZER_ERRO_SERIALIZAR, "Houve um erro ao serializar os dados para o formato CSV.", e);
 		}
 	}
 	

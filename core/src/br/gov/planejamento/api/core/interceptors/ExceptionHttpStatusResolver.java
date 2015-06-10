@@ -4,11 +4,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.core.Headers;
-
+import org.jboss.resteasy.core.ServerResponse;
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -31,7 +31,7 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		
 		if(exception instanceof ApiException) {
 			if(((ApiException)exception).getOriginalException() instanceof ApiException) {
-				exception = (new CoreException("Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)exception));
+				exception = (new CoreException(Errors.API_EXCEPTION_COMO_ORIGINAL_EXCEPTION, "Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)exception));
 			}
 		}
 		
@@ -49,7 +49,7 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		if(!(exception instanceof ApiException)) {
-			apiException = new CoreException("Houve um erro interno desconhecido.", exception);
+			apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
 		} else {
 			apiException = (ApiException) exception;
 		}

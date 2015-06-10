@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -34,7 +35,7 @@ public class ConnectionManager {
 				connection = DriverManager.getConnection(connectionString,
 						connectionProps);
 			} catch (SQLException e) {
-				throw new CoreException("Erro ao conectar com a base de dados. Verifique se os dados de conexão informados na configuração da API estão corretos e se é possível estabelecer uma conexão com o banco a partir deste servidor.", e);
+				throw new CoreException(Errors.DATABASE_ERRO_CONEXAO, "Erro ao conectar com a base de dados. Verifique se os dados de conexão informados na configuração da API estão corretos e se é possível estabelecer uma conexão com o banco a partir deste servidor.", e);
 			}
 		}
 		return connection;

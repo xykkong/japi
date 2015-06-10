@@ -3,6 +3,7 @@ package br.gov.planejamento.api.core.base;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -45,7 +46,7 @@ public abstract class Router {
 		}
 		
 		if(urlBuilder.indexOf("{") != -1) {
-			throw new CoreException("Não foi possível criar a URL para o path informado pois não foram passados os path params necessários para sua construção.");
+			throw new CoreException(Errors.ROUTER_PARAMS_NAO_INFORMADOS, "Não foi possível criar a URL para o path informado pois não foram passados os path params necessários para sua construção.");
 		}
 		
 		return urlBuilder.toString();
@@ -66,13 +67,13 @@ public abstract class Router {
 	public String urlTo(String path, String... params) throws ApiException {
 		
 		if(params.length % 2 != 0) {
-			throw new CoreException("O número de chaves e valores passados como parâmetro no urlTo do Router precisa ser igual.");
+			throw new CoreException(Errors.ROUTER_CHAVES_VALORES_INCONGRUENTES, "O número de chaves e valores passados como parâmetro no urlTo do Router precisa ser igual.");
 		}
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		for(int i = 0; i < params.length; i+=2) {
 			if(map.containsKey(params[i])) {
-				throw new CoreException("Não foi possível gerar a URL para o link '" + path + "' pois foram informados dois valores para um mesmo parâmetros. Verifique a chamada do método urlTo de seu Router.");
+				throw new CoreException(Errors.ROUTER_PARAMETROS_DUPLICADOS, "Não foi possível gerar a URL para o link '" + path + "' pois foram informados dois valores para um mesmo parâmetros. Verifique a chamada do método urlTo de seu Router.");
 			} 
 			map.put(params[i], params[i+1]);
 		}

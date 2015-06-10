@@ -8,20 +8,20 @@ public class RequestException extends ApiException {
 	
 	private static int defaultHttpStatusCode = Constants.HttpStatusCodes.BAD_REQUEST;
 	
-	public RequestException(String message, int httpStatusCode,
+	public RequestException(int errorCode, String message, int httpStatusCode,
 			Exception originalException) {
-		super(message, httpStatusCode, originalException);
+		super(errorCode, message, httpStatusCode, originalException);
 	}
 	
-	public RequestException(String message, int httpStatusCode) {
-		this(message, httpStatusCode, null);
+	public RequestException(int errorCode, String message, int httpStatusCode) {
+		this(errorCode, message, httpStatusCode, null);
 	}
 	
-	public RequestException(String message) {
-		this(message, defaultHttpStatusCode);
+	public RequestException(int errorCode, String message) {
+		this(errorCode, message, defaultHttpStatusCode);
 	}
 
-	public RequestException(String message, Exception originalException) {
-		this(message, defaultHttpStatusCode, originalException);
+	public RequestException(int errorCode, String message, Exception originalException) {
+		this(errorCode, message, defaultHttpStatusCode, originalException);
 	}
 }

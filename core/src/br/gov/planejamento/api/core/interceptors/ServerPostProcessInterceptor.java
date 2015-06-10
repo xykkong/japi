@@ -7,6 +7,7 @@ import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
 import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -20,13 +21,13 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 		
 		if(serverResponse.getEntity() instanceof ApiException) {
 			if(((ApiException)serverResponse.getEntity()).getOriginalException() instanceof ApiException) {
-				serverResponse.setEntity(new CoreException("Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)serverResponse.getEntity()));
+				serverResponse.setEntity(new CoreException(Errors.API_EXCEPTION_COMO_ORIGINAL_EXCEPTION, "Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)serverResponse.getEntity()));
 			}
 		}
 		
 		if(serverResponse.getEntity() instanceof Exception) {
 			if(!(serverResponse.getEntity() instanceof ApiException)) {
-				serverResponse.setEntity(new CoreException("Houve um erro interno desconhecido.", (Exception) serverResponse.getEntity()));
+				serverResponse.setEntity(new CoreException(Errors.POST_PROCESS_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", (Exception) serverResponse.getEntity()));
 			}
 			
 			//Convertendo para ApiException

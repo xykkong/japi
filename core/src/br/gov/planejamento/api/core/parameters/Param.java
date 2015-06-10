@@ -3,6 +3,7 @@ package br.gov.planejamento.api.core.parameters;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
@@ -31,7 +32,7 @@ public abstract class Param {
 		try {
 			pst.setString(i, getValue());
 		} catch (SQLException e) {
-			throw new CoreException("Houve um erro ao processar o parâmetro recebido.", e);
+			throw new CoreException(Errors.PARAM_ERRO_PROCESSAMENTO, "Houve um erro ao processar o parâmetro recebido.", e);
 		}
 	}
 }

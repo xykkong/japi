@@ -13,6 +13,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.base.Response;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
@@ -70,7 +71,7 @@ public abstract class HTMLSerializer {
 		try {
 			Velocity.init();
 		} catch (Exception e) {
-			throw new CoreException("Houve um erro ao inicializar o Velocity.", e);
+			throw new CoreException(Errors.HTML_SERIALIZER_ERRO_INICIALIZAR_VELOCITY, "Houve um erro ao inicializar o Velocity.", e);
 		}
 		
 		VelocityContext context = new VelocityContext();
@@ -82,7 +83,7 @@ public abstract class HTMLSerializer {
 		try {
 			template = Velocity.getTemplate(templateString, "UTF-8");	
 		} catch (Exception e) {
-			throw new CoreException("Houve um erro ao definir o template do Velocity.", e);
+			throw new CoreException(Errors.HTML_SERIALIZER_ERRO_DEFINIR_TEMPLATE, "Houve um erro ao definir o template do Velocity.", e);
 		}
 		try {
 			template.merge(context, writer);
@@ -90,7 +91,7 @@ public abstract class HTMLSerializer {
 				| MethodInvocationException | IOException e) {
 
 			e.printStackTrace();
-			throw new CoreException("Houve um erro ao processar o template do Velocity.", e);
+			throw new CoreException(Errors.HTML_SERIALIZER_ERRO_PROCESSAR_TEMPLATE, "Houve um erro ao processar o template do Velocity.", e);
 		}
 		return writer.toString();
 

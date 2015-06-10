@@ -28,7 +28,7 @@ import br.gov.planejamento.api.licitacoes.service.TesteService;
 @Path("/")
 @ApiModule(CommonConstants.Modules.LICITACOES)
 public class LicitacaoRequest {
-
+	
 	private TesteService tService = new TesteService();
 
 	private LicitacaoService lService = new LicitacaoService();

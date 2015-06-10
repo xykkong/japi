@@ -19,6 +19,7 @@ import org.w3c.dom.Element;
 
 import br.gov.planejamento.api.core.base.Property;
 import br.gov.planejamento.api.core.base.Resource;
+import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
@@ -34,7 +35,7 @@ public abstract class XMLSerializer {
 		try {
 			builder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new CoreException("Houve um erro ao construir o DocumentBuilder do XML.", e);
+			throw new CoreException(Errors.XML_SERIALIZER_ERRO_CONSTRUCAO_DOCUMENT_BUILDER, "Houve um erro ao construir o DocumentBuilder do XML.", e);
 		}
 		
 		return builder.newDocument();	
@@ -46,14 +47,14 @@ public abstract class XMLSerializer {
 		try {
 			transformer = tf.newTransformer();
 		} catch (TransformerConfigurationException e) {
-			throw new CoreException("Houve um erro ao construir o Transformer do XML.", e);
+			throw new CoreException(Errors.XML_SERIALIZER_ERRO_CONSTRUCAO_TRANSFORMER, "Houve um erro ao construir o Transformer do XML.", e);
 		}
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		StringWriter writer = new StringWriter();
 		try {
 			transformer.transform(new DOMSource(xml), new StreamResult(writer));
 		} catch (TransformerException e) {
-			throw new CoreException("Houve um erro ao processar o Transformer do XML", e);
+			throw new CoreException(Errors.XML_SERIALIZER_ERRO_PROCESSAR_TRANSFORMER, "Houve um erro ao processar o Transformer do XML", e);
 		}
 		String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
 		
