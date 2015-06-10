@@ -43,7 +43,8 @@ public abstract class Module extends Application {
 	 */
 	
 	@SuppressWarnings("unchecked") //Não pode acontecer
-	protected SwaggerResponse extractDocumentation(String packageName) throws ApiException {
+	protected SwaggerResponse extractDocumentation(String packageName,
+			String requestClassPath) throws ApiException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(packageName), new MethodAnnotationsScanner());
 		Set<Method> methods = reflections.getMethodsAnnotatedWith(ApiRequest.class);
 		
@@ -60,50 +61,17 @@ public abstract class Module extends Application {
 		
 		swaggerJson.addProperty("basePath", root+classModule);
 		
-		
-		
 		for(Method requestMethod : methods) {
 			
-			//Validando método (Se possui annotation Path e se retorna ResourceResponse ou ResourceListResponse)
-			if(!requestMethod.isAnnotationPresent(Path.class) ||
-					!(requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class) ||
-							requestMethod.getReturnType().isAssignableFrom(ResourceListResponse.class))) {
+			if(validaMetodo(requestMethod)) {
 				continue;
 			}
 			
 			JsonObject request = new JsonObject();				
 			
-			//Obtendo documentação do método requisitado
-			String requestDescription = "";
-			String requestMethodName = "";
-			String requestExampleQueryString = "";
-			String requestExampleId = "";
-			
 			if(requestMethod.isAnnotationPresent(ApiRequest.class)) {
-				requestDescription = requestMethod.getAnnotation(ApiRequest.class).description();
-				requestMethodName = requestMethod.getAnnotation(ApiRequest.class).name();
-				
-				//Só insere uma example_query_string caso a @Module for definida no Request
-				if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.ApiModule.class)){
-					String examplePath = requestMethod.getAnnotation(Path.class).value();
-					
-					requestExampleQueryString = requestMethod.getAnnotation(ApiRequest.class).exampleQuery();
-					requestExampleId = requestMethod.getAnnotation(ApiRequest.class).exampleId();
-											
-					
-					if(!requestExampleId.equals("")){
-						String[] pathParts = examplePath.split("\\{");
-						request.addProperty("example_url",StringUtils.urlPartEndingWithSlash(root, classModule, pathParts[0], requestExampleId));
-					}
-					else{
-						request.addProperty("example_url", StringUtils.urlPartEndingWithSlash(root, classModule, examplePath, requestExampleQueryString));
-					}
-
-					request.addProperty("path_filterless", root + classModule + examplePath );
-				}
-				
-				request.addProperty("method_name", requestMethodName);
-				request.addProperty("description", requestDescription);
+				adicionaInformacoesDoMetodoNoRequest(root, classModule, requestMethod,
+						request);
 			}
 			
 			String requestPath = requestMethod.getAnnotation(Path.class).value();
@@ -116,54 +84,9 @@ public abstract class Module extends Application {
 			returns.addProperty("response_type", requestMethod.getReturnType().getSimpleName());
 			request.add("returns", returns);
 			
-			//Obtendo informações dos parâmetros do método
-			JsonArray parameters = new JsonArray();
-			Class<?> paramTypes[] = requestMethod.getParameterTypes();
-			int i = 0;
-			for(Annotation[] annotations : requestMethod.getParameterAnnotations()) {
-				for(Annotation annotation : annotations) {
-					if(annotation.annotationType().equals(Parameter.class)) {
-						JsonObject paramObject = new JsonObject();	
-						Parameter parameter = (Parameter) annotation;
-						paramObject.addProperty("name", parameter.name());
-						paramObject.addProperty("description", parameter.description());
-						paramObject.addProperty("type", paramTypes[i].getSimpleName());
-						paramObject.addProperty("required", parameter.required());
-						parameters.add(paramObject);
-					}
-				}
-				i++;
-			}
-			request.add("parameters", parameters);
+			request.add("parameters", informacoesDosParametrosDoMetodo(requestMethod));
 			
-			
-			//Otendo informaçães do retorno do método
-			JsonArray properties = new JsonArray();
-			for(Method propertyMethod : returnType.getMethods()) {
-				if(propertyMethod.getReturnType().equals(Property.class) && !propertyMethod.isAnnotationPresent(Ignore.class)) {
-											
-					String propertyName = ReflectionUtils.getterToPropertyName(propertyMethod.getName());
-					String propertyDescription = "";
-					Class<? extends Object> propertyType;
-					
-					if(propertyMethod.isAnnotationPresent(Description.class)) {
-						propertyDescription = propertyMethod.getAnnotation(Description.class).value();
-					}
-					
-					try {
-						propertyType = ((Class<? extends Object>)((ParameterizedType)propertyMethod.getGenericReturnType()).getActualTypeArguments()[0]);
-					} catch(Exception e) {
-						propertyType = String.class;
-					}
-									
-					JsonObject property = new JsonObject();
-					property.addProperty("name", propertyName);
-					property.addProperty("description", propertyDescription);
-					property.addProperty("type", propertyType.getSimpleName());
-					properties.add(property);
-				}					
-			}
-			request.add("properties", properties);
+			request.add("properties", informacoesDeRetornoDoMetodo(returnType));
 			
 			requests.add(request);
 		}
@@ -173,6 +96,105 @@ public abstract class Module extends Application {
 		
 		return new SwaggerResponse(swaggerJson);
 	}
+
+	@SuppressWarnings("unchecked")
+	private JsonArray informacoesDeRetornoDoMetodo(Class<? extends Resource> returnType) {
+		JsonArray properties = new JsonArray();
+		for(Method propertyMethod : returnType.getMethods()) {
+			if(propertyMethod.getReturnType().equals(Property.class) && !propertyMethod.isAnnotationPresent(Ignore.class)) {
+										
+				String propertyName = ReflectionUtils.getterToPropertyName(propertyMethod.getName());
+				String propertyDescription = "";
+				Class<? extends Object> propertyType;
+				
+				if(propertyMethod.isAnnotationPresent(Description.class)) {
+					propertyDescription = propertyMethod.getAnnotation(Description.class).value();
+				}
+				
+				try {
+					propertyType = ((Class<? extends Object>)((ParameterizedType)propertyMethod.getGenericReturnType()).getActualTypeArguments()[0]);
+				} catch(Exception e) {
+					propertyType = String.class;
+				}
+								
+				JsonObject property = new JsonObject();
+				property.addProperty("name", propertyName);
+				property.addProperty("description", propertyDescription);
+				property.addProperty("type", propertyType.getSimpleName());
+				properties.add(property);
+			}					
+		}
+		return properties;
+	}
+
+	private JsonArray informacoesDosParametrosDoMetodo(Method requestMethod) {
+		JsonArray parameters = new JsonArray();
+		Class<?> paramTypes[] = requestMethod.getParameterTypes();
+		int i = 0;
+		for(Annotation[] annotations : requestMethod.getParameterAnnotations()) {
+			for(Annotation annotation : annotations) {
+				if(annotation.annotationType().equals(Parameter.class)) {
+					JsonObject paramObject = new JsonObject();	
+					Parameter parameter = (Parameter) annotation;
+					paramObject.addProperty("name", parameter.name());
+					paramObject.addProperty("description", parameter.description());
+					paramObject.addProperty("type", paramTypes[i].getSimpleName());
+					paramObject.addProperty("required", parameter.required());
+					parameters.add(paramObject);
+				}
+			}
+			i++;
+		}
+		return parameters;
+	}
+
+	private void adicionaInformacoesDoMetodoNoRequest(String root, String classModule,
+			Method requestMethod, JsonObject requestQueRecebeInfo) {
+		String requestDescription = "";
+		String requestMethodName = "";
+		String requestExampleQueryString = "";
+		String requestExampleId = "";
+		requestDescription = requestMethod.getAnnotation(ApiRequest.class).description();
+		requestMethodName = requestMethod.getAnnotation(ApiRequest.class).name();
+		
+		//Só insere uma example_query_string caso a @Module for definida no Request
+		if(requestMethod.getDeclaringClass().isAnnotationPresent(br.gov.planejamento.api.core.annotations.ApiModule.class)){
+			String examplePath = requestMethod.getAnnotation(Path.class).value();
+			
+			requestExampleQueryString = requestMethod.getAnnotation(ApiRequest.class).exampleQuery();
+			requestExampleId = requestMethod.getAnnotation(ApiRequest.class).exampleId();
+									
+			
+			if(!requestExampleId.equals("")){
+				String[] pathParts = examplePath.split("\\{");
+				requestQueRecebeInfo.addProperty("example_url",StringUtils.urlPartEndingWithSlash(root, classModule, pathParts[0], requestExampleId));
+			}
+			else{
+				requestQueRecebeInfo.addProperty("example_url", StringUtils.urlPartEndingWithSlash(root, classModule, examplePath, requestExampleQueryString));
+			}
+
+			requestQueRecebeInfo.addProperty("path_filterless", StringUtils.urlPartEndingWithSlash(root, classModule, examplePath ));
+		}
+		
+		requestQueRecebeInfo.addProperty("method_name", requestMethodName);
+		requestQueRecebeInfo.addProperty("description", requestDescription);
+	}
+
+	/**
+	 * 
+	 * @param requestMethod
+	 * @return Validando método (Se possui annotation Path e se retorna ResourceResponse ou ResourceListResponse)
+	 */
+	private boolean validaMetodo(Method requestMethod) {
+		return !requestMethod.isAnnotationPresent(Path.class) ||
+				!(requestMethod.getReturnType().isAssignableFrom(ResourceResponse.class) ||
+						requestMethod.getReturnType().isAssignableFrom(ResourceListResponse.class));
+	}
+	
+	protected SwaggerResponse extractDocumentation(String string) throws ApiException {
+		return extractDocumentation(string, null);
+	}
 	
 	public abstract SwaggerResponse getDocs() throws ApiException;
+	public abstract SwaggerResponse getDocs(String requestClassPath) throws ApiException;
 }
