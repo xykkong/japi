@@ -92,7 +92,7 @@
 			<div style="text-align:center">
 				<h1>Error</h1>
 				<h3>Status: $response.apiException.httpStatusCode</h3>
-				<h3>Mensagem: $response.apiException.message</h3>
+				<h3>Mensagem: $response.apiException.publicMessage</h3>
 			</div>
 			
 			<div id="apoio-footer"></div><!-- Div criada para manter o rodapé colado no 'chão' -->

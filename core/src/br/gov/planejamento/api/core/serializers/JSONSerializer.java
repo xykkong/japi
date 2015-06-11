@@ -50,7 +50,7 @@ public abstract class JSONSerializer {
 		
 		JsonObject error = new JsonObject();
 		error.addProperty("status", response.getApiException().getHttpStatusCode());
-		error.addProperty("mensagem", response.getApiException().getMessage());
+		error.addProperty("mensagem", response.getApiException().getPublicMessage());
 		
 		json.add("error", error);
 		
