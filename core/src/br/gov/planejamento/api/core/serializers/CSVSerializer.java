@@ -71,7 +71,7 @@ public abstract class CSVSerializer {
 		String[] linha = new String[3];
 		linha[0] = "Error";
 		linha[1] = Integer.toString(response.getApiException().getHttpStatusCode());
-		linha[2] = response.getApiException().getMessage();
+		linha[2] = response.getApiException().getPublicMessage();
 		
 		writer.writeNext(linha);
 		

@@ -24,6 +24,7 @@ import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.core.responses.SwaggerResponse;
 import br.gov.planejamento.api.core.utils.ReflectionUtils;
+import br.gov.planejamento.api.core.utils.StringUtils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -92,10 +93,10 @@ public abstract class Module extends Application {
 					
 					if(!requestExampleId.equals("")){
 						String[] pathParts = examplePath.split("\\{");
-						request.addProperty("example_url",root + classModule +pathParts[0]+requestExampleId);
+						request.addProperty("example_url",StringUtils.urlPartEndingWithSlash(root, classModule, pathParts[0], requestExampleId));
 					}
 					else{
-						request.addProperty("example_url",root + classModule +examplePath+requestExampleQueryString);
+						request.addProperty("example_url", StringUtils.urlPartEndingWithSlash(root, classModule, examplePath, requestExampleQueryString));
 					}
 
 					request.addProperty("path_filterless", root + classModule + examplePath );

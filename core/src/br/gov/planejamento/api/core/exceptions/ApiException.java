@@ -10,6 +10,7 @@ public class ApiException extends Exception {
 	private Exception originalException;
 	
 	public ApiException(int errorCode, String message, int httpStatusCode, Exception originalException) {
+		this.errorCode = errorCode;
 		if(message!=null) this.message = message;
 		if(httpStatusCode!=0) this.httpStatusCode = httpStatusCode;
 		if(originalException!=null) this.originalException = originalException;
@@ -28,10 +29,17 @@ public class ApiException extends Exception {
 		this.httpStatusCode = httpStatusCode;
 	}
 	public String getMessage() {
-		return message;
+		return "Erro " + errorCode + " - " + message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String getPublicMessage() {
+		String retorno = "Erro " + errorCode;
+		if(this instanceof RequestException) {
+			retorno += " - " + message;
+		}
+		return retorno;
 	}
 	public Exception getOriginalException() {
 		return originalException;

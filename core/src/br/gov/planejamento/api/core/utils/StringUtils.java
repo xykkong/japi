@@ -63,4 +63,21 @@ public class StringUtils {
 			throw new CoreException(Errors.STRING_UTILS_ERRO_CONVERSAO_HASHMAP_JSON, "Houve um erro ao parsear a string json informada em HashMap", e);
 		}
 	}
+	
+	public static String urlPartEndingWithSlash(String...parts){
+		if(parts.length ==0)
+			throw new IllegalArgumentException("A função StringUtils.urlPartEndingWithSlash deve possuir pelo menos um argumento");
+		StringBuilder result = new StringBuilder("");
+		for(String part : parts){
+			char last = part.charAt(part.length() -1);
+			System.out.println(part);
+			System.out.println(last);
+			result.append(part);
+			if(last!='/'){
+				result.append('/');
+			}
+			System.out.println(result.toString());
+		}
+		return result.toString();
+	}
 }

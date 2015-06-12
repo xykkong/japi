@@ -121,7 +121,7 @@ public abstract class XMLSerializer {
 		status.setTextContent(Integer.toString(response.getApiException().getHttpStatusCode()));
 		
 		Element mensagem = xml.createElement("mensagem");
-		mensagem.setTextContent(response.getApiException().getMessage());
+		mensagem.setTextContent(response.getApiException().getPublicMessage());
 		
 		root.appendChild(status);
 		root.appendChild(mensagem);
