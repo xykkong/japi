@@ -37,7 +37,7 @@ public class ContratoRequest {
 			@Parameter(name = "descricao", description = "Breve descrição do contrato.") String descicao)
 			throws ApiException {
 		contratoService = new ContratoService();
-	
+		
 		contratoService.addFilter(
 				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
 				DateEqualFilter.factory( "data_termino"),
