@@ -79,7 +79,7 @@ public class ContratoRequest {
 				);
 		
 		contratoService.getService().addFilter(
-				CaseInsensitiveLikeFilter.factory("nome_contratante")
+				CaseInsensitiveLikeFilter.factory("nome as nome_contratante")
 				);
 		ServiceJoinner serviceJoinner = new ServiceJoinner(contratoService);
 		

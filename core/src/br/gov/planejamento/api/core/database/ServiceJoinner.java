@@ -42,8 +42,9 @@ public class ServiceJoinner {
 		Map<String, ServiceConfiguration> mapConfigAlias = queryJoin(query);
 		queryJoin(queryCount);
 
-		query.append(Service.getWhereStatement(filters, mapConfigAlias));
-		queryCount.append(Service.getWhereStatement(filters, mapConfigAlias));
+		String whereStatement = Service.getWhereStatement(filters, mapConfigAlias);
+		query.append(whereStatement);
+		queryCount.append(whereStatement);
 		
 		String orderValue = context.getOrderValue();
 		Service.endPageQuery(orderValue, query, mapConfigAlias.values());
@@ -54,6 +55,7 @@ public class ServiceJoinner {
 			configs[i] = joinables[i].getServiceConfiguration();
 			configs[i+joinables.length-1] = joinables[i].getService().getServiceConfiguration();
 		}
+		System.out.println(query.toString());
 		return Service.executeQuery(filters, query.toString(), queryCount.toString(), mapConfigAlias, configs);
 		
 	}

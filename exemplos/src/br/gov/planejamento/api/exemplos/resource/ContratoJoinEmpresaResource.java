@@ -21,7 +21,7 @@ public class ContratoJoinEmpresaResource extends Resource {
 		this.status= contrato.get("status");
 		this.data_termino = contrato.get("data_termino");
 		this.valor_inicial= contrato.get("valor_inicial");
-		this.nome_contratante = contrato.get("nome_contratante");
+		this.nome_contratante = contrato.get("nome");
 	}
 	
 	public Property<String> getNome_contratante() {
