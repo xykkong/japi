@@ -67,7 +67,6 @@ public class ContratoRequest {
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
 			/*JOIN*/
-			@Parameter(name = "cnpj_contratante", description = "Numero do CNPJ da empresa contratante") String cnpjContratante,
 			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante
 			) throws ApiException{
 		
@@ -77,6 +76,10 @@ public class ContratoRequest {
 				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
 				DateEqualFilter.factory( "data_termino"),
 				BasicEqualFilter.factory(BooleanParam.class, "status")
+				);
+		
+		contratoService.getService().addFilter(
+				CaseInsensitiveLikeFilter.factory("nome_contratante")
 				);
 		ServiceJoinner serviceJoinner = new ServiceJoinner(contratoService);
 		

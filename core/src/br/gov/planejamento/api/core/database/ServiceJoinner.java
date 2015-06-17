@@ -45,7 +45,6 @@ public class ServiceJoinner {
 		query.append(Service.getWhereStatement(filters, mapConfigAlias));
 		queryCount.append(Service.getWhereStatement(filters, mapConfigAlias));
 		
-		
 		String orderValue = context.getOrderValue();
 		Service.endPageQuery(orderValue, query, mapConfigAlias.values());
 		
@@ -60,7 +59,7 @@ public class ServiceJoinner {
 	}
 
 	private Map<String, ServiceConfiguration> queryJoin(StringBuilder query) {
-		Map<String, ServiceConfiguration> retorno = new HashMap<String, ServiceConfiguration>();
+		Map<String, ServiceConfiguration> mapAliasConfig = new HashMap<String, ServiceConfiguration>();
 		int cont=0;
 		query.append(" FROM ");
 		for(Joinable joinable : joinables){
@@ -70,12 +69,11 @@ public class ServiceJoinner {
 			config.appendSchemaDotTable(query);
 			query.append(" AS generated_alias_");
 			query.append(cont);
-			retorno.put("generated_alias_"+cont, config);
-			
+			mapAliasConfig.put("generated_alias_"+cont, config);
 			
 			query.append(" JOIN ");			
 			joinable.getService().getServiceConfiguration().appendSchemaDotTable(query);
-			retorno.put("generated_secondary_alias_"+cont, joinable.getService().getServiceConfiguration());
+			mapAliasConfig.put("generated_secondary_alias_"+cont, joinable.getService().getServiceConfiguration());
 			query.append(" AS generated_secondary_alias_");
 			query.append(cont);
 			query.append(" ON generated_alias_");
@@ -91,6 +89,6 @@ public class ServiceJoinner {
 		}
 		
 		query.append(" WHERE ");
-		return retorno;
+		return mapAliasConfig;
 	}
 }

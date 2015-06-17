@@ -311,7 +311,7 @@ public abstract class Service implements ServiceConfigurationContainer{
 				ServiceConfiguration config = entry.getValue();
 				String tableAlias = entry.getKey();
 				for(String dbName : filter.getDbParameters()){
-					if(config.getResponseFields().contains(dbName)) {
+					if(config.getResponseFields().contains(dbName.toLowerCase())) {
 						filtersQuery.append(" AND ");
 						filtersQuery.append(filter.getStatement(tableAlias));
 					}

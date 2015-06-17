@@ -47,8 +47,8 @@ public class DatabaseData implements Iterable<DataRow> {
 					for (String column : configs.getResponseFields()) {
 						row.put(column, resultSet.getString(column));
 					}
-					data.add(row);
 				}
+				data.add(row);
 			}
 		} catch (SQLException e) {
 			throw new CoreException(Errors.DATABASE_ERRO_QUERY,"Houve um erro ao processar o retorno do banco de dados. Verifique sua query.",e);
