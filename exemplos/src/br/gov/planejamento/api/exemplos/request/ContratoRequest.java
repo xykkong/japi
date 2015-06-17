@@ -9,7 +9,7 @@ import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.database.DatabaseData;
-import br.gov.planejamento.api.core.database.ServiceJoinner;
+import br.gov.planejamento.api.core.database.ServiceJoiner;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
@@ -73,15 +73,16 @@ public class ContratoRequest {
 		contratoService = new ContratoService();
 		
 		contratoService.addFilter(
-				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
+				CaseInsensitiveLikeFilter.factory("descricao"),
 				DateEqualFilter.factory( "data_termino"),
-				BasicEqualFilter.factory(BooleanParam.class, "status")
+				BasicEqualFilter.factory(BooleanParam.class, "status"),
+				BasicEqualFilter.factory(Float.class, "valor_inicial")
 				);
 		
 		contratoService.getService().addFilter(
 				CaseInsensitiveLikeFilter.factory("nome as nome_contratante")
 				);
-		ServiceJoinner serviceJoinner = new ServiceJoinner(contratoService);
+		ServiceJoiner serviceJoinner = new ServiceJoiner(contratoService);
 		
 		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinEmpresaResource.class);
 	}

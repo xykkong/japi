@@ -18,9 +18,10 @@ import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
+import br.gov.planejamento.api.core.interfaces.IServiceConfigurationAndFiltersContainer;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
-public abstract class Service implements ServiceConfigurationContainer{
+public abstract class Service implements IServiceConfigurationAndFiltersContainer{
 
 	public abstract ServiceConfiguration getServiceConfiguration();	
 	protected ServiceConfiguration configs = getServiceConfiguration();
@@ -303,15 +304,18 @@ public abstract class Service implements ServiceConfigurationContainer{
 		return filtersQuery.toString();
 	}
 	
-	public static String getWhereStatement(List<Filter> filters, Map<String, ServiceConfiguration> mapConfigAlias) {
+	public static String getWhereStatement(Map<String, IServiceConfigurationAndFiltersContainer> mapContainerAlias) {
 		StringBuilder filtersQuery = new StringBuilder("1 = 1");
 		
-		for (Filter filter : filters) {
-			for(Entry<String, ServiceConfiguration> entry : mapConfigAlias.entrySet()){
-				ServiceConfiguration config = entry.getValue();
-				String tableAlias = entry.getKey();
+		for(Entry<String, IServiceConfigurationAndFiltersContainer> entry : 
+			mapContainerAlias.entrySet()){
+			IServiceConfigurationAndFiltersContainer container = entry.getValue();
+			String tableAlias = entry.getKey();
+			for(Filter filter : container.getFilters()){
 				for(String dbName : filter.getDbParameters()){
-					if(config.getResponseFields().contains(dbName.toLowerCase())) {
+					if(container.getServiceConfiguration().getResponseFields()
+							.contains(dbName.toLowerCase())) {
+						
 						filtersQuery.append(" AND ");
 						filtersQuery.append(filter.getStatement(tableAlias));
 					}
