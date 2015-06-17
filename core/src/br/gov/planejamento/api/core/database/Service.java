@@ -196,7 +196,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		}
 
 		String orderByValue = context.getOrderByValue();
-		String orderValue = context.getOrderValue();
+		String orderValue = context.getOrderValue()+" NULLS LAST";
 		// DEBUG
 		System.out.println("Query executada:");
 		System.out.println("\t" + query.toString());
