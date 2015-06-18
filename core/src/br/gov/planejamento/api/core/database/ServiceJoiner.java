@@ -38,9 +38,9 @@ public class ServiceJoiner {
 			cont++;
 			if(cont==1) query.append("generated_alias_"+cont+".");
 			
-			query.append(StringUtils.join(", generated_alias_"+cont+".", jServiceConfiguration.getResponseFields()));
+			query.append(StringUtils.join(", generated_alias_"+cont+".", jServiceConfiguration.getEscapedResponseFields()));
 			query.append(", generated_secondary_alias_"+cont+".");
-			query.append(StringUtils.join(", generated_secondary_alias_"+cont+".", jSServiceConfiguration.getResponseFields()));
+			query.append(StringUtils.join(", generated_secondary_alias_"+cont+".", jSServiceConfiguration.getEscapedResponseFields()));
 			mapContainerAlias.put("generated_alias_"+cont, joinable);
 			mapContainerAlias.put("generated_secondary_alias_"+cont, 
 					(IServiceConfigurationAndFiltersContainer) joinable.getService());

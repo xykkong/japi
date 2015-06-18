@@ -52,7 +52,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		Connection connection = ConnectionManager.getConnection();
 		
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
-		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
+		sbQuery.append(StringUtils.join(",", configs.getEscapedResponseFields()));
 		StringBuilder sbQueryGeneric = generateGenericQuery(filtersList);
 		sbQuery.append(sbQueryGeneric);
 		sbQuery.append("LIMIT 2");
