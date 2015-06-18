@@ -63,7 +63,11 @@ public class RequestContext {
 	private String errorTemplate;
 	private String staticHtmlTemplate;
 
-
+	/**
+	 * Informações dos módulos da framework para construção do menu
+	 */
+	private String[] modulos;
+	
 	/**
 	 * Contrutor privado para o singleton
 	 */
@@ -249,6 +253,14 @@ public class RequestContext {
 		this.rootURL = rootURL;
 	}
 	
+	public String[] getModulos() {
+		return modulos;
+	}
+
+	public void setModulos(String[] modulos) {
+		this.modulos = modulos;
+	}
+
 	public String asset(String...asset) throws ApiException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}

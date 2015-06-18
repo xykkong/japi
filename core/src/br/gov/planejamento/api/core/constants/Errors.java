@@ -56,6 +56,7 @@ public abstract class Errors {
 	public static final int ROUTER_PARAMETROS_DUPLICADOS = 549;
 	public static final int API_EXCEPTION_COMO_ORIGINAL_EXCEPTION = 550;
 	public static final int HTML_RESPONSE_FALHA_CARREGAMENTO_ARQUIVO = 551;
+	public static final int CONFIG_LOADER_MODULOS_NAO_DEFINIDOS = 552;
 
 	
 	/* Request Errors - Starting in 1000 */
