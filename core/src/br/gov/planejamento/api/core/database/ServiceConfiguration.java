@@ -11,10 +11,7 @@ public class ServiceConfiguration {
 	private String schema = "public";
 	private String table = "";
 	private BasicEqualFilter[] primaryKeyEqualFilters = null;
-	private ArrayList<String> responseFields = new ArrayList<String>();
-	private ArrayList<String> requiredParameters = new ArrayList<String>();
-	private ArrayList<String> optionalParameters = new ArrayList<String>();
-	private ArrayList<String> availableFilters = new ArrayList<String>();
+	private List<String> responseFields = new ArrayList<>();
 	private List<DatabaseAlias> validOrderByValues = new ArrayList<>();
 		
 	public String getSchema(){
@@ -29,7 +26,7 @@ public class ServiceConfiguration {
 	public void setTable(String table) {
 		this.table = table;
 	}
-	public ArrayList<String> getResponseFields() {
+	public List<String> getResponseFields() {
 		return responseFields;
 	}
 	public void setResponseFields(String... responseFields) {
@@ -37,24 +34,6 @@ public class ServiceConfiguration {
 		for(String elem : responseFields){
 			this.responseFields.add(elem.toLowerCase().trim());
 		}
-	}
-	public ArrayList<String> getRequiredParameters() {
-		return requiredParameters;
-	}
-	public void setRequiredParameters(ArrayList<String> requiredParameters) {
-		this.requiredParameters = requiredParameters;
-	}
-	public ArrayList<String> getOptionalParameters() {
-		return optionalParameters;
-	}
-	public void setOptionalParameters(ArrayList<String> optionalParameters) {
-		this.optionalParameters = optionalParameters;
-	}
-	public ArrayList<String> getAvailableFilters() {
-		return availableFilters;
-	}
-	public void setAvailableFilters(ArrayList<String> availableFilters) {
-		this.availableFilters = availableFilters;
 	}
 	public List<String> getValidOrderByStringValues() {
 		List<String> list = new ArrayList<>();

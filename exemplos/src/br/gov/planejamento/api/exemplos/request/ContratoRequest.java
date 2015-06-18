@@ -21,6 +21,7 @@ import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.exemplos.resource.ContratoJoinEmpresaResource;
 import br.gov.planejamento.api.exemplos.resource.ContratoResource;
 import br.gov.planejamento.api.exemplos.service.ContratoService;
+import br.gov.planejamento.api.exemplos.service.EmpresaService;
 
 @Path("/")
 @ApiModule(CommonConstants.Modules.EXEMPLOS)
@@ -69,7 +70,7 @@ public class ContratoRequest {
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
 			/*JOIN*/
-			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante
+			@Parameter(name = "nome", description = "Nome da empresa que relacionada a este contrato") String nomeContratante
 			) throws ApiException{
 		
 		contratoService = new ContratoService();
@@ -80,10 +81,9 @@ public class ContratoRequest {
 				BasicEqualFilter.factory(BooleanParam.class, "status"),
 				BasicEqualFilter.factory(Float.class, "valor_inicial")
 				);
-		
-		contratoService.getService().addFilter(
-				CaseInsensitiveLikeFilter.factory("nome as nome_contratante")
-				);
+		EmpresaService eService = new EmpresaService();
+		eService.addFilter(CaseInsensitiveLikeFilter.factory("nome"));
+		contratoService.setServiceJoin(eService);
 		ServiceJoiner serviceJoinner = new ServiceJoiner(contratoService);
 		
 		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinEmpresaResource.class);
