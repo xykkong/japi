@@ -11,8 +11,8 @@ public class ContratoJoinEmpresaResource extends Resource {
 	private String status;
 	private String data_termino;
 	private String valor_inicial;
-	/*JOIN*/
 	private String id_contratante;
+	private String nome_contratante;
 	
 	public ContratoJoinEmpresaResource(DataRow contrato) {
 		super(contrato);
@@ -21,6 +21,15 @@ public class ContratoJoinEmpresaResource extends Resource {
 		this.status= contrato.get("status");
 		this.data_termino = contrato.get("data_termino");
 		this.valor_inicial= contrato.get("valor_inicial");
+		this.nome_contratante = contrato.get("nome");
+	}
+	
+	public Property<String> getNome_contratante() {
+		return new Property<String>("Nome da empresa contratante", nome_contratante);
+	}
+	
+	public void setNome_contratante(String nome_contratante) {
+		this.nome_contratante = nome_contratante;
 	}
 	
 	public Property<String> getDescricao() {
@@ -63,9 +72,6 @@ public class ContratoJoinEmpresaResource extends Resource {
 		this.valor_inicial = valor_inicial;
 	}
 
-	
-	//TODO: Acertar esse self-link;
-
 	public String getId_contratante() {
 		return id_contratante;
 	}
@@ -76,7 +82,7 @@ public class ContratoJoinEmpresaResource extends Resource {
 
 	@Override
 	public SelfLink getSelfLink() {
-		 return new SelfLink("url para o meu resource", "nome do meu resource");
+		 return new SelfLink("url para o meu resource", "Contrato");
 	}
 	
 

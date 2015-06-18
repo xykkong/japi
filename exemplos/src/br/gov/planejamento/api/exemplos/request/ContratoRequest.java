@@ -9,7 +9,7 @@ import br.gov.planejamento.api.core.annotations.ApiModule;
 import br.gov.planejamento.api.core.annotations.ApiRequest;
 import br.gov.planejamento.api.core.annotations.Parameter;
 import br.gov.planejamento.api.core.database.DatabaseData;
-import br.gov.planejamento.api.core.database.ServiceJoinner;
+import br.gov.planejamento.api.core.database.ServiceJoiner;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
@@ -67,18 +67,22 @@ public class ContratoRequest {
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
 			/*JOIN*/
-			@Parameter(name = "cnpj_contratante", description = "Numero do CNPJ da empresa contratante") String cnpjContratante,
 			@Parameter(name = "nome_contratante", description = "Nome da empresa que relacionada a este contrato") String nomeContratante
 			) throws ApiException{
 		
 		contratoService = new ContratoService();
 		
 		contratoService.addFilter(
-				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
+				CaseInsensitiveLikeFilter.factory("descricao"),
 				DateEqualFilter.factory( "data_termino"),
-				BasicEqualFilter.factory(BooleanParam.class, "status")
+				BasicEqualFilter.factory(BooleanParam.class, "status"),
+				BasicEqualFilter.factory(Float.class, "valor_inicial")
 				);
-		ServiceJoinner serviceJoinner = new ServiceJoinner(contratoService);
+		
+		contratoService.getService().addFilter(
+				CaseInsensitiveLikeFilter.factory("nome as nome_contratante")
+				);
+		ServiceJoiner serviceJoinner = new ServiceJoiner(contratoService);
 		
 		return ResourceListResponse.factory(serviceJoinner.getAllFiltered(), ContratoJoinEmpresaResource.class);
 	}

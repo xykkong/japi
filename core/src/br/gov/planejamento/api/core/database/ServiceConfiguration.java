@@ -1,7 +1,6 @@
 package br.gov.planejamento.api.core.database;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
@@ -34,7 +33,10 @@ public class ServiceConfiguration {
 		return responseFields;
 	}
 	public void setResponseFields(String... responseFields) {
-		this.responseFields = new ArrayList<String>(Arrays.asList(responseFields));
+		this.responseFields = new ArrayList<>();
+		for(String elem : responseFields){
+			this.responseFields.add(elem.toLowerCase().trim());
+		}
 	}
 	public ArrayList<String> getRequiredParameters() {
 		return requiredParameters;
@@ -80,6 +82,4 @@ public class ServiceConfiguration {
 		query.append(".");
 		query.append(getTable());
 	}
-	
-	
 }

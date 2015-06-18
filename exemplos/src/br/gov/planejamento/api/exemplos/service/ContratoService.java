@@ -1,11 +1,11 @@
 package br.gov.planejamento.api.exemplos.service;
 
-import br.gov.planejamento.api.core.database.Joinable;
 import br.gov.planejamento.api.core.database.Service;
 import br.gov.planejamento.api.core.database.ServiceConfiguration;
 import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
+import br.gov.planejamento.api.core.interfaces.IJoinable;
 
-public class ContratoService extends Service implements Joinable {
+public class ContratoService extends Service implements IJoinable {
 
 	@Override
 	public ServiceConfiguration getServiceConfiguration() {

@@ -31,5 +31,10 @@ public class SwaggerParser {
 
 	}
 	
+	/**
+	 * ITERAR pelo JSON recebido e ir pegando as informações e concatenando na docmentationResponse
+	 * criar um parse diferente pra essa documentação 'root'
+	 */
+	
 	
 }

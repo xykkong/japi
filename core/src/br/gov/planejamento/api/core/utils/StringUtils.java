@@ -70,13 +70,10 @@ public class StringUtils {
 		StringBuilder result = new StringBuilder("");
 		for(String part : parts){
 			char last = part.charAt(part.length() -1);
-			System.out.println(part);
-			System.out.println(last);
 			result.append(part);
 			if(last!='/'){
 				result.append('/');
 			}
-			System.out.println(result.toString());
 		}
 		return result.toString();
 	}

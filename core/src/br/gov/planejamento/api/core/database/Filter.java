@@ -124,15 +124,14 @@ public abstract class Filter {
 		return parameters;
 	}
 	
-	public String getStatement(String...tableAlias){
+	public String getStatement(String tableAlias){
 		StringBuilder statement = new StringBuilder();
 		RequestContext context = RequestContext.getContext();
 		Boolean first = true;
-		int i=0;
 		for (DatabaseAlias parameterAlias : parametersAliases) {
-			if(tableAlias!=null && tableAlias.length>i){
+			if(tableAlias!=null && tableAlias.length()>0){
 				String dbName = parameterAlias.getDbName();
-				parameterAlias.setDbName(tableAlias[i++]+"."+dbName);
+				parameterAlias.setDbName(tableAlias+"."+dbName);
 			}
 			
 			if(context.hasParameter(parameterAlias.getUriName())){
@@ -144,6 +143,10 @@ public abstract class Filter {
 			}	
 		}
 		return statement.toString();
+	}
+	
+	public String getStatement(){
+		return getStatement(null);
 	}
 	
 	public List<DatabaseAlias> getParametersAliases() {

@@ -26,5 +26,11 @@ public class ExemplosModule extends Module {
 	public SwaggerResponse getDocs() throws ApiException {
 		return extractDocumentation("br.gov.planejamento.api.exemplos.request");
 	}
+	
+	@GET	
+	@Path(CommonConstants.Modules.DOCS_WITH_REQUEST)
+	public SwaggerResponse getDocs(String requestClassPath) throws ApiException {
+		return extractDocumentation("br.gov.planejamento.api.exemplos.request", requestClassPath);
+	}
 }
 
