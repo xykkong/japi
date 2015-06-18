@@ -7,9 +7,9 @@ import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 /**
  * 
- * Esse filtro deve ser utilizado para comparação de ints, floats, doubles, strings e booleans.
+ * Esse filtro deve ser utilizado para comparação.
  * 
- * O retorno é formado por todos os resources cujo valor desse campo é IGUAL ao valor informado.
+ * O retorno é formado por todos os resources cujo valor desse campo é NULO.
  *
  */
 public class IsNullFilter extends Filter {

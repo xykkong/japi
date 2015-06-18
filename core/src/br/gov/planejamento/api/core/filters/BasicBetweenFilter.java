@@ -7,7 +7,13 @@ import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-
+/**
+ * 
+ * Esse filtro deve ser utilizado para comparação de ints, floats e doubles.
+ * 
+ * O retorno é formado por todos os resources cujo valor desse campo está entre os valor informado.
+ *
+ */
 public class BasicBetweenFilter extends Filter {
 	private ArrayList<DatabaseAlias> minValues = new ArrayList<DatabaseAlias>();
 	private ArrayList<DatabaseAlias> maxValues = new ArrayList<DatabaseAlias>();
@@ -33,7 +39,8 @@ public class BasicBetweenFilter extends Filter {
 	
 	/**
 	 * 
-	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula.
+	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula.Como o filtro é de Between,
+	 * é necessário um número par de databaseAlias, sendo sempre o primeiro representante do valor mínimo e o segundo representante do valor máximo.
 	 * @throws CoreException 
 	 * 
 	 */
@@ -46,7 +53,8 @@ public class BasicBetweenFilter extends Filter {
 	/**
 	 * 
 	 * @param databaseAliases DatabaseAliases que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. 
-	 * O padrão de escrita de DatabaseAlias é a seguinte: "nome_do_campo_no_banco as name_do_parametro_da_request". 
+	 * O padrão de escrita de DatabaseAlias é a seguinte: "nome_do_campo_no_banco as name_do_parametro_da_request". Como o filtro é de Between,
+	 * é necessário um número par de databaseAlias, sendo sempre o primeiro representante do valor mínimo e o segundo representante do valor máximo.
 	 * @throws CoreException 
 	 * 
 	 */
@@ -59,9 +67,10 @@ public class BasicBetweenFilter extends Filter {
 	
 	/**
 	 * 
-	 * @param type Tipo do parâmetro a ser comparado. Devem ser Integer, Float, Double, String ou BooleanParam.
+	 * @param type Tipo do parâmetro a ser comparado. Devem ser Integer, Float ou Double.
 	 * @param databaseAliases DatabaseAliases que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. 
-	 * O padrão de escrita de DatabaseAlias é a seguinte: "nome_do_campo_no_banco as name_do_parametro_da_request". 
+	 * O padrão de escrita de DatabaseAlias é a seguinte: "nome_do_campo_no_banco as name_do_parametro_da_request". Como o filtro é de Between,
+	 * é necessário um número par de databaseAlias, sendo sempre o primeiro representante do valor mínimo e o segundo representante do valor máximo.
 	 * 
 	 */
 	public static Filter factory(Class<? extends Object> type,
@@ -76,7 +85,8 @@ public class BasicBetweenFilter extends Filter {
 	/**
 	 * 
 	 * @param type Tipo do parâmetro a ser comparado. Devem ser Integer, Float, Double, String ou BooleanParam.
-	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. 
+	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. Como o filtro é de Between,
+	 * é necessário um número par de databaseAlias, sendo sempre o primeiro representante do valor mínimo e o segundo representante do valor máximo.
 	 * 
 	 */
 	public static Filter factory(Class<? extends Object> type, String... parameters) throws CoreException {

@@ -63,7 +63,8 @@ public class DateBetweenFilter extends Filter {
 	
 	/**
 	 * 
-	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula.
+	 * @param parameters Strings que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. Como o filtro é de Between,
+	 * é necessário um número par de databaseAlias, sendo sempre o primeiro representante do valor mínimo e o segundo representante do valor máximo.
 	 * @throws CoreException 
 	 * 
 	 */
@@ -74,7 +75,8 @@ public class DateBetweenFilter extends Filter {
 	
 	/**
 	 * 
-	 * @param databaseAliases DatabaseAliases que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. 
+	 * @param databaseAliases DatabaseAliases que contêm o nome dos parâmetros da Request cujo filtro deve ser aplicado, separados por vírgula. Como o filtro é de Between,
+	 * é necessário um número par de databaseAlias, sendo sempre o primeiro representante do valor mínimo e o segundo representante do valor máximo.
 	 * O padrão de escrita de DatabaseAlias é a seguinte: "nome_do_campo_no_banco as name_do_parametro_da_request". 
 	 * @throws CoreException 
 	 * 
