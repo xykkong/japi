@@ -6,7 +6,13 @@ import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-
+/**
+ * 
+ * Esse filtro deve ser utilizado para comparação de ints, floats e doubles.
+ * 
+ * O retorno é formado por todos os resources cujo valor desse campo é MENOR QUE o valor informado.
+ *
+ */
 public class LowerThanFilter extends Filter {
 	
 	//TODO TODAS ASS FILHAS DE Filter DEVEM ter os construtores dessa maneira:

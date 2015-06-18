@@ -12,7 +12,7 @@ import br.gov.planejamento.api.core.parameters.DateParam;
  * 
  * A comparação do tipo DateParam é feita exclusivamente por este filtro.
  * 
- * O retorno é formado por todos os resources cuja data é exatamente igual (em dia, mês e ano) ao parâmetro recebido.
+ * O retorno é formado por todos os resources cuja data é posterior (em dia, mês e ano) ao parâmetro recebido.
  *
  */
 public class DateAfterThanFilter extends Filter {
@@ -31,11 +31,11 @@ public class DateAfterThanFilter extends Filter {
 		StringBuilder statement = new StringBuilder();
 		int numberOfValues = getValues(parameterAlias).size()/2;
 		statement.append(parameterAlias.getDbName());
-		statement.append(" > ?::date");
+		statement.append(" >= (?::date + '1 day'::interval)");
 		for (int i=1; i<numberOfValues; i++) {
 			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			statement.append(" > ?::date");				
+			statement.append(" >= ?::date + '1 day'::interval");				
 		}
 		return statement;
 	}

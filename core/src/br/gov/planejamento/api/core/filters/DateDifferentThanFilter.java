@@ -12,7 +12,7 @@ import br.gov.planejamento.api.core.parameters.DateParam;
  * 
  * A comparação do tipo DateParam é feita exclusivamente por este filtro.
  * 
- * O retorno é formado por todos os resources cuja data é exatamente igual (em dia, mês e ano) ao parâmetro recebido.
+ * O retorno é formado por todos os resources cuja data é diferente (em dia, mês e ano) ao parâmetro recebido.
  *
  */
 public class DateDifferentThanFilter extends Filter {

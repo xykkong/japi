@@ -215,6 +215,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		// EXECUTE
 		DatabaseData data;
 		try {
+			System.out.println(pstQuery.toString());
 			ResultSet rs = pstQuery.executeQuery();
 	
 			if(mapConfigsAlias==null){

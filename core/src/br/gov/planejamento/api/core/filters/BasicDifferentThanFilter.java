@@ -11,7 +11,7 @@ import br.gov.planejamento.api.core.parameters.BooleanParam;
  * 
  * Esse filtro deve ser utilizado para comparação de ints, floats, doubles, strings e booleans.
  * 
- * O retorno é formado por todos os resources cujo valor desse campo é IGUAL ao valor informado.
+ * O retorno é formado por todos os resources cujo valor desse campo é DIFERENTE do valor informado.
  *
  */
 public class BasicDifferentThanFilter extends Filter {
