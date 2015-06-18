@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
+import br.gov.planejamento.api.core.utils.StringUtils;
 
 public class ServiceConfiguration {
 	
@@ -29,7 +30,14 @@ public class ServiceConfiguration {
 	public List<String> getResponseFields() {
 		return responseFields;
 	}
-	public void setResponseFields(String... responseFields) {
+	public List<String> getEscapedResponseFields(){
+		List<String> fields = new ArrayList<String>(responseFields.size());
+		for(String field : responseFields){
+			fields.add(StringUtils.escapeDB(field));
+		}
+		return fields;
+	}
+	public void setResponseFields(String...responseFields) {
 		this.responseFields = new ArrayList<>();
 		for(String elem : responseFields){
 			this.responseFields.add(elem.toLowerCase().trim());
@@ -57,8 +65,8 @@ public class ServiceConfiguration {
 		this.primaryKeyEqualFilters = primaryKeyEqualFilters;
 	}
 	public void appendSchemaDotTable(StringBuilder query) {
-		query.append(getSchema());
+		query.append(StringUtils.escapeDB(getSchema()));
 		query.append(".");
-		query.append(getTable());
+		query.append(StringUtils.escapeDB(getTable()));
 	}
 }

@@ -77,4 +77,8 @@ public class StringUtils {
 		}
 		return result.toString();
 	}
+	
+	public static String escapeDB(String string){
+		return "\""+string+"\"";
+	}
 }

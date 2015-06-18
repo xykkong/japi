@@ -130,8 +130,10 @@ public abstract class Filter {
 		Boolean first = true;
 		for (DatabaseAlias parameterAlias : parametersAliases) {
 			if(tableAlias!=null && tableAlias.length()>0){
-				String dbName = parameterAlias.getDbName();
+				String dbName = parameterAlias.isEscaped()? parameterAlias.getEscapedDbName() : 
+					parameterAlias.getDbName();
 				parameterAlias.setDbName(tableAlias+"."+dbName);
+				parameterAlias.setHasTableAlias(true); 
 			}
 			
 			if(context.hasParameter(parameterAlias.getUriName())){
@@ -139,6 +141,9 @@ public abstract class Filter {
 					first = false;
 				else
 					statement.append(" AND ");
+				if(parameterAlias.isEscaped() && !parameterAlias.hasTableAlias()){
+					parameterAlias.setDbName(parameterAlias.getEscapedDbName());
+				}
 				statement.append(subStatement(parameterAlias));
 			}	
 		}

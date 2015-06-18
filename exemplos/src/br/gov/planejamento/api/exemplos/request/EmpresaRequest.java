@@ -38,7 +38,7 @@ public class EmpresaRequest {
 			
 		eService.addFilter(
 				BasicBetweenFilter.factory(new DatabaseAlias("id_empresa", "min_id_empresa"), new DatabaseAlias("id_empresa", "max_id_empresa")),
-				CaseInsensitiveLikeFilter.factory("cnpj", "representante_legal")
+				CaseInsensitiveLikeFilter.factory("cnpj", "representante_legal", "nome")
 				);
 		DatabaseData dados = eService.getAllFiltered();
 		return ResourceListResponse.factory(dados, EmpresaResource.class);

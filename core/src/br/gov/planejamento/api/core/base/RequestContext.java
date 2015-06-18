@@ -109,7 +109,9 @@ public class RequestContext {
 	 */
 	public String getOrderByValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
-			String value = getValue(Constants.FixedParameters.ORDER_BY).toUpperCase();
+			String value = getValue(Constants.FixedParameters.ORDER_BY);
+			if(!value.contains("\""))
+				value = value.toUpperCase();
 			if(!availableOrderByValues.contains(value))
 				throw new InvalidOrderByValueRequestException(value, availableOrderByValues);
 			return value;
@@ -119,7 +121,7 @@ public class RequestContext {
 
 	public String getOrderValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER)) {
-			String order = getValue(Constants.FixedParameters.ORDER);
+			String order = getValue(Constants.FixedParameters.ORDER).toUpperCase();
 			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
 					order.toUpperCase()))
 				return order;
@@ -153,7 +155,12 @@ public class RequestContext {
 	}
 	
 	public void addAvailableOrderByValues(List<String> values) {
-		availableOrderByValues.addAll(values);
+		for(String value : values){
+			if(value.contains("\""))
+				availableOrderByValues.add(value);
+			else
+				availableOrderByValues.add(value.toUpperCase());
+		}
 	}
 	
 	public String getRequestFormat() {

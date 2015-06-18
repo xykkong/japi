@@ -35,12 +35,12 @@ public class ContratoRequest {
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
-			@Parameter(name = "descricao", description = "Breve descrição do contrato.") String descicao)
+			@Parameter(name = "d", description = "Breve descrição do contrato.") String descicao)
 			throws ApiException {
 		contratoService = new ContratoService();
 		
 		contratoService.addFilter(
-				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
+				CaseInsensitiveLikeFilter.factory("valor_inicial", "\"descricao\" as d"),
 				DateEqualFilter.factory( "data_termino"),
 				BasicEqualFilter.factory(BooleanParam.class, "status")
 				);
