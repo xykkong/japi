@@ -14,6 +14,7 @@ import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
+import br.gov.planejamento.api.core.filters.FloatEqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
@@ -39,7 +40,8 @@ public class ContratoRequest {
 		contratoService = new ContratoService();
 		
 		contratoService.addFilter(
-				CaseInsensitiveLikeFilter.factory("valor_inicial", "descricao"),
+				CaseInsensitiveLikeFilter.factory("descricao"),
+				FloatEqualFilter.factory(0.3, "valor_inicial"),
 				DateEqualFilter.factory( "data_termino"),
 				BasicEqualFilter.factory(BooleanParam.class, "status")
 				);
