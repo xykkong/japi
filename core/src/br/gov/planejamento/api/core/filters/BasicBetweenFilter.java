@@ -2,7 +2,6 @@ package br.gov.planejamento.api.core.filters;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.database.DatabaseAlias;
@@ -10,22 +9,26 @@ import br.gov.planejamento.api.core.database.Filter;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
 public class BasicBetweenFilter extends Filter {
-	private ArrayList<String> minValues = new ArrayList<String>();
-	private ArrayList<String> maxValues = new ArrayList<String>();
+	private ArrayList<DatabaseAlias> minValues = new ArrayList<DatabaseAlias>();
+	private ArrayList<DatabaseAlias> maxValues = new ArrayList<DatabaseAlias>();
 	
 	
 	//TODO TODAS ASS FILHAS DE Filter DEVEM ter os construtores dessa maneira:
 	protected BasicBetweenFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
 		super(type, databaseAliases);
+		getMinAndMaxValues(databaseAliases);
 	}
 	protected BasicBetweenFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
+		getMinAndMaxValues(databaseAliases);
 	}
 	protected BasicBetweenFilter(Class<? extends Object> type, String...parameters) {
 		super(type, parameters);
+		getMinAndMaxValues(parameters);
 	}
 	protected BasicBetweenFilter(String...parameters) {
 		super(parameters);
+		getMinAndMaxValues(parameters);
 	}
 	
 	/**
@@ -48,8 +51,9 @@ public class BasicBetweenFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(DatabaseAlias... databaseAliases) throws CoreException {
-		if(validate(databaseAliases))
+		if(validate(databaseAliases)){
 			return new BasicBetweenFilter(databaseAliases);
+		}
 		else throw new CoreException(Errors.FILTER_ERRO_INSTANCIACAO, "O Between filter espera um número par de elementos.");
 	}
 	
@@ -84,39 +88,53 @@ public class BasicBetweenFilter extends Filter {
 	}
 	@Override
 	public StringBuilder subStatement(DatabaseAlias parameterAlias) {
-		this.getMinAndMaxValues();
 		
 		StringBuilder statement = new StringBuilder();
 		int numberOfValues = getValues(parameterAlias).size();
 		statement.append(parameterAlias.getDbName());
-		if(minValues.contains(parameterAlias.getUriName()))
-			statement.append(" > ?::float ");
+		if(minValues.contains(parameterAlias))
+			statement.append(" >= ?::float ");
 		else
-			statement.append(" < ?::float ");
+			statement.append(" <= ?::float ");
 		for (int i = 1; i < numberOfValues; i++) {
 			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			if(minValues.contains(parameterAlias.getUriName()))
-				statement.append(" > ?::float ");
+			if(minValues.contains(parameterAlias))
+				statement.append(" >= ?::float ");
 			else
-				statement.append(" < ?::float ");
+				statement.append(" <= ?::float ");
 		}
 		return statement;
 	}
 
-	private void getMinAndMaxValues() {
+	private void getMinAndMaxValues(DatabaseAlias[] databaseAliases) {
 		boolean impar = true;
-		for(Entry<String, List<String>> value : this.values.entrySet()){
+		for(DatabaseAlias databaseAlias : databaseAliases){
 			if(impar){
-				this.maxValues.add(value.getKey());
+				this.minValues.add(databaseAlias);
 				impar = false;
 			}
 			else{
-				this.minValues.add(value.getKey());
+				this.maxValues.add(databaseAlias);
 				impar = true;
 			}
 		}
 		
+	}
+	
+	private void getMinAndMaxValues(String... parameters) {
+		boolean impar = true;
+		for(String parameter : parameters){
+			DatabaseAlias databaseAlias = new DatabaseAlias(parameter);
+			if(impar){
+				this.minValues.add(databaseAlias);
+				impar = false;
+			}
+			else{
+				this.maxValues.add(databaseAlias);
+				impar = true;
+			}
+		}
 	}
 	@Override
 	public List<String> getValues(DatabaseAlias parameterAlias) {

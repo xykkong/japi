@@ -13,6 +13,7 @@ import br.gov.planejamento.api.core.database.DatabaseData;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.filters.BasicBetweenFilter;
 import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
+import br.gov.planejamento.api.core.filters.IsNullFilter;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.exemplos.resource.EmpresaResource;
 import br.gov.planejamento.api.exemplos.service.EmpresaService;
@@ -38,7 +39,8 @@ public class EmpresaRequest {
 			
 		eService.addFilter(
 				BasicBetweenFilter.factory(new DatabaseAlias("id_empresa", "min_id_empresa"), new DatabaseAlias("id_empresa", "max_id_empresa")),
-				CaseInsensitiveLikeFilter.factory("cnpj", "representante_legal")
+				CaseInsensitiveLikeFilter.factory("cnpj", "representante_legal"),
+				IsNullFilter.factory("representante_legal")
 				);
 		DatabaseData dados = eService.getAllFiltered();
 		return ResourceListResponse.factory(dados, EmpresaResource.class);
