@@ -12,19 +12,19 @@ import br.gov.planejamento.api.core.database.Filter;
  * O retorno é formado por todos os resources cujo valor desse campo é IGUAL ao valor informado.
  *
  */
-public class IsNullFilter extends Filter {
+public class IsNotNullFilter extends Filter {
 	
 	//TODO TODAS ASS FILHAS DE Filter DEVEM ter os construtores dessa maneira:
-	protected IsNullFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
+	protected IsNotNullFilter(Class<? extends Object> type, DatabaseAlias...databaseAliases) {
 		super(type, databaseAliases);
 	}
-	protected IsNullFilter(DatabaseAlias...databaseAliases) {
+	protected IsNotNullFilter(DatabaseAlias...databaseAliases) {
 		super(databaseAliases);
 	}
-	protected IsNullFilter(Class<? extends Object> type, String...parameters) {
+	protected IsNotNullFilter(Class<? extends Object> type, String...parameters) {
 		super(type, parameters);
 	}
-	protected IsNullFilter(String...parameters) {
+	protected IsNotNullFilter(String...parameters) {
 		super(parameters);
 	}
 	
@@ -34,7 +34,7 @@ public class IsNullFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(String... parameters) {
-		return new IsNullFilter(parameters);
+		return new IsNotNullFilter(parameters);
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class IsNullFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(DatabaseAlias... databaseAliases) {
-		return new IsNullFilter(databaseAliases);	
+		return new IsNotNullFilter(databaseAliases);	
 	}
 	
 	@Override
@@ -52,11 +52,11 @@ public class IsNullFilter extends Filter {
 		StringBuilder statement = new StringBuilder();
 		int numberOfValues = getValues(parameterAlias).size();
 		statement.append(parameterAlias.getDbName());
-		statement.append(" IS NULL ?");
+		statement.append(" IS NOT NULL ?");
 		for (int i = 1; i < numberOfValues; i++) {
 			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			statement.append(" IS NULL ?");
+			statement.append(" IS NOT NULL ?");
 		}
 		return statement;
 	}
