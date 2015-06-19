@@ -75,6 +75,9 @@ public class StringUtils {
 				result.append('/');
 			}
 		}
+		if(result.charAt(result.length()-1) == '/') {
+			result.deleteCharAt(result.length()-1);
+		}
 		return result.toString();
 	}
 }

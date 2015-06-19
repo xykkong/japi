@@ -153,7 +153,7 @@ public abstract class Module extends Application {
 		String requestDescription = "";
 		String requestMethodName = "";
 		String requestExampleQueryString = "";
-		String requestExampleId = "";
+		String[] requestExampleParams;
 		requestDescription = requestMethod.getAnnotation(ApiRequest.class).description();
 		requestMethodName = requestMethod.getAnnotation(ApiRequest.class).name();
 		
@@ -162,12 +162,14 @@ public abstract class Module extends Application {
 			String examplePath = requestMethod.getAnnotation(Path.class).value();
 			
 			requestExampleQueryString = requestMethod.getAnnotation(ApiRequest.class).exampleQuery();
-			requestExampleId = requestMethod.getAnnotation(ApiRequest.class).exampleId();
-									
+			requestExampleParams = requestMethod.getAnnotation(ApiRequest.class).exampleParams();
 			
-			if(!requestExampleId.equals("")){
-				String[] pathParts = examplePath.split("\\{");
-				requestQueRecebeInfo.addProperty("example_url",StringUtils.urlPartEndingWithSlash(root, classModule, pathParts[0], requestExampleId));
+			if(requestExampleParams.length > 0){
+				String examplePathWithParams = examplePath;
+				for(String exampleParam : requestExampleParams) {
+					examplePathWithParams = examplePathWithParams.replaceFirst("\\{[^{}]+\\}", exampleParam);
+				}
+				requestQueRecebeInfo.addProperty("example_url",StringUtils.urlPartEndingWithSlash(root, classModule, examplePathWithParams));
 			}
 			else{
 				requestQueRecebeInfo.addProperty("example_url", StringUtils.urlPartEndingWithSlash(root, classModule, examplePath, requestExampleQueryString));
