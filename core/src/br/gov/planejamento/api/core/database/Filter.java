@@ -14,6 +14,7 @@ import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 import br.gov.planejamento.api.core.exceptions.InvalidFilterValueTypeRequestException;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
+import br.gov.planejamento.api.core.parameters.NullableParam;
 import br.gov.planejamento.api.core.parameters.Param;
 
 public abstract class Filter {
@@ -82,7 +83,11 @@ public abstract class Filter {
 									| NoSuchMethodException | SecurityException e) {
 								throw new CoreException(Errors.FILTER_ERRO_INSTANCIACAO, "Houve um erro na instanciação do Filtro", e);
 							}
-							param.setPreparedStatementValue(i++, pst);
+							if(param instanceof NullableParam){
+								//if(param.getValue().equals("true")) pst.setObject(i++, "IS NULL");
+								//else pst.setObject(i++, "IS NOT NULL");
+							}
+							else param.setPreparedStatementValue(i++, pst);
 						}
 						else if(valueType.equals(Boolean.class)){
 							//este if foi feito pelo bem da retrocompatibilidade

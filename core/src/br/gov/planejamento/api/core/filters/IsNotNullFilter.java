@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.gov.planejamento.api.core.database.DatabaseAlias;
 import br.gov.planejamento.api.core.database.Filter;
+import br.gov.planejamento.api.core.parameters.NullableParam;
 /**
  * 
  * Esse filtro deve ser utilizado para comparação.
@@ -34,7 +35,7 @@ public class IsNotNullFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(String... parameters) {
-		return new IsNotNullFilter(parameters);
+		return new IsNotNullFilter(NullableParam.class, parameters);
 	}
 	
 	/**
@@ -44,7 +45,7 @@ public class IsNotNullFilter extends Filter {
 	 * 
 	 */
 	public static Filter factory(DatabaseAlias... databaseAliases) {
-		return new IsNotNullFilter(databaseAliases);	
+		return new IsNotNullFilter(NullableParam.class, databaseAliases);	
 	}
 	
 	@Override
@@ -52,11 +53,11 @@ public class IsNotNullFilter extends Filter {
 		StringBuilder statement = new StringBuilder();
 		int numberOfValues = getValues(parameterAlias).size();
 		statement.append(parameterAlias.getDbName());
-		statement.append(" IS NOT NULL ?");
+		statement.append(" IS NOT NULL ");
 		for (int i = 1; i < numberOfValues; i++) {
 			statement.append(" AND ");
 			statement.append(parameterAlias.getDbName());
-			statement.append(" IS NOT NULL ?");
+			statement.append(" IS NOT NULL ");
 		}
 		return statement;
 	}
