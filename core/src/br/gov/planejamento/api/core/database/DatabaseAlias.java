@@ -48,7 +48,7 @@ public class DatabaseAlias  {
 	
 	private static DatabaseAlias fromSpecialStringWithoutEscape(String special){
 		DatabaseAlias alias = null;
-		String[] explodedString = special.toUpperCase().split(" AS ");
+		String[] explodedString = special.split("/ AS /i");
 		if(explodedString.length==1)
 			alias = new DatabaseAlias(special.trim());
 		else if(explodedString.length==2)
