@@ -51,7 +51,7 @@ public class ContratoRequest {
 	}
 	
 	@GET
-	@ApiRequest(name = "contrato", description = "Pega um contrato pelo identificador único do mesmo.", exampleId = "1392")
+	@ApiRequest(name = "contrato", description = "Pega um contrato pelo identificador único do mesmo.", exampleParams = {"1392"})
 	@Path(ExemplosRouter.CONTRATO)
 	public ResourceResponse<ContratoResource> contrato(
 			@Parameter(name = "id_contrato", description = "Numero identificador do contrato") String id_contrato

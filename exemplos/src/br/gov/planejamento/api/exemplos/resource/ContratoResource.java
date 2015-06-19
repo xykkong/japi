@@ -66,7 +66,7 @@ public class ContratoResource extends Resource {
 */
 	@Override
 	public SelfLink getSelfLink() throws ApiException {		
-		String url = ExemplosRouter.getRouter().urlTo(ExemplosRouter.CONTRATOS, "id", id_contrato);
+		String url = ExemplosRouter.getRouter().urlTo(ExemplosRouter.CONTRATO, "id_contrato", id_contrato);
 		return new SelfLink(url,  "Contrato de numero: " + this.getId_contrato());
 	}
 	
