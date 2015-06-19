@@ -45,7 +45,31 @@ public class JapiConfigLoader {
 		private String staticHtmlTemplate;
 		private String rootUrl;
 		private String[] modules;
+		private Mirror mirrors;
 		
+		public class Mirror{
+			String key;
+			String value;
+			public String getKey() {
+				return key;
+			}
+			public void setKey(String key) {
+				this.key = key;
+			}
+			public String getValue() {
+				return value;
+			}
+			public void setValue(String value) {
+				this.value = value;
+			}
+		}
+		
+		public Mirror getMirrors() {
+			return mirrors;
+		}
+		public void setMirrors(Mirror mirrors) {
+			this.mirrors = mirrors;
+		}
 		public String[] getModules() {
 			return modules;
 		}

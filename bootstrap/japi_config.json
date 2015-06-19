@@ -14,5 +14,10 @@
 	"staticHtmlTemplate" : "br/gov/planejamento/api/commons/html/templates/static-html-template.vm",
 	"rootUrl" : "http://localhost:8080/",
 	
-	"modules":["exemplos"]
+	"modules":["exemplos"],
+
+	"mirrors":{
+		"key":"id",
+		"value":"doc"
+	}
 }

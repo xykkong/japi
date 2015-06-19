@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig.Mirror;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -67,6 +68,7 @@ public class RequestContext {
 	 * Informações dos módulos da framework para construção do menu
 	 */
 	private String[] modulos;
+	private Mirror mirrors;
 	
 	/**
 	 * Contrutor privado para o singleton
@@ -268,8 +270,18 @@ public class RequestContext {
 		this.modulos = modulos;
 	}
 
+	
+	public JapiConfigLoader.JapiConfig.Mirror getMirrors() {
+		return mirrors;
+	}
+
+	public void setMirrors(Mirror mirror) {
+		this.mirrors = mirror;
+	}
+
 	public String asset(String...asset) throws ApiException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
+	
 	
 }
