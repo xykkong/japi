@@ -41,7 +41,7 @@ public class ContratoRequest {
 		contratoService = new ContratoService();
 		
 		contratoService.addFilter(
-				CaseInsensitiveLikeFilter.factory("valor_inicial", "\"descricao\" as d"),
+				CaseInsensitiveLikeFilter.factory("\"descricao\" as d"),
                 FloatEqualFilter.factory(0.3, "valor_inicial"),
 				DateEqualFilter.factory( "data_termino"),
 				BasicEqualFilter.factory(BooleanParam.class, "status")
