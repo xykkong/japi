@@ -12,5 +12,12 @@
 	"docsModuloTemplate" : "br/gov/planejamento/api/commons/html/templates/docs-modulo-template.vm",
 	"docsMetodoTemplate" : "br/gov/planejamento/api/commons/html/templates/docs-metodo-template.vm",
 	"staticHtmlTemplate" : "br/gov/planejamento/api/commons/html/templates/static-html-template.vm",
-	"rootUrl" : "http://localhost:8080/"
+	"rootUrl" : "http://localhost:8080/",
+	
+	"modules":["exemplos"],
+
+	"mirrors":{
+		"key":"id",
+		"value":"doc"
+	}
 }

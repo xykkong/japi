@@ -6,6 +6,8 @@ import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
 import br.gov.planejamento.api.core.interfaces.IJoinable;
 
 public class ContratoService extends Service implements IJoinable {
+	
+	private Service serviceJoin;
 
 	@Override
 	public ServiceConfiguration getServiceConfiguration() {
@@ -18,10 +20,14 @@ public class ContratoService extends Service implements IJoinable {
 		configs.setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter.factory(Integer.class, "id_contrato as id_contrato"));
 		return configs;
 	}
+	
+	public void setServiceJoin(Service serviceJoin) {
+		this.serviceJoin = serviceJoin;
+	}
 
 	@Override
 	public Service getService() {
-		return new EmpresaService();
+		return serviceJoin;
 	}
 
 	@Override

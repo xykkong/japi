@@ -53,6 +53,14 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		 * Leitura de parâmetros da JapiConfig e inserção dos dados na RequestContext
 		 */
 		try {
+			if(JapiConfigLoader.getJapiConfig().getModules() != null)
+				RequestContext.getContext().setModulos(JapiConfigLoader.getJapiConfig().getModules());
+			else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
+			
+			if(JapiConfigLoader.getJapiConfig().getMirrors() != null)
+				RequestContext.getContext().setMirrors(JapiConfigLoader.getJapiConfig().getMirrors());
+			else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
+			
 			if(JapiConfigLoader.getJapiConfig().getDatabaseProperties() != null)
 				ConnectionManager.setDbProperties(JapiConfigLoader.getJapiConfig().getDatabaseProperties());
 			else throw new CoreException(Errors.CONFIG_LOADER_DATABASE_NAO_ENCONTRADO, "Propriedados de banco de dados não configuradas no japi_config.json (databaseProperties)");

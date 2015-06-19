@@ -52,7 +52,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		Connection connection = ConnectionManager.getConnection();
 		
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
-		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
+		sbQuery.append(StringUtils.join(",", configs.getEscapedResponseFields()));
 		StringBuilder sbQueryGeneric = generateGenericQuery(filtersList);
 		sbQuery.append(sbQueryGeneric);
 		sbQuery.append("LIMIT 2");
@@ -146,7 +146,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		
 		StringBuilder sbQuery = new StringBuilder("SELECT ");
 		
-		sbQuery.append(StringUtils.join(",", configs.getResponseFields()));
+		sbQuery.append(StringUtils.join(",", configs.getEscapedResponseFields()));
 		
 		StringBuilder sbCountQuery = new StringBuilder("SELECT COUNT(*) AS quantity ");
 
@@ -215,6 +215,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		// EXECUTE
 		DatabaseData data;
 		try {
+			System.out.println(pstQuery.toString());
 			ResultSet rs = pstQuery.executeQuery();
 	
 			if(mapConfigsAlias==null){
@@ -255,7 +256,10 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		for(ServiceConfiguration config : serviceConfigurations){
 			for(DatabaseAlias alias : config.getValidOrderByValues()){
 				if(alias.getUriName().equalsIgnoreCase(orderByValue)){
-					orderByValue = alias.getDbName();
+					if(alias.isEscaped())
+						orderByValue = alias.getEscapedDbName();
+					else
+						orderByValue = alias.getDbName();
 					break;
 				}
 			}

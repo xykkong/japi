@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig.Mirror;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Constants.RequestFormats;
 import br.gov.planejamento.api.core.exceptions.ApiException;
@@ -63,7 +64,12 @@ public class RequestContext {
 	private String errorTemplate;
 	private String staticHtmlTemplate;
 
-
+	/**
+	 * Informações dos módulos da framework para construção do menu
+	 */
+	private String[] modulos;
+	private Mirror mirrors;
+	
 	/**
 	 * Contrutor privado para o singleton
 	 */
@@ -109,7 +115,9 @@ public class RequestContext {
 	 */
 	public String getOrderByValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER_BY)) {
-			String value = getValue(Constants.FixedParameters.ORDER_BY).toUpperCase();
+			String value = getValue(Constants.FixedParameters.ORDER_BY);
+			if(!value.contains("\""))
+				value = value.toUpperCase();
 			if(!availableOrderByValues.contains(value))
 				throw new InvalidOrderByValueRequestException(value, availableOrderByValues);
 			return value;
@@ -119,7 +127,7 @@ public class RequestContext {
 
 	public String getOrderValue() throws ApiException {
 		if (hasParameter(Constants.FixedParameters.ORDER)) {
-			String order = getValue(Constants.FixedParameters.ORDER);
+			String order = getValue(Constants.FixedParameters.ORDER).toUpperCase();
 			if (Arrays.asList(Constants.FixedParameters.VALID_ORDERS).contains(
 					order.toUpperCase()))
 				return order;
@@ -153,7 +161,12 @@ public class RequestContext {
 	}
 	
 	public void addAvailableOrderByValues(List<String> values) {
-		availableOrderByValues.addAll(values);
+		for(String value : values){
+			if(value.contains("\""))
+				availableOrderByValues.add(value);
+			else
+				availableOrderByValues.add(value.toUpperCase());
+		}
 	}
 	
 	public String getRequestFormat() {
@@ -249,8 +262,26 @@ public class RequestContext {
 		this.rootURL = rootURL;
 	}
 	
+	public String[] getModulos() {
+		return modulos;
+	}
+
+	public void setModulos(String[] modulos) {
+		this.modulos = modulos;
+	}
+
+	
+	public JapiConfigLoader.JapiConfig.Mirror getMirrors() {
+		return mirrors;
+	}
+
+	public void setMirrors(Mirror mirror) {
+		this.mirrors = mirror;
+	}
+
 	public String asset(String...asset) throws ApiException{
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
+	
 	
 }

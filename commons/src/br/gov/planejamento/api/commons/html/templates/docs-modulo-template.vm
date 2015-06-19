@@ -105,8 +105,9 @@
 					</div>
 
 					<ul>
-							<li><a href="$session.RootURL.concat('docs/')licitacoes">licitacoes</a></li>
-							<li><a href="$session.RootURL.concat('docs/')exemplos">exemplos</a></li>
+						#foreach($modulo in $session.modulos)
+							<li><a href="$session.RootURL.concat('docs/')$modulo">$modulo</a></li>
+						#end
 					</ul>
 				</div>
 			#set($documentation = $response)
