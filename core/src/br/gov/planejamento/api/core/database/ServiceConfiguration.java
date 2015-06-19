@@ -3,7 +3,6 @@ package br.gov.planejamento.api.core.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.planejamento.api.core.filters.BasicEqualFilter;
 import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
@@ -11,7 +10,7 @@ public class ServiceConfiguration {
 	
 	private String schema = "public";
 	private String table = "";
-	private BasicEqualFilter[] primaryKeyEqualFilters = null;
+	private PrimaryKeyEqualFilter[] primaryKeyEqualFilters = null;
 	private List<String> responseFields = new ArrayList<>();
 	private List<DatabaseAlias> validOrderByValues = new ArrayList<>();
 		
@@ -58,7 +57,7 @@ public class ServiceConfiguration {
 			validOrderByValues.add(DatabaseAlias.fromSpecialString(value));
 		}
 	}
-	public BasicEqualFilter[] getPrimaryKeyEqualFilters() {
+	public PrimaryKeyEqualFilter[] getPrimaryKeyEqualFilters() {
 		return primaryKeyEqualFilters;
 	}
 	public void setPrimaryKeyEqualFilters(PrimaryKeyEqualFilter...primaryKeyEqualFilters) {

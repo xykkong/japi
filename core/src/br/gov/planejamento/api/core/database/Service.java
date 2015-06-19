@@ -17,7 +17,7 @@ import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
-import br.gov.planejamento.api.core.filters.BasicEqualFilter;
+import br.gov.planejamento.api.core.filters.PrimaryKeyEqualFilter;
 import br.gov.planejamento.api.core.interfaces.IServiceConfigurationAndFiltersContainer;
 import br.gov.planejamento.api.core.utils.StringUtils;
 
@@ -32,7 +32,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 
 	public DataRow getOne() throws ApiException{
-		BasicEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
+		PrimaryKeyEqualFilter[] equalFilters = configs.getPrimaryKeyEqualFilters();
 		if(equalFilters==null){
 			throw new CoreException(Errors.SERVICE_CHAVE_PRIMARIA_NAO_ENCONTRADA, "Nenhuma chave primária encontrada na configuração deste service "
 					+this.getClass().getCanonicalName());
@@ -41,13 +41,14 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 	}
 	/**
 	 * 
-	 * @param equalFilters
+	 * @param pkEqualFilters
 	 * @return a dataRow encontrada, nulo caso não encontre nenhuma
 	 * @throws ApiException
 	 */
-	public DataRow getOne(BasicEqualFilter...equalFilters) throws ApiException{
+	public DataRow getOne(PrimaryKeyEqualFilter...pkEqualFilters) throws ApiException{
 		configValidation();
-		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(equalFilters));
+		ArrayList<Filter> filtersList = new ArrayList<Filter>(Arrays.asList(pkEqualFilters));
+		addFilter(pkEqualFilters);
 		// SETUP
 		Connection connection = ConnectionManager.getConnection();
 		
@@ -68,7 +69,7 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 
 		ArrayList<String> whereValues = getWhereValues(filtersList);
 		int index = 1;
-		for (Filter filter : equalFilters) {
+		for (Filter filter : pkEqualFilters) {
 			index = filter.setPreparedStatementValues(pstQuery, index);
 		}
 
@@ -118,6 +119,8 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		for(Filter filter : filters){
 			Boolean addThisFilter = false;
 			for(String parameter : filter.getUriParameters()){
+				System.out.println(parameter);
+				System.out.println(RequestContext.getContext().getValues(parameter).get(0));
 				if (RequestContext.getContext().hasParameter(parameter)) {
 					addThisFilter = true;
 					filter.putValues(parameter, RequestContext.getContext().getValues(parameter));
