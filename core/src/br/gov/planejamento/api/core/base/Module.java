@@ -15,6 +15,7 @@ import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 
 import br.gov.planejamento.api.core.annotations.ApiRequest;
+import br.gov.planejamento.api.core.annotations.CustomParam;
 import br.gov.planejamento.api.core.annotations.Description;
 import br.gov.planejamento.api.core.annotations.Ignore;
 import br.gov.planejamento.api.core.annotations.Parameter;
@@ -138,7 +139,14 @@ public abstract class Module extends Application {
 					Parameter parameter = (Parameter) annotation;
 					paramObject.addProperty("name", parameter.name());
 					paramObject.addProperty("description", parameter.description());
-					paramObject.addProperty("type", paramTypes[i].getSimpleName());
+					if(paramTypes[i].isAnnotationPresent(CustomParam.class)) {
+						CustomParam paramAnnotation = (CustomParam) paramTypes[i].getAnnotation(CustomParam.class);
+						paramObject.addProperty("type", paramAnnotation.name());
+						paramObject.addProperty("type_description", paramAnnotation.description());
+					} else {
+						paramObject.addProperty("type", paramTypes[i].getSimpleName());
+						paramObject.addProperty("type_description", "");
+					}
 					paramObject.addProperty("required", parameter.required());
 					parameters.add(paramObject);
 				}

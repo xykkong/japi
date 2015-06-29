@@ -3,6 +3,7 @@ package br.gov.planejamento.api.core.parameters;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import br.gov.planejamento.api.core.annotations.CustomParam;
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
@@ -30,6 +31,7 @@ public class NullableParam extends Param{
 			case "false":
 			case "falso":
 			case "nao":
+			case "no":
 			case "0":
 			default:
 				this.value="false";
