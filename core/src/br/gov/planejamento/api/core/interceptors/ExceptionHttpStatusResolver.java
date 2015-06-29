@@ -6,11 +6,15 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
+import org.jboss.resteasy.spi.NotFoundException;
+import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
+
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
 
 /**
@@ -28,6 +32,15 @@ import br.gov.planejamento.api.core.responses.ErrorResponse;
 public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 	@Override
 	public Response toResponse(Exception exception) {
+		
+		
+		
+		try {
+			ServerPreProcessInterceptor.loadTemplates();
+		} catch (ApiException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		if(exception instanceof ApiException) {
 			if(((ApiException)exception).getOriginalException() instanceof ApiException) {
@@ -49,7 +62,11 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		if(!(exception instanceof ApiException)) {
-			apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
+			if(exception instanceof NotFoundException) {
+				apiException = new RequestException(Errors.URL_NAO_ENCONTRADA, "A URL informada não foi encontrada.", 404, exception);
+			} else {
+				apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
+			}
 		} else {
 			apiException = (ApiException) exception;
 		}
