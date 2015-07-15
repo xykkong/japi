@@ -16,6 +16,7 @@ import br.gov.planejamento.api.core.filters.CaseInsensitiveLikeFilter;
 import br.gov.planejamento.api.core.filters.DateEqualFilter;
 import br.gov.planejamento.api.core.filters.FloatEqualFilter;
 import br.gov.planejamento.api.core.parameters.BooleanParam;
+import br.gov.planejamento.api.core.parameters.DateParam;
 import br.gov.planejamento.api.core.responses.ResourceListResponse;
 import br.gov.planejamento.api.core.responses.ResourceResponse;
 import br.gov.planejamento.api.exemplos.resource.ContratoJoinEmpresaResource;
@@ -34,7 +35,7 @@ public class ContratoRequest {
 	@Path(ExemplosRouter.CONTRATOS)
 	public ResourceListResponse<ContratoResource> contrato(
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
-			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") String dataTermino,
+			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") DateParam dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
 			@Parameter(name = "d", description = "Breve descrição do contrato.") String descicao)
 			throws ApiException {
@@ -62,7 +63,7 @@ public class ContratoRequest {
 	}
 	
 	@GET
-	@ApiRequest(name = "contratos", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
+	@ApiRequest(name = "contratosjoin", description = "Este é um módulo de exemplo sem real utilidade", exampleQuery = "?status=false")
 	@Path(ExemplosRouter.CONTRATOS_JOIN_EMPRESAS)
 	public ResourceListResponse<ContratoJoinEmpresaResource> contratoJoinEmpresa(
 			@Parameter(name = "descricao", description = "Descrição breve do contrato") String descricao,

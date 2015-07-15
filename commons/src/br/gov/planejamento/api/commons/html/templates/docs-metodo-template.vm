@@ -148,13 +148,13 @@
 						#foreach($param in $documentation.parameters)
 						<tr>
 							<td>$param.name</td>
-							#if($param.type_description.equals(""))
 							<td>$param.type</td>
-							#else
-							<td><a title="$param.type_description">$param.type</a></td>
-							#end
 							<td>$param.required</td>
-							<td>$param.description</td>
+							<td>$param.description
+							#if(!$param.type_description.equals(""))
+								<br>$param.type_description
+							#end
+							</td>
 						</tr>
 						#end
 					</tbody>

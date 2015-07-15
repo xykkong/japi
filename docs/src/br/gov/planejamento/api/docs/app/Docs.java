@@ -1,5 +1,7 @@
 package br.gov.planejamento.api.docs.app;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,6 +15,7 @@ import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.responses.DocumentationResponse;
+import br.gov.planejamento.api.core.responses.DocumentationResponse.Request;
 import br.gov.planejamento.api.core.responses.HTMLResponse;
 import br.gov.planejamento.api.core.serializers.SwaggerParser;
 
@@ -53,6 +56,9 @@ public class Docs extends Application {
 			for (DocumentationResponse.Request request : documentation.getRequests()) {
 				if(request.getMethod_name() != null && request.getMethod_name().equals(method)){
 					documentation.setTemplate(RequestContext.getContext().getDocsMetodoTemplate());
+					ArrayList<Request> requests = new ArrayList<Request>();
+					requests.add(request);
+					documentation.setRequests(requests);
 					return documentation;
 				}
 			}
