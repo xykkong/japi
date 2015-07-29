@@ -37,7 +37,7 @@ public class ContratoRequest {
 			@Parameter(name = "status", description = "Determina se o contrato ainda está ativo") String status,
 			@Parameter(name = "data_termino", description = "Dia em que o contrato expira") DateParam dataTermino,
 			@Parameter(name = "valor_inicial", description = "Valor inicial do contrato.") String valorInicial,
-			@Parameter(name = "d", description = "Breve descrição do contrato.") String descicao)
+			@Parameter(name = "d", description = "Breve descrição do contrato.") String descricao)
 			throws ApiException {
 		contratoService = new ContratoService();
 		
