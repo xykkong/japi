@@ -119,9 +119,9 @@ public abstract class Service implements IServiceConfigurationAndFiltersContaine
 		for(Filter filter : filters){
 			Boolean addThisFilter = false;
 			for(String parameter : filter.getUriParameters()){
-				System.out.println(parameter);
-				System.out.println(RequestContext.getContext().getValues(parameter).get(0));
 				if (RequestContext.getContext().hasParameter(parameter)) {
+					System.out.println(parameter);
+					System.out.println(RequestContext.getContext().getValues(parameter).get(0));
 					addThisFilter = true;
 					filter.putValues(parameter, RequestContext.getContext().getValues(parameter));
 					System.out.println("\n\tFilter added: "+ parameter+" with "+
