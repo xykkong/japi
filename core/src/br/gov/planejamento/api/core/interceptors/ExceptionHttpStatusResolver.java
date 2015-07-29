@@ -1,9 +1,12 @@
 package br.gov.planejamento.api.core.interceptors;
 
+import java.lang.ProcessBuilder.Redirect;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
@@ -12,7 +15,10 @@ import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.NotFoundException;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import com.sun.org.apache.xerces.internal.util.URI;
+
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
+import br.gov.planejamento.api.core.base.JapiConfigLoader.JapiConfig.Mirror;
 import br.gov.planejamento.api.core.base.RequestContext;
 import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Errors;
@@ -71,6 +77,10 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		}
 		if(!(exception instanceof ApiException)) {
 			if(exception instanceof NotFoundException) {
+				if(redirectable(exception.getMessage())){
+					return redirect(exception.getMessage());
+				}
+				System.out.println(((NotFoundException) exception).getResponse());
 				apiException = new RequestException(Errors.URL_NAO_ENCONTRADA, "A URL informada não foi encontrada.", 404, exception);
 			} else {
 				apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
@@ -93,4 +103,38 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		ErrorResponse error = new ErrorResponse(apiException);
 		return ServerResponseBuilder.build(new ServerResponse(), error);
 	}	
+	
+	public boolean redirectable(String message){
+		String fullPath = StringUtils.lastSplitOf(message, " ");
+		
+		String interestingSplit = "";
+		
+		String[] interestingSplitCatcher = fullPath.replace(RequestContext.getContext().getRootURL(), "").split("/");
+		
+		if(interestingSplitCatcher.length > 2) interestingSplit = interestingSplitCatcher[1];
+		
+		//TODO tornar genérico para mais casos de mirror
+		if(RequestContext.getContext().getMirrors().getKey().equals(interestingSplit)){
+			return true;
+		}
+		else return false;
+	}
+	
+	public Response redirect(String message){
+		String fullPath = StringUtils.lastSplitOf(message, " ");
+		
+		String interestingSplit = "";
+		
+		String[] interestingSplitCatcher = fullPath.replace(RequestContext.getContext().getRootURL(), "").split("/");
+		
+		if(interestingSplitCatcher[1] != null) interestingSplit = interestingSplitCatcher[1];
+		String redirectedUri = fullPath.replace(interestingSplit, RequestContext.getContext().getMirrors().getValue());
+		
+		try {
+			return Response.seeOther(new java.net.URI(redirectedUri)).build();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

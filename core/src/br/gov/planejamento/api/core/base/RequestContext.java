@@ -283,5 +283,10 @@ public class RequestContext {
 		return getRootURL()+"assets/resources/"+StringUtils.join("/", new ArrayList<String>(Arrays.asList(asset)));
 	}
 	
+	public String getUrlSlice(int slice){
+		String teste = "/id/teste";
+		String[] urlSlices = teste.split("/");
+		return urlSlices[slice];
+	}
 	
 }

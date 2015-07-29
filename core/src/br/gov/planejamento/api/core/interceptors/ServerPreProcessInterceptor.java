@@ -67,20 +67,7 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		
 		loadTemplates();
 		
-		RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
-		
-		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
-		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();
-		boolean first = true;
-		for (java.util.Map.Entry<String, List<String>> parameter : parameters.entrySet()){
-			if(first) {
-				fullPath = fullPath+"?"+parameter.getKey()+"="+parameter.getValue().get(0);
-				first = false;
-			}
-			else{ 
-				fullPath = fullPath+"&"+parameter.getKey()+"="+parameter.getValue().get(0);
-			}
-		}
+		String fullPath = loadFullPath(httpRequest);
 		fullPath = FilenameUtils.removeExtension(fullPath);
 		System.out.println("Full path: "+ fullPath);
 		
@@ -105,6 +92,8 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		/**
 		 * Leitura de parâmetros da JapiConfig e inserção dos dados na RequestContext
 		 */
+		RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
+		
 		if(JapiConfigLoader.getJapiConfig().getModules() != null)
 			RequestContext.getContext().setModulos(JapiConfigLoader.getJapiConfig().getModules());
 		else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
@@ -136,6 +125,23 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
 			RequestContext.getContext().setStaticHtmlTemplate(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate());
 		else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_PAGINA_ESTATICA_NAO_ENCONTRADO, "Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
+	}
+	
+	public static String loadFullPath(HttpRequest httpRequest){
+		 String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
+			MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();
+			boolean first = true;
+			for (java.util.Map.Entry<String, List<String>> parameter : parameters.entrySet()){
+				if(first) {
+					fullPath = fullPath+"?"+parameter.getKey()+"="+parameter.getValue().get(0);
+					first = false;
+				}
+				else{ 
+					fullPath = fullPath+"&"+parameter.getKey()+"="+parameter.getValue().get(0);
+				}
+			}
+			
+			return fullPath;
 	}
 	
 	private static void validateURIParametersUsingAnotations(HttpRequest httpRequest, ResourceMethod method)
