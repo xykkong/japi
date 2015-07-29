@@ -1,5 +1,8 @@
 package br.gov.planejamento.api.core.parameters;
 
+import br.gov.planejamento.api.core.annotations.CustomParam;
+
+@CustomParam(name="date", description = "Formato: dd/mm/yyyy")
 public class DateParam extends Param {
 	
 	public DateParam(String original) {

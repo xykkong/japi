@@ -149,6 +149,7 @@ public class DocumentationResponse  extends Response{
 			private String name;
 			private String description;
 			private String type;
+			private String type_description;
 			private String required;
 			
 			public String getName() {
@@ -168,6 +169,12 @@ public class DocumentationResponse  extends Response{
 			}
 			public void setType(String type) {
 				this.type = type;
+			}
+			public String getType_description() {
+				return type_description;
+			}
+			public void setType_description(String type_description) {
+				this.type_description = type_description;
 			}
 			public String getRequired() {
 				return required;

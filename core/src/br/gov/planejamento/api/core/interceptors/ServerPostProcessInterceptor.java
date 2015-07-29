@@ -19,6 +19,10 @@ public class ServerPostProcessInterceptor implements PostProcessInterceptor {
 	@Override
 	public void postProcess(ServerResponse serverResponse) {
 		
+		if(serverResponse.getEntity() == null) {
+			serverResponse.setEntity(new CoreException(Errors.POST_PROCESS_NULL_RESPONSE, "A Response retornada pela camada de Request é nula. Verifique o factory da sua Response."));
+		}
+		
 		if(serverResponse.getEntity() instanceof ApiException) {
 			if(((ApiException)serverResponse.getEntity()).getOriginalException() instanceof ApiException) {
 				serverResponse.setEntity(new CoreException(Errors.API_EXCEPTION_COMO_ORIGINAL_EXCEPTION, "Foi lançada uma ApiException cuja causa de origem era uma outra ApiException. Isso não é permitido, uma ApiException não deve ser encapsulada por outra ApiException.", (ApiException)serverResponse.getEntity()));

@@ -57,6 +57,7 @@ public abstract class Errors {
 	public static final int API_EXCEPTION_COMO_ORIGINAL_EXCEPTION = 550;
 	public static final int HTML_RESPONSE_FALHA_CARREGAMENTO_ARQUIVO = 551;
 	public static final int CONFIG_LOADER_MODULOS_NAO_DEFINIDOS = 552;
+	public static final int POST_PROCESS_NULL_RESPONSE = 553;
 
 	
 	/* Request Errors - Starting in 1000 */
@@ -70,4 +71,5 @@ public abstract class Errors {
 	public static final int ORDER_BY_INVALIDO = 1006;
 	public static final int ORDER_INVALIDO = 1007;
 	public static final int PARAMETRO_INVALIDO = 1008;
+	public static final int URL_NAO_ENCONTRADA = 1009;
 }

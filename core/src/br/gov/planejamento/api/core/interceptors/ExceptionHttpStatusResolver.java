@@ -1,17 +1,26 @@
 package br.gov.planejamento.api.core.interceptors;
 
+import java.util.List;
+
+import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
+import org.jboss.resteasy.spi.NotFoundException;
+import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
+
 import br.gov.planejamento.api.core.base.JapiConfigLoader;
 import br.gov.planejamento.api.core.base.RequestContext;
+import br.gov.planejamento.api.core.constants.Constants;
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
+import br.gov.planejamento.api.core.exceptions.RequestException;
 import br.gov.planejamento.api.core.responses.ErrorResponse;
+import br.gov.planejamento.api.core.utils.StringUtils;
 
 /**
  * Este interceptor de Exceptions só é ativado caso uma Exceção seja lançada sem o controle
@@ -40,8 +49,20 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 		//template de erro, que eu saiba a rootURL, mas ela é setada apenas no pre-process e não chega até lá quando
 		//o erro ocorre.
 		try {
+			ServerPreProcessInterceptor.loadTemplates();
 			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
-		} catch (ApiException e) {
+			
+			if(exception instanceof NotFoundException) {
+				String requestFormat = StringUtils.lastSplitOf(exception.getMessage(), "\\.").toLowerCase();
+				
+				if(requestFormat == "") {
+					requestFormat = Constants.RequestFormats.HTML;
+				}
+				
+				RequestContext.getContext().setRequestFormat(requestFormat);
+			}
+						
+		} catch (Exception e) {
 			//TODO: redirecionar para método que retorne um erro.
 			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
 			//o jeito é redirecionar para uma página de erro
@@ -49,7 +70,11 @@ public class ExceptionHttpStatusResolver implements ExceptionMapper<Exception> {
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
 		if(!(exception instanceof ApiException)) {
-			apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
+			if(exception instanceof NotFoundException) {
+				apiException = new RequestException(Errors.URL_NAO_ENCONTRADA, "A URL informada não foi encontrada.", 404, exception);
+			} else {
+				apiException = new CoreException(Errors.EXCEPTION_RESOLVER_ERRO_DESCONHECIDO, "Houve um erro interno desconhecido.", exception);
+			}
 		} else {
 			apiException = (ApiException) exception;
 		}

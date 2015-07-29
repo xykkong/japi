@@ -3,10 +3,12 @@ package br.gov.planejamento.api.core.parameters;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import br.gov.planejamento.api.core.annotations.CustomParam;
 import br.gov.planejamento.api.core.constants.Errors;
 import br.gov.planejamento.api.core.exceptions.ApiException;
 import br.gov.planejamento.api.core.exceptions.CoreException;
 
+@CustomParam(name="Boolean", description = "Aceita como true: v, t, true, verdadeiro, sim, yes, 1. Aceita como false: f, false, falso, nao, no, 0.")
 public class BooleanParam extends Param{
 	
 	public BooleanParam(String original) {
@@ -30,6 +32,7 @@ public class BooleanParam extends Param{
 			case "false":
 			case "falso":
 			case "nao":
+			case "no":
 			case "0":
 			default:
 				this.value="false";

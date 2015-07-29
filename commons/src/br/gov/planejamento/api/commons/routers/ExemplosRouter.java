@@ -7,7 +7,7 @@ public class ExemplosRouter extends Router {
 	private static ExemplosRouter instance = null;
 	
 	private ExemplosRouter() {
-		super("licitacoes");
+		super("exemplos");
 	};
 	
 	public static ExemplosRouter getRouter() {

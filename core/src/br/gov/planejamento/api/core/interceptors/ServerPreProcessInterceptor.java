@@ -38,65 +38,36 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 	@Override
 	public ServerResponse preProcess(HttpRequest httpRequest,
 			ResourceMethod method) throws Failure, WebApplicationException {	
-		
-		RequestContext.getContext().clear();
-//		RequestContext context = RequestContext.getContext();
-//		MultivaluedMap<String, String> map = httpRequest.getUri().getQueryParameters();
-//		context.putValues(map);
-//		map = httpRequest.getUri().getPathParameters();
-//		context.putValues(map);
-		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
-		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
-		
-		
-		/**
-		 * Leitura de parâmetros da JapiConfig e inserção dos dados na RequestContext
-		 */
+			
 		try {
-			if(JapiConfigLoader.getJapiConfig().getModules() != null)
-				RequestContext.getContext().setModulos(JapiConfigLoader.getJapiConfig().getModules());
-			else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
-			
-			if(JapiConfigLoader.getJapiConfig().getMirrors() != null)
-				RequestContext.getContext().setMirrors(JapiConfigLoader.getJapiConfig().getMirrors());
-			else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
-			
-			if(JapiConfigLoader.getJapiConfig().getDatabaseProperties() != null)
-				ConnectionManager.setDbProperties(JapiConfigLoader.getJapiConfig().getDatabaseProperties());
-			else throw new CoreException(Errors.CONFIG_LOADER_DATABASE_NAO_ENCONTRADO, "Propriedados de banco de dados não configuradas no japi_config.json (databaseProperties)");
-			
-			if(JapiConfigLoader.getJapiConfig().getResourceTemplate() != null)
-				RequestContext.getContext().setResourceTemplate(JapiConfigLoader.getJapiConfig().getResourceTemplate());
-			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_RESOURCE_NAO_ENCONTRADO, "Caminho do Template de Resource não configurado no japi_config.json (resourceTemplate)");
-			
-			if(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate() != null)
-				RequestContext.getContext().setDocsModuloTemplate(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate());
-			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_MODULO_DOCS_NAO_ENCONTRADO, "Caminho do Template de Módulo do Docs não configurado no japi_config.json (docsModuloTemplate)");
-			
-			if(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate() != null)
-				RequestContext.getContext().setDocsMetodoTemplate(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate());
-			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_METODO_DOCS_NAO_ENCONTRADO, "Caminho do Template de Método do Docs não configurado no japi_config.json (docsMetodoTemplate)");
-			
-			if(JapiConfigLoader.getJapiConfig().getErrorTemplate() != null)
-				RequestContext.getContext().setErrorTemplate(JapiConfigLoader.getJapiConfig().getErrorTemplate());
-			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_ERRO_NAO_ENCONTRADO, "Caminho do Template de erro não configurado no japi_config.json (errorTemplate)");
-			
-			if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
-				RequestContext.getContext().setStaticHtmlTemplate(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate());
-			else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_PAGINA_ESTATICA_NAO_ENCONTRADO, "Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
+			loadConfigurations(httpRequest);
 		} catch (ApiException e1) {
 			return new ServerResponse(e1, 500, new Headers<Object>());
 		}
 		
-		try {
-			RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
+		if(method.getMethod().isAnnotationPresent(ApiRequest.class) && !method.getMethod().getDeclaringClass().isAnnotationPresent(ApiModule.class)) {
+			CoreException e = new CoreException(Errors.PRE_PROCESS_REQUEST_NAO_ANOTADA_APIMODULE, "Toda classe de Request deve ser anotada por @ApiModule.", 404);
+			return new ServerResponse(e, 404, new Headers<Object>());
+		}
+		
+		try {	
+			validateURIParametersUsingAnotations(httpRequest, method);
 		} catch (ApiException e) {
-			//TODO: redirecionar para método que retorne um erro.
-			//OBS: como aqui não é possível lançar exceção e subir pro postprocess
-			//o jeito é redirecionar para uma página de erro
-			//Talvez seja interessante o próprio postprocess também fazer isso.
 			return new ServerResponse(e, 400, new Headers<Object>());
 		}
+		
+		return null;
+	}
+	
+	public static void loadConfigurations(HttpRequest httpRequest) throws ApiException {
+
+		RequestContext.getContext().clear();
+		RequestContext.getContext().putValues(httpRequest.getUri().getQueryParameters());
+		RequestContext.getContext().putValues(httpRequest.getUri().getPathParameters());
+		
+		loadTemplates();
+		
+		RequestContext.getContext().setRootURL(JapiConfigLoader.getJapiConfig().getRootUrl());
 		
 		String fullPath = httpRequest.getUri().getAbsolutePath().getPath();
 		MultivaluedMap<String, String> parameters = httpRequest.getUri().getQueryParameters();
@@ -127,20 +98,44 @@ public class ServerPreProcessInterceptor implements PreProcessInterceptor {
 		RequestContext.getContext().setPath(path);
 		RequestContext.getContext().setFullPath(fullPath);
 		System.out.println(RequestContext.getContext().getPath());
+	
+	}
+
+	public static void loadTemplates() throws ApiException {
+		/**
+		 * Leitura de parâmetros da JapiConfig e inserção dos dados na RequestContext
+		 */
+		if(JapiConfigLoader.getJapiConfig().getModules() != null)
+			RequestContext.getContext().setModulos(JapiConfigLoader.getJapiConfig().getModules());
+		else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
 		
-		if(method.getMethod().isAnnotationPresent(ApiRequest.class) && !method.getMethod().getDeclaringClass().isAnnotationPresent(ApiModule.class)) {
-			CoreException e = new CoreException(Errors.PRE_PROCESS_REQUEST_NAO_ANOTADA_APIMODULE, "Toda classe de Request deve ser anotada por @ApiModule.", 404);
-			return new ServerResponse(e, 404, new Headers<Object>());
-		}
+		if(JapiConfigLoader.getJapiConfig().getMirrors() != null)
+			RequestContext.getContext().setMirrors(JapiConfigLoader.getJapiConfig().getMirrors());
+		else throw new CoreException(Errors.CONFIG_LOADER_MODULOS_NAO_DEFINIDOS, "Nomes dos modulos não configurados no japi_config.json (modules)");
 		
-		try {	
-			validateURIParametersUsingAnotations(httpRequest, method);
-		} catch (ApiException e) {
-			//TODO: mesma coisa que o comentário acima, tem que redirecionar para uma página de erro
-			return new ServerResponse(e, 400, new Headers<Object>());
-		}
+		if(JapiConfigLoader.getJapiConfig().getDatabaseProperties() != null)
+			ConnectionManager.setDbProperties(JapiConfigLoader.getJapiConfig().getDatabaseProperties());
+		else throw new CoreException(Errors.CONFIG_LOADER_DATABASE_NAO_ENCONTRADO, "Propriedados de banco de dados não configuradas no japi_config.json (databaseProperties)");
 		
-		return null;
+		if(JapiConfigLoader.getJapiConfig().getResourceTemplate() != null)
+			RequestContext.getContext().setResourceTemplate(JapiConfigLoader.getJapiConfig().getResourceTemplate());
+		else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_RESOURCE_NAO_ENCONTRADO, "Caminho do Template de Resource não configurado no japi_config.json (resourceTemplate)");
+		
+		if(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate() != null)
+			RequestContext.getContext().setDocsModuloTemplate(JapiConfigLoader.getJapiConfig().getDocsModuloTemplate());
+		else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_MODULO_DOCS_NAO_ENCONTRADO, "Caminho do Template de Módulo do Docs não configurado no japi_config.json (docsModuloTemplate)");
+		
+		if(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate() != null)
+			RequestContext.getContext().setDocsMetodoTemplate(JapiConfigLoader.getJapiConfig().getDocsMetodoTemplate());
+		else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_METODO_DOCS_NAO_ENCONTRADO, "Caminho do Template de Método do Docs não configurado no japi_config.json (docsMetodoTemplate)");
+		
+		if(JapiConfigLoader.getJapiConfig().getErrorTemplate() != null)
+			RequestContext.getContext().setErrorTemplate(JapiConfigLoader.getJapiConfig().getErrorTemplate());
+		else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_ERRO_NAO_ENCONTRADO, "Caminho do Template de erro não configurado no japi_config.json (errorTemplate)");
+		
+		if(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate() != null)
+			RequestContext.getContext().setStaticHtmlTemplate(JapiConfigLoader.getJapiConfig().getStaticHtmlTemplate());
+		else throw new CoreException(Errors.CONFIG_LOADER_TEMPLATE_PAGINA_ESTATICA_NAO_ENCONTRADO, "Caminho do Template de Página Estática não configurado no japi_config.json (staticHtmlTemplate)");
 	}
 	
 	private static void validateURIParametersUsingAnotations(HttpRequest httpRequest, ResourceMethod method)

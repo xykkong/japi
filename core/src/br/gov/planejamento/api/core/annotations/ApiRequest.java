@@ -8,6 +8,6 @@ public @interface ApiRequest {
     public String name() default "";
     public String description() default "";
     public String exampleQuery() default "";
-	public String exampleId() default "";
+	public String[] exampleParams() default {};
 }
 
